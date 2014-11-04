@@ -42,8 +42,7 @@
     <maven.compiler.source>1.7</maven.compiler.source>
 
     <!-- the version of the BOM, defining all the dependency versions -->
-    <fabric8.version>2.0.0-SNAPSHOT</fabric8.version>
-    <fabric.version>2.0.0-SNAPSHOT</fabric.version>
+    <fabric8.version>2.0.0</fabric8.version>
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <camel.version>2.14.0</camel.version>
@@ -154,7 +153,7 @@
       <plugin>
         <groupId>io.fabric8</groupId>
         <artifactId>fabric8-maven-plugin</artifactId>
-        <version>${fabric.version}</version>
+        <version>${fabric8.version}</version>
         <executions>
           <execution>
             <id>json</id>

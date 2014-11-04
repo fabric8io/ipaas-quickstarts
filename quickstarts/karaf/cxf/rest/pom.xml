@@ -47,8 +47,7 @@
     <cxf.version-range>[2.7,3)</cxf.version-range>
 
     <!-- the version of the BOM, defining all the dependency versions -->
-    <fabric8.version>2.0.0-SNAPSHOT</fabric8.version>
-    <fabric.version>2.0.0-SNAPSHOT</fabric.version>
+    <fabric8.version>2.0.0</fabric8.version>
 
     <!-- fabric8 deploy profile configuration -->
     <fabric8.profile>quickstarts-karaf-cxf-rest</fabric8.profile>
@@ -242,7 +241,7 @@
       <plugin>
         <groupId>io.fabric8</groupId>
         <artifactId>fabric-cxf-plugins</artifactId>
-        <version>${fabric.version}</version>
+        <version>${fabric8.version}</version>
         <executions>
           <execution>
             <id>process-classes</id>
@@ -263,7 +262,7 @@
       <plugin>
         <groupId>io.fabric8</groupId>
         <artifactId>fabric8-maven-plugin</artifactId>
-        <version>${fabric.version}</version>
+        <version>${fabric8.version}</version>
       </plugin>
     </plugins>
   </build>
