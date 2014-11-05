@@ -20,9 +20,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.jboss</groupId>
-        <artifactId>jboss-parent</artifactId>
-        <version>14</version>
+      <groupId>org.sonatype.oss</groupId>
+      <artifactId>oss-parent</artifactId>
+      <version>9</version>
     </parent>
 
     <groupId>io.fabric8.quickstarts</groupId>
@@ -61,7 +61,7 @@
     <scm>
         <connection>scm:git:git@github.com:fabric8io/quickstarts.git</connection>
         <developerConnection>scm:git:git@github.com:fabric8io/quickstarts.git</developerConnection>
-        <url>http://github.com/fabric8io/quickstarts/tree/master</url>
+        <url>http://github.com/fabric8io/quickstarts</url>
     </scm>
 
     <properties>
@@ -127,6 +127,20 @@
               </configuration>
             </execution>
           </executions>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-release-plugin</artifactId>
+          <version>2.5</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-gpg-plugin</artifactId>
+          <version>1.5</version>
+          <configuration>
+            <passphrase>${gpg.passphrase}</passphrase>
+            <useAgent>true</useAgent>
+          </configuration>
         </plugin>
       </plugins>
     </build>
