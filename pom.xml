@@ -152,6 +152,14 @@
 
     <profiles>
         <profile>
+          <id>fabric8-snapshot</id>
+          <properties>
+            <fabric8.version>2.0.1-SNAPSHOT</fabric8.version>
+            <jube.version>2.0.1-SNAPSHOT</jube.version>
+          </properties>
+        </profile>
+
+        <profile>
             <id>release</id>
             <build>
                 <plugins>
