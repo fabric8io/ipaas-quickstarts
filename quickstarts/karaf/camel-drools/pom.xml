@@ -464,7 +464,7 @@
             <dependencies>
               <dependency>
                 <groupId>io.fabric8.jube.images.fabric8</groupId>
-                <artifactId>java</artifactId>
+                <artifactId>karaf</artifactId>
                 <version>${jube.version}</version>
                 <classifier>image</classifier>
                 <type>zip</type>
