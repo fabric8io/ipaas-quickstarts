@@ -142,6 +142,11 @@
             <useAgent>true</useAgent>
           </configuration>
         </plugin>
+        <plugin>
+          <groupId>io.fabric8.jube</groupId>
+          <artifactId>jube-maven-plugin</artifactId>
+          <version>${jube.version}</version>
+        </plugin>
       </plugins>
     </build>
 

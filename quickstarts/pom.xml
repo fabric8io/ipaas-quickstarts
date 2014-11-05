@@ -21,11 +21,13 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <!-- quickstarts should not have a parent, as we use BOM -->
+  <parent>
+    <groupId>io.fabric8.quickstarts</groupId>
+    <artifactId>project</artifactId>
+    <version>2.0.0-SNAPSHOT</version>
+  </parent>
 
-  <groupId>io.fabric8.quickstarts</groupId>
   <artifactId>fabric8-quickstarts-parent</artifactId>
-  <version>2.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Fabric8 :: Quickstarts :: Parent</name>
 
@@ -46,45 +48,6 @@
     <fabric8.version>2.0.0</fabric8.version>
     <jube.version>2.0.0</jube.version>
   </properties>
-
-  <distributionManagement>
-    <repository>
-      <id>jboss-releases-repository</id>
-      <name>JBoss Releases Repository</name>
-      <url>https://repository.jboss.org/nexus/service/local/staging/deploy/maven2</url>
-    </repository>
-    <snapshotRepository>
-      <id>jboss-snapshots-repository</id>
-      <name>JBoss Snapshots Repository</name>
-      <url>https://repository.jboss.org/nexus/content/repositories/snapshots</url>
-    </snapshotRepository>
-  </distributionManagement>
-
-
-  <repositories>
-    <repository>
-      <id>fusesource.m2</id>
-      <name>FuseSource Community Release Repository</name>
-      <url>https://repo.fusesource.com/nexus/content/groups/public</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-    </repository>
-    <repository>
-      <id>fusesource.ea</id>
-      <name>FuseSource Community Early Access Release Repository</name>
-      <url>https://repo.fusesource.com/nexus/content/groups/ea</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-    </repository>
-  </repositories>
 
   <modules>
     <module>java</module>
