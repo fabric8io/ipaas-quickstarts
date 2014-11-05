@@ -46,7 +46,7 @@
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <camel.version>2.14.0</camel.version>
-    <jube.version>2.0.0-SNAPSHOT</jube.version>
+    <jube.version>2.0.0</jube.version>
 
     <docker.dataImage>${env.DOCKER_REGISTRY}/quickstart/${project.artifactId}:${project.version}</docker.dataImage>
     <docker.port.host.jolokia>9801</docker.port.host.jolokia>

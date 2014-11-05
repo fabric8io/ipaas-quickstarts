@@ -44,7 +44,7 @@
     <docker.dataImage>${env.DOCKER_REGISTRY}/quickstart/${project.artifactId}:${project.version}</docker.dataImage>
 
     <fabric8.version>2.0.0</fabric8.version>
-    <jube.version>2.0.0-SNAPSHOT</jube.version>
+    <jube.version>2.0.0</jube.version>
   </properties>
 
   <distributionManagement>
