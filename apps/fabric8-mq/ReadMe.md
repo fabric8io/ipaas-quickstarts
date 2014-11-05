@@ -1,0 +1,1 @@
+runs a Fabric8 MQ broker based on [Apache ActiveMQ](http://activemq.apache.org/) which is then exposed as a [kubernetes service](http://fabric8.io/v2/services.html) so that clients can easily connect.
