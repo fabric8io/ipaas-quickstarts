@@ -234,13 +234,16 @@
     </profile>
 
     <profile>
-      <id>jimagezip</id>
+      <id>jube</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
       <build>
         <plugins>
           <plugin>
-            <groupId>io.jimagezip</groupId>
-            <artifactId>jimagezip-maven-plugin</artifactId>
-            <version>${jimagezip.version}</version>
+            <groupId>io.fabric8.jube</groupId>
+            <artifactId>jube-maven-plugin</artifactId>
+            <version>${jube.version}</version>
             <executions>
               <execution>
                 <goals>
@@ -249,6 +252,17 @@
                 <phase>package</phase>
               </execution>
             </executions>
+
+            <!-- TODO it'd be nice for the jube plugin to automatically download this dependency -->
+            <dependencies>
+              <dependency>
+                <groupId>io.fabric8.jube.images.fabric8</groupId>
+                <artifactId>java</artifactId>
+                <version>${jube.version}</version>
+                <classifier>image</classifier>
+                <type>zip</type>
+              </dependency>
+            </dependencies>
           </plugin>
         </plugins>
       </build>
