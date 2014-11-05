@@ -27,7 +27,7 @@
     <version>2.0.0-SNAPSHOT</version>
   </parent>
 
-  <groupId>io.fabric8.quickstarts.springboot</groupId>
+  <groupId>io.fabric8.jube.images.quickstart</groupId>
   <artifactId>springboot-quickstarts</artifactId>
   <version>2.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>

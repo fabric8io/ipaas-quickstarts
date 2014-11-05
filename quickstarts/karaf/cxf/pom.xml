@@ -22,12 +22,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>io.fabric8.quickstarts.karaf</groupId>
+    <groupId>io.fabric8.jube.images.quickstart</groupId>
     <artifactId>karaf-quickstarts</artifactId>
     <version>2.0.0-SNAPSHOT</version>
   </parent>
 
-  <groupId>io.fabric8.quickstarts.karaf.cxf</groupId>
+  <groupId>io.fabric8.jube.images.quickstart</groupId>
   <artifactId>karaf-cxf-quickstarts</artifactId>
   <version>2.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
