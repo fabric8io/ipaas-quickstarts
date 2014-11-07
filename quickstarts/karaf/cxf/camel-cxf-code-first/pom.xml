@@ -196,5 +196,13 @@
     </pluginRepository>
   </pluginRepositories>
 
+  <profiles>
+    <profile>
+      <id>fabric8-snapshot</id>
+      <properties>
+        <fabric8.version>2.0-SNAPSHOT</fabric8.version>
+      </properties>
+    </profile>
+  </profiles>
 </project>
 
