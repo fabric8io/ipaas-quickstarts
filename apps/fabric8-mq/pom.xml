@@ -31,7 +31,6 @@
   <description>Fabric8 MQ Broker</description>
 
   <properties>
-    <!-- Note: need to override guava version as leveldb has an issue with > 15.0 -->
     <guava.version>15.0</guava.version>
 
     <!-- fabric8 configuration -->
@@ -61,6 +60,8 @@
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
+      <!-- Note: need to override guava version as leveldb has an issue with > 15.0 -->
+      <version>${guava.version}</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
