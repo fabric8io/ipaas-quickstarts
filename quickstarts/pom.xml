@@ -43,6 +43,7 @@
     <maven.compiler.source>1.7</maven.compiler.source>
     <docker.maven.plugin.version>0.9.11</docker.maven.plugin.version>
     <docker.dataImage>${env.DOCKER_REGISTRY}/quickstart/${project.artifactId}:${project.version}</docker.dataImage>
+    <docker.port.container.jolokia>8778</docker.port.container.jolokia>
   </properties>
 
   <modules>
