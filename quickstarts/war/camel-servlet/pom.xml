@@ -224,7 +224,7 @@
     <profile>
       <id>jube</id>
       <activation>
-        <activeByDefault>false</activeByDefault>
+        <activeByDefault>true</activeByDefault>
       </activation>
       <build>
         <plugins>
@@ -245,7 +245,7 @@
             <dependencies>
               <dependency>
                 <groupId>io.fabric8.jube.images.fabric8</groupId>
-                <artifactId>java</artifactId>
+                <artifactId>tomcat</artifactId>
                 <version>${jube.version}</version>
                 <classifier>image</classifier>
                 <type>zip</type>
@@ -260,6 +260,7 @@
       <id>fabric8-snapshot</id>
       <properties>
         <fabric8.version>2.0-SNAPSHOT</fabric8.version>
+        <jube.version>2.0-SNAPSHOT</jube.version>
       </properties>
     </profile>
   </profiles>
