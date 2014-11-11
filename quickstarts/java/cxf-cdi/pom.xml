@@ -28,7 +28,7 @@
   <artifactId>java-cxf-cdi</artifactId>
   <packaging>jar</packaging>
 
-  <name>Fabric8 Quickstart : CXF JAX-RS CDI</name>
+  <name>Quickstart : CXF JAX-RS CDI</name>
   <description>CXF JAX-RS using CDI running in a standalone Java Container</description>
 
   <properties>
