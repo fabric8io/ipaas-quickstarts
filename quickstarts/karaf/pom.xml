@@ -30,7 +30,7 @@
   <artifactId>karaf-quickstarts</artifactId>
   <version>2.0-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>Fabric8 :: Quickstarts :: Karaf :: Parent</name>
+  <name>Fabric8 Karaf Quickstart : Parent</name>
 
   <properties>
     <fabric8.iconRef>icons/karaf.svg</fabric8.iconRef>

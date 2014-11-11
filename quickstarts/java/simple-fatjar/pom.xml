@@ -30,7 +30,7 @@
   <version>2.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>Fabric8 :: Quickstarts :: Java :: Simple fat jar</name>
+  <name>Fabric8 Quickstart : Simple fat jar</name>
   <description>Simple standalone Java Container (fat jar)</description>
 
   <properties>
@@ -42,7 +42,7 @@
     <maven.compiler.source>1.7</maven.compiler.source>
 
     <!-- the version of the BOM, defining all the dependency versions -->
-    <fabric8.version>2.0.0</fabric8.version>
+    <fabric8.version>2.0.1</fabric8.version>
 
     <!-- fabric8 configuration -->
     <docker.dataImage>${env.DOCKER_REGISTRY}/quickstart/${project.artifactId}:${project.version}</docker.dataImage>

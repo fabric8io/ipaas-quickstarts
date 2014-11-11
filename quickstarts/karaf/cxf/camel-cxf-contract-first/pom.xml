@@ -28,7 +28,7 @@
   <artifactId>karaf-cxf-camel-cxf-contract-first</artifactId>
   <version>2.0-SNAPSHOT</version>
   <packaging>bundle</packaging>
-  <name>Fabric8 :: Quickstarts :: Karaf :: CXF :: Camel CXF Contract First</name>
+  <name>Fabric8 Karaf Quickstart : CXF :: Camel CXF Contract First</name>
   <description>Creates a web service using the WSDL contract first</description>
 
   <properties>
@@ -39,7 +39,7 @@
     <maven.compiler.source>1.7</maven.compiler.source>
 
     <!-- the version of the BOM, defining all the dependency versions -->
-    <fabric8.version>2.0.0</fabric8.version>
+    <fabric8.version>2.0.1</fabric8.version>
     <cxf.version>2.7.11</cxf.version>
 
     <!-- fabric8 deploy profile configuration -->
