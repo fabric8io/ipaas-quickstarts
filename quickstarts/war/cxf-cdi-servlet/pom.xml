@@ -51,8 +51,6 @@
     <!-- fabric8 configuration -->
     <docker.dataImage>${env.DOCKER_REGISTRY}/quickstart/${project.artifactId}:${project.version}</docker.dataImage>
     <docker.port.container.http>${http.port}</docker.port.container.http>
-    <docker.port.host.jolokia>9803</docker.port.host.jolokia>
-
   </properties>
 
   <dependencyManagement>

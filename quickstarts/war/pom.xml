@@ -34,6 +34,10 @@
 
   <properties>
     <fabric8.iconRef>icons/tomcat.svg</fabric8.iconRef>
+<!--
+    <docker.port.container.http>8080</docker.port.container.http>
+    <docker.port.container.shutdown>8085</docker.port.container.shutdown>
+-->
   </properties>
 
   <modules>

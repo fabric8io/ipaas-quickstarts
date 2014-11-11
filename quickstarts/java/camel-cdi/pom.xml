@@ -48,7 +48,6 @@
     <jube.version>2.0.0</jube.version>
 
     <docker.dataImage>${env.DOCKER_REGISTRY}/quickstart/${project.artifactId}:${project.version}</docker.dataImage>
-    <docker.port.host.jolokia>9801</docker.port.host.jolokia>
     <fabric8.label.container>java</fabric8.label.container>
     <fabric8.label.group>quickstarts</fabric8.label.group>
     <fabric8.iconRef>icons/camel.svg</fabric8.iconRef>
