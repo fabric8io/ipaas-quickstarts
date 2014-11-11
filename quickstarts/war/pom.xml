@@ -33,6 +33,7 @@
   <name>War Quickstart :  Parent</name>
 
   <properties>
+    <docker.baseImage>fabric8/tomcat</docker.baseImage>
     <fabric8.iconRef>icons/tomcat.svg</fabric8.iconRef>
 <!--
     <docker.port.container.http>8080</docker.port.container.http>
