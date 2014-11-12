@@ -13,7 +13,7 @@
       "port": "9000",
       "selector": {
         "container": "java",
-        "name": "fabric8HTTPGateway",
+        "name": "fabric8Fabric8HttpGateway",
         "group": "defaultGatewayGroup"
       }
     }
