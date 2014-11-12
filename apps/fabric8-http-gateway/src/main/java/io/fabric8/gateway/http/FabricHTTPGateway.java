@@ -30,10 +30,7 @@ import javax.management.MBeanServer;
 
 import io.fabric8.gateway.CallDetailRecord;
 
-import org.apache.curator.framework.CuratorFramework;
-
 import io.fabric8.gateway.fabric.support.vertx.VertxService;
-import io.fabric8.gateway.handlers.detecting.DetectingGatewayWebSocketHandler;
 import io.fabric8.gateway.handlers.http.HttpGateway;
 import io.fabric8.gateway.handlers.http.HttpGatewayHandler;
 import io.fabric8.gateway.handlers.http.HttpGatewayServer;
@@ -66,7 +63,8 @@ public class FabricHTTPGateway implements HttpGateway {
     ShutdownTracker shutdownTracker = new ShutdownTracker();
     private FabricHTTPGatewayInfo fabricHTTPGatewayInfoMBean;
     
-    void activate(HTTPGatewayConfig httpGatewayConfig) throws Exception {
+    void configure(HTTPGatewayConfig httpGatewayConfig) throws Exception {
+    	LOG.info("configuring the HTTP gateway");
         gatewayConfig = httpGatewayConfig;
         updateConfiguration();
         mbeanServer = ManagementFactory.getPlatformMBeanServer();

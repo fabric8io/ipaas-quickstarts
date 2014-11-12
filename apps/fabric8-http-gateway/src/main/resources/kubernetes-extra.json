@@ -1,0 +1,21 @@
+{
+  "id": "fabric8-httpgateway-config",
+  "kind": "Config",
+  "apiVersion": "v1beta1",
+  "name": "fabric8httpgateway",
+  "description": "Creates a fabric8 HTTP gateway service",
+  "items": [
+    {
+      "id": "fabric8httpgateway",
+      "apiVersion": "v1beta1",
+      "kind": "Service",
+      "containerPort": ${http.port},
+      "port": "9000",
+      "selector": {
+        "container": "java",
+        "name": "fabric8HTTPGateway",
+        "group": "defaultGatewayGroup"
+      }
+    }
+  ]
+}

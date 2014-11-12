@@ -49,7 +49,7 @@
     <jube.version>2.0.7</jube.version>
     <org.eclipse.jetty.version>9.1.5.v20140505</org.eclipse.jetty.version>
     
-    <http.port>8080</http.port>
+    <http.port>9092</http.port>
 
     <docker.from>fabric8/java</docker.from>
     <docker.registryPrefix>${env.DOCKER_REGISTRY}/</docker.registryPrefix>
