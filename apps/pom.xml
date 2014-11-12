@@ -33,7 +33,6 @@
   <properties>
     <activemq.container.port>6162</activemq.container.port>
     <activemq.service.port>6163</activemq.service.port>
-    <httpgateway.port>9000</httpgateway.port>
 
     <docker.from>fabric8/java</docker.from>
     <docker.registryPrefix>${env.DOCKER_REGISTRY}/</docker.registryPrefix>

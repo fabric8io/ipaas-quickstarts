@@ -32,15 +32,14 @@
 
   <properties>
     <guava.version>15.0</guava.version>
+    <http.port>9090</http.port>
 
     <docker.env.MAIN>org.jboss.weld.environment.se.StartMain</docker.env.MAIN>
-    <docker.port.container.gateway>${httpgateway.port}</docker.port.container.gateway>
-    <docker.port.host.gateway>${httpgateway.port}</docker.port.host.gateway>
+    <docker.port.container.gateway>${http.port}</docker.port.container.gateway>
+    <docker.port.host.gateway>${http.port}</docker.port.host.gateway>
     <fabric8.kubernetes.name>fabric8HTTPGateway</fabric8.kubernetes.name>
-    <fabric8.env.AMQ_PORT>${activemq.container.port}</fabric8.env.AMQ_PORT>
     <fabric8.label.container>java</fabric8.label.container>
     <fabric8.label.group>defaultGatewayGroup</fabric8.label.group>
-    <fabric8.iconRef>icons/activemq.svg</fabric8.iconRef>
   </properties>
 
   <dependencies>
@@ -60,6 +59,14 @@
   </dependencies>
 
   <build>
+
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+
     <plugins>
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
@@ -87,6 +94,7 @@
         <artifactId>docker-maven-plugin</artifactId>
         <version>${docker.maven.plugin.version}</version>
         <configuration>
+<<<<<<< HEAD
           <images>
             <image>
               <name>${docker.image}</name>
@@ -104,7 +112,27 @@
               </build>
             </image>
           </images>
+=======
+          <image>fabric8/java</image>
+          <mergeData>true</mergeData>
+          <assemblyDescriptorRef>artifact-with-dependencies</assemblyDescriptorRef>
+          <env>
+            <MAIN>org.jboss.weld.environment.se.StartMain</MAIN>
+            <FABRIC8_HTTP_PORT>${http.port}</FABRIC8_HTTP_PORT>
+          </env>
+          <!-- 
+          <ports>
+            <port>${http.port}</port>
+            <port>8778</port>
+          </ports>
+           -->
+>>>>>>> HTTP Gateway now obtains services from Kubernetes and is functional
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>io.fabric8.jube</groupId>
+        <artifactId>jube-maven-plugin</artifactId>
+        <version>${jube.version}</version>
       </plugin>
 
       <plugin>

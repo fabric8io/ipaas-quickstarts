@@ -15,6 +15,7 @@
  */
 package io.fabric8.gateway.http;
 
+import io.fabric8.gateway.loadbalancer.LoadBalancers;
 import io.fabric8.utils.Systems;
 
 import javax.enterprise.event.Observes;
@@ -28,36 +29,59 @@ import org.slf4j.LoggerFactory;
 public class Main {
 
     public static final String DEFAULT_HOST = "127.0.0.1";
-    public static final String DEFAULT_PORT = "8080";
+    public static final String DEFAULT_PORT = "9090";
     public static final String DEFAULT_INDEX_ENABLED = "true";
-    
+    public static final String DEFAULT_GATEWAY_SERVICES_SELECTOR = "[{\"container\":\"java\",\"group\":\"quickstarts\"},{\"container\":\"camel\",\"group\":\"quickstarts\"}]";
+    public static final String DEFAULT_URI_TEMPLATE = "/{contextPath}";
+    public static final String DEFAULT_LOADBALANCER = LoadBalancers.ROUND_ROBIN_LOAD_BALANCER;
     private static final Logger LOG = LoggerFactory.getLogger(Main.class);
     
     @Inject FabricHTTPGateway fabricHTTPGateway;
-    
+    @Inject HttpMappingRuleConfiguration httpMappingRuleConfigutation;
     @Inject @Parameters String[] args;
-    
-    @Inject HTTPGatewayConfig gatewayConfig;
-    
+
     public void main(@Observes ContainerInitialized event) {
+        HTTPGatewayConfig gatewayConfig = new HTTPGatewayConfig();
         
         String serviceName = Systems.getEnvVarOrSystemProperty("HTTP_GATEWAY_SERVICE_ID", "HTTP_GATEWAY_SERVICE_ID", "FABRIC8HTTPGATEWAY").toUpperCase() + "_SERVICE_";
         String hostEnvVar = serviceName + HTTPGatewayConfig.HOST;
-        String portEnvVar = serviceName + HTTPGatewayConfig.PORT;
+        String portEnvVar = HTTPGatewayConfig.HTTP_PORT;
+        String selectorEnvVar = serviceName + HTTPGatewayConfig.SELECTOR;
+        String uriTemplateEnvVar = serviceName + HTTPGatewayConfig.URI_TEMPLATE;
+        String loadBalancerEnvVar = serviceName + HTTPGatewayConfig.LOAD_BALANCER;
+        String enabledVersionEnvVar = serviceName + HTTPGatewayConfig.ENABLED_VERSION;
+        String reverseHeadersEnvVar = serviceName + HTTPGatewayConfig.REVERSE_HEADERS;
+        //Gateway config
         gatewayConfig.put(HTTPGatewayConfig.HOST,
                 Systems.getEnvVarOrSystemProperty(hostEnvVar, hostEnvVar, DEFAULT_HOST));
-        gatewayConfig.put(HTTPGatewayConfig.PORT,
+        gatewayConfig.put(HTTPGatewayConfig.HTTP_PORT,
                 Systems.getEnvVarOrSystemProperty(portEnvVar, portEnvVar, DEFAULT_PORT));
         gatewayConfig.put(HTTPGatewayConfig.ENABLE_INDEX,
                 Systems.getEnvVarOrSystemProperty(portEnvVar, portEnvVar, DEFAULT_INDEX_ENABLED));
+        LOG.info("Container host " + gatewayConfig.getHost());
+        LOG.info("Container port " + gatewayConfig.getPort());
+        LOG.info("Index enabled: " + gatewayConfig.isIndexEnabled());
+        //Rule config
+        gatewayConfig.put(HTTPGatewayConfig.SELECTOR,
+                Systems.getEnvVarOrSystemProperty(selectorEnvVar, selectorEnvVar, DEFAULT_GATEWAY_SERVICES_SELECTOR));
+        gatewayConfig.put(HTTPGatewayConfig.URI_TEMPLATE,
+                Systems.getEnvVarOrSystemProperty(uriTemplateEnvVar, uriTemplateEnvVar, DEFAULT_URI_TEMPLATE));
+        gatewayConfig.put(HTTPGatewayConfig.LOAD_BALANCER,
+                Systems.getEnvVarOrSystemProperty(loadBalancerEnvVar, loadBalancerEnvVar, DEFAULT_LOADBALANCER));
+        gatewayConfig.put(HTTPGatewayConfig.ENABLED_VERSION,
+                Systems.getEnvVarOrSystemProperty(enabledVersionEnvVar, enabledVersionEnvVar, null));
+        gatewayConfig.put(HTTPGatewayConfig.REVERSE_HEADERS,
+                Systems.getEnvVarOrSystemProperty(reverseHeadersEnvVar, reverseHeadersEnvVar, "true"));
         
         try {
-            fabricHTTPGateway.activate(gatewayConfig);
+            httpMappingRuleConfigutation.configure(gatewayConfig);
+            fabricHTTPGateway.configure(gatewayConfig);
+            waitUntilStop();
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            LOG.error("Could not start the HTTP Gateway");
+            LOG.error(e.getMessage(),e);
         }
-        waitUntilStop();
+        
     }
         
     protected static void waitUntilStop() {
