@@ -49,7 +49,7 @@
     <fabric8.parentProfiles>containers-java.spring.boot</fabric8.parentProfiles>
 
     <!-- fabric8 configuration -->
-    <docker.dataImage>${env.DOCKER_REGISTRY}/fabric8/quickstart-${project.artifactId}:${project.version}</docker.dataImage>
+    <docker.dataImage>${docker.registryPrefix}fabric8/quickstart-${project.artifactId}:${project.version}</docker.dataImage>
     <docker.port.container.http>8080</docker.port.container.http>
     <fabric8.label.container>java</fabric8.label.container>
     <fabric8.label.group>quickstarts</fabric8.label.group>

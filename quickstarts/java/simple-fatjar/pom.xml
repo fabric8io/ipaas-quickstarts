@@ -45,7 +45,8 @@
     <fabric8.version>2.0.1</fabric8.version>
 
     <docker.from>fabric8/java</docker.from>
-    <docker.image>${env.DOCKER_REGISTRY}/fabric8/quickstart-${project.artifactId}:${project.version}</docker.image>
+    <docker.registryPrefix>${env.DOCKER_REGISTRY}/</docker.registryPrefix>
+    <docker.image>${docker.registryPrefix}fabric8/quickstart-${project.artifactId}:${project.version}</docker.image>
     <docker.assemblyDescriptorRef>artifact</docker.assemblyDescriptorRef>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
     <docker.env.JAR>${artifactId}-${version}.jar</docker.env.JAR>
@@ -289,6 +290,12 @@
       <id>fabric8-snapshot</id>
       <properties>
         <fabric8.version>2.0-SNAPSHOT</fabric8.version>
+      </properties>
+    </profile>
+    <profile>
+      <id>docker-public</id>
+      <properties>
+        <docker.registryPrefix></docker.registryPrefix>
       </properties>
     </profile>
   </profiles>

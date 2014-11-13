@@ -36,13 +36,14 @@
     <httpgateway.port>9000</httpgateway.port>
 
     <docker.from>fabric8/java</docker.from>
-    <docker.image>${env.DOCKER_REGISTRY}/fabric8/${project.artifactId}:${project.version}</docker.image>
+    <docker.registryPrefix>${env.DOCKER_REGISTRY}/</docker.registryPrefix>
+    <docker.image>${docker.registryPrefix}fabric8/${project.artifactId}:${project.version}</docker.image>
     <docker.assemblyDescriptorRef>artifact-with-dependencies</docker.assemblyDescriptorRef>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
 
     <!-- TODO old name names from 0.9 of docker-maven-plugin - remove when fabric8/jube no longer use them -->
     <docker.baseImage>fabric8/java</docker.baseImage>
-    <docker.dataImage>${env.DOCKER_REGISTRY}/fabric8/${project.artifactId}:${project.version}</docker.dataImage>
+    <docker.dataImage>${docker.registryPrefix}fabric8/${project.artifactId}:${project.version}</docker.dataImage>
 
     <fabric8.iconRef>icons/activemq.svg</fabric8.iconRef>
   </properties>
@@ -111,6 +112,12 @@
           </plugin>
         </plugins>
       </build>
+    </profile>
+    <profile>
+      <id>docker-public</id>
+      <properties>
+        <docker.registryPrefix></docker.registryPrefix>
+      </properties>
     </profile>
   </profiles>
 </project>

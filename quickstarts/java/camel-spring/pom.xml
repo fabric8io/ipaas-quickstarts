@@ -49,7 +49,8 @@
     <jube.version>2.0.1</jube.version>
 
     <docker.from>fabric8/java</docker.from>
-    <docker.image>${env.DOCKER_REGISTRY}/fabric8/quickstart-${project.artifactId}:${project.version}</docker.image>
+    <docker.registryPrefix>${env.DOCKER_REGISTRY}/</docker.registryPrefix>
+    <docker.image>${docker.registryPrefix}fabric8/quickstart-${project.artifactId}:${project.version}</docker.image>
     <docker.assemblyDescriptorRef>artifact-with-dependencies</docker.assemblyDescriptorRef>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
     <docker.env.MAIN>org.apache.camel.spring.Main</docker.env.MAIN>
@@ -319,6 +320,12 @@
       <id>fabric8-snapshot</id>
       <properties>
         <fabric8.version>2.0-SNAPSHOT</fabric8.version>
+      </properties>
+    </profile>
+    <profile>
+      <id>docker-public</id>
+      <properties>
+        <docker.registryPrefix></docker.registryPrefix>
       </properties>
     </profile>
   </profiles>

@@ -45,7 +45,8 @@
     <fabric8.version>2.0.1</fabric8.version>
 
     <docker.from>fabric8/tomcat-8.0</docker.from>
-    <docker.image>${env.DOCKER_REGISTRY}/fabric8/quickstart-${project.artifactId}:${project.version}</docker.image>
+    <docker.registryPrefix>${env.DOCKER_REGISTRY}/</docker.registryPrefix>
+    <docker.image>${docker.registryPrefix}fabric8/quickstart-${project.artifactId}:${project.version}</docker.image>
     <docker.assemblyDescriptorRef>rootWar</docker.assemblyDescriptorRef>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
     <docker.port.container.http>8080</docker.port.container.http>
@@ -267,6 +268,12 @@
       <properties>
         <fabric8.version>2.0-SNAPSHOT</fabric8.version>
         <jube.version>2.0-SNAPSHOT</jube.version>
+      </properties>
+    </profile>
+    <profile>
+      <id>docker-public</id>
+      <properties>
+        <docker.registryPrefix></docker.registryPrefix>
       </properties>
     </profile>
   </profiles>

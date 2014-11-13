@@ -46,7 +46,7 @@
 
     <!-- TODO old name names from 0.9 of docker-maven-plugin - remove when fabric8/jube no longer use them -->
     <docker.baseImage>fabric8/java</docker.baseImage>
-    <docker.dataImage>${env.DOCKER_REGISTRY}/fabric8/quickstart-${project.artifactId}:${project.version}</docker.dataImage>
+    <docker.dataImage>${docker.registryPrefix}fabric8/quickstart-${project.artifactId}:${project.version}</docker.dataImage>
   </properties>
 
   <modules>
