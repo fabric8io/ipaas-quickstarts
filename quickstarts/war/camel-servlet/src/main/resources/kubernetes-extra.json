@@ -1,0 +1,19 @@
+{
+  "id": "quickStartWarCamelServletConfig",
+  "kind": "Config",
+  "apiVersion": "v1beta1",
+  "name": "quickStartWarCamelServletConfig",
+  "description": "Quickstart: War Camel Servlet",
+  "items": [
+    {
+      "id": "quickstart-camelservlet",
+      "apiVersion": "v1beta1",
+      "kind": "Service",
+      "containerPort": 8080,
+      "port": 8080,
+      "selector": {
+        "name": "quickStartCamelServlet"
+      }
+    }
+  ]
+}
