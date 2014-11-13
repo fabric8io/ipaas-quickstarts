@@ -44,13 +44,14 @@
     <!-- the version of the BOM, defining all the dependency versions -->
     <fabric8.version>2.0.1</fabric8.version>
 
-    <!-- fabric8 configuration -->
-    <docker.dataImage>${env.DOCKER_REGISTRY}/quickstart/${project.artifactId}:${project.version}</docker.dataImage>
+    <docker.from>fabric8/java</docker.from>
+    <docker.image>${env.DOCKER_REGISTRY}/fabric8/quickstart-${project.artifactId}:${project.version}</docker.image>
+    <docker.assemblyDescriptorRef>artifact</docker.assemblyDescriptorRef>
+    <docker.port.container.jolokia>8778</docker.port.container.jolokia>
+    <docker.env.JAR>${artifactId}-${version}.jar</docker.env.JAR>
+
     <fabric8.label.container>java</fabric8.label.container>
     <fabric8.label.group>quickstarts</fabric8.label.group>
-
-    <docker.baseImage>fabric8/java</docker.baseImage>
-    <docker.env.MAIN>io.fabric8.quickstarts.java.simple.fatjar.Main</docker.env.MAIN>
   </properties>
 
   <dependencyManagement>
@@ -134,12 +135,18 @@
         <artifactId>docker-maven-plugin</artifactId>
         <version>${docker.maven.plugin.version}</version>
         <configuration>
-          <image>fabric8/java</image>
-          <mergeData>true</mergeData>
-          <assemblyDescriptorRef>artifact</assemblyDescriptorRef>
-          <env>
-              <JAR>${artifactId}-${version}.jar</JAR>
-          </env>
+          <images>
+            <image>
+              <name>${docker.image}</name>
+              <build>
+                <from>${docker.from}</from>
+                <assemblyDescriptorRef>${docker.assemblyDescriptorRef}</assemblyDescriptorRef>
+                <env>
+                  <JAR>${docker.env.JAR}</JAR>
+                </env>
+              </build>
+            </image>
+          </images>
         </configuration>
       </plugin>
     </plugins>

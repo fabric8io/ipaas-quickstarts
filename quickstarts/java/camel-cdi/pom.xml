@@ -47,14 +47,16 @@
     <camel.version>2.14.0</camel.version>
     <jube.version>2.0.1</jube.version>
 
-    <docker.dataImage>${env.DOCKER_REGISTRY}/quickstart/${project.artifactId}:${project.version}</docker.dataImage>
+    <docker.from>fabric8/java</docker.from>
+    <docker.image>${env.DOCKER_REGISTRY}/fabric8/quickstart-${project.artifactId}:${project.version}</docker.image>
+    <docker.assemblyDescriptorRef>artifact-with-dependencies</docker.assemblyDescriptorRef>
+    <docker.port.container.jolokia>8778</docker.port.container.jolokia>
+    <docker.env.MAIN>org.apache.camel.cdi.Main</docker.env.MAIN>
+
     <fabric8.label.container>java</fabric8.label.container>
     <fabric8.label.group>quickstarts</fabric8.label.group>
     <fabric8.iconRef>icons/camel.svg</fabric8.iconRef>
 
-    <!-- jube properties -->
-    <docker.baseImage>fabric8/java</docker.baseImage>
-    <docker.env.MAIN>org.apache.camel.cdi.Main</docker.env.MAIN>
   </properties>
 
   <dependencyManagement>
@@ -167,12 +169,18 @@
         <artifactId>docker-maven-plugin</artifactId>
         <version>${docker.maven.plugin.version}</version>
         <configuration>
-          <image>fabric8/java</image>
-          <mergeData>true</mergeData>
-          <assemblyDescriptorRef>artifact-with-dependencies</assemblyDescriptorRef>
-          <env>
-            <MAIN>org.apache.camel.cdi.Main</MAIN>
-          </env>
+          <images>
+            <image>
+              <name>${docker.image}</name>
+              <build>
+                <from>${docker.from}</from>
+                <assemblyDescriptorRef>${docker.assemblyDescriptorRef}</assemblyDescriptorRef>
+                <env>
+                  <MAIN>${docker.env.MAIN}</MAIN>
+                </env>
+              </build>
+            </image>
+          </images>
         </configuration>
       </plugin>
       <plugin>

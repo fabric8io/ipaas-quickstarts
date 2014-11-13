@@ -31,17 +31,13 @@
   <description>Fabric8 MQ Example Consumer</description>
 
     <properties>
-        <!-- fabric8 configuration -->
-        <docker.dataImage>${env.DOCKER_REGISTRY}/fabric8/${project.artifactId}:${project.version}</docker.dataImage>
+        <docker.env.MAIN>io.fabric8.mq.consumer.ConsumerMain</docker.env.MAIN>
 
         <fabric8.kubernetes.name>fabric8MQConsumer</fabric8.kubernetes.name>
         <fabric8.env.AMQ_SERVICE_ID>FABRIC8MQ</fabric8.env.AMQ_SERVICE_ID>
         <fabric8.label.container>java</fabric8.label.container>
         <fabric8.label.group>fabric8MQConsumer</fabric8.label.group>
         <fabric8.iconRef>icons/activemq.svg</fabric8.iconRef>
-
-        <!-- jube properties -->
-        <docker.env.MAIN>io.fabric8.mq.consumer.ConsumerMain</docker.env.MAIN>
     </properties>
 
   <dependencies>
@@ -91,18 +87,24 @@
         <artifactId>docker-maven-plugin</artifactId>
         <version>${docker.maven.plugin.version}</version>
         <configuration>
-          <image>fabric8/java</image>
-          <mergeData>true</mergeData>
-          <assemblyDescriptorRef>artifact-with-dependencies</assemblyDescriptorRef>
-          <env>
-            <MAIN>io.fabric8.mq.consumer.ConsumerMain</MAIN>
-            <AMQ_SERVICE_ID>FABRIC8MQ</AMQ_SERVICE_ID>
-            <AMQ_QUEUENAME>TEST.FOO</AMQ_QUEUENAME>
-            <AMQ_PREFETCH>1000</AMQ_PREFETCH>
-          </env>
-          <ports>
-            <port>8778</port>
-          </ports>
+          <images>
+            <image>
+              <name>${docker.image}</name>
+              <build>
+                <from>${docker.from}</from>
+                <assemblyDescriptorRef>${docker.assemblyDescriptorRef}</assemblyDescriptorRef>
+                <env>
+                  <MAIN>${docker.env.MAIN}</MAIN>
+                  <AMQ_SERVICE_ID>FABRIC8MQ</AMQ_SERVICE_ID>
+                  <AMQ_QUEUENAME>TEST.FOO</AMQ_QUEUENAME>
+                  <AMQ_PREFETCH>1000</AMQ_PREFETCH>
+                </env>
+                <ports>
+                  <port>8778</port>
+                </ports>
+              </build>
+            </image>
+          </images>
         </configuration>
       </plugin>
 

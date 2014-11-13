@@ -35,12 +35,16 @@
     <activemq.service.port>6163</activemq.service.port>
     <httpgateway.port>9000</httpgateway.port>
 
-    <docker.dataImage>${env.DOCKER_REGISTRY}/fabric8/${project.artifactId}:${project.version}</docker.dataImage>
-    <fabric8.iconRef>icons/activemq.svg</fabric8.iconRef>
-
-    <!-- jube properties -->
-    <docker.baseImage>fabric8/java</docker.baseImage>
+    <docker.from>fabric8/java</docker.from>
+    <docker.image>${env.DOCKER_REGISTRY}/fabric8/${project.artifactId}:${project.version}</docker.image>
+    <docker.assemblyDescriptorRef>artifact-with-dependencies</docker.assemblyDescriptorRef>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
+
+    <!-- TODO old name names from 0.9 of docker-maven-plugin - remove when fabric8/jube no longer use them -->
+    <docker.baseImage>fabric8/java</docker.baseImage>
+    <docker.dataImage>${env.DOCKER_REGISTRY}/fabric8/${project.artifactId}:${project.version}</docker.dataImage>
+
+    <fabric8.iconRef>icons/activemq.svg</fabric8.iconRef>
   </properties>
 
   <dependencyManagement>

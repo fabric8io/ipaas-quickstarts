@@ -48,8 +48,11 @@
     <fabric8.version>2.0.1</fabric8.version>
     <cxf.version>2.7.11</cxf.version>
 
-    <!-- fabric8 configuration -->
-    <docker.dataImage>${env.DOCKER_REGISTRY}/quickstart/${project.artifactId}:${project.version}</docker.dataImage>
+    <docker.from>fabric8/tomcat-8.0</docker.from>
+    <docker.image>${env.DOCKER_REGISTRY}/fabric8/quickstart-${project.artifactId}:${project.version}</docker.image>
+    <docker.assemblyDescriptorRef>rootWar</docker.assemblyDescriptorRef>
+    <docker.port.container.jolokia>8778</docker.port.container.jolokia>
+    <docker.port.container.http>8080</docker.port.container.http>
   </properties>
 
   <licenses>
@@ -261,13 +264,17 @@
         <artifactId>docker-maven-plugin</artifactId>
         <version>${docker.maven.plugin.version}</version>
         <configuration>
-          <image>fabric8/tomcat-8.0</image>
-          <mergeData>true</mergeData>
-          <assemblyDescriptorRef>artifact</assemblyDescriptorRef>
-<!--
-          <env>
-          </env>
--->
+          <images>
+            <image>
+              <name>${docker.image}</name>
+              <build>
+                <from>${docker.from}</from>
+                <assemblyDescriptorRef>${docker.assemblyDescriptorRef}</assemblyDescriptorRef>
+                <env>
+                </env>
+              </build>
+            </image>
+          </images>
         </configuration>
       </plugin>
       <plugin>

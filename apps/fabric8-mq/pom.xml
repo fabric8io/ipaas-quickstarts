@@ -33,17 +33,13 @@
   <properties>
     <guava.version>15.0</guava.version>
 
-    <!-- fabric8 configuration -->
-    <docker.dataImage>${env.DOCKER_REGISTRY}/fabric8/${project.artifactId}:${project.version}</docker.dataImage>
     <docker.port.container.amq>${activemq.container.port}</docker.port.container.amq>
+    <docker.env.MAIN>io.fabric8.mq.Main</docker.env.MAIN>
 
     <fabric8.kubernetes.name>fabric8MQ</fabric8.kubernetes.name>
     <fabric8.label.container>java</fabric8.label.container>
     <fabric8.label.group>defaultMQGroup</fabric8.label.group>
     <fabric8.iconRef>icons/activemq.svg</fabric8.iconRef>
-
-    <!-- jube properties -->
-    <docker.env.MAIN>io.fabric8.mq.Main</docker.env.MAIN>
   </properties>
 
   <dependencies>
@@ -102,19 +98,25 @@
         <artifactId>docker-maven-plugin</artifactId>
         <version>${docker.maven.plugin.version}</version>
         <configuration>
-          <image>fabric8/java</image>
-          <mergeData>true</mergeData>
-          <assemblyDescriptorRef>artifact-with-dependencies</assemblyDescriptorRef>
-          <env>
-            <MAIN>io.fabric8.mq.Main</MAIN>
-            <AMQ_PORT>${activemq.container.port}</AMQ_PORT>
-            <AMQ_DATA_DIRECTORY>/var/activemq</AMQ_DATA_DIRECTORY>
-            <AMQ_BROKER_NAME>default</AMQ_BROKER_NAME>
-          </env>
-          <ports>
-            <port>${activemq.container.port}</port>
-            <port>8778</port>
-          </ports>
+          <images>
+            <image>
+              <name>${docker.image}</name>
+              <build>
+                <from>${docker.from}</from>
+                <assemblyDescriptorRef>${docker.assemblyDescriptorRef}</assemblyDescriptorRef>
+                <env>
+                  <MAIN>${docker.env.MAIN}</MAIN>
+                  <AMQ_PORT>${activemq.container.port}</AMQ_PORT>
+                  <AMQ_DATA_DIRECTORY>/var/activemq</AMQ_DATA_DIRECTORY>
+                  <AMQ_BROKER_NAME>default</AMQ_BROKER_NAME>
+                </env>
+                <ports>
+                  <port>${activemq.container.port}</port>
+                  <port>8778</port>
+                </ports>
+              </build>
+            </image>
+          </images>
         </configuration>
       </plugin>
 

@@ -45,10 +45,11 @@
     <fabric8.version>2.0.1</fabric8.version>
     <cxf.version>2.7.11</cxf.version>
 
-    <!-- fabric8 deploy profile configuration -->
-    <fabric8.profile>quickstarts-karaf-cxf-soap</fabric8.profile>
-    <fabric8.parentProfiles>feature-cxf</fabric8.parentProfiles>
-    <fabric8.features>fabric-cxf cxf-jaxws</fabric8.features>
+    <docker.from>fabric8/karaf-2.4</docker.from>
+    <docker.image>${env.DOCKER_REGISTRY}/fabric8/quickstart-${project.artifactId}:${project.version}</docker.image>
+    <docker.assemblyDescriptor>${basedir}/src/main/fabric8/assembly.xml</docker.assemblyDescriptor>
+    <docker.port.container.jolokia>8778</docker.port.container.jolokia>
+    <docker.port.container.http>8181</docker.port.container.http>
   </properties>
 
   <dependencyManagement>

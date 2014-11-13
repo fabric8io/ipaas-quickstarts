@@ -34,6 +34,8 @@
 
   <properties>
     <fabric8.iconRef>icons/karaf.svg</fabric8.iconRef>
+
+    <!-- TODO old name names from 0.9 of docker-maven-plugin - remove when fabric8/jube no longer use them -->
     <docker.baseImage>fabric8/karaf:${jube.version}</docker.baseImage>
   </properties>
 

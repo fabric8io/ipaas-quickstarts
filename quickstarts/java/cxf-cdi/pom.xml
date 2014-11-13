@@ -50,17 +50,16 @@
     <org.eclipse.jetty.version>9.1.5.v20140505</org.eclipse.jetty.version>
     
     <http.port>9091</http.port>
-    <!-- fabric8 configuration -->
-    <docker.dataImage>${env.DOCKER_REGISTRY}/quickstart/${project.artifactId}:${project.version}</docker.dataImage>
+
+    <docker.from>fabric8/java</docker.from>
+    <docker.image>${env.DOCKER_REGISTRY}/fabric8/quickstart-${project.artifactId}:${project.version}</docker.image>
+    <docker.assemblyDescriptorRef>artifact-with-dependencies</docker.assemblyDescriptorRef>
+    <docker.env.MAIN>io.fabric8.quickstarts.cxfcdi.ApplicationStarter</docker.env.MAIN>
     <docker.port.container.http>${http.port}</docker.port.container.http>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
+
     <fabric8.label.container>java</fabric8.label.container>
     <fabric8.label.group>quickstarts</fabric8.label.group>
-
-    <!-- jube properties -->
-    <docker.baseImage>fabric8/java</docker.baseImage>
-    <docker.env.MAIN>io.fabric8.quickstarts.cxfcdi.ApplicationStarter</docker.env.MAIN>
-
   </properties>
 
   <dependencyManagement>
@@ -282,29 +281,29 @@
         <artifactId>docker-maven-plugin</artifactId>
         <version>${docker.maven.plugin.version}</version>
         <configuration>
-          <image>fabric8/java</image>
-          <mergeData>true</mergeData>
-          <assemblyDescriptorRef>artifact-with-dependencies</assemblyDescriptorRef>
-          <env>
-            <MAIN>io.fabric8.quickstarts.cxfcdi.ApplicationStarter</MAIN>
-            <FABRIC8_HTTP_PORT>8080</FABRIC8_HTTP_PORT>
-          </env>
+          <images>
+            <image>
+              <name>${docker.image}</name>
+              <build>
+                <from>${docker.from}</from>
+                <assemblyDescriptorRef>${docker.assemblyDescriptorRef}</assemblyDescriptorRef>
+                <env>
+                  <MAIN>${docker.env.MAIN}</MAIN>
+                  <HTTP_PORT>${http.port}</HTTP_PORT>
+                </env>
+                <ports>
+                  <port>8778</port>
+                  <port>${http.port}</port>
+                </ports>
+              </build>
+            </image>
+          </images>
         </configuration>
       </plugin>
       <plugin>
         <groupId>io.fabric8.jube</groupId>
         <artifactId>jube-maven-plugin</artifactId>
         <version>${jube.version}</version>
-        <!-- the version of this plugin is not yet available on CI
-        <executions>
-          <execution>
-            <goals>
-              <goal>build</goal>
-            </goals>
-            <phase>package</phase>
-          </execution>
-        </executions>
-        -->
       </plugin>
 
       <plugin>

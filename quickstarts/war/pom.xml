@@ -33,12 +33,10 @@
   <name>War Quickstart :  Parent</name>
 
   <properties>
-    <docker.baseImage>fabric8/tomcat</docker.baseImage>
     <fabric8.iconRef>icons/tomcat.svg</fabric8.iconRef>
-<!--
-    <docker.port.container.http>8080</docker.port.container.http>
-    <docker.port.container.shutdown>8085</docker.port.container.shutdown>
--->
+
+    <!-- TODO old name names from 0.9 of docker-maven-plugin - remove when fabric8/jube no longer use them -->
+    <docker.baseImage>fabric8/tomcat</docker.baseImage>
   </properties>
 
   <modules>
