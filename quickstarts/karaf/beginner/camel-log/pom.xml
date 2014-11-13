@@ -143,8 +143,7 @@
               <build>
                 <from>${docker.from}</from>
                 <assemblyDescriptor>${docker.assemblyDescriptor}</assemblyDescriptor>
-                <env>
-                </env>
+                <exportDir>/opt/apache-karaf-2.4.0</exportDir>
               </build>
             </image>
           </images>
@@ -249,6 +248,7 @@
             </executions>
             <configuration>
               <assemblyDescriptor>${project.build.directory}/fabric8/assembly.xml</assemblyDescriptor>
+              <exportDir>/</exportDir>
             </configuration>
           </plugin>
         </plugins>
