@@ -1,0 +1,19 @@
+{
+  "id": "quickStartWarRestConfig",
+  "kind": "Config",
+  "apiVersion": "v1beta1",
+  "name": "quickStartWarRestConfig",
+  "description": "Quickstart: War REST",
+  "items": [
+    {
+      "id": "quickstart-rest",
+      "apiVersion": "v1beta1",
+      "kind": "Service",
+      "containerPort": 8080,
+      "port": 8080,
+      "selector": {
+        "name": "quickStartRest"
+      }
+    }
+  ]
+}
