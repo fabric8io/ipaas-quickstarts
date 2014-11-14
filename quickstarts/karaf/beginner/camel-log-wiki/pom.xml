@@ -248,8 +248,8 @@
               </execution>
             </executions>
             <configuration>
-              <assemblyDescriptor>${project.build.directory}/fabric8/assembly.xml</assemblyDescriptor>
               <exportDir>/</exportDir>
+              <assemblyDescriptorRef>karaf</assemblyDescriptorRef>
             </configuration>
           </plugin>
         </plugins>

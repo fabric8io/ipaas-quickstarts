@@ -270,7 +270,7 @@
             </execution>
           </executions>
           <configuration>
-            <assemblyDescriptor>${project.build.directory}/fabric8/assembly.xml</assemblyDescriptor>
+            <assemblyDescriptorRef>karaf</assemblyDescriptorRef>
             <exportDir>/</exportDir>
           </configuration>
         </plugin>
