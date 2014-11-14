@@ -52,21 +52,27 @@ public class ApplicationStarter {
             // and use 'java-cxf-cdi' by default
             service = "java-cxf-cdi";
         }
-        System.out.println("Starting REST server at http://localhost:" + port + "/" + service + "/");
+        String servicesPath = "/cxf/servicesList";
 
+        System.out.println("Starting REST server at:         http://localhost:" + port + "/" + service + "/");
+        System.out.println("View the services at:            http://localhost:" + port + "/" + service + servicesPath);
+        System.out.println("View an example REST service at: http://localhost:" + port + "/" + service + "/cxfcdi/customerservice/customers/123");
+        System.out.println();
+        System.out.println();
+
+/*
         Map<String, String> env = System.getenv();
         for (String envName : env.keySet()) {
             System.out.format("%s=%s%n", envName, env.get(envName));
         }
-
-
+*/
         final Server server = new Server(num);
 
         // Register and map the dispatcher servlet
         final ServletHolder servletHolder = new ServletHolder(new CXFCdiServlet());
         
         // change default service list URI
-        servletHolder.setInitParameter("service-list-path", "/cxf/servicesList");
+        servletHolder.setInitParameter("service-list-path", servicesPath);
 
         final ServletContextHandler context = new ServletContextHandler();
         context.setContextPath("/");
