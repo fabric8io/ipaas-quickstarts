@@ -23,11 +23,11 @@
   <parent>
     <groupId>io.fabric8.jube.images.quickstart</groupId>
     <artifactId>karaf-cxf-quickstarts</artifactId>
-    <version>2.0-SNAPSHOT</version>
+    <version>2.0.0</version>
   </parent>
 
   <artifactId>karaf-cxf-secure-rest</artifactId>
-  <version>2.0-SNAPSHOT</version>
+  <version>2.0.0</version>
   <packaging>bundle</packaging>
   <name>Karaf Quickstart : CXF :: Secure Restful Web Services</name>
   <description>Secure Restful Web Services Example using JAX-RS Basic Authentication with Fabric8</description>
@@ -320,7 +320,7 @@
     <profile>
       <id>docker-public</id>
       <properties>
-        <docker.registryPrefix></docker.registryPrefix>
+        <docker.registryPrefix />
       </properties>
     </profile>
   </profiles>
