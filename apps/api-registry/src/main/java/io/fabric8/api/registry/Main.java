@@ -13,11 +13,10 @@
  *  implied.  See the License for the specific language governing
  *  permissions and limitations under the License.
  */
-package io.fabric8.quickstarts.cxfcdi;
-
-import java.util.Map;
+package io.fabric8.api.registry;
 
 import io.fabric8.cxf.endpoint.ManagedApi;
+import io.fabric8.utils.Systems;
 import org.apache.cxf.cdi.CXFCdiServlet;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -25,51 +24,27 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.jboss.weld.environment.servlet.BeanManagerResourceBindingListener;
 import org.jboss.weld.environment.servlet.Listener;
 
-public class ApplicationStarter {
+public class Main {
 	
 	public static void main(final String[] args) throws Exception {
 		startServer().join();
 	}
 	
     public static Server startServer() throws Exception {
-
-        // use system property first
-        String port = System.getProperty("HTTP_PORT");
-        if (port == null) {
-            // and fallback to use environment variable
-            port = System.getenv("HTTP_PORT");
-        }
-        if (port == null) {
-            // and use port 8586 by default
-            port = "8586";
-        }
+        String port = Systems.getEnvVarOrSystemProperty("HTTP_PORT", "HTTP_PORT", "8588");
         Integer num = Integer.parseInt(port);
-        String service = System.getProperty("SERVICE");
-        if (service == null) {
-            // and fallback to use environment variable
-            service = System.getenv("SERVICE");
-        }
-        if (service == null) {
-            // and use 'java-cxf-cdi' by default
-            service = "java-cxf-cdi";
-        }
+        String service = Systems.getEnvVarOrSystemProperty("SERVICE", "SERVICE", "v1");
+
         String servicesPath = "/cxf/servicesList";
 
         String servletContextPath = "/" + service;
         ManagedApi.setSingletonCxfServletContext(servletContextPath);
 
-        System.out.println("Starting REST server at:         http://localhost:" + port + servletContextPath + "/");
-        System.out.println("View the services at:            http://localhost:" + port + servletContextPath + servicesPath);
-        System.out.println("View an example REST service at: http://localhost:" + port + servletContextPath + "/cxfcdi/customerservice/customers/123");
+        System.out.println("Starting API Registry at:  http://localhost:" + port + servletContextPath + "/endpoints/pods");
+        System.out.println("View the services at:      http://localhost:" + port +servletContextPath + servicesPath);
         System.out.println();
         System.out.println();
 
-/*
-        Map<String, String> env = System.getenv();
-        for (String envName : env.keySet()) {
-            System.out.format("%s=%s%n", envName, env.get(envName));
-        }
-*/
         final Server server = new Server(num);
 
         // Register and map the dispatcher servlet
@@ -83,7 +58,6 @@ public class ApplicationStarter {
         context.addEventListener(new Listener());
         context.addEventListener(new BeanManagerResourceBindingListener());
         context.addServlet(servletHolder, "/" + service + "/*");
-
         server.setHandler(context);
         server.start();
         return server;

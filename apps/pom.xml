@@ -62,6 +62,7 @@
 
 
   <modules>
+    <module>api-registry</module>
     <module>fabric8-http-gateway</module>
     <module>fabric8-mq</module>
     <module>fabric8-mq-producer</module>

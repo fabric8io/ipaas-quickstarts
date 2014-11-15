@@ -1,0 +1,1 @@
+Creates an API Registry which is used by the [Fabric8 Console](http://fabric8.io/v2/console.html) and can be queried via a REST API to find all API endpoints and the locations of their URLs and schema documents (Swagger, WADL, WSDL etc).

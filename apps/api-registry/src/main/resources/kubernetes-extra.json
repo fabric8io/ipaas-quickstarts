@@ -1,0 +1,19 @@
+{
+  "id": "api-registry-config",
+  "kind": "Config",
+  "apiVersion": "v1beta1",
+  "name": "fabric8ApiRegistry",
+  "description": "A Registry of all APIs running in an environment",
+  "items": [
+    {
+      "id": "api-registry",
+      "apiVersion": "v1beta1",
+      "kind": "Service",
+      "containerPort": ${http.port},
+      "port": ${http.port},
+      "selector": {
+        "name": "apiRegistry"
+      }
+    }
+  ]
+}
