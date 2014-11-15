@@ -2,11 +2,11 @@
 
 This quickstart shows a simple Apache Camel application that logs a message to the server log every 5th second.
 
-This example is implemented using solely the XML DSL (there is no Java code). The source code is provided in the following XML file `src/main/resources/OSGI-INF/blueprint/camel-log.xml`, which can be viewed from [github](https://github.com/fabric8io/fabric8/blob/master/quickstarts/karaf/beginner/camel-log/src/main/resources/OSGI-INF/blueprint/camel-log.xml).
+This example is implemented using solely the XML DSL (there is no Java code). The source code is provided in the following XML file `src/main/resources/OSGI-INF/blueprint/camel-log.xml`, which can be viewed from [github](src/main/resources/OSGI-INF/blueprint/camel-log.xml).
 
 This example uses a timer to trigger every 5th second, and then writes a message to the server log, as shown in the figure below:
 
-![Camel Log diagram](https://raw.githubusercontent.com/fabric8io/fabric8/master/docs/images/camel-log-diagram.jpg)
+![Camel Log diagram](../images/camel-log-diagram.jpg?raw=true)
 
 
 ### Building this example

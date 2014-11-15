@@ -4,11 +4,11 @@ This quickstart is the wiki example of the Camel Log quickstart.
 
 This example uses a timer to trigger every 5th second, and then writes a message to the server log, as shown in the figure below:
 
-![Camel Log diagram](https://raw.githubusercontent.com/fabric8io/fabric8/master/docs/images/camel-log-diagram.jpg)
+![Camel Log diagram](../images/camel-log-diagram.jpg?raw=true)
 
 As this is the wiki version of the log quickstart, the Camel route source code is defined in the profile only. You can edit the source code from within the web console, by selecting the `camel-log.xml` file in profile directoy listing, which opens the Camel editor, as shown in the figure below.
 
-![Camel Log editor](https://raw.githubusercontent.com/fabric8io/fabric8/master/docs/images/camel-log-editor.png)
+![Camel Log editor](../images/camel-log-editor.png?raw=true)
 
 The editor alows you to edit the Camel routes, and have the running containers automatic re-deploy when saving changes.
 

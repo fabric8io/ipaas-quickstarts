@@ -2,11 +2,11 @@
 
 This quickstart shows how to use Apache Camel to route messages using the Content Based Router (cbr) pattern.
 
-This example is implemented using solely the XML DSL (there is no Java code). The source code is provided in the following XML file `src/main/resources/OSGI-INF/blueprint/cbr.xml`, which can be viewed from [github](https://github.com/fabric8io/fabric8/blob/master/quickstarts/karaf/beginner/camel-cbr/src/main/resources/OSGI-INF/blueprint/cbr.xml).
+This example is implemented using solely the XML DSL (there is no Java code). The source code is provided in the following XML file `src/main/resources/OSGI-INF/blueprint/cbr.xml`, which can be viewed from [github](src/main/resources/OSGI-INF/blueprint/cbr.xml).
 
 This example pickup incoming XML files, and depending on the content of the XML files, they are routed to different endpoints, as shown in figure below.
 
-![Camel CBR diagram](https://raw.githubusercontent.com/fabric8io/fabric8/master/docs/images/camel-cbr-diagram.jpg)
+![Camel CBR diagram](../images/camel-cbr-diagram.jpg?raw=true)
 
 The example comes with sample data, making it easy to try the example yourself.
 

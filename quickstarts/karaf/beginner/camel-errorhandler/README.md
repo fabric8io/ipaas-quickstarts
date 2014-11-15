@@ -11,7 +11,7 @@ The example is implemented using the following two Camel routes
 
 The routes is illustrated in the following diagram
 
-![Camel EIPs diagram](https://raw.githubusercontent.com/fabric8io/fabric8/master/docs/images/camel-errorhandler-diagram.jpg)
+![Camel EIPs diagram](../images/camel-errorhandler-diagram.jpg?raw=true)
 
 The entry is the mainRoute which pickup incoming order files. The files is processed and validated by Java beans. If any of the orders is invalid an exception is thrown.
 
@@ -127,7 +127,7 @@ This example comes with sample data which you can use to try this example
 
 An illustration of step #8 is shown in the figure below:
 
-![Camel EIPs diagram](https://raw.githubusercontent.com/fabric8io/fabric8/master/docs/images/camel-errorhandler-route-table.png)
+![Camel EIPs diagram](../images/camel-errorhandler-route-table.png?raw=true)
 
 
 ## Undeploy this example
