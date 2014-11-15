@@ -22,11 +22,11 @@
 
   <parent>
     <groupId>io.fabric8.jube.images.fabric8</groupId>
-    <artifactId>war-quickstarts</artifactId>
+    <artifactId>quickstart-war</artifactId>
     <version>2.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>war-camel-servlet</artifactId>
+  <artifactId>quickstart-war-camel-servlet</artifactId>
   <version>2.0-SNAPSHOT</version>
   <packaging>war</packaging>
   <name>War Quickstart :  Camel Servlet</name>
