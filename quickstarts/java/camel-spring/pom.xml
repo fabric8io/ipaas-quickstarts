@@ -26,7 +26,8 @@
     <version>2.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>java-camel-spring</artifactId>
+  <groupId>io.fabric8.jube.images.fabric8</groupId>
+  <artifactId>quickstart-java-camel-spring</artifactId>
   <version>2.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
@@ -50,7 +51,7 @@
 
     <docker.from>fabric8/java</docker.from>
     <docker.registryPrefix>${env.DOCKER_REGISTRY}/</docker.registryPrefix>
-    <docker.image>${docker.registryPrefix}fabric8/quickstart-${project.artifactId}:${project.version}</docker.image>
+    <docker.image>${docker.registryPrefix}fabric8/${project.artifactId}:${project.version}</docker.image>
     <docker.assemblyDescriptorRef>artifact-with-dependencies</docker.assemblyDescriptorRef>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
     <docker.env.MAIN>org.apache.camel.spring.Main</docker.env.MAIN>
@@ -58,6 +59,8 @@
     <fabric8.label.container>java</fabric8.label.container>
     <fabric8.label.group>quickstarts</fabric8.label.group>
     <fabric8.iconRef>icons/camel.svg</fabric8.iconRef>
+
+    <docker.dataImage>${docker.registryPrefix}fabric8/${project.artifactId}:${project.version}</docker.dataImage>
   </properties>
 
   <dependencyManagement>
