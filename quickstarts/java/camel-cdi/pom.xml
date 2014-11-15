@@ -21,12 +21,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>io.fabric8.jube.images.quickstart</groupId>
-    <artifactId>java-quickstarts</artifactId>
+    <groupId>io.fabric8.jube.images.fabric8</groupId>
+    <artifactId>quickstart-java</artifactId>
     <version>2.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>java-camel-cdi</artifactId>
+  <artifactId>quickstart-java-camel-cdi</artifactId>
   <version>2.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
