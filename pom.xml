@@ -30,9 +30,10 @@
     <packaging>pom</packaging>
 
     <name>Fabric8 Quickstarts</name>
+    <description>Quickstart applications for working with Fabric8</description>
 
-    <url>http://fabric8.io/</url>
-    <inceptionYear>2011</inceptionYear>
+    <url>http://fabric8.io/v2/quickstarts.html</url>
+    <inceptionYear>2014</inceptionYear>
 
     <organization>
         <name>Red Hat</name>
