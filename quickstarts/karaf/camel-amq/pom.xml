@@ -41,7 +41,7 @@
     <build-helper-maven-plugin.version>1.9.1</build-helper-maven-plugin.version>
 
     <!-- the version of the BOM, defining all the dependency versions -->
-    <fabric8.version>2.0.3</fabric8.version>
+    <fabric8.version>2.0.4</fabric8.version>
 
     <docker.from>fabric8/karaf-2.4</docker.from>
     <docker.registryPrefix>${env.DOCKER_REGISTRY}/</docker.registryPrefix>
