@@ -30,7 +30,7 @@ import io.fabric8.cxf.endpoint.EnableJMXFeature;
 import org.apache.cxf.feature.LoggingFeature;
 
 
-@ApplicationPath( "cxfcdi" )
+@ApplicationPath( "/" )
 public class CxfCdiApplication extends Application {
     @Inject private CustomerService customerService;
     @Produces private JacksonJsonProvider jacksonJsonProvider = new JacksonJsonProvider();

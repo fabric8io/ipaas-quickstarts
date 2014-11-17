@@ -12,7 +12,7 @@
       "containerPort": 8080,
       "port": "9102",
       "selector": {
-        "name": "quickStartCxfCdi"
+        "name": "quickStartWarCxfCdi"
       }
     }
   ]
