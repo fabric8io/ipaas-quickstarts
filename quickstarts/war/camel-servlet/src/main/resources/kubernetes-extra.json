@@ -10,7 +10,7 @@
       "apiVersion": "v1beta1",
       "kind": "Service",
       "containerPort": 8080,
-      "port": 8080,
+      "port": "9101",
       "selector": {
         "name": "quickStartCamelServlet"
       }
