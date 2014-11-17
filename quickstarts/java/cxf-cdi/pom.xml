@@ -53,7 +53,7 @@
 
     <docker.from>fabric8/java</docker.from>
     <docker.registryPrefix>${env.DOCKER_REGISTRY}/</docker.registryPrefix>
-    <docker.image>${docker.registryPrefix}fabric8/quickstart-${project.artifactId}:${project.version}</docker.image>
+    <docker.image>${docker.registryPrefix}fabric8/${project.artifactId}:${project.version}</docker.image>
     <docker.assemblyDescriptorRef>artifact-with-dependencies</docker.assemblyDescriptorRef>
     <docker.env.MAIN>io.fabric8.quickstarts.cxfcdi.ApplicationStarter</docker.env.MAIN>
     <docker.port.container.http>${http.port}</docker.port.container.http>
