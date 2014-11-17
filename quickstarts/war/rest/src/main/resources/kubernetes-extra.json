@@ -12,7 +12,7 @@
       "containerPort": 8080,
       "port": "9103",
       "selector": {
-        "name": "quickStartRest"
+        "name": "quickStartWarRest"
       }
     }
   ]
