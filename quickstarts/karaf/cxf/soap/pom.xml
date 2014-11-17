@@ -283,7 +283,7 @@
             <dependencies>
               <dependency>
                 <groupId>io.fabric8.jube.images.fabric8</groupId>
-                <artifactId>karaf</artifactId>
+                <artifactId>karaf-2.4</artifactId>
                 <version>${jube.version}</version>
                 <classifier>image</classifier>
                 <type>zip</type>
