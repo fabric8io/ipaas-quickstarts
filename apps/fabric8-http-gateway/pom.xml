@@ -33,6 +33,7 @@
   <properties>
     <guava.version>15.0</guava.version>
     <http.port>9090</http.port>
+    <fabric8.version>2.0-SNAPSHOT</fabric8.version>
 
     <docker.env.MAIN>org.jboss.weld.environment.se.StartMain</docker.env.MAIN>
     <docker.port.container.gateway>${http.port}</docker.port.container.gateway>
@@ -94,7 +95,6 @@
         <artifactId>docker-maven-plugin</artifactId>
         <version>${docker.maven.plugin.version}</version>
         <configuration>
-<<<<<<< HEAD
           <images>
             <image>
               <name>${docker.image}</name>
@@ -112,21 +112,6 @@
               </build>
             </image>
           </images>
-=======
-          <image>fabric8/java</image>
-          <mergeData>true</mergeData>
-          <assemblyDescriptorRef>artifact-with-dependencies</assemblyDescriptorRef>
-          <env>
-            <MAIN>org.jboss.weld.environment.se.StartMain</MAIN>
-            <FABRIC8_HTTP_PORT>${http.port}</FABRIC8_HTTP_PORT>
-          </env>
-          <!-- 
-          <ports>
-            <port>${http.port}</port>
-            <port>8778</port>
-          </ports>
-           -->
->>>>>>> HTTP Gateway now obtains services from Kubernetes and is functional
         </configuration>
       </plugin>
       <plugin>

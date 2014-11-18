@@ -15,6 +15,9 @@
  */
 package io.fabric8.gateway.http;
 
+import io.fabric8.gateway.fabric.http.FabricHTTPGateway;
+import io.fabric8.gateway.fabric.http.HTTPGatewayConfig;
+import io.fabric8.gateway.fabric.http.HttpMappingRuleConfiguration;
 import io.fabric8.gateway.loadbalancer.LoadBalancers;
 import io.fabric8.utils.Systems;
 
@@ -34,6 +37,7 @@ public class Main {
     public static final String DEFAULT_GATEWAY_SERVICES_SELECTOR = "[{\"container\":\"java\",\"group\":\"quickstarts\"},{\"container\":\"camel\",\"group\":\"quickstarts\"}]";
     public static final String DEFAULT_URI_TEMPLATE = "/{contextPath}";
     public static final String DEFAULT_LOADBALANCER = LoadBalancers.ROUND_ROBIN_LOAD_BALANCER;
+    public static final String DEFAULT_KUBERNETES_MASTER = "http://localhost:8484/";
     private static final Logger LOG = LoggerFactory.getLogger(Main.class);
     
     @Inject FabricHTTPGateway fabricHTTPGateway;
@@ -46,6 +50,7 @@ public class Main {
         String serviceName = Systems.getEnvVarOrSystemProperty("HTTP_GATEWAY_SERVICE_ID", "HTTP_GATEWAY_SERVICE_ID", "FABRIC8HTTPGATEWAY").toUpperCase() + "_SERVICE_";
         String hostEnvVar = serviceName + HTTPGatewayConfig.HOST;
         String portEnvVar = HTTPGatewayConfig.HTTP_PORT;
+        String kubernetesMasterEnvVar = HTTPGatewayConfig.KUBERNETES_MASTER;
         String selectorEnvVar = serviceName + HTTPGatewayConfig.SELECTOR;
         String uriTemplateEnvVar = serviceName + HTTPGatewayConfig.URI_TEMPLATE;
         String loadBalancerEnvVar = serviceName + HTTPGatewayConfig.LOAD_BALANCER;
@@ -61,6 +66,10 @@ public class Main {
         LOG.info("Container host " + gatewayConfig.getHost());
         LOG.info("Container port " + gatewayConfig.getPort());
         LOG.info("Index enabled: " + gatewayConfig.isIndexEnabled());
+        //Kube config
+        gatewayConfig.put(HTTPGatewayConfig.KUBERNETES_MASTER,
+        		Systems.getEnvVarOrSystemProperty(kubernetesMasterEnvVar, kubernetesMasterEnvVar, DEFAULT_KUBERNETES_MASTER));
+        LOG.info("Kubernetes Master: " + gatewayConfig.getKubernetesMaster());
         //Rule config
         gatewayConfig.put(HTTPGatewayConfig.SELECTOR,
                 Systems.getEnvVarOrSystemProperty(selectorEnvVar, selectorEnvVar, DEFAULT_GATEWAY_SERVICES_SELECTOR));
