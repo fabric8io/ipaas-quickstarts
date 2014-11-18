@@ -281,30 +281,6 @@
 
   <repositories>
     <repository>
-      <id>fusesource.m2</id>
-      <name>FuseSource Community Release Repository</name>
-      <url>https://repo.fusesource.com/nexus/content/groups/public</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
-        <updatePolicy>never</updatePolicy>
-      </releases>
-    </repository>
-    <repository>
-      <id>fusesource.ea</id>
-      <name>FuseSource Community Early Access Release Repository</name>
-      <url>https://repo.fusesource.com/nexus/content/groups/ea</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
-        <updatePolicy>never</updatePolicy>
-      </releases>
-    </repository>
-    <repository>
       <id>mulesoft-releases</id>
       <name>MuleSoft Releases Repository</name>
       <url>http://repository.mulesoft.org/releases/</url>
@@ -312,30 +288,6 @@
     </repository>
   </repositories>
   <pluginRepositories>
-    <pluginRepository>
-      <id>fusesource.m2</id>
-      <name>FuseSource Community Release Repository</name>
-      <url>https://repo.fusesource.com/nexus/content/groups/public</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
-        <updatePolicy>never</updatePolicy>
-      </releases>
-    </pluginRepository>
-    <pluginRepository>
-      <id>fusesource.ea</id>
-      <name>FuseSource Community Early Access Release Repository</name>
-      <url>https://repo.fusesource.com/nexus/content/groups/ea</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
-        <updatePolicy>never</updatePolicy>
-      </releases>
-    </pluginRepository>
     <pluginRepository>
       <id>mulesoft-release</id>
       <name>mulesoft release repository</name>

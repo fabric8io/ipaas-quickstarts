@@ -61,8 +61,8 @@
         <connection>scm:git:git@github.com:fabric8io/quickstarts.git</connection>
         <developerConnection>scm:git:git@github.com:fabric8io/quickstarts.git</developerConnection>
         <url>http://github.com/fabric8io/quickstarts</url>
-      <tag>quickstarts-2.0.1</tag>
-  </scm>
+        <tag>quickstarts-2.0.1</tag>
+    </scm>
 
     <properties>
         <maven.compiler.source>1.7</maven.compiler.source>
