@@ -37,13 +37,12 @@
     <version.maven-bundle-plugin>2.3.7</version.maven-bundle-plugin>
     <maven.compiler.target>1.7</maven.compiler.target>
     <maven.compiler.source>1.7</maven.compiler.source>
-    <fabric8.karaf.version>1.2.0.Beta4</fabric8.karaf.version>
 
     <!-- the version of the BOM, defining all the dependency versions -->
     <fabric8.version>2.0.6</fabric8.version>
     <!-- need to declare the Camel version as features-maven-plugin needs this property (cannot inherit from BOM in maven plugin) -->
     <camel.version>2.14.0</camel.version>
-    <spring.version>3.0.2</spring.version>
+    <karaf.version>2.4.0</karaf.version>
     <activemq.version>5.10.0</activemq.version>
 
     <docker.from>fabric8/karaf-2.4</docker.from>
