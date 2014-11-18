@@ -46,7 +46,7 @@
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <cxf.version>3.0.2</cxf.version>
-    <jube.version>2.0.6</jube.version>
+    <jube.version>2.0.7</jube.version>
     <org.eclipse.jetty.version>9.1.5.v20140505</org.eclipse.jetty.version>
     
     <http.port>8080</http.port>
