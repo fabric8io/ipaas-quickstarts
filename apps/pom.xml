@@ -40,8 +40,6 @@
     <docker.image>${docker.registryPrefix}fabric8/${project.artifactId}:${project.version}</docker.image>
     <docker.assemblyDescriptorRef>artifact-with-dependencies</docker.assemblyDescriptorRef>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
-
-    <fabric8.iconRef>icons/activemq.svg</fabric8.iconRef>
   </properties>
 
   <dependencyManagement>
@@ -64,6 +62,7 @@
     <module>fabric8-mq-producer</module>
     <module>fabric8-mq-consumer</module>
     <module>fabric8-mq-autoscaler</module>
+    <module>zookeeper</module>
   </modules>
 
   <build>

@@ -1,0 +1,1 @@
+Creates an ensemble of [Apache ZooKeeper](http://zookeeper.apache.org/) servers for master/slave election and distributed coordination across processes.
