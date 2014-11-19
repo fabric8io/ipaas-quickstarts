@@ -24,32 +24,10 @@
    and the Camel namespaces.
 -->
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xmlns:ext="http://aries.apache.org/blueprint/xmlns/blueprint-ext/v1.0.0"
-           xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.0.0"
     xsi:schemaLocation="
              http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
-             http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.0.0 http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.0.0.xsd
              http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd">
 
-    <!--
-      Get the broker environment variables and use them to build the broker connection URL
-    -->
-    <ext:property-placeholder placeholder-prefix="$["
-                              placeholder-suffix="]"/>
-
-    <cm:property-placeholder persistent-id="io.fabric8.images.quickstart.karaf-camel-amq" >
-        <cm:default-properties>
-            <cm:property name="brokerHost" value="$[FABRIC8MQ_SERVICE_HOST]"/>
-            <cm:property name="brokerPort" value="$[FABRIC8MQ_SERVICE_PORT]"/>
-        </cm:default-properties>
-    </cm:property-placeholder>
-
-    <bean id="activemq"
-          class="org.apache.activemq.camel.component.ActiveMQComponent">
-        <property name="brokerURL" value="tcp://${brokerHost}:${brokerPort}"/>
-        <property name="userName" value=""/>
-        <property name="password" value=""/>
-    </bean>
 
     <!--
       The namespace for the camelContext element in Blueprint is 'http://camel.apache.org/schema/blueprint'. Additionally,
@@ -74,7 +52,7 @@
         <route id="file-to-jms-route">
             <from uri="file:work/jms/input" />
             <log message="Receiving order ${file:name}" />
-            <to uri="activemq:incomingOrders" />
+            <to uri="amq:incomingOrders" />
         </route>
 
         <!--
@@ -86,7 +64,7 @@
           requirements for either of the <when/> elements will be moved to the work/jms/output/others directory.
         -->
         <route id="jms-cbr-route">
-            <from uri="activemq:incomingOrders" />
+            <from uri="amq:incomingOrders" />
             <choice>
                 <when>
                     <xpath>/order:order/order:customer/order:country = 'UK'</xpath>

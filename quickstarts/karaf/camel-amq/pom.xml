@@ -52,6 +52,7 @@
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
     <docker.port.container.http>8181</docker.port.container.http>
     <fabric8.env.AMQ_SERVICE_ID>FABRIC8MQ</fabric8.env.AMQ_SERVICE_ID>
+
   </properties>
 
   <dependencyManagement>
@@ -75,10 +76,9 @@
       <artifactId>camel-blueprint</artifactId>
     </dependency>
 
-    <!-- ActiveMQ connectivity for Camel -->
     <dependency>
-      <groupId>org.apache.activemq</groupId>
-      <artifactId>activemq-osgi</artifactId>
+        <groupId>io.fabric8.mq</groupId>
+        <artifactId>camel-amq</artifactId>
     </dependency>
 
   </dependencies>
@@ -106,6 +106,16 @@
         <artifactId>maven-bundle-plugin</artifactId>
         <version>${version.maven-bundle-plugin}</version>
         <extensions>true</extensions>
+          <configuration>
+              <instructions>
+                  <Import-Package>
+                      io.fabric8.mq.core,
+                      io.fabric8.mq.camel,
+                      org.apache.activemq.pool,
+                      *
+                  </Import-Package>
+              </instructions>
+          </configuration>
       </plugin>
         <plugin>
             <artifactId>maven-resources-plugin</artifactId>

@@ -27,7 +27,12 @@
       <feature version="${camel.version}">camel-jms</feature>
       <feature version="${activemq.version}">activemq-client</feature>
       <feature version="${camel.version}">camel-blueprint</feature>
+
+      <bundle>mvn:io.fabric8.mq/camel-amq/${fabric8.version}</bundle>
+      <bundle>mvn:io.fabric8.mq/mq-client/${fabric8.version}</bundle>
+      <bundle>mvn:io.fabric8/fabric-utils/${fabric8.version}</bundle>
       <bundle>mvn:org.apache.activemq/activemq-camel/${activemq.version}</bundle>
+      <bundle>mvn:org.apache.activemq/activemq-osgi/${activemq.version}</bundle>
 
       <bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}</bundle>
 
