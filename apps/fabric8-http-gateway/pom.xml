@@ -33,8 +33,8 @@
   <properties>
     <guava.version>15.0</guava.version>
     <http.port>9090</http.port>
+    <!-- needed for apiman, until new fabric8 release -->
     <fabric8.version>2.0-SNAPSHOT</fabric8.version>
-
     <docker.env.MAIN>org.jboss.weld.environment.se.StartMain</docker.env.MAIN>
     <docker.port.container.gateway>${http.port}</docker.port.container.gateway>
     <docker.port.host.gateway>${http.port}</docker.port.host.gateway>
@@ -50,7 +50,7 @@
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
-      <artifactId>gateway-fabric-support</artifactId>
+      <artifactId>gateway-fabric</artifactId>
       <version>${fabric8.version}</version>
     </dependency>
     <dependency>
