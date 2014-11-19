@@ -12,9 +12,7 @@
       "containerPort": ${http.port},
       "port": "9002",
       "selector": {
-        "container": "java",
-        "name": "quickstartJavaCxfCdi",
-        "group": "quickstarts"
+        "name": "quickStartJavaCxfCdi"
       }
     }
   ]
