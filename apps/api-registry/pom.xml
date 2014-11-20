@@ -28,7 +28,7 @@
   <artifactId>api-registry</artifactId>
   <packaging>jar</packaging>
 
-  <name>Fabric8 : API Registry</name>
+  <name>API Registry</name>
   <description>Provides a global view of all APIs in the Kubernetes environment</description>
 
   <properties>
@@ -47,7 +47,7 @@
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <org.eclipse.jetty.version>9.1.5.v20140505</org.eclipse.jetty.version>
     
-    <http.port>8080</http.port>
+    <http.port>9393</http.port>
 
     <docker.from>fabric8/java</docker.from>
     <docker.registryPrefix>${env.DOCKER_REGISTRY}/</docker.registryPrefix>

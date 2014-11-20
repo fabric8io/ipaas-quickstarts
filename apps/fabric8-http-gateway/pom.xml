@@ -27,8 +27,8 @@
   <artifactId>fabric8-http-gateway</artifactId>
   <packaging>jar</packaging>
 
-  <name>Fabric8 :: HTTP Gateway</name>
-  <description>Fabric8 HTTP Gateway</description>
+  <name>HTTP Gateway</name>
+  <description>Fabric8 HTTP Gateway provides a reverse proxy for HTTP traffic over Kubernetes Sevices</description>
 
   <properties>
     <guava.version>15.0</guava.version>
