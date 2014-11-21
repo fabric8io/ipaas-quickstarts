@@ -16,7 +16,7 @@
      permissions and limitations under the License.
 
 -->
-<features name="quickstart-rest-${project.version}"
+<features name="quickstart-soap-${project.version}"
           xmlns="http://karaf.apache.org/xmlns/features/v1.0.0">
 
   <repository>mvn:org.apache.cxf.karaf/apache-cxf/${cxf.version}/xml/features</repository>
