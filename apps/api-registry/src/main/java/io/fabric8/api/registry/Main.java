@@ -41,6 +41,7 @@ public class Main {
         ManagedApi.setSingletonCxfServletContext(servletContextPath);
 
         System.out.println("Starting API Registry at:  http://localhost:" + port + servletContextPath + "/endpoints/pods");
+        System.out.println("Ping the services at:      http://localhost:" + port +servletContextPath + "/_ping");
         System.out.println("View the services at:      http://localhost:" + port +servletContextPath + servicesPath);
         System.out.println();
         System.out.println();
