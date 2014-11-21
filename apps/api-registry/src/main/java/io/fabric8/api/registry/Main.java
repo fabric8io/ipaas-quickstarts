@@ -16,6 +16,7 @@
 package io.fabric8.api.registry;
 
 import io.fabric8.cxf.endpoint.ManagedApi;
+import io.fabric8.utils.Strings;
 import io.fabric8.utils.Systems;
 import org.apache.cxf.cdi.CXFCdiServlet;
 import org.eclipse.jetty.server.Server;
@@ -33,17 +34,22 @@ public class Main {
     public static Server startServer() throws Exception {
         String port = Systems.getEnvVarOrSystemProperty("HTTP_PORT", "HTTP_PORT", "8588");
         Integer num = Integer.parseInt(port);
-        String service = Systems.getEnvVarOrSystemProperty("SERVICE", "SERVICE", "v1");
+        String service = Systems.getEnvVarOrSystemProperty("WEB_CONTEXT_PATH", "WEB_CONTEXT_PATH", "");
 
-        String servicesPath = "/cxf/servicesList";
-
+        String servicesPath = "cxf/servicesList";
         String servletContextPath = "/" + service;
         ManagedApi.setSingletonCxfServletContext(servletContextPath);
 
-        System.out.println("Starting API Registry at:  http://localhost:" + port + servletContextPath + "/endpoints/pods");
-        System.out.println("Ping the services at:      http://localhost:" + port +servletContextPath + "/_ping");
-        System.out.println("View the services at:      http://localhost:" + port +servletContextPath + servicesPath);
+        String url = "http://localhost:" + port + servletContextPath;
+        if (!url.endsWith("/")) {
+            url += "/";
+        }
+
+
         System.out.println();
+        System.out.println("-------------------------------------------------------------");
+        System.out.println("API Registry is now running at: " + url);
+        System.out.println("-------------------------------------------------------------");
         System.out.println();
 
         final Server server = new Server(num);
@@ -52,13 +58,17 @@ public class Main {
         final ServletHolder servletHolder = new ServletHolder(new CXFCdiServlet());
         
         // change default service list URI
-        servletHolder.setInitParameter("service-list-path", servicesPath);
+        servletHolder.setInitParameter("service-list-path", "/" + servicesPath);
 
         final ServletContextHandler context = new ServletContextHandler();
         context.setContextPath("/");
         context.addEventListener(new Listener());
         context.addEventListener(new BeanManagerResourceBindingListener());
-        context.addServlet(servletHolder, "/" + service + "/*");
+        String servletPath = "/*";
+        if (Strings.isNotBlank(service)) {
+            servletPath = servletContextPath + "/*";
+        }
+        context.addServlet(servletHolder, servletPath);
         server.setHandler(context);
         server.start();
         return server;

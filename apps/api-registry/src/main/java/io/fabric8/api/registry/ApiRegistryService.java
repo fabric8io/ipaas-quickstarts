@@ -16,7 +16,9 @@
 package io.fabric8.api.registry;
 
 
+import com.google.common.io.Files;
 import com.wordnik.swagger.annotations.Api;
+import io.fabric8.utils.IOHelpers;
 import org.apache.cxf.jaxrs.ext.MessageContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +29,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -42,6 +48,26 @@ public class ApiRegistryService {
     private MessageContext messageContext;
 
     public ApiRegistryService() {
+    }
+
+    @GET
+    @Produces(MediaType.TEXT_HTML)
+    public String index() throws IOException {
+        URL resource = getClass().getResource("index.html");
+        if (resource != null) {
+            InputStream in = resource.openStream();
+            if (in != null) {
+                return IOHelpers.readFully(in);
+            }
+        }
+        return null;
+    }
+
+    @GET
+    @Path("index.html")
+    @Produces(MediaType.TEXT_HTML)
+    public String indexHtml() throws IOException {
+        return index();
     }
 
     @GET
