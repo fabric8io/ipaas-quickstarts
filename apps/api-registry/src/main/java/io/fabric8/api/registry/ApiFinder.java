@@ -36,6 +36,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -121,14 +122,39 @@ public class ApiFinder {
                         if ((started || created)) {
                             String httpUrl = getHttpUrl(pod, container, jolokia);
                             if (httpUrl != null) {
-                                String fullUrl = httpUrl + servletContext + address;
+                                String basePath = servletContext + address;
+                                String fullUrl = httpUrl + basePath;
 
-                                String swaggerUrl = booleanAttribute(map, swaggerProperty) ? fullUrl + "/api-docs" : null;
-                                String wadlUrl = booleanAttribute(map, wadlProperty) ? fullUrl + "?_wadl" : null;
-                                String wsdlUrl = booleanAttribute(map, wsdlProperty) ? fullUrl + "?wsdl" : null;
+                                String swaggerPath = null;
+                                String swaggerUrl = null;
+                                String wadlPath = null;
+                                String wadlUrl = null;
+                                String wsdlPath = null;
+                                String wsdlUrl = null;
+                                int port = 80;
+                                try {
+                                    URL url = new URL(httpUrl);
+                                    port = url.getPort();
+                                } catch (Exception e) {
+                                    // ignore
+                                }
+
+
+                                if (booleanAttribute(map, swaggerProperty)) {
+                                    swaggerPath = basePath + "/api-docs";
+                                    swaggerUrl = httpUrl + swaggerPath;
+                                }
+                                if (booleanAttribute(map, wadlProperty)) {
+                                    wadlPath = basePath + "?_wadl";
+                                    wadlUrl = httpUrl + wadlPath;
+                                }
+                                if (booleanAttribute(map, wsdlProperty)) {
+                                    wsdlPath = basePath + "?wsdl";
+                                    wsdlUrl = httpUrl + wsdlPath;
+                                }
                                 String jolokiaUrl = jolokia.getUri().toString();
-
-                                return new ApiDTO(pod, container, objectName.toString(), fullUrl, state, jolokiaUrl, swaggerUrl, wadlUrl, wsdlUrl);
+                                String serviceId = null;
+                                return new ApiDTO(pod, container, serviceId, objectName.toString(), fullUrl, port, state, jolokiaUrl, swaggerPath, swaggerUrl, wadlPath, wadlUrl, wsdlPath, wsdlUrl);
                             }
                         }
                     }

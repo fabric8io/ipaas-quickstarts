@@ -27,40 +27,51 @@ import java.util.Map;
 @XmlRootElement(name = "api")
 public class ApiDTO {
     private String podId;
+    private String serviceId;
     private Map<String, String> labels;
     private String containerName;
     private String objectName;
     private String url;
+    private int port;
     private String state;
     private String jolokiaUrl;
+    private String swaggerPath;
     private String swaggerUrl;
+    private String wadlPath;
     private String wadlUrl;
+    private String wsdlPath;
     private String wsdlUrl;
 
     public ApiDTO() {
     }
 
-    public ApiDTO(String podId, Map<String, String> labels, String containerName, String objectName, String url, String state, String jolokiaUrl, String swaggerUrl, String wadlUrl, String wsdlUrl) {
+    public ApiDTO(String podId, String serviceId, Map<String, String> labels, String containerName, String objectName, String url, int port, String state, String jolokiaUrl, String swaggerPath, String swaggerUrl, String wadlPath, String wadlUrl, String wsdlPath, String wsdlUrl) {
         this.podId = podId;
+        this.serviceId = serviceId;
         this.labels = labels;
         this.containerName = containerName;
         this.objectName = objectName;
         this.url = url;
+        this.port = port;
         this.state = state;
         this.jolokiaUrl = jolokiaUrl;
+        this.swaggerPath = swaggerPath;
         this.swaggerUrl = swaggerUrl;
-        this.wsdlUrl = wsdlUrl;
+        this.wadlPath = wadlPath;
         this.wadlUrl = wadlUrl;
+        this.wsdlPath = wsdlPath;
+        this.wsdlUrl = wsdlUrl;
     }
 
-    public ApiDTO(PodSchema pod, ManifestContainer container, String objectName, String url, String state, String jolokiaUrl, String swaggerUrl, String wadlUrl, String wsdlUrl) {
-        this(pod.getId(), pod.getLabels(), container.getName(), objectName, url, state, jolokiaUrl, swaggerUrl, wadlUrl, wsdlUrl);
+    public ApiDTO(PodSchema pod, ManifestContainer container, String serviceId, String objectName, String url, int port, String state, String jolokiaUrl, String swaggerPath, String swaggerUrl, String wadlPath, String wadlUrl, String wsdlPath, String wsdlUrl) {
+        this(pod.getId(), serviceId, pod.getLabels(), container.getName(), objectName, url, port, state, jolokiaUrl, swaggerPath, swaggerUrl, wadlPath, wadlUrl, wsdlPath, wsdlUrl);
     }
 
     @Override
     public String toString() {
         return "ApiDTO{" +
                 "podId='" + podId + '\'' +
+                ", serviceId='" + serviceId + '\'' +
                 ", labels=" + labels +
                 ", containerName='" + containerName + '\'' +
                 ", objectName='" + objectName + '\'' +
@@ -109,6 +120,10 @@ public class ApiDTO {
         this.url = url;
     }
 
+    public int getPort() {
+        return port;
+    }
+
     public String getState() {
         return state;
     }
@@ -151,5 +166,37 @@ public class ApiDTO {
 
     public void setWadlUrl(String wadlUrl) {
         this.wadlUrl = wadlUrl;
+    }
+
+    public String getServiceId() {
+        return serviceId;
+    }
+
+    public void setServiceId(String serviceId) {
+        this.serviceId = serviceId;
+    }
+
+    public String getSwaggerPath() {
+        return swaggerPath;
+    }
+
+    public void setSwaggerPath(String swaggerPath) {
+        this.swaggerPath = swaggerPath;
+    }
+
+    public String getWadlPath() {
+        return wadlPath;
+    }
+
+    public void setWadlPath(String wadlPath) {
+        this.wadlPath = wadlPath;
+    }
+
+    public String getWsdlPath() {
+        return wsdlPath;
+    }
+
+    public void setWsdlPath(String wsdlPath) {
+        this.wsdlPath = wsdlPath;
     }
 }
