@@ -154,7 +154,7 @@ public class ApiFinder {
                                 }
                                 String jolokiaUrl = jolokia.getUri().toString();
                                 String serviceId = null;
-                                return new ApiDTO(pod, container, serviceId, objectName.toString(), fullUrl, port, state, jolokiaUrl, swaggerPath, swaggerUrl, wadlPath, wadlUrl, wsdlPath, wsdlUrl);
+                                return new ApiDTO(pod, container, serviceId, objectName.toString(), basePath, fullUrl, port, state, jolokiaUrl, swaggerPath, swaggerUrl, wadlPath, wadlUrl, wsdlPath, wsdlUrl);
                             }
                         }
                     }
