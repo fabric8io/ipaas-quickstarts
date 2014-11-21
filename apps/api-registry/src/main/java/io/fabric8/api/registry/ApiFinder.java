@@ -146,6 +146,9 @@ public class ApiFinder {
                 Integer containerPort = port.getContainerPort();
                 if (containerPort != null) {
                     String name = port.getName();
+                    if (name != null) {
+                        name = name.toLowerCase();
+                    }
 
                     boolean httpPortNumber = containerPort == 80 || containerPort == 443 || containerPort == 8080 || containerPort == 8181;
                     boolean httpName = Objects.equals("http", name) || Objects.equals("https", name);
@@ -153,9 +156,18 @@ public class ApiFinder {
 
                     if (httpPortNumber || (httpName && containerPort.intValue() > 0)) {
                         CurrentState currentState = pod.getCurrentState();
-                        String podIP = currentState.getPodIP();
-                        if (Strings.isNotBlank(podIP)) {
-                            return protocolName + "://" + podIP + ":" + containerPort;
+                        if (currentState != null) {
+                            String podIP = currentState.getPodIP();
+                            if (Strings.isNotBlank(podIP)) {
+                                return protocolName + "://" + podIP + ":" + containerPort;
+                            }
+
+                            // lets try use the host port and host name on jube
+                            String host = currentState.getHost();
+                            Integer hostPort = port.getHostPort();
+                            if (Strings.isNotBlank(host) && hostPort != null) {
+                                return protocolName + "://" + host + ":" + hostPort;
+                            }
                         }
                     }
                 }
