@@ -47,16 +47,15 @@
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <org.eclipse.jetty.version>9.1.5.v20140505</org.eclipse.jetty.version>
     
-    <http.port>9393</http.port>
-
     <docker.from>fabric8/java</docker.from>
     <docker.registryPrefix>${env.DOCKER_REGISTRY}/</docker.registryPrefix>
     <docker.image>${docker.registryPrefix}fabric8/${project.artifactId}:${project.version}</docker.image>
     <docker.assemblyDescriptorRef>artifact-with-dependencies</docker.assemblyDescriptorRef>
     <docker.env.MAIN>io.fabric8.api.registry.Main</docker.env.MAIN>
-    <docker.port.container.http>${http.port}</docker.port.container.http>
+    <docker.port.container.http>8080</docker.port.container.http>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
 
+    <fabric8.service.port>9393</fabric8.service.port>
     <fabric8.kubernetes.name>apiRegistry</fabric8.kubernetes.name>
   </properties>
 

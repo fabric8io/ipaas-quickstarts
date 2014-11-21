@@ -9,8 +9,8 @@
       "id": "api-registry",
       "apiVersion": "v1beta1",
       "kind": "Service",
-      "containerPort": ${http.port},
-      "port": ${http.port},
+      "containerPort": ${docker.port.container.http},
+      "port": ${fabric8.service.port},
       "selector": {
         "name": "apiRegistry"
       }
