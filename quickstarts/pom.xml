@@ -28,7 +28,7 @@
 
   <artifactId>fabric8-quickstarts-parent</artifactId>
   <packaging>pom</packaging>
-  <name>Fabric8 :: Quickstarts :: Parent</name>
+  <name>Quickstarts :: Parent</name>
 
   <licenses>
     <license>
