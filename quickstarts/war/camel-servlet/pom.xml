@@ -23,11 +23,11 @@
   <parent>
     <groupId>io.fabric8.jube.images.fabric8</groupId>
     <artifactId>quickstart-war</artifactId>
-    <version>2.0-SNAPSHOT</version>
+    <version>2.0.9</version>
   </parent>
 
   <artifactId>quickstart-war-camel-servlet</artifactId>
-  <version>2.0-SNAPSHOT</version>
+  <version>2.0.9</version>
   <packaging>war</packaging>
   <name>War Quickstart :  Camel Servlet</name>
   <description>Camel route using Servlet deployed as WAR</description>
