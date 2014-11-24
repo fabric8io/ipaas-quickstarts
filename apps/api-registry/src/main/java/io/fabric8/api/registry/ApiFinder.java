@@ -23,8 +23,16 @@ import io.fabric8.kubernetes.api.model.CurrentState;
 import io.fabric8.kubernetes.api.model.ManifestContainer;
 import io.fabric8.kubernetes.api.model.PodSchema;
 import io.fabric8.kubernetes.api.model.Port;
+import io.fabric8.kubernetes.api.model.ServiceSchema;
 import io.fabric8.kubernetes.jolokia.JolokiaClients;
+import io.fabric8.utils.Closeables;
 import io.fabric8.utils.Strings;
+import io.fabric8.utils.URLUtils;
+import org.apache.http.StatusLine;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.jolokia.client.J4pClient;
 import org.jolokia.client.exception.J4pException;
 import org.jolokia.client.request.J4pReadRequest;
@@ -35,12 +43,17 @@ import org.slf4j.LoggerFactory;
 
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
+import java.io.IOException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+
+import static io.fabric8.utils.URLUtils.urlPathJoin;
 
 /**
  */
@@ -48,6 +61,9 @@ public class ApiFinder {
     private static final transient Logger LOG = LoggerFactory.getLogger(ApiFinder.class);
 
     public static final String CXF_API_ENDPOINT_MBEAN_NAME = "io.fabric8.cxf:*";
+    public static final String SWAGGER_POSTFIX = "/api-docs";
+    public static final String WADL_POSTFIX = "?_wadl";
+    public static final String WSDL_POSTFIX = "?wsdl";
 
     JolokiaClients clients = new JolokiaClients();
     Kubernetes kubernetes = clients.getKubernetes();
@@ -73,7 +89,108 @@ public class ApiFinder {
                 }
             }
         }
+        Map<String, ServiceSchema> serviceMap = KubernetesHelper.getServiceMap(kubernetes);
+        addDiscoveredServiceApis(answer, serviceMap);
         return answer;
+    }
+
+    protected void addDiscoveredServiceApis(List<ApiDTO> apis, Map<String, ServiceSchema> serviceMap) {
+        CloseableHttpClient client = createHttpClient();
+        try {
+            Set<Map.Entry<String, ServiceSchema>> entries = serviceMap.entrySet();
+            for (Map.Entry<String, ServiceSchema> entry : entries) {
+                String key = entry.getKey();
+                ServiceSchema service = entry.getValue();
+                String id = service.getId();
+                String url = KubernetesHelper.getServiceURL(service);
+                if (Strings.isNotBlank(url)) {
+                    // lets check if we've not got this service already
+                    if (!apiExistsForUrl(apis, url)) {
+                        tryFindApis(client, apis, service, url);
+                    }
+                }
+            }
+        } finally {
+            Closeables.closeQuietly(client);
+        }
+    }
+
+    protected CloseableHttpClient createHttpClient() {
+        return HttpClientBuilder.create().build();
+    }
+
+    protected void tryFindApis(CloseableHttpClient client, List<ApiDTO> apis, ServiceSchema service, String url) {
+        String podId = null;
+        String containerName = null;
+        String objectName = null;
+        String serviceId = service.getId();
+        Map<String, String> labels = service.getLabels();
+        String state = "STARTED";
+
+        int port = 0;
+        String jolokiaUrl = null;
+        String swaggerUrl = urlPathJoin(url, SWAGGER_POSTFIX);
+        String wadlUrl = null;
+        String wsdlUrl = null;
+
+        String path = toPath(url);
+        String swaggerPath = toPath(swaggerUrl);
+        String wadlPath = toPath(wadlUrl);
+        String wsdlPath = toPath(wsdlUrl);
+
+        boolean valid = isValidApiEndpoint(client, swaggerUrl);
+        if (valid) {
+            apis.add(new ApiDTO(podId, serviceId, labels, containerName, objectName, path, url, port, state, jolokiaUrl, swaggerPath, swaggerUrl, wadlPath, wadlUrl, wsdlPath, wsdlUrl));
+        }
+    }
+
+    /**
+     * Returns the path for the given URL
+     */
+    public static String toPath(String url) {
+        if (Strings.isNullOrBlank(url)) {
+            return null;
+        }
+        int idx = url.indexOf("://");
+        if (idx <= 0) {
+            idx = url.indexOf(":");
+            if (idx >= 0) {
+                idx++;
+            } else {
+                idx = 0;
+            }
+        } else {
+            idx += 3;
+        }
+        idx = url.indexOf("/", idx);
+        return url.substring(idx);
+    }
+
+    protected boolean isValidApiEndpoint(CloseableHttpClient client, String url) {
+        boolean valid = false;
+        try {
+            CloseableHttpResponse response = client.execute(new HttpGet(url));
+            StatusLine statusLine = response.getStatusLine();
+            if (statusLine != null) {
+                int statusCode = statusLine.getStatusCode();
+                if (statusCode >= 200 && statusCode < 300) {
+                    valid = true;
+                }
+            }
+        } catch (IOException e) {
+            LOG.debug("Ignored failed request on " + url + ". " + e, e);
+        }
+        return valid;
+    }
+
+    protected boolean apiExistsForUrl(List<ApiDTO> apis, String url) {
+        for (ApiDTO api : apis) {
+            String apiUrl = api.getUrl();
+            if (apiUrl != null && apiUrl.startsWith(url)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     protected List<ApiDTO> findServices(PodSchema pod, ManifestContainer container, J4pClient jolokia) {
@@ -138,17 +255,16 @@ public class ApiFinder {
                                     // ignore
                                 }
 
-
                                 if (booleanAttribute(map, swaggerProperty)) {
-                                    swaggerPath = urlPathJoin(basePath, "/api-docs");
+                                    swaggerPath = urlPathJoin(basePath, SWAGGER_POSTFIX);
                                     swaggerUrl = urlPathJoin(httpUrl, swaggerPath);
                                 }
                                 if (booleanAttribute(map, wadlProperty)) {
-                                    wadlPath = basePath + "?_wadl";
+                                    wadlPath = basePath + WADL_POSTFIX;
                                     wadlUrl = urlPathJoin(httpUrl, wadlPath);
                                 }
                                 if (booleanAttribute(map, wsdlProperty)) {
-                                    wsdlPath = basePath + "?wsdl";
+                                    wsdlPath = basePath + WSDL_POSTFIX;
                                     wsdlUrl = urlPathJoin(httpUrl, wsdlPath);
                                 }
                                 String jolokiaUrl = jolokia.getUri().toString();
@@ -163,28 +279,6 @@ public class ApiFinder {
         return null;
     }
 
-    /**
-     * Joins two parts of a URL together to ensure there is a / in between the strings but ensuring there is not a //.
-     */
-    // TODO moved to URLUtils.urlPathJoin() - please delete ASAP!
-    public static String urlPathJoin(String first, String second) {
-        if (Strings.isNullOrBlank(second)) {
-            return first;
-        }
-        if (first.endsWith("/")) {
-            if (second.startsWith("/")) {
-                return first + second.substring(1);
-            } else {
-                return first + second;
-            }
-        } else {
-            if (second.startsWith("/")) {
-                return first + second;
-            } else {
-                return first + "/" + second;
-            }
-        }
-    }
 
     protected String getHttpUrl(PodSchema pod, ManifestContainer container, J4pClient jolokia) {
         // lets find the HTTP port
