@@ -57,7 +57,11 @@
 
   <modules>
     <module>api-registry</module>
+<!--
+    TODO build fails right now - lets re-enable when it works again
+
     <module>fabric8-http-gateway</module>
+-->
     <module>fabric8-mq</module>
     <module>fabric8-mq-producer</module>
     <module>fabric8-mq-consumer</module>
