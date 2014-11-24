@@ -23,7 +23,6 @@ import io.fabric8.kubernetes.api.model.CurrentState;
 import io.fabric8.kubernetes.api.model.ManifestContainer;
 import io.fabric8.kubernetes.api.model.PodSchema;
 import io.fabric8.kubernetes.api.model.Port;
-import io.fabric8.kubernetes.api.model.ReplicationControllerSchema;
 import io.fabric8.kubernetes.jolokia.JolokiaClients;
 import io.fabric8.utils.Strings;
 import org.jolokia.client.J4pClient;
@@ -122,8 +121,8 @@ public class ApiFinder {
                         if ((started || created)) {
                             String httpUrl = getHttpUrl(pod, container, jolokia);
                             if (httpUrl != null) {
-                                String basePath = servletContext + address;
-                                String fullUrl = httpUrl + basePath;
+                                String basePath = urlPathJoin(servletContext, address);
+                                String fullUrl = urlPathJoin(httpUrl, basePath);
 
                                 String swaggerPath = null;
                                 String swaggerUrl = null;
@@ -141,16 +140,16 @@ public class ApiFinder {
 
 
                                 if (booleanAttribute(map, swaggerProperty)) {
-                                    swaggerPath = basePath + "/api-docs";
-                                    swaggerUrl = httpUrl + swaggerPath;
+                                    swaggerPath = urlPathJoin(basePath, "/api-docs");
+                                    swaggerUrl = urlPathJoin(httpUrl, swaggerPath);
                                 }
                                 if (booleanAttribute(map, wadlProperty)) {
                                     wadlPath = basePath + "?_wadl";
-                                    wadlUrl = httpUrl + wadlPath;
+                                    wadlUrl = urlPathJoin(httpUrl, wadlPath);
                                 }
                                 if (booleanAttribute(map, wsdlProperty)) {
                                     wsdlPath = basePath + "?wsdl";
-                                    wsdlUrl = httpUrl + wsdlPath;
+                                    wsdlUrl = urlPathJoin(httpUrl, wsdlPath);
                                 }
                                 String jolokiaUrl = jolokia.getUri().toString();
                                 String serviceId = null;
@@ -162,6 +161,29 @@ public class ApiFinder {
             }
         }
         return null;
+    }
+
+    /**
+     * Joins two parts of a URL together to ensure there is a / in between the strings but ensuring there is not a //.
+     */
+    // TODO moved to URLUtils.urlPathJoin() - please delete ASAP!
+    public static String urlPathJoin(String first, String second) {
+        if (Strings.isNullOrBlank(second)) {
+            return first;
+        }
+        if (first.endsWith("/")) {
+            if (second.startsWith("/")) {
+                return first + second.substring(1);
+            } else {
+                return first + second;
+            }
+        } else {
+            if (second.startsWith("/")) {
+                return first + second;
+            } else {
+                return first + "/" + second;
+            }
+        }
     }
 
     protected String getHttpUrl(PodSchema pod, ManifestContainer container, J4pClient jolokia) {
