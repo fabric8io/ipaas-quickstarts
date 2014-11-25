@@ -138,9 +138,13 @@ public class ApiFinder {
         String wadlPath = toPath(wadlUrl);
         String wsdlPath = toPath(wsdlUrl);
 
-        boolean valid = isValidApiEndpoint(client, swaggerUrl);
-        if (valid) {
-            apis.add(new ApiDTO(podId, serviceId, labels, containerName, objectName, path, url, port, state, jolokiaUrl, swaggerPath, swaggerUrl, wadlPath, wadlUrl, wsdlPath, wsdlUrl));
+        try {
+            boolean valid = isValidApiEndpoint(client, swaggerUrl);
+            if (valid) {
+                apis.add(new ApiDTO(podId, serviceId, labels, containerName, objectName, path, url, port, state, jolokiaUrl, swaggerPath, swaggerUrl, wadlPath, wadlUrl, wsdlPath, wsdlUrl));
+            }
+        } catch (Throwable e) {
+            LOG.error("Failed to discover any APIs for " + url + ". " + e, e);
         }
     }
 
@@ -163,6 +167,9 @@ public class ApiFinder {
             idx += 3;
         }
         idx = url.indexOf("/", idx);
+        if (idx < 0) {
+            return null;
+        }
         return url.substring(idx);
     }
 
