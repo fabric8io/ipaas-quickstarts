@@ -74,7 +74,7 @@ public class ApiFinder {
     public static final String wsdlProperty = "WSDL";
 
 
-    public List<ApiDTO> findServicesOnPods(String selector) {
+    public List<ApiDTO> findApisOnPods(String selector) {
         List<ApiDTO> answer = new ArrayList<>();
         Map<String, PodSchema> podMap = KubernetesHelper.getPodMap(kubernetes, selector);
         Collection<PodSchema> pods = podMap.values();
@@ -89,7 +89,14 @@ public class ApiFinder {
                 }
             }
         }
+        return answer;
+    }
+
+    public List<ApiDTO> findApisOnServices(String selector) {
+        List<ApiDTO> answer = new ArrayList<>();
         Map<String, ServiceSchema> serviceMap = KubernetesHelper.getServiceMap(kubernetes);
+
+        // TODO pick a pod for each service and add its APIs?
         addDiscoveredServiceApis(answer, serviceMap);
         return answer;
     }

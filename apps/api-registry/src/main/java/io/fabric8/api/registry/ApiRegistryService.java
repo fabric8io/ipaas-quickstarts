@@ -16,7 +16,6 @@
 package io.fabric8.api.registry;
 
 
-import com.google.common.io.Files;
 import com.wordnik.swagger.annotations.Api;
 import io.fabric8.utils.IOHelpers;
 import org.apache.cxf.jaxrs.ext.MessageContext;
@@ -78,9 +77,16 @@ public class ApiRegistryService {
 
     @GET
     @Path("endpoints/pods")
-    public List<ApiDTO> podServices(@QueryParam("selector") String selector) {
+    public List<ApiDTO> podApis(@QueryParam("selector") String selector) {
         ApiFinder finder = new ApiFinder();
-        return finder.findServicesOnPods(selector);
+        return finder.findApisOnPods(selector);
+    }
+
+    @GET
+    @Path("endpoints/services")
+    public List<ApiDTO> serviceApis(@QueryParam("selector") String selector) {
+        ApiFinder finder = new ApiFinder();
+        return finder.findApisOnServices(selector);
     }
 
     @Context
