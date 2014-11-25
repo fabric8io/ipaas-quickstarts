@@ -123,6 +123,18 @@
       <artifactId>spring-web</artifactId>
     </dependency>
 
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>fabric-cxf</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.geronimo.specs</groupId>
+          <artifactId>geronimo-servlet_3.0_spec</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+
 
     <!--
         We are also building a small Java client application that we can use to test our web web services.
@@ -354,7 +366,7 @@
     <profile>
       <id>jube</id>
       <activation>
-        <activeByDefault>false</activeByDefault>
+        <activeByDefault>true</activeByDefault>
       </activation>
       <build>
         <plugins>

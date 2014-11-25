@@ -42,16 +42,12 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
     <jaxrs:providers>
       <bean class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider"/>
     </jaxrs:providers>
+
+    <jaxrs:features>
+      <bean class="io.fabric8.cxf.endpoint.EnableJMXFeature"/>
+    </jaxrs:features>
   </jaxrs:server>
 
-  <!-- enable CXF JMX -->
-  <bean id="org.apache.cxf.management.InstrumentationManager"
-        class="org.apache.cxf.management.jmx.InstrumentationManagerImpl">
-    <property name="enabled" value="true"/>
-    <property name="bus" ref="cxf"/>
-    <property name="usePlatformMBeanServer" value="true"/>
-    <property name="createMBServerConnectorFactory" value="false"/>
-  </bean>
 
 </beans>
 
