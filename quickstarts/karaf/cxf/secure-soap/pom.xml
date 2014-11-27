@@ -139,6 +139,7 @@
               javax.security.auth.callback,
               org.apache.cxf.interceptor.security,
               org.apache.cxf.transport.http,
+              io.fabric8.cxf.endpoint,
               org.apache.cxf, org.apache.cxf.endpoint, org.apache.cxf.frontend, org.apache.cxf.interceptor,
               org.apache.cxf.jaxws, org.apache.cxf.message, org.apache.cxf.phase
             </Import-Package>

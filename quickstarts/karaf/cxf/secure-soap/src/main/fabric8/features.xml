@@ -23,7 +23,9 @@
 
   <feature name="quickstart-karaf-cxf-secure-soap" version="${project.version}" resolver="(obr)">
       <feature version="${cxf-version-range}">cxf-jaxws</feature>
+      <feature version="${cxf-version-range}">cxf-jaxrs</feature>
       <feature version="${cxf-version-range}">cxf-ws-security</feature>
+      <bundle start-level="70">mvn:io.fabric8/fabric-cxf/${fabric8.version}</bundle>
       <bundle>mvn:io.fabric8.jube.images.fabric8/quickstart-karaf-cxf-secure-soap/${project.version}</bundle>
   </feature>
 
