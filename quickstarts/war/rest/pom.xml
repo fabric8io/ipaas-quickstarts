@@ -253,36 +253,6 @@
         </executions>
       </plugin>
       <plugin>
-        <groupId>org.apache.tomcat.maven</groupId>
-        <artifactId>tomcat7-maven-plugin</artifactId>
-        <version>${tomcat-plugin.version}</version>
-        <executions>
-          <execution>
-            <id>start-tomcat</id>
-            <goals>
-              <goal>run-war</goal>
-            </goals>
-            <phase>pre-integration-test</phase>
-            <configuration>
-              <port>${test.server.port}</port>
-              <path>/jaxrs-service</path>
-              <fork>true</fork>
-              <useSeparateTomcatClassLoader>true</useSeparateTomcatClassLoader>
-            </configuration>
-          </execution>
-          <execution>
-            <id>stop-tomcat</id>
-            <goals>
-              <goal>shutdown</goal>
-            </goals>
-            <phase>post-integration-test</phase>
-            <configuration>
-              <path>/jaxrs-service</path>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <groupId>org.jolokia</groupId>
         <artifactId>docker-maven-plugin</artifactId>
         <version>${docker.maven.plugin.version}</version>
@@ -323,8 +293,40 @@
       <properties>
         <skipTests>false</skipTests>
       </properties>
-     <build>
+      <build>
         <defaultGoal>verify</defaultGoal>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.tomcat.maven</groupId>
+            <artifactId>tomcat7-maven-plugin</artifactId>
+            <version>${tomcat-plugin.version}</version>
+            <executions>
+              <execution>
+                <id>start-tomcat</id>
+                <goals>
+                  <goal>run-war</goal>
+                </goals>
+                <phase>pre-integration-test</phase>
+                <configuration>
+                  <port>${test.server.port}</port>
+                  <path>/jaxrs-service</path>
+                  <fork>true</fork>
+                  <useSeparateTomcatClassLoader>true</useSeparateTomcatClassLoader>
+                </configuration>
+              </execution>
+              <execution>
+                <id>stop-tomcat</id>
+                <goals>
+                  <goal>shutdown</goal>
+                </goals>
+                <phase>post-integration-test</phase>
+                <configuration>
+                  <path>/jaxrs-service</path>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
       </build>
     </profile>
 
@@ -418,6 +420,5 @@
       </properties>
     </profile>
   </profiles>
-
 
 </project>
