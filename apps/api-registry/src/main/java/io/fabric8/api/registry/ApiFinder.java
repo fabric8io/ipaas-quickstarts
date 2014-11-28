@@ -217,7 +217,10 @@ public class ApiFinder {
                 for (String objectName : list) {
                     if (Strings.isNotBlank(objectName)) {
                         ApiDTO apiDTO = findCxfApi(pod, container, jolokia, objectName);
+                        
                         if (apiDTO != null) {
+                            LOG.info("====> the ApiDTO is " + apiDTO.toString());
+                            System.out.println("====> the ApiDTO is " + apiDTO.toString());
                             answer.add(apiDTO);
                         }
                     }
@@ -231,6 +234,8 @@ public class ApiFinder {
 
     protected ApiDTO findCxfApi(PodSchema pod, ManifestContainer container, J4pClient jolokia, String mbean) throws MalformedObjectNameException, J4pException {
         ObjectName objectName = new ObjectName(mbean);
+        LOG.info("===>the mbean name is " + mbean);
+        System.out.println("===>the mbean name is " + mbean);
         String type = objectName.getKeyProperty("type");
         if (type != null && "Bus.Service.Endpoint".equals(type)) {
             J4pResponse<J4pReadRequest> results = jolokia.execute(new J4pReadRequest(objectName,

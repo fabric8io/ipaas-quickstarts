@@ -35,6 +35,13 @@
         <include>**/*</include>
       </includes>
     </fileSet>
+    <fileSet>
+      <directory>${project.build.directory}/fabric8/</directory>
+      <outputDirectory>/etc/</outputDirectory>
+      <includes>
+        <include>**/users.properties</include>
+      </includes>
+    </fileSet>
   </fileSets>
 
 </assembly>
