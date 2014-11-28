@@ -26,14 +26,11 @@
   </parent>
 
   <artifactId>zookeeper</artifactId>
-  <packaging>pom</packaging>
+  <packaging>jar</packaging>
 
   <name>ZooKeeper</name>
   <description>Creates a ZooKeeper ensemble</description>
 
-  <properties>
-    <fabric8.aggregateZip>false</fabric8.aggregateZip>
-  </properties>
   <build>
     <finalName>${project.artifactId}</finalName>
 
