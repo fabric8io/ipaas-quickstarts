@@ -26,8 +26,9 @@ import io.fabric8.kubernetes.api.model.Port;
 import io.fabric8.kubernetes.api.model.ServiceSchema;
 import io.fabric8.kubernetes.jolokia.JolokiaClients;
 import io.fabric8.utils.Closeables;
+import io.fabric8.utils.Filter;
 import io.fabric8.utils.Strings;
-import io.fabric8.utils.URLUtils;
+import org.apache.deltaspike.core.api.config.ConfigProperty;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -41,17 +42,21 @@ import org.jolokia.client.request.J4pSearchRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.PreDestroy;
+import javax.inject.Inject;
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
 import java.io.IOException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static io.fabric8.utils.URLUtils.urlPathJoin;
 
@@ -65,31 +70,100 @@ public class ApiFinder {
     public static final String WADL_POSTFIX = "?_wadl";
     public static final String WSDL_POSTFIX = "?wsdl";
 
-    JolokiaClients clients = new JolokiaClients();
-    Kubernetes kubernetes = clients.getKubernetes();
-
-
     public static final String swaggerProperty = "Swagger";
     public static final String wadlProperty = "WADL";
     public static final String wsdlProperty = "WSDL";
 
+    private JolokiaClients clients = new JolokiaClients();
+    private Kubernetes kubernetes = clients.getKubernetes();
+    private AtomicReference<ApiSnapshot> snapshotCache = new AtomicReference<>();
+    private Timer timer = new Timer();
+    private TimerTask task = new TimerTask() {
+        @Override
+        public void run() {
+            refreshSnapshot();
+        }
+    };
+
+    @Inject
+    public ApiFinder(@ConfigProperty(name = "API_REGISTRY_POLL_TIME", defaultValue = "5000") long pollTimeMs) {
+        timer.schedule(task, 0, pollTimeMs);
+    }
+
+    @PreDestroy
+    public void destroy() {
+        timer.cancel();
+    }
+
+
+    public ApiSnapshot refreshSnapshot() {
+        Map<String, PodSchema> podMap = KubernetesHelper.getPodMap(kubernetes);
+        Map<String, List<ApiDTO>> apiMap = pollPodApis(podMap);
+        ApiSnapshot snapshot = new ApiSnapshot(podMap, apiMap);
+        snapshotCache.set(snapshot);
+        return snapshot;
+    }
+
+    public Map<String, List<ApiDTO>> pollPodApis() {
+        Map<String, PodSchema> podMap = KubernetesHelper.getPodMap(kubernetes);
+        return pollPodApis(podMap);
+    }
+
+    protected Map<String, List<ApiDTO>> pollPodApis(Map<String, PodSchema> podMap) {
+        Map<String,List<ApiDTO>> answer = new HashMap<>();
+        Set<Map.Entry<String, PodSchema>> entries = podMap.entrySet();
+        for (Map.Entry<String, PodSchema> entry : entries) {
+            String key = entry.getKey();
+            PodSchema pod = entry.getValue();
+            List<ApiDTO> list = new ArrayList<ApiDTO>();
+            addApisForPod(pod, list);
+            if (list != null && !list.isEmpty()) {
+                answer.put(key, list);
+            }
+        }
+        return answer;
+    }
 
     public List<ApiDTO> findApisOnPods(String selector) {
         List<ApiDTO> answer = new ArrayList<>();
-        Map<String, PodSchema> podMap = KubernetesHelper.getPodMap(kubernetes, selector);
-        Collection<PodSchema> pods = podMap.values();
-        for (PodSchema pod : pods) {
-            String host = KubernetesHelper.getHost(pod);
-            List<ManifestContainer> containers = KubernetesHelper.getContainers(pod);
-            for (ManifestContainer container : containers) {
-                J4pClient jolokia = clients.jolokiaClient(host, container, pod);
-                if (jolokia != null) {
-                    List<ApiDTO> apiDTOs = findServices(pod, container, jolokia);
-                    answer.addAll(apiDTOs);
+        Filter<PodSchema> filter = KubernetesHelper.createPodFilter(selector);
+        ApiSnapshot snapshot = getSnapshot();
+
+        Map<String, PodSchema> podMap = snapshot.getPodMap();
+        Map<String, List<ApiDTO>> cache = snapshot.getApiMap();
+
+        Set<Map.Entry<String, PodSchema>> entries = podMap.entrySet();
+        for (Map.Entry<String, PodSchema> entry : entries) {
+            String key = entry.getKey();
+            PodSchema pod = entry.getValue();
+            if (filter.matches(pod)) {
+                List<ApiDTO> dtos = cache.get(key);
+                if (dtos != null) {
+                    answer.addAll(dtos);
                 }
             }
         }
         return answer;
+    }
+
+    public ApiSnapshot getSnapshot() {
+        ApiSnapshot snapshot = snapshotCache.get();
+        if (snapshot == null) {
+            snapshot = refreshSnapshot();
+        }
+        return snapshot;
+    }
+
+    public void addApisForPod(PodSchema pod, List<ApiDTO> list) {
+        String host = KubernetesHelper.getHost(pod);
+        List<ManifestContainer> containers = KubernetesHelper.getContainers(pod);
+        for (ManifestContainer container : containers) {
+            J4pClient jolokia = clients.jolokiaClient(host, container, pod);
+            if (jolokia != null) {
+                List<ApiDTO> apiDTOs = findServices(pod, container, jolokia);
+                list.addAll(apiDTOs);
+            }
+        }
     }
 
     public List<ApiDTO> findApisOnServices(String selector) {

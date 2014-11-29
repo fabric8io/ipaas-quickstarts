@@ -22,6 +22,7 @@ import org.apache.cxf.jaxrs.ext.MessageContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -45,8 +46,11 @@ public class ApiRegistryService {
     private static final Logger LOG = LoggerFactory.getLogger(ApiRegistryService.class);
 
     private MessageContext messageContext;
+    private ApiFinder finder;
 
-    public ApiRegistryService() {
+    @Inject
+    public ApiRegistryService(ApiFinder finder) {
+        this.finder = finder;
     }
 
     @GET
@@ -78,14 +82,12 @@ public class ApiRegistryService {
     @GET
     @Path("endpoints/pods")
     public List<ApiDTO> podApis(@QueryParam("selector") String selector) {
-        ApiFinder finder = new ApiFinder();
         return finder.findApisOnPods(selector);
     }
 
     @GET
     @Path("endpoints/services")
     public List<ApiDTO> serviceApis(@QueryParam("selector") String selector) {
-        ApiFinder finder = new ApiFinder();
         return finder.findApisOnServices(selector);
     }
 
