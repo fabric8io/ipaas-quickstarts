@@ -33,6 +33,14 @@ public interface MQAutoScalerMBean {
 
     void setMaxProducersPerDestination(int maxProducersPerDestination);
 
+    int getMinConsumersPerDestination();
+
+    void setMinConsumersPerDestination(int minConsumersPerDestination);
+
+    int getMinProducersPerDestination();
+
+    void setMinProducersPerDestination(int minProducersPerDestination);
+
     int getMaxDestinationDepth();
 
     void setMaxDestinationDepth(int maxDestinationDepth);

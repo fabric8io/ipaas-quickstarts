@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.api.KubernetesHelper;
 import io.fabric8.kubernetes.api.model.ControllerDesiredState;
 import io.fabric8.kubernetes.api.model.ManifestContainer;
 import io.fabric8.kubernetes.api.model.PodSchema;
+import io.fabric8.kubernetes.api.model.ReplicationControllerListSchema;
 import io.fabric8.kubernetes.api.model.ReplicationControllerSchema;
 import io.fabric8.kubernetes.jolokia.JolokiaClients;
 import io.fabric8.utils.JMXUtils;
@@ -50,8 +51,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class MQAutoScaler implements MQAutoScalerMBean {
     private static final Logger LOG = LoggerFactory.getLogger(MQAutoScaler.class);
     private final String DEFAULT_DOMAIN = "io.fabric8";
-    private String brokerName = "fabricMQ";
-    private String groupName = "default";
+    private String brokerName = "fabric8MQ";
+    private String groupName = "defaultMQGroup";
     private int pollTime = 5;
     private int minimumGroupSize = 1;
     private int maximumGroupSize = 2;
@@ -64,9 +65,10 @@ public class MQAutoScaler implements MQAutoScalerMBean {
     private final DestinationLimits destinationLimits = new DestinationLimits();
     private Timer timer;
     private TimerTask timerTask;
-    private String selector = "";
+    private String brokerSelector = "";
+    private String producerSelector = "";
+    private String consumerSelector = "";
     private final InactiveBrokers inactiveBrokers = new InactiveBrokers();
-
 
     @Override
     public int getMaxConnectionsPerBroker() {
@@ -106,6 +108,26 @@ public class MQAutoScaler implements MQAutoScalerMBean {
     @Override
     public void setMaxProducersPerDestination(int maxProducersPerDestination) {
         destinationLimits.setMaxProducersPerDestination(maxProducersPerDestination);
+    }
+
+    @Override
+    public int getMinConsumersPerDestination() {
+        return destinationLimits.getMinConsumersPerDestination();
+    }
+
+    @Override
+    public void setMinConsumersPerDestination(int minConsumersPerDestination) {
+        destinationLimits.setMinConsumersPerDestination(minConsumersPerDestination);
+    }
+
+    @Override
+    public int getMinProducersPerDestination() {
+        return destinationLimits.getMinProducersPerDestination();
+    }
+
+    @Override
+    public void setMinProducersPerDestination(int minProducersPerDestination) {
+        destinationLimits.setMinProducersPerDestination(minProducersPerDestination);
     }
 
     @Override
@@ -176,17 +198,35 @@ public class MQAutoScaler implements MQAutoScalerMBean {
         this.kubernetesMaster = kubernetesMaster;
     }
 
-    public String getSelector() {
-        return selector;
+    public String getBrokerSelector() {
+        return brokerSelector;
     }
 
-    public void setSelector(String selector) {
-        this.selector = selector;
+    public void setBrokerSelector(String brokerSelector) {
+        this.brokerSelector = brokerSelector;
+    }
+
+    public String getProducerSelector() {
+        return producerSelector;
+    }
+
+    public void setProducerSelector(String producerSelector) {
+        this.producerSelector = producerSelector;
+    }
+
+    public String getConsumerSelector() {
+        return consumerSelector;
+    }
+
+    public void setConsumerSelector(String consumerSelector) {
+        this.consumerSelector = consumerSelector;
     }
 
     public void start() throws Exception {
         if (started.compareAndSet(false, true)) {
-            setSelector("container=java,name=" + getBrokerName() + ",group=" + getGroupName());
+            setBrokerSelector("container=java,name=" + getBrokerName() + ",group=" + getGroupName());
+            setConsumerSelector("container=java,name=fabric8MQConsumer,group=fabric8MQConsumer");
+            setProducerSelector("container=java,name=fabric8MQProducer,group=fabric8MQProducer");
             MQAutoScalerObjectName = new ObjectName(DEFAULT_DOMAIN, "type", "mq-autoscaler");
             JMXUtils.registerMBean(this, MQAutoScalerObjectName);
 
@@ -218,6 +258,7 @@ public class MQAutoScaler implements MQAutoScalerMBean {
         try {
             List<BrokerVitalSigns> result = pollBrokers();
             distributeLoad(result);
+            loadProducersAndConsumers(result);
 
         } catch (Throwable e) {
             LOG.error("Failed to validate MQ load: ", e);
@@ -248,11 +289,8 @@ public class MQAutoScaler implements MQAutoScalerMBean {
 
                 if (exceededConnectionCapacity || exceededDestinationCapacity) {
                     if (brokers.size() < getMaximumGroupSize()) {
-                        try {
-                            requestDesiredBrokerNumber(brokers.size() + 1);
-                        } catch (Exception e) {
-                            LOG.error("Failed to request more brokers ", e);
-                        }
+                        int number = brokers.size() + 1;
+                        setDesiredState(getBrokerSelector(), number);
 
                         if (destinationLimitsExceeded) {
                             //we can't do much - other than distribute the load for all clients
@@ -286,14 +324,11 @@ public class MQAutoScaler implements MQAutoScalerMBean {
                 boolean spareDestinationCapacity = ((totalDestinations / brokers.size()) + 1) < brokerLimits.getMaxDestinationsPerBroker();
                 if (spareConnectionCapacity && spareDestinationCapacity) {
                     LOG.info("Scaling down brokers ");
+                    int number = brokers.size() - 1;
+                    setDesiredState(getBrokerSelector(), number);
 
-                    try {
-                        requestDesiredBrokerNumber(brokers.size() - 1);
-                    } catch (Exception e) {
-                        LOG.error("Failed to request more brokers ", e);
-                    }
                 }
-            }else if (lazyBroker || orphanedConsumers){
+            } else if (lazyBroker || orphanedConsumers) {
                 //try force redistribution of connections
                 if (brokers.size() > 1) {
                     LOG.info("Brokers detected with no load, redistributing clients");
@@ -309,11 +344,86 @@ public class MQAutoScaler implements MQAutoScalerMBean {
         }
     }
 
+    void loadProducersAndConsumers(List<BrokerVitalSigns> brokers) {
+        if (!brokers.isEmpty()) {
+            for (BrokerVitalSigns brokerVitalSigns : brokers) {
+                for (DestinationVitalSigns destinationVitalSigns : brokerVitalSigns.getQueueVitalSigns().values()) {
+                    if (destinationVitalSigns.getQueueDepthRate() == 0) {
+                        spinUpMoreProducers(destinationVitalSigns.getDestination(), 1);
+                    } else if (destinationVitalSigns.getQueueDepthRate() > 0 || destinationVitalSigns.getQueueDepth() > 0) {
+                        if (!spinUpMoreConsumers(destinationVitalSigns.getDestination(), 1)) {
+                            //can't spin up more consumers - so reduce number of producers
+                            spinDownProducers(destinationVitalSigns.getDestination(), 1);
+                        }
+                    } else if (destinationVitalSigns.getQueueDepthRate() < 0) {
+                        spinDownConsumers(destinationVitalSigns.getDestination(), 1);
+                    }
+                }
+            }
+        }
+    }
+
+    boolean spinUpMoreConsumers(ActiveMQDestination destination, int number) {
+        boolean result = false;
+        String selector = getConsumerSelector() + ",queueName=" + destination.getPhysicalName();
+        int current = getCurrentState(selector);
+        int desired = current + number;
+        if (desired < destinationLimits.getMaxConsumersPerDestination()) {
+            setDesiredState(selector, desired);
+            LOG.info("Spinning up " + number + " more Consumers(s) for " + destination);
+            result = true;
+        }
+        return result;
+    }
+
+    boolean spinDownConsumers(ActiveMQDestination destination, int number) {
+        boolean result = false;
+        String selector = getConsumerSelector() + ",queueName=" + destination.getPhysicalName();
+        int current = getCurrentState(selector);
+        int desired = current - number;
+        if (desired > destinationLimits.getMinConsumersPerDestination()) {
+            setDesiredState(selector, desired);
+            LOG.info("Spinning down " + number + " Consumers(s) for " + destination);
+            result = true;
+        }
+        return result;
+    }
+
+    boolean spinUpMoreProducers(ActiveMQDestination destination, int number) {
+        boolean result = false;
+        String selector = getProducerSelector() + ",queueName=" + destination.getPhysicalName();
+        int current = getCurrentState(selector);
+        if (current > 0) {
+            int desired = current + number;
+            if (desired < destinationLimits.getMaxProducersPerDestination()) {
+                setDesiredState(selector, desired);
+                LOG.info("Spinning up " + number + " more Producer(s) for " + destination);
+                result = true;
+            }
+        } else {
+            LOG.error("Failed to get current state for producers with selector: " + selector);
+        }
+        return result;
+    }
+
+    boolean spinDownProducers(ActiveMQDestination destination, int number) {
+        boolean result = false;
+        String selector = getProducerSelector() + ",queueName=" + destination.getPhysicalName();
+        int current = getCurrentState(selector);
+        int desired = current - number;
+        if (desired > destinationLimits.getMinProducersPerDestination()) {
+            setDesiredState(selector, desired);
+            LOG.info("Spinning down " + number + " Producer(s) for " + destination);
+            result = true;
+        }
+        return result;
+    }
+
     List<BrokerVitalSigns> pollBrokers() {
         List<BrokerVitalSigns> result = new ArrayList<>();
-        Map<String, PodSchema> podMap = KubernetesHelper.getPodMap(kubernetes, getSelector());
+        Map<String, PodSchema> podMap = KubernetesHelper.getPodMap(kubernetes, getBrokerSelector());
         Collection<PodSchema> pods = podMap.values();
-        LOG.info("Checking " + selector + ": groupSize = " + pods.size());
+        LOG.info("Checking " + brokerSelector + ": groupSize = " + pods.size());
         for (PodSchema pod : pods) {
             String host = KubernetesHelper.getHost(pod);
             List<ManifestContainer> containers = KubernetesHelper.getContainers(pod);
@@ -430,8 +540,47 @@ public class MQAutoScaler implements MQAutoScalerMBean {
         return result;
     }
 
+    int getCurrentState(String selector) {
+        Map<String, ReplicationControllerSchema> replicationControllerSchemaMap = KubernetesHelper.getReplicationControllerMap(kubernetes, selector);
+        if (!replicationControllerSchemaMap.isEmpty()) {
+            ReplicationControllerSchema replicationControllerSchema = replicationControllerSchemaMap.values().iterator().next();
+            if (replicationControllerSchema != null) {
+                return replicationControllerSchema.getCurrentState().getReplicas();
+            }
+        }
+        //got here so do a dump
+        ReplicationControllerListSchema replicationControllerListSchema = kubernetes.getReplicationControllers();
+        List<ReplicationControllerSchema> replicationControllerSchemaList = replicationControllerListSchema.getItems();
+        for (ReplicationControllerSchema replicationControllerSchema : replicationControllerSchemaList) {
+            System.err.println("DUMP replication controller = " + replicationControllerSchema);
+        }
+
+        return -1;
+    }
+
+    boolean setDesiredState(String selector, int number) {
+        boolean result = false;
+        Map<String, ReplicationControllerSchema> replicationControllerSchemaMap = KubernetesHelper.getReplicationControllerMap(kubernetes, selector);
+        if (!replicationControllerSchemaMap.isEmpty()) {
+            ReplicationControllerSchema replicationController = replicationControllerSchemaMap.values().iterator().next();
+            if (replicationController != null) {
+                ControllerDesiredState desiredState = replicationController.getDesiredState();
+                desiredState.setReplicas(number);
+                replicationController.setDesiredState(desiredState);
+                try {
+                    kubernetes.updateReplicationController(replicationController.getId(), replicationController);
+                    result = true;
+                    LOG.info("Set DesiredState for " + selector + " to " + number + " pods");
+                } catch (Exception e) {
+                    LOG.error("Failed to set DesiredState for " + selector + " to " + number + " pods",e);
+                }
+            }
+        }
+        return result;
+    }
+/*
     private void requestDesiredBrokerNumber(int number) throws Exception {
-        Map<String, ReplicationControllerSchema> replicationControllerMap = KubernetesHelper.getReplicationControllerMap(kubernetes, getSelector());
+        Map<String, ReplicationControllerSchema> replicationControllerMap = KubernetesHelper.getReplicationControllerMap(kubernetes, getBrokerSelector());
         Collection<ReplicationControllerSchema> replicationControllers = replicationControllerMap.values();
         for (ReplicationControllerSchema replicationController : replicationControllers) {
             ControllerDesiredState desiredState = replicationController.getDesiredState();
@@ -441,8 +590,9 @@ public class MQAutoScaler implements MQAutoScalerMBean {
             LOG.info("Updated required replicas for " + replicationController.getId() + " to " + number);
         }
         //sleep, for changes to take effect
-        Thread.sleep(getPollTime() * 1000);
+        Thread.sleep(2000);
     }
+    */
 
     private void bounceBroker(BrokerVitalSigns broker) throws Exception {
         if (broker.getTotalConnections() > 0) {
@@ -539,12 +689,12 @@ public class MQAutoScaler implements MQAutoScalerMBean {
         }
     }
 
-
-    private static class LRUCache<K,V> extends LinkedHashMap<K,V>{
+    private static class LRUCache<K, V> extends LinkedHashMap<K, V> {
 
         private final int maxEntries;
-        LRUCache(int maxEntries){
-          this.maxEntries=maxEntries;
+
+        LRUCache(int maxEntries) {
+            this.maxEntries = maxEntries;
         }
 
         protected boolean removeEldestEntry(Map.Entry eldest) {
@@ -553,9 +703,9 @@ public class MQAutoScaler implements MQAutoScalerMBean {
     }
 
     private static class InactiveBrokers {
-        private final LRUCache<String,Long> cache = new LRUCache<>(10);
+        private final LRUCache<String, Long> cache = new LRUCache<>(10);
 
-        boolean isInactive(BrokerVitalSigns brokerVitalSigns, int timeLimit){
+        boolean isInactive(BrokerVitalSigns brokerVitalSigns, int timeLimit) {
             boolean result = false;
             if (brokerVitalSigns != null) {
                 String id = brokerVitalSigns.getBrokerIdentifier();

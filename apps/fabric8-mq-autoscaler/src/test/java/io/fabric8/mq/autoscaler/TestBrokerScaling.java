@@ -58,7 +58,7 @@ import static io.fabric8.mq.autoscaler.EnvUtils.getEnv;
  *  
  */
 
-public class TestMQAutoScaler extends Thread {
+public class TestBrokerScaling extends Thread {
 
     private String brokerURL = "tcp://localhost:61616";
     private int numberOfConsumers = 2;
@@ -312,16 +312,16 @@ public class TestMQAutoScaler extends Thread {
             String DESTINATIONS = getEnv("DESTINATIONS", 10).trim();
             String RUNNING_TIME = getEnv("RUNNING_TIME", 1).trim();
 
-            TestMQAutoScaler testMQAutoScaler = new TestMQAutoScaler();
+            TestBrokerScaling testBrokerScaling = new TestBrokerScaling();
 
-            testMQAutoScaler.setBrokerURL("tcp://" + AMQ_HOST + ":" + AMQ_PORT);
-            testMQAutoScaler.setNumberOfDestinations(Integer.valueOf(DESTINATIONS));
-            testMQAutoScaler.setRumTimeMinutes(Integer.valueOf(RUNNING_TIME));
-            testMQAutoScaler.init();
-            testMQAutoScaler.start();
+            testBrokerScaling.setBrokerURL("tcp://" + AMQ_HOST + ":" + AMQ_PORT);
+            testBrokerScaling.setNumberOfDestinations(Integer.valueOf(DESTINATIONS));
+            testBrokerScaling.setRumTimeMinutes(Integer.valueOf(RUNNING_TIME));
+            testBrokerScaling.init();
+            testBrokerScaling.start();
 
-            testMQAutoScaler.join();
-            testMQAutoScaler.shutDown();
+            testBrokerScaling.join();
+            testBrokerScaling.shutDown();
             System.err.println("");
             System.err.println("");
             System.err.println("Finished.");

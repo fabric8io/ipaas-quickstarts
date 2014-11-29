@@ -31,12 +31,15 @@
   <description>Fabric8 MQ Example Producer</description>
 
     <properties>
+      <destinationName>TEST.FOO</destinationName>
       <docker.env.MAIN>io.fabric8.mq.producer.ProducerMain</docker.env.MAIN>
 
-      <fabric8.kubernetes.name>fabric8MQCProducer</fabric8.kubernetes.name>
+      <fabric8.kubernetes.name>fabric8MQProducer</fabric8.kubernetes.name>
       <fabric8.env.AMQ_SERVICE_ID>FABRIC8MQ</fabric8.env.AMQ_SERVICE_ID>
+      <fabric8.env.AMQ_QUEUENAME>${destinationName}</fabric8.env.AMQ_QUEUENAME>
       <fabric8.label.container>java</fabric8.label.container>
       <fabric8.label.group>fabric8MQProducer</fabric8.label.group>
+      <fabric8.label.queueName>${destinationName}</fabric8.label.queueName>
       <fabric8.iconRef>icons/activemq.svg</fabric8.iconRef>
     </properties>
 

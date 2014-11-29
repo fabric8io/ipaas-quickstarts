@@ -38,11 +38,13 @@
         <fabric8.env.AMQ_GROUP_NAME>defaultMQGroup</fabric8.env.AMQ_GROUP_NAME>
         <fabric8.env.MAX_GROUP_SIZE>5</fabric8.env.MAX_GROUP_SIZE>
         <fabric8.env.MIN_GROUP_SIZE>5</fabric8.env.MIN_GROUP_SIZE>
-        <fabric8.env.MAX_BROKER_CONNECTIONS>2</fabric8.env.MAX_BROKER_CONNECTIONS>
-        <fabric8.env.MAX_BROKER_DESTINATIONS>2</fabric8.env.MAX_BROKER_DESTINATIONS>
+        <fabric8.env.MAX_BROKER_CONNECTIONS>20</fabric8.env.MAX_BROKER_CONNECTIONS>
+        <fabric8.env.MAX_BROKER_DESTINATIONS>20</fabric8.env.MAX_BROKER_DESTINATIONS>
         <fabric8.env.MAX_DESTINATION_DEPTH>10</fabric8.env.MAX_DESTINATION_DEPTH>
-        <fabric8.env.MAX_PRODUCERS_PER_DESTINATION>2</fabric8.env.MAX_PRODUCERS_PER_DESTINATION>
-        <fabric8.env.MAX_CONSUMERS_PER_DESTINATION>2</fabric8.env.MAX_CONSUMERS_PER_DESTINATION>
+        <fabric8.env.MAX_PRODUCERS_PER_DESTINATION>10</fabric8.env.MAX_PRODUCERS_PER_DESTINATION>
+        <fabric8.env.MAX_CONSUMERS_PER_DESTINATION>10</fabric8.env.MAX_CONSUMERS_PER_DESTINATION>
+        <fabric8.env.MIN_PRODUCERS_PER_DESTINATION>1</fabric8.env.MIN_PRODUCERS_PER_DESTINATION>
+        <fabric8.env.MIN_CONSUMERS_PER_DESTINATION>1</fabric8.env.MIN_CONSUMERS_PER_DESTINATION>
         <fabric8.env.POLL_TIME>5</fabric8.env.POLL_TIME>
         <fabric8.label.container>java</fabric8.label.container>
         <fabric8.label.group>fabric8MQAutoScaler</fabric8.label.group>

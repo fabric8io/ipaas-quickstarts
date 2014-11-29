@@ -28,6 +28,7 @@ public class DestinationVitalSigns {
     private int numberOfProducers;
     private int numberOfConsumers;
     private final ActiveMQDestination destination;
+    private int queueDepthRate;
 
     public DestinationVitalSigns(ActiveMQDestination destination) {
         this.destination = destination;
@@ -58,24 +59,21 @@ public class DestinationVitalSigns {
     }
 
     public void setQueueDepth(int queueDepth) {
+        queueDepthRate = queueDepth - this.queueDepth;
         this.queueDepth = queueDepth;
     }
 
-    public boolean areLimitsExceeded(BrokerVitalSigns brokerVitalSigns, DestinationLimits destinationLimits) {
-        int depth = getQueueDepth();
-        boolean depthExceeded = depth > destinationLimits.getMaxDestinationDepth();
-        if (depthExceeded) {
-            LOG.info(getDestination() + " EXCEEDED depth limit(" + destinationLimits.getMaxDestinationDepth() + ") with " + depth + " on broker" + brokerVitalSigns.getBrokerIdentifier());
-        }else {
-            LOG.info(getDestination() + " within depth limit(" + destinationLimits.getMaxDestinationDepth() + ") with " + depth + " on broker" + brokerVitalSigns.getBrokerIdentifier());
-        }
+    public int getQueueDepthRate() {
+        return queueDepthRate;
+    }
 
+    public boolean areLimitsExceeded(BrokerVitalSigns brokerVitalSigns, DestinationLimits destinationLimits) {
         int consumers = getNumberOfConsumers();
         boolean consumersExceeded = consumers > destinationLimits.getMaxConsumersPerDestination();
 
         if (consumersExceeded) {
             LOG.info(getDestination() + " EXCEEDED consumer limit(" + destinationLimits.getMaxConsumersPerDestination() + ") with " + consumers + " on broker" + brokerVitalSigns.getBrokerIdentifier());
-        }else {
+        } else {
             LOG.info(getDestination() + " within consumer limit(" + destinationLimits.getMaxConsumersPerDestination() + ") with " + consumers + " on broker" + brokerVitalSigns.getBrokerIdentifier());
         }
 
@@ -84,10 +82,10 @@ public class DestinationVitalSigns {
 
         if (producersExceeded) {
             LOG.info(getDestination() + " EXCEEDED producer limit(" + destinationLimits.getMaxProducersPerDestination() + ") with " + producers + " on broker" + brokerVitalSigns.getBrokerIdentifier());
-        }else {
+        } else {
             LOG.info(getDestination() + " within producer limit(" + destinationLimits.getMaxProducersPerDestination() + ") with " + producers + " on broker" + brokerVitalSigns.getBrokerIdentifier());
         }
-        return producersExceeded || consumersExceeded || depthExceeded;
+        return producersExceeded || consumersExceeded;
     }
 
     public String toString() {

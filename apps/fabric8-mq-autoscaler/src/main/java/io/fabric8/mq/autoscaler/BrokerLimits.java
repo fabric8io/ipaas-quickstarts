@@ -16,8 +16,8 @@
 package io.fabric8.mq.autoscaler;
 
 public class BrokerLimits {
-    private int maxConnectionsPerBroker = 10;
-    private int maxDestinationsPerBroker = 10;
+    private int maxConnectionsPerBroker = 20;
+    private int maxDestinationsPerBroker = 20;
 
     public BrokerLimits() {
     }

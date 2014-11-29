@@ -13,8 +13,8 @@ Environment variables:
 * **MAX_BROKER_CONNECTIONS** (_10_) - the maximum number of connections allowed for a single broker
 * **MAX_BROKER_DESTINATIONS** (_10_) - the maximum number of destinations allowed for a broker
 *  **MAX_DESTINATION_DEPTH** (_10_) the maximum number of unconsumed messages on a broker before scaling up more brokers
-*  **MAX_PRODUCERS_PER_DESTINATION** (_1_) - the maximum number of producers allowed per destination
-*  **MAX_CONSUMERS_PER_DESTINATION** (_1_) - the maximum number of consumers allowed per destination
+*  **MAX_PRODUCERS_PER_DESTINATION** (_10_) - the maximum number of producers allowed per destination
+*  **MAX_CONSUMERS_PER_DESTINATION** (_10_) - the maximum number of consumers allowed per destination
 
 The auto scaler will also redistribute clients if destinations have no active consumers.
 

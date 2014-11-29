@@ -17,8 +17,10 @@ package io.fabric8.mq.autoscaler;
 
 public class DestinationLimits {
     private int maxDestinationDepth = 10;
-    private int maxProducersPerDestination = 1;
-    private int maxConsumersPerDestination = 1;
+    private int maxProducersPerDestination = 10;
+    private int maxConsumersPerDestination = 10;
+    private int minProducersPerDestination = 10;
+    private int minConsumersPerDestination = 10;
 
     public DestinationLimits() {
     }
@@ -37,6 +39,22 @@ public class DestinationLimits {
 
     public void setMaxProducersPerDestination(int maxProducersPerDestination) {
         this.maxProducersPerDestination = maxProducersPerDestination;
+    }
+
+    public int getMinConsumersPerDestination() {
+        return minConsumersPerDestination;
+    }
+
+    public void setMinConsumersPerDestination(int minConsumersPerDestination) {
+        this.minConsumersPerDestination = minConsumersPerDestination;
+    }
+
+    public int getMinProducersPerDestination() {
+        return minProducersPerDestination;
+    }
+
+    public void setMinProducersPerDestination(int minProducersPerDestination) {
+        this.minProducersPerDestination = minProducersPerDestination;
     }
 
     public int getMaxDestinationDepth() {

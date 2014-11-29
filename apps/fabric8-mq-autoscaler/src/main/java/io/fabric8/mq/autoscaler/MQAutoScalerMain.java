@@ -15,10 +15,9 @@
  */
 package io.fabric8.mq.autoscaler;
 
+import io.fabric8.utils.Systems;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import static io.fabric8.mq.autoscaler.EnvUtils.getEnv;
 
 public class MQAutoScalerMain {
     private static final Logger LOG = LoggerFactory.getLogger(MQAutoScalerMain.class);
@@ -27,28 +26,32 @@ public class MQAutoScalerMain {
 
         try {
             MQAutoScaler mqAutoScaler = new MQAutoScaler();
-            String brokerName = getEnv("AMQ_SERVICE_ID", mqAutoScaler.getBrokerName());
+            String brokerName = Systems.getEnvVarOrSystemProperty("AMQ_SERVICE_ID", mqAutoScaler.getBrokerName());
             mqAutoScaler.setBrokerName(brokerName);
-            String groupName = getEnv("AMQ_GROUP_NAME", mqAutoScaler.getGroupName());
+            String groupName = Systems.getEnvVarOrSystemProperty("AMQ_GROUP_NAME", mqAutoScaler.getGroupName());
             mqAutoScaler.setGroupName(groupName);
-            String pollTime = getEnv("POLL_TIME", mqAutoScaler.getPollTime());
-            mqAutoScaler.setPollTime(Integer.valueOf(pollTime));
-            String maximumGroupSize = getEnv("MAX_GROUP_SIZE", mqAutoScaler.getMaximumGroupSize());
-            mqAutoScaler.setMaximumGroupSize(Integer.valueOf(maximumGroupSize));
-            String minimumGroupSize = getEnv("MIN_GROUP_SIZE", mqAutoScaler.getMinimumGroupSize());
-            mqAutoScaler.setMinimumGroupSize(Integer.parseInt(minimumGroupSize));
-            String kubernetesMaster = getEnv("KUBERNETES_MASTER", mqAutoScaler.getKubernetesMaster());
+            Number pollTime = Systems.getEnvVarOrSystemProperty("POLL_TIME", mqAutoScaler.getPollTime());
+            mqAutoScaler.setPollTime(pollTime.intValue());
+            Number maximumGroupSize = Systems.getEnvVarOrSystemProperty("MAX_GROUP_SIZE", mqAutoScaler.getMaximumGroupSize());
+            mqAutoScaler.setMaximumGroupSize(maximumGroupSize.intValue());
+            Number minimumGroupSize = Systems.getEnvVarOrSystemProperty("MIN_GROUP_SIZE", mqAutoScaler.getMinimumGroupSize());
+            mqAutoScaler.setMinimumGroupSize(minimumGroupSize.intValue());
+            String kubernetesMaster = Systems.getEnvVarOrSystemProperty("KUBERNETES_MASTER", mqAutoScaler.getKubernetesMaster());
             mqAutoScaler.setKubernetesMaster(kubernetesMaster);
-            String maxBrokerConnections = getEnv("MAX_BROKER_CONNECTIONS",mqAutoScaler.getMaxConnectionsPerBroker());
-            mqAutoScaler.setMaxConnectionsPerBroker(Integer.parseInt(maxBrokerConnections));
-            String maxBrokerDestinations = getEnv("MAX_BROKER_DESTINATIONS", mqAutoScaler.getMaxDestinationsPerBroker());
-            mqAutoScaler.setMaxDestinationsPerBroker(Integer.parseInt(maxBrokerDestinations));
-            String maxDestinationDepth = getEnv("MAX_DESTINATION_DEPTH", mqAutoScaler.getMaxDestinationDepth());
-            mqAutoScaler.setMaxDestinationDepth(Integer.parseInt(maxDestinationDepth));
-            String maxProducersPerDestination = getEnv("MAX_PRODUCERS_PER_DESTINATION", mqAutoScaler.getMaxProducersPerDestination());
-            mqAutoScaler.setMaxProducersPerDestination(Integer.parseInt(maxProducersPerDestination));
-            String maxConsumersPerDestination = getEnv("MAX_CONSUMERS_PER_DESTINATION", mqAutoScaler.getMaxConsumersPerDestination());
-            mqAutoScaler.setMaxConsumersPerDestination(Integer.parseInt(maxConsumersPerDestination));
+            Number maxBrokerConnections = Systems.getEnvVarOrSystemProperty("MAX_BROKER_CONNECTIONS", mqAutoScaler.getMaxConnectionsPerBroker());
+            mqAutoScaler.setMaxConnectionsPerBroker(maxBrokerConnections.intValue());
+            Number maxBrokerDestinations = Systems.getEnvVarOrSystemProperty("MAX_BROKER_DESTINATIONS", mqAutoScaler.getMaxDestinationsPerBroker());
+            mqAutoScaler.setMaxDestinationsPerBroker(maxBrokerDestinations.intValue());
+            Number maxDestinationDepth = Systems.getEnvVarOrSystemProperty("MAX_DESTINATION_DEPTH", mqAutoScaler.getMaxDestinationDepth());
+            mqAutoScaler.setMaxDestinationDepth(maxDestinationDepth.intValue());
+            Number maxProducersPerDestination = Systems.getEnvVarOrSystemProperty("MAX_PRODUCERS_PER_DESTINATION", mqAutoScaler.getMaxProducersPerDestination());
+            mqAutoScaler.setMaxProducersPerDestination(maxProducersPerDestination.intValue());
+            Number maxConsumersPerDestination = Systems.getEnvVarOrSystemProperty("MAX_CONSUMERS_PER_DESTINATION", mqAutoScaler.getMaxConsumersPerDestination());
+            mqAutoScaler.setMaxConsumersPerDestination(maxConsumersPerDestination.intValue());
+            Number minProducersPerDestination = Systems.getEnvVarOrSystemProperty("MIN_PRODUCERS_PER_DESTINATION", mqAutoScaler.getMinProducersPerDestination());
+            mqAutoScaler.setMaxProducersPerDestination(minProducersPerDestination.intValue());
+            Number minConsumersPerDestination = Systems.getEnvVarOrSystemProperty("MIN_CONSUMERS_PER_DESTINATION", mqAutoScaler.getMinConsumersPerDestination());
+            mqAutoScaler.setMaxConsumersPerDestination(minConsumersPerDestination.intValue());
             mqAutoScaler.start();
 
             waiting();
