@@ -57,7 +57,9 @@
     <docker.port.container.http>${http.port}</docker.port.container.http>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
 
+    <fabric8.service.name>api-registry</fabric8.service.name>
     <fabric8.service.port>9393</fabric8.service.port>
+    <fabric8.service.containerPort>${http.port}</fabric8.service.containerPort>
     <fabric8.kubernetes.name>apiRegistry</fabric8.kubernetes.name>
   </properties>
 
