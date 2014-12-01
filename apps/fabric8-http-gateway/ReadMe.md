@@ -50,7 +50,10 @@ The service can be configured at deploy time by editing the `kubernetes-extra.js
   ]
 }
 ```
-In particular the `port` setting is of interest as this is the port that the service and therefore the HTTP Gateway will expose to the outside world.
+In particular the `port` setting is of interest as this is the port that the service and therefore the HTTP Gateway will expose to the outside world. When using Jube this setting will appear in the `env.sh` file as 
+```
+export FABRIC8HTTPGATEWAY_SERVICE_PORT="9000"
+```
 
 #### Container Gateway Configuration
 The HTTP Gateway can be configured using Environmental or System parameters. If the parameter is specified for both, then the Environmental
@@ -62,7 +65,7 @@ The table below shows a full overview of all parameters that can be used to conf
 | `HTTP_GATEWAY_SERVICE_ID` | Parameter used to construct the `HTTP_GATEWAY` parameters. The complete prefix is defined as `<HTTP_GATEWAY_SERVICE_ID>_SERVICE_` | FABRIC8HTTPGATEWAY |
 | `API_MANAGER_ENABLED` | Switch to enable the API Manager. When set to `false` no API management is activated and the HTTP_GATEWAY defaults to do simple URL mapping only without any of the API Management features such as security or other policies  | true |
 | `HOST` | The hostname or IP address of the HTTP Gateway | `localhost` |
-| `HTTP_PORT` | The HTTP port of the HTTP Gateway containers. Note that this parameter has no prefix. | `9090` |
+| `HTTP_PORT` | The HTTP port of the HTTP Gateway containers. **Note that this parameter has no prefix.** | `9090` |
 | `KUBERNETES_MASTER` | The URL pointing to the Kubernates API. By default Kubernetes runs on port `8484`, which Jube runs on `8585` | `http://localhost:8484/` |
 | `GATEWAY_SERVICES_SELECTORS` | A JSON structure representing the collection of selectors for the gateway to use to select the services it proxies. | `[{container:java,group:quickstarts},{container:camel,group:quickstarts}]` |
 
@@ -87,9 +90,7 @@ For this the URI template is:
 
 which means take the context path (in the above case "/cxf/crm" and append "/" to it, making "/cxf/crm/" and then any request within that path is then passed to an instance of the cxf crm service.
 
-You may wish to segregate, say, servlets, web services or web applications into different URI spaces.
-
-For example you may want all web services to be within **/api/** and apps to be in **/app/**. To do this just update the URI template to one of the following:
+You may wish to segregate, say, servlets, web services or web applications into different URI spaces. For example you may want all web services to be within **/api/** and apps to be in **/app/**. To do this just update the URI template to one of the following:
 
     uriTemplate = /api/{contextPath}/
     uriTemplate = /app/{contextPath}/
