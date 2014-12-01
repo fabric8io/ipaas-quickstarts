@@ -55,6 +55,7 @@ public class Main {
         String uriTemplateEnvVar = serviceName + HTTPGatewayConfig.URI_TEMPLATE;
         String loadBalancerEnvVar = serviceName + HTTPGatewayConfig.LOAD_BALANCER;
         String enabledVersionEnvVar = serviceName + HTTPGatewayConfig.ENABLED_VERSION;
+        String enableIndexEnvVar = serviceName + HTTPGatewayConfig.ENABLE_INDEX;
         String reverseHeadersEnvVar = serviceName + HTTPGatewayConfig.REVERSE_HEADERS;
         //Gateway config
         gatewayConfig.put(HTTPGatewayConfig.HOST,
@@ -62,7 +63,7 @@ public class Main {
         gatewayConfig.put(HTTPGatewayConfig.HTTP_PORT,
                 Systems.getEnvVarOrSystemProperty(portEnvVar, portEnvVar, DEFAULT_PORT));
         gatewayConfig.put(HTTPGatewayConfig.ENABLE_INDEX,
-                Systems.getEnvVarOrSystemProperty(portEnvVar, portEnvVar, DEFAULT_INDEX_ENABLED));
+                Systems.getEnvVarOrSystemProperty(enableIndexEnvVar, enableIndexEnvVar, DEFAULT_INDEX_ENABLED));
         gatewayConfig.put(HTTPGatewayConfig.IS_API_MANAGER_ENABLED,
         		Systems.getEnvVarOrSystemProperty(apiManagerEnabledEnvVar, apiManagerEnabledEnvVar, DEFAULT_API_MANAGER_ENABLED));
         LOG.info("Container host " + gatewayConfig.getHost());
