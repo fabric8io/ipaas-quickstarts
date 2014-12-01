@@ -62,8 +62,8 @@ The table below shows a full overview of all parameters that can be used to conf
 
 | Parameter | Description | Default |
 | -------- | ----------- | ------ |
-| `HTTP_GATEWAY_SERVICE_ID` | Parameter used to construct the `HTTP_GATEWAY` parameters. The complete prefix is defined as `<HTTP_GATEWAY_SERVICE_ID>_SERVICE_` | FABRIC8HTTPGATEWAY |
-| `API_MANAGER_ENABLED` | Switch to enable the API Manager. When set to `false` no API management is activated and the HTTP_GATEWAY defaults to do simple URL mapping only without any of the API Management features such as security or other policies  | true |
+| `HTTP_GATEWAY_SERVICE_ID` | Parameter used to construct the `HTTP_GATEWAY` parameters. The complete prefix is defined as `<HTTP_GATEWAY_SERVICE_ID>_SERVICE_` | `FABRIC8HTTPGATEWAY` |
+| `API_MANAGER_ENABLED` | Switch to enable the API Manager. When set to `false` no API management is activated and the HTTP_GATEWAY defaults to do simple URL mapping only without any of the API Management features such as security or other policies  | `true` |
 | `HOST` | The hostname or IP address of the HTTP Gateway | `localhost` |
 | `HTTP_PORT` | The HTTP port of the HTTP Gateway containers. **Note that this parameter has no prefix.** | `9090` |
 | `KUBERNETES_MASTER` | The URL pointing to the Kubernates API. By default Kubernetes runs on port `8484`, which Jube runs on `8585` | `http://localhost:8484/` |
