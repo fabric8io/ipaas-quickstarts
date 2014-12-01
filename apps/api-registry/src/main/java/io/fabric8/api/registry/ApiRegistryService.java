@@ -45,12 +45,12 @@ import java.util.List;
 public class ApiRegistryService {
     private static final Logger LOG = LoggerFactory.getLogger(ApiRegistryService.class);
 
-    private MessageContext messageContext;
+    @Inject
     private ApiFinder finder;
 
-    @Inject
-    public ApiRegistryService(ApiFinder finder) {
-        this.finder = finder;
+    private MessageContext messageContext;
+
+    public ApiRegistryService() {
     }
 
     @GET
