@@ -144,7 +144,7 @@
               <build>
                 <from>${docker.from}</from>
                 <assemblyDescriptor>${docker.assemblyDescriptor}</assemblyDescriptor>
-                <exportDir>/opt/apache-karaf-2.4.0</exportDir>
+                <exportDir>/opt/jboss/deploy/</exportDir>
               </build>
             </image>
           </images>

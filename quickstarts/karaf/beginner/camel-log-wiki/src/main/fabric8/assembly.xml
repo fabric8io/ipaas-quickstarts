@@ -23,14 +23,14 @@
   <fileSets>
     <fileSet>
       <directory>${project.build.directory}/</directory>
-      <outputDirectory>/deploy/</outputDirectory>
+      <outputDirectory>/</outputDirectory>
       <includes>
         <include>*.kar</include>
       </includes>
     </fileSet>
     <fileSet>
       <directory>${project.build.directory}/fabric8/repository/</directory>
-      <outputDirectory>/system/</outputDirectory>
+      <outputDirectory>/fabric8/repository/</outputDirectory>
       <includes>
         <include>**/*</include>
       </includes>
