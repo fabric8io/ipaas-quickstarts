@@ -43,6 +43,8 @@
 
     <!-- the version of the BOM, defining all the dependency versions -->
     <fabric8.version>2.0.11</fabric8.version>
+    <fabric8.label.container>java</fabric8.label.container>
+    <fabric8.label.group>quickstarts</fabric.label.group>
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <cxf.version>3.0.2</cxf.version>
@@ -60,6 +62,9 @@
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
 
     <fabric8.kubernetes.name>quickStartJavaCxfCdi</fabric8.kubernetes.name>
+    <fabric8.service.name>quickstart-java-cxf-cdi</fabric8.service.name>
+    <fabric8.service.port>9002</fabric8.service.port>
+    <fabric8.service.containerPort>${http.port}</fabric8.service.containerPort>
   </properties>
 
   <dependencyManagement>
