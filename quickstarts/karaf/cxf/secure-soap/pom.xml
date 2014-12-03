@@ -42,7 +42,7 @@
     <skipTests>true</skipTests>
 
     <!-- the version of the BOM, defining all the dependency versions -->
-    <fabric8.version>2.0.10</fabric8.version>
+    <fabric8.version>2.0.11</fabric8.version>
     <cxf-version-range>[3.0.1, 3.0.3)</cxf-version-range>
     <cxf.version>3.0.2</cxf.version>
 
