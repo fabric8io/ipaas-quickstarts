@@ -36,11 +36,11 @@ import static io.fabric8.utils.URLUtils.urlPathJoin;
  */
 public class CamelEndpointFinder extends EndpointFinderSupport {
 
-    public static final String CXF_API_ENDPOINT_MBEAN_NAME = "org.apache.camel:*";
+    public static final String CAMEL_API_ENDPOINT_MBEAN_NAME = "org.apache.camel:*";
 
     @Override
     protected String getObjectNamePattern() {
-        return CXF_API_ENDPOINT_MBEAN_NAME;
+        return CAMEL_API_ENDPOINT_MBEAN_NAME;
     }
 
     @Override
