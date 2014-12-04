@@ -44,7 +44,7 @@ public class DatabaseBean {
         String sql = "create table orders (\n"
               + "  id integer primary key,\n"
               + "  item varchar(10),\n"
-              + "  amount varchar(5),\n"
+              + "  amount integer,\n"
               + "  description varchar(30),\n"
               + "  processed boolean\n"
               + ")";

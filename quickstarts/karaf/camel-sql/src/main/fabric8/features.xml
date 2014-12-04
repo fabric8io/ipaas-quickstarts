@@ -26,6 +26,7 @@
     <feature version="${camel.version}">camel-jms</feature>
     <feature version="${camel.version}">camel-blueprint</feature>
     <feature version="${camel.version}">camel-sql</feature>
+    <feature version="${camel.version}">camel-jackson</feature>
     <bundle>mvn:org.apache.derby/derby/${derby.version}</bundle>
     <bundle>mvn:commons-pool/commons-pool/1.6</bundle>
     <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-dbcp/1.4_3</bundle>

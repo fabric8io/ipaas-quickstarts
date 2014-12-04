@@ -16,9 +16,10 @@
  */
 package org.apache.camel.example.sql;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+
+import org.apache.camel.example.sql.model.Order;
 
 /**
  * Bean that generates and process orders.
@@ -29,24 +30,34 @@ public class OrderBean {
     private Random ran = new Random();
 
     /**
-     * Generates a new order structured as a {@link Map}
+     * Generates a new order
      */
-    public Map<String, Object> generateOrder() {
-        Map<String, Object> answer = new HashMap<String, Object>();
-        answer.put("id", counter++);
-        answer.put("item", counter % 2 == 0 ? 111 : 222);
-        answer.put("amount", ran.nextInt(10) + 1);
-        answer.put("description", counter % 2 == 0 ? "Camel in Action" : "ActiveMQ in Action");
-        return answer;
+    public Order generateOrder() {
+        Order order = new Order();
+        order.setId(++counter);
+        order.setItem(counter % 2 == 0 ? "Camel" : "ActiveMQ");
+        order.setAmount(ran.nextInt(10) + 1);
+        order.setDescription(counter % 2 == 0 ? "Camel in Action" : "ActiveMQ in Action");
+        return order;
     }
 
     /**
      * Processes the order
      *
-     * @param data  the order as a {@link Map}
+     * @param order  the order
      * @return the transformed order
      */
-    public String processOrder(Map<String, Object> data) {
-        return "Processed order id " + data.get("id") + " item " + data.get("item") + " of " + data.get("amount") + " copies of " + data.get("description");
+    public String processOrder(Order order) {
+        return "Processed order id " + order.getId() + " item " + order.getItem() + " of " + order.getAmount() + " copies of " + order.getDescription();
+    }
+
+    public Order rowToOrder(Map<String, Object> row) {
+        Order order = new Order();
+        order.setId((Integer) row.get("id"));
+        order.setItem((String) row.get("item"));
+        order.setAmount((Integer) row.get("amount"));
+        order.setDescription((String) row.get("description"));
+        order.setProcessed((Boolean) row.get("processed"));
+        return order;
     }
 }

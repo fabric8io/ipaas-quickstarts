@@ -81,6 +81,11 @@
       <artifactId>camel-sql</artifactId>
     </dependency>
 
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-jackson</artifactId>
+    </dependency>
+
     <!-- jdbc -->
     <dependency>
       <groupId>org.apache.derby</groupId>
@@ -101,6 +106,7 @@
   </dependencies>
 
   <build>
+
     <finalName>${project.artifactId}</finalName>
     <resources>
       <resource>
@@ -109,6 +115,18 @@
       </resource>
     </resources>
     <plugins>
+
+      <!-- Allows the routes to be run via 'mvn camel:run' -->
+      <plugin>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-maven-plugin</artifactId>
+        <version>${camel.version}</version>
+        <configuration>
+          <!-- Tell camel run plugin to load application from the blueprint file -->
+          <useBlueprint>true</useBlueprint>
+        </configuration>
+      </plugin>
+
       <!-- Compiler plugin enforces Java 1.7 compatibility and activates annotation processors -->
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>

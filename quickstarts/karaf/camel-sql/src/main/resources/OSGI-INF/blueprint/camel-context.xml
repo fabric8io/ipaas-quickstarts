@@ -23,7 +23,6 @@
              http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
              ">
 
-  <!-- START SNIPPET: e1 -->
   <!-- this is the JDBC data source which uses an in-memory only Apache Derby database -->
   <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
     <property name="driverClassName" value="org.apache.derby.jdbc.EmbeddedDriver"/>
@@ -42,9 +41,7 @@
   <bean id="sql" class="org.apache.camel.component.sql.SqlComponent">
     <property name="dataSource" ref="dataSource"/>
   </bean>
-  <!-- END SNIPPET: e1 -->
 
-  <!-- START SNIPPET: e2 -->
   <!-- order bean is our business logic bean that creates new orders -->
   <bean id="orderBean" class="org.apache.camel.example.sql.OrderBean"/>
 
@@ -61,13 +58,16 @@
         <method ref="orderBean" method="generateOrder"/>
       </transform>
       <to uri="sql:{{sql.insertOrder}}"/>
-      <log message="Inserted new order ${body[id]}"/>
+      <log message="Inserted new order ${body.id}"/>
     </route>
 
     <!-- route that process the orders by picking up new rows from the database
          and when done processing then update the row to mark it as processed -->
     <route id="processOrder-route">
       <from uri="sql:{{sql.selectOrder}}?consumer.onConsume={{sql.markOrder}}"/>
+      <transform>
+        <method ref="orderBean" method="rowToOrder"/>
+      </transform>
       <to uri="bean:orderBean?method=processOrder"/>
       <log message="${body}"/>
     </route>
