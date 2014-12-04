@@ -56,6 +56,13 @@
 
     <fabric8.kubernetes.name>quickStartWarCxfCdi</fabric8.kubernetes.name>
     <fabric8.iconRef>icons/tomcat.svg</fabric8.iconRef>
+
+    <fabric8.service.name>quickstart-cxfcdi</fabric8.service.name>
+    <fabric8.service.port>9102</fabric8.service.port>
+    <fabric8.service.containerPort>8080</fabric8.service.containerPort>
+
+    <fabric8.label.component>quickStartWarCxfCdi</fabric8.label.component>
+    <fabric8.label.group>quickstarts</fabric8.label.group>
   </properties>
 
   <dependencyManagement>
