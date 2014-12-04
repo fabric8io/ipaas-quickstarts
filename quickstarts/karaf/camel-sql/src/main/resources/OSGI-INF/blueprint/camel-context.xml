@@ -17,8 +17,6 @@
 -->
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.0.0"
-           xmlns:camel="http://camel.apache.org/schema/blueprint"
            xsi:schemaLocation="
              http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
              ">
@@ -51,9 +49,18 @@
     <!-- use Camel property placeholder loaded from the given file -->
     <propertyPlaceholder id="placeholder" location="classpath:sql.properties"/>
 
+    <restConfiguration component="servlet" bindingMode="json" contextPath="/books"/>
+
+    <!-- rest service that fetches an order by id -->
+    <rest path="/books">
+      <get uri="order/{id}" outType="org.apache.camel.example.sql.model.Order">
+        <to uri="sql:{{sql.selectOrder}}?outputType=SelectOne&amp;outputClass=org.apache.camel.example.sql.model.Order"/>
+      </get>
+    </rest>
+
     <!-- route that generate new orders and insert them in the database -->
     <route id="generateOrder-route">
-      <from uri="timer:foo?period=5s"/>
+      <from uri="timer:foo?delay=1s&amp;period=10s"/>
       <transform>
         <method ref="orderBean" method="generateOrder"/>
       </transform>
@@ -64,7 +71,7 @@
     <!-- route that process the orders by picking up new rows from the database
          and when done processing then update the row to mark it as processed -->
     <route id="processOrder-route">
-      <from uri="sql:{{sql.selectOrder}}?consumer.onConsume={{sql.markOrder}}"/>
+      <from uri="sql:{{sql.selectUnprocessedOrders}}?consumer.onConsume={{sql.markOrder}}"/>
       <transform>
         <method ref="orderBean" method="rowToOrder"/>
       </transform>

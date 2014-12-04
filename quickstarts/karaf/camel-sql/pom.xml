@@ -86,6 +86,17 @@
       <artifactId>camel-jackson</artifactId>
     </dependency>
 
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-servlet</artifactId>
+    </dependency>
+
+    <!-- used when testing locally with mvn camel:run instead of servlet
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-jetty</artifactId>
+    </dependency> -->
+
     <!-- jdbc -->
     <dependency>
       <groupId>org.apache.derby</groupId>
