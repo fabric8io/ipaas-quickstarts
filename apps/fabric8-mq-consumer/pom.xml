@@ -31,6 +31,7 @@
   <description>Fabric8 MQ Example Consumer</description>
 
     <properties>
+        <version.maven-surefire-plugin>2.15</version.maven-surefire-plugin>
         <destinationName>TEST.FOO</destinationName>
         <docker.env.MAIN>io.fabric8.mq.consumer.ConsumerMain</docker.env.MAIN>
 
@@ -59,6 +60,7 @@
     <plugins>
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
+        <version>${version.maven-surefire-plugin}</version>
         <configuration>
           <forkMode>perTest</forkMode>
         </configuration>

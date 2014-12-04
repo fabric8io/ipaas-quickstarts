@@ -31,6 +31,7 @@
   <description>Fabric8 HTTP Gateway provides a reverse proxy for HTTP traffic over Kubernetes Sevices</description>
 
   <properties>
+    <version.maven-surefire-plugin>2.15</version.maven-surefire-plugin>
     <guava.version>15.0</guava.version>
     <http.port>9090</http.port>
     <docker.env.MAIN>org.jboss.weld.environment.se.StartMain</docker.env.MAIN>
@@ -72,6 +73,7 @@
     <plugins>
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
+        <version>${version.maven-surefire-plugin}</version>
         <configuration>
           <forkMode>perTest</forkMode>
         </configuration>
