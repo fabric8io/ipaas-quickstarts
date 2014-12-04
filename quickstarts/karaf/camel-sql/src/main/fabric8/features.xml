@@ -23,8 +23,10 @@
   <repository>mvn:org.apache.karaf.assemblies.features/spring/${karaf.version}/xml/features</repository>
 
   <feature name="quickstart-karaf-camel-sql" version="${project.version}" resolver="(obr)">
-    <feature version="${camel.version}">camel-jms</feature>
+    <feature version="${camel.version}">camel</feature>
     <feature version="${camel.version}">camel-blueprint</feature>
+    <feature version="${camel.version}">camel-servlet</feature>
+    <feature version="${camel.version}">camel-jms</feature>
     <feature version="${camel.version}">camel-sql</feature>
     <feature version="${camel.version}">camel-jackson</feature>
     <bundle>mvn:org.apache.derby/derby/${derby.version}</bundle>

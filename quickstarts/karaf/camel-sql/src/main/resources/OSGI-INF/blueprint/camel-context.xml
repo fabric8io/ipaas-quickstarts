@@ -21,6 +21,21 @@
              http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
              ">
 
+  <!-- to setup camel servlet with OSGi HttpService -->
+  <reference id="httpService" interface="org.osgi.service.http.HttpService"/>
+
+  <bean class="org.apache.camel.component.servlet.osgi.OsgiServletRegisterer"
+        init-method="register"
+        destroy-method="unregister">
+    <property name="alias" value="/camel-sql"/>
+    <property name="httpService" ref="httpService"/>
+    <property name="servlet" ref="camelServlet"/>
+  </bean>
+
+  <bean id="camelServlet" class="org.apache.camel.component.servlet.CamelHttpTransportServlet"/>
+
+
+
   <!-- this is the JDBC data source which uses an in-memory only Apache Derby database -->
   <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
     <property name="driverClassName" value="org.apache.derby.jdbc.EmbeddedDriver"/>
@@ -40,8 +55,10 @@
     <property name="dataSource" ref="dataSource"/>
   </bean>
 
+
   <!-- order bean is our business logic bean that creates new orders -->
   <bean id="orderBean" class="org.apache.camel.example.sql.OrderBean"/>
+
 
   <!-- here is Camel configured with a number of routes -->
   <camelContext xmlns="http://camel.apache.org/schema/blueprint">
@@ -49,7 +66,8 @@
     <!-- use Camel property placeholder loaded from the given file -->
     <propertyPlaceholder id="placeholder" location="classpath:sql.properties"/>
 
-    <restConfiguration component="servlet" bindingMode="json" contextPath="/books"/>
+    <!-- TODO port="{{env:HTTP_PORT:8181}}" when upgrading to Camel 2.14.1 -->
+    <restConfiguration component="servlet" bindingMode="json" contextPath="/camel-sql" port="8181"/>
 
     <!-- rest service that fetches an order by id -->
     <rest path="/books">
