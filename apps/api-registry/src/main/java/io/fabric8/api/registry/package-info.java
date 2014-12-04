@@ -13,6 +13,5 @@
  *  implied.  See the License for the specific language governing
  *  permissions and limitations under the License.
  */
-@javax.xml.bind.annotation.XmlSchema(namespace = "http://registry.api.fabric8.io/", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
-package io.fabric8.api.registry;
+@javax.xml.bind.annotation.XmlSchema(namespace = "http://registry.api.fabric8.io/", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED) package io.fabric8.api.registry;
 

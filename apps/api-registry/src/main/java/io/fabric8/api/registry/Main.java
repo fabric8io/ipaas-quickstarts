@@ -26,11 +26,11 @@ import org.jboss.weld.environment.servlet.BeanManagerResourceBindingListener;
 import org.jboss.weld.environment.servlet.Listener;
 
 public class Main {
-	
-	public static void main(final String[] args) throws Exception {
-		startServer().join();
-	}
-	
+
+    public static void main(final String[] args) throws Exception {
+        startServer().join();
+    }
+
     public static Server startServer() throws Exception {
         String port = Systems.getEnvVarOrSystemProperty("HTTP_PORT", "HTTP_PORT", "8588");
         Integer num = Integer.parseInt(port);
@@ -56,7 +56,7 @@ public class Main {
 
         // Register and map the dispatcher servlet
         final ServletHolder servletHolder = new ServletHolder(new CXFCdiServlet());
-        
+
         // change default service list URI
         servletHolder.setInitParameter("service-list-path", "/" + servicesPath);
 
