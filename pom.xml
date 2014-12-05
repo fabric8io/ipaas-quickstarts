@@ -70,8 +70,8 @@
 
         <docker.maven.plugin.version>0.10.4</docker.maven.plugin.version>
         <exec-maven-plugin.version>1.2.1</exec-maven-plugin.version>
-        <jube.version>2.0.11</jube.version>
-        <fabric8.version>2.0.11</fabric8.version>
+        <jube.version>2.0.12</jube.version>
+        <fabric8.version>2.0.12</fabric8.version>
         <maven.require.version>3.1.1</maven.require.version>
         <maven.enforcer.plugin.version>1.3.1</maven.enforcer.plugin.version>
     </properties>
