@@ -42,12 +42,10 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 import static io.fabric8.api.registry.ApiFinder.getHttpUrl;
@@ -176,10 +174,10 @@ public class CamelEndpointFinder extends EndpointFinderSupport {
             apiDeclaration.setResourcePath(resourcePath);
         }
 
-        List<Api> apis = getOrCreateApis(apiDeclaration);
-        Api api = findOrCreateApiForPath(apis, restService.getUriTemplate());
+        List<Api> apis = SwaggerHelpers.getOrCreateApis(apiDeclaration);
+        Api api = SwaggerHelpers.findOrCreateApiForPath(apis, restService.getUriTemplate());
 
-        List<Operation> operations = getOrCreateOperations(api);
+        List<Operation> operations = SwaggerHelpers.getOrCreateOperations(api);
         Operation operation = new Operation();
         String method = restService.getMethod();
         if (Strings.isNotBlank(method)) {
@@ -188,7 +186,7 @@ public class CamelEndpointFinder extends EndpointFinderSupport {
         operation.setConsumes(splitStringToSet(restService.getConsumes(), ","));
         operation.setProduces(splitStringToSet(restService.getProduces(), ","));
         String inType = restService.getInType();
-        List<Parameter> parameters = getOrCreateParameters(operation);
+        List<Parameter> parameters = SwaggerHelpers.getOrCreateParameters(operation);
         addUrlParameters(parameters, restService.getUrl());
         if (Strings.isNotBlank(inType)) {
             Parameter parameter = new Parameter();
@@ -201,21 +199,12 @@ public class CamelEndpointFinder extends EndpointFinderSupport {
         }
         String outType = restService.getOutType();
         if (Strings.isNotBlank(outType)) {
-            List<ResponseMessage> responseMessages = getOrCreateResponseMessages(operation);
+            List<ResponseMessage> responseMessages = SwaggerHelpers.getOrCreateResponseMessages(operation);
             ResponseMessage responseMessage = new ResponseMessage();
             responseMessage.setMessage(outType);
             responseMessages.add(responseMessage);
         }
         operations.add(operation);
-    }
-
-    public static List<ResponseMessage> getOrCreateResponseMessages(Operation operation) {
-        List<ResponseMessage> responseMessages = operation.getResponseMessages();
-        if (responseMessages == null) {
-            responseMessages = new ArrayList<>();
-            operation.setResponseMessages(responseMessages);
-        }
-        return responseMessages;
     }
 
     /**
@@ -241,15 +230,6 @@ public class CamelEndpointFinder extends EndpointFinderSupport {
         }
     }
 
-    public static List<Parameter> getOrCreateParameters(Operation operation) {
-        List<Parameter> parameters = operation.getParameters();
-        if (parameters == null) {
-            parameters = new ArrayList<>();
-            operation.setParameters(parameters);
-        }
-        return parameters;
-    }
-
     public static Set<String> splitStringToSet(String text, String separator) {
         Set<String> answer = new HashSet<>();
         if (Strings.isNotBlank(text)) {
@@ -261,40 +241,6 @@ public class CamelEndpointFinder extends EndpointFinderSupport {
             }
         }
         return answer;
-    }
-
-    public static List<Operation> getOrCreateOperations(Api api) {
-        List<Operation> operations = api.getOperations();
-        if (operations == null) {
-            operations = new ArrayList<>();
-            api.setOperations(operations);
-        }
-        return operations;
-    }
-
-    public static List<Api> getOrCreateApis(ApiDeclaration apiDeclaration) {
-        List<Api> apis = apiDeclaration.getApis();
-        if (apis == null) {
-            apis = new ArrayList<>();
-            apiDeclaration.setApis(apis);
-        }
-        return apis;
-    }
-
-    /**
-     * Returns the {@link Api} for the given path or creates a new one and appends it to the list
-     */
-    public static Api findOrCreateApiForPath(List<Api> apis, String path) {
-        for (Api api : apis) {
-            String aPath = api.getPath();
-            if (Objects.equals(path, aPath)) {
-                return api;
-            }
-        }
-        Api api = new Api();
-        api.setPath(path);
-        apis.add(api);
-        return api;
     }
 
     /**

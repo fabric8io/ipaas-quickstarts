@@ -17,9 +17,12 @@ package io.fabric8.api.registry;
 
 
 import com.wordnik.swagger.annotations.Api;
+import io.fabric8.api.registry.rules.SwaggerHelpers;
 import io.fabric8.swagger.model.ApiDeclaration;
 import io.fabric8.utils.IOHelpers;
 import io.fabric8.utils.Objects;
+import io.fabric8.utils.Strings;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.cxf.jaxrs.ext.MessageContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +41,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.List;
 
@@ -107,11 +111,29 @@ public class ApiRegistryService {
 
     @GET
     @Path("swagger/pod/{pod}/{container}")
-    public ApiDeclaration serviceApis(@PathParam("pod") String pod, @PathParam("container") String container) {
+    public ApiDeclaration swagger(@PathParam("pod") String pod, @PathParam("container") String container) {
         Objects.notNull(pod, "pod");
         Objects.notNull(container, "container");
         PodAndContainerId key = new PodAndContainerId(pod, container);
-        ApiDeclaration swagger = getFinder().getSwaggerForPodAndContainer(key);
+        return getFinder().getSwaggerForPodAndContainer(key);
+    }
+
+    @GET
+    @Path("swagger/pod/{pod}/{container}/{path:.*}")
+    public ApiDeclaration swagger(@PathParam("pod") String pod, @PathParam("container") String container, @PathParam("path") String path) {
+        ApiDeclaration swagger = swagger(pod, container);
+        if (Strings.isNotBlank(path)) {
+            String pathPrefix = urlPathJoin("/", path);
+            ApiDeclaration filtered = new ApiDeclaration();
+            try {
+                BeanUtils.copyProperties(filtered, swagger);
+            } catch (Exception e) {
+                LOG.info("Failed to copy properties: " + e, e);
+                return filtered;
+            }
+            filtered.setApis(SwaggerHelpers.filterApis(swagger, pathPrefix));
+            return filtered;
+        }
         return swagger;
     }
 
