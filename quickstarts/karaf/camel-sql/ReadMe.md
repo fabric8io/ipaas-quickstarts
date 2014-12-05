@@ -1,0 +1,1 @@
+This quickstart demonstrates how to use SQL via JDBC along with Camel's REST DSL to expose a RESTful API.
