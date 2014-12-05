@@ -27,9 +27,11 @@ import io.fabric8.kubernetes.api.model.PodSchema;
 import io.fabric8.kubernetes.api.model.Port;
 import io.fabric8.kubernetes.api.model.ServiceSchema;
 import io.fabric8.kubernetes.jolokia.JolokiaClients;
+import io.fabric8.swagger.model.ApiDeclaration;
 import io.fabric8.utils.Closeables;
 import io.fabric8.utils.Filter;
 import io.fabric8.utils.Strings;
+import org.apache.cxf.jaxrs.ext.MessageContext;
 import org.apache.deltaspike.core.api.config.ConfigProperty;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -69,6 +71,8 @@ public class ApiFinder {
     public static final String wadlProperty = "WADL";
     public static final String wsdlProperty = "WSDL";
 
+    private final long pollTimeMs;
+    private MessageContext messageContext;
     private JolokiaClients clients = new JolokiaClients();
     private Kubernetes kubernetes = clients.getKubernetes();
     private AtomicReference<ApiSnapshot> snapshotCache = new AtomicReference<>();
@@ -80,9 +84,11 @@ public class ApiFinder {
         }
     };
     private List<EndpointFinder> finders = new ArrayList<>();
+    private String urlPrefix;
 
     @Inject
     public ApiFinder(@ConfigProperty(name = "API_REGISTRY_POLL_TIME", defaultValue = "5000") long pollTimeMs) {
+        this.pollTimeMs = pollTimeMs;
         timer.schedule(task, 0, pollTimeMs);
         finders.addAll(createDefaultEndpointFinders());
     }
@@ -95,36 +101,33 @@ public class ApiFinder {
 
     public ApiSnapshot refreshSnapshot() {
         Map<String, PodSchema> podMap = KubernetesHelper.getPodMap(kubernetes);
-        Map<String, List<ApiDTO>> apiMap = pollPodApis(podMap);
-        ApiSnapshot snapshot = new ApiSnapshot(podMap, apiMap);
+        ApiSnapshot snapshot = new ApiSnapshot(podMap);
+        snapshot.setUrlPrefix(urlPrefix);
+        snapshot.setMessageContext(messageContext);
+        pollPodApis(snapshot);
         snapshotCache.set(snapshot);
         return snapshot;
     }
 
-    public Map<String, List<ApiDTO>> pollPodApis() {
-        Map<String, PodSchema> podMap = KubernetesHelper.getPodMap(kubernetes);
-        return pollPodApis(podMap);
-    }
-
-    protected Map<String, List<ApiDTO>> pollPodApis(Map<String, PodSchema> podMap) {
+    protected void pollPodApis(ApiSnapshot snapshot) {
         Map<String, List<ApiDTO>> answer = new HashMap<>();
-        Set<Map.Entry<String, PodSchema>> entries = podMap.entrySet();
+        Set<Map.Entry<String, PodSchema>> entries = snapshot.getPodMap().entrySet();
         for (Map.Entry<String, PodSchema> entry : entries) {
-            String key = entry.getKey();
+            String podId = entry.getKey();
             PodSchema pod = entry.getValue();
             List<ApiDTO> list = new ArrayList<ApiDTO>();
-            addApisForPod(pod, list);
+            addApisForPod(snapshot, pod, list);
             if (list != null && !list.isEmpty()) {
-                answer.put(key, list);
+                snapshot.putApis(podId, list);
             }
         }
-        return answer;
     }
 
     public List<ApiDTO> findApisOnPods(String selector) {
         List<ApiDTO> answer = new ArrayList<>();
         Filter<PodSchema> filter = KubernetesHelper.createPodFilter(selector);
         ApiSnapshot snapshot = getSnapshot();
+        snapshot.setMessageContext(messageContext);
 
         Map<String, PodSchema> podMap = snapshot.getPodMap();
         Map<String, List<ApiDTO>> cache = snapshot.getApiMap();
@@ -140,7 +143,23 @@ public class ApiFinder {
                 }
             }
         }
+        completeMissingFullUrls(answer);
         return answer;
+    }
+
+    /**
+     * When we created the APIs we may not have had the {@link #urlPrefix} so we may not have completed the full URLs
+     * for things like swagger. So lets fix them up now
+     */
+    protected void completeMissingFullUrls(List<ApiDTO> list) {
+        for (ApiDTO api : list) {
+            String swaggerUrl = api.getSwaggerUrl();
+            String swaggerPath = api.getSwaggerPath();
+            if (Strings.isNotBlank(swaggerPath) && Strings.isNullOrBlank(swaggerUrl) && Strings.isNotBlank(urlPrefix)) {
+                swaggerUrl = urlPathJoin(urlPrefix, swaggerPath);
+                api.setSwaggerUrl(swaggerUrl);
+            }
+        }
     }
 
     public ApiSnapshot getSnapshot() {
@@ -151,13 +170,13 @@ public class ApiFinder {
         return snapshot;
     }
 
-    public void addApisForPod(PodSchema pod, List<ApiDTO> list) {
+    public void addApisForPod(ApiSnapshot snapshot, PodSchema pod, List<ApiDTO> list) {
         String host = KubernetesHelper.getHost(pod);
         List<ManifestContainer> containers = KubernetesHelper.getContainers(pod);
         for (ManifestContainer container : containers) {
             J4pClient jolokia = clients.jolokiaClient(host, container, pod);
             if (jolokia != null) {
-                List<ApiDTO> apiDTOs = findServices(pod, container, jolokia);
+                List<ApiDTO> apiDTOs = findServices(snapshot, pod, container, jolokia);
                 list.addAll(apiDTOs);
             }
         }
@@ -168,11 +187,12 @@ public class ApiFinder {
         Map<String, ServiceSchema> serviceMap = KubernetesHelper.getServiceMap(kubernetes);
 
         // TODO pick a pod for each service and add its APIs?
-        addDiscoveredServiceApis(answer, serviceMap);
+        addDiscoveredServiceApis(answer, serviceMap, messageContext);
+        completeMissingFullUrls(answer);
         return answer;
     }
 
-    protected void addDiscoveredServiceApis(List<ApiDTO> apis, Map<String, ServiceSchema> serviceMap) {
+    protected void addDiscoveredServiceApis(List<ApiDTO> apis, Map<String, ServiceSchema> serviceMap, MessageContext messageContext) {
         CloseableHttpClient client = createHttpClient();
         try {
             Set<Map.Entry<String, ServiceSchema>> entries = serviceMap.entrySet();
@@ -184,7 +204,7 @@ public class ApiFinder {
                 if (Strings.isNotBlank(url)) {
                     // lets check if we've not got this service already
                     if (!apiExistsForUrl(apis, url)) {
-                        tryFindApis(client, apis, service, url);
+                        tryFindApis(client, apis, service, url, messageContext);
                     }
                 }
             }
@@ -205,7 +225,7 @@ public class ApiFinder {
         return HttpClientBuilder.create().build();
     }
 
-    protected void tryFindApis(CloseableHttpClient client, List<ApiDTO> apis, ServiceSchema service, String url) {
+    protected void tryFindApis(CloseableHttpClient client, List<ApiDTO> apis, ServiceSchema service, String url, MessageContext messageContext) {
         String podId = null;
         String containerName = null;
         String objectName = null;
@@ -286,10 +306,10 @@ public class ApiFinder {
         return false;
     }
 
-    protected List<ApiDTO> findServices(PodSchema pod, ManifestContainer container, J4pClient jolokia) {
+    protected List<ApiDTO> findServices(ApiSnapshot snapshot, PodSchema pod, ManifestContainer container, J4pClient jolokia) {
         List<ApiDTO> answer = new ArrayList<>();
         for (EndpointFinder finder : finders) {
-            List<ApiDTO> apis = finder.findApis(pod, container, jolokia);
+            List<ApiDTO> apis = finder.findApis(snapshot, pod, container, jolokia);
             if (apis != null) {
                 answer.addAll(apis);
             }
@@ -344,5 +364,26 @@ public class ApiFinder {
         } else {
             return false;
         }
+    }
+
+    public ApiDeclaration getSwaggerForPodAndContainer(PodAndContainerId key) {
+        return getSnapshot().getSwaggerForPodAndContainer(key);
+    }
+
+    public MessageContext getMessageContext() {
+        return messageContext;
+    }
+
+    public void setMessageContext(MessageContext messageContext) {
+        this.messageContext = messageContext;
+    }
+
+    public void setUrlPrefix(String urlPrefix) {
+        this.urlPrefix = urlPrefix;
+
+    }
+
+    public String getUrlPrefix() {
+        return urlPrefix;
     }
 }

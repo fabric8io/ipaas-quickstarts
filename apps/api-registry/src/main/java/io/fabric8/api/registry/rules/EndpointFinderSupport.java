@@ -18,6 +18,7 @@
 package io.fabric8.api.registry.rules;
 
 import io.fabric8.api.registry.ApiDTO;
+import io.fabric8.api.registry.ApiSnapshot;
 import io.fabric8.kubernetes.api.model.ManifestContainer;
 import io.fabric8.kubernetes.api.model.PodSchema;
 import io.fabric8.utils.Strings;
@@ -39,7 +40,7 @@ public abstract class EndpointFinderSupport implements io.fabric8.api.registry.E
     private static final transient Logger LOG = LoggerFactory.getLogger(EndpointFinderSupport.class);
 
     @Override
-    public List<ApiDTO> findApis(PodSchema pod, ManifestContainer container, J4pClient jolokia) {
+    public List<ApiDTO> findApis(ApiSnapshot snapshot, PodSchema pod, ManifestContainer container, J4pClient jolokia) {
         List<ApiDTO> answer = new ArrayList<>();
         try {
             J4pResponse<J4pSearchRequest> results = jolokia.execute(new J4pSearchRequest(getObjectNamePattern()));
@@ -49,7 +50,7 @@ public abstract class EndpointFinderSupport implements io.fabric8.api.registry.E
                 for (String mbeanName : list) {
                     if (Strings.isNotBlank(mbeanName)) {
                         ObjectName objectName = new ObjectName(mbeanName);
-                        appendObjectNameEndpoints(answer, pod, container, jolokia, objectName);
+                        appendObjectNameEndpoints(answer, snapshot, pod, container, jolokia, objectName);
                     }
                 }
             }
@@ -61,5 +62,5 @@ public abstract class EndpointFinderSupport implements io.fabric8.api.registry.E
 
     protected abstract String getObjectNamePattern();
 
-    protected abstract void appendObjectNameEndpoints(List<ApiDTO> list, PodSchema pod, ManifestContainer container, J4pClient jolokia, ObjectName objectName) throws MalformedObjectNameException, J4pException;
+    protected abstract void appendObjectNameEndpoints(List<ApiDTO> list, ApiSnapshot snapshot, PodSchema pod, ManifestContainer container, J4pClient jolokia, ObjectName objectName) throws MalformedObjectNameException, J4pException;
 }

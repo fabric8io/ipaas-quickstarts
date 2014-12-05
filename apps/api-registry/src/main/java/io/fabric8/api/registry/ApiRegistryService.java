@@ -17,23 +17,31 @@ package io.fabric8.api.registry;
 
 
 import com.wordnik.swagger.annotations.Api;
+import io.fabric8.swagger.model.ApiDeclaration;
 import io.fabric8.utils.IOHelpers;
+import io.fabric8.utils.Objects;
 import org.apache.cxf.jaxrs.ext.MessageContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.UriInfo;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
+
+import static io.fabric8.utils.URLUtils.urlPathJoin;
 
 /**
  * Represents the API Registry REST API
@@ -49,6 +57,7 @@ public class ApiRegistryService {
     private ApiFinder finder;
 
     private MessageContext messageContext;
+    private String urlPrefix;
 
     public ApiRegistryService() {
     }
@@ -82,18 +91,49 @@ public class ApiRegistryService {
     @GET
     @Path("endpoints/pods")
     public List<ApiDTO> podApis(@QueryParam("selector") String selector) {
-        return finder.findApisOnPods(selector);
+        return getFinder().findApisOnPods(selector);
+    }
+
+    protected ApiFinder getFinder() {
+        checkForUrlPrefix();
+        return finder;
     }
 
     @GET
     @Path("endpoints/services")
     public List<ApiDTO> serviceApis(@QueryParam("selector") String selector) {
-        return finder.findApisOnServices(selector);
+        return getFinder().findApisOnServices(selector);
+    }
+
+    @GET
+    @Path("swagger/pod/{pod}/{container}")
+    public ApiDeclaration serviceApis(@PathParam("pod") String pod, @PathParam("container") String container) {
+        Objects.notNull(pod, "pod");
+        Objects.notNull(container, "container");
+        PodAndContainerId key = new PodAndContainerId(pod, container);
+        ApiDeclaration swagger = getFinder().getSwaggerForPodAndContainer(key);
+        return swagger;
     }
 
     @Context
     public void setMessageContext(MessageContext messageContext) {
         this.messageContext = messageContext;
+        finder.setMessageContext(messageContext);
+        checkForUrlPrefix();
+    }
+
+    protected void checkForUrlPrefix() {
+        if (urlPrefix == null && messageContext != null) {
+            HttpServletRequest request = messageContext.getHttpServletRequest();
+            ServletContext servletContext = messageContext.getServletContext();
+            if (request != null && servletContext != null) {
+                String swaggerPrefix = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
+                String contextPath = servletContext.getContextPath();
+                urlPrefix = urlPathJoin(swaggerPrefix, contextPath);
+                finder.setUrlPrefix(urlPrefix);
+            }
+        }
+
     }
 
 }

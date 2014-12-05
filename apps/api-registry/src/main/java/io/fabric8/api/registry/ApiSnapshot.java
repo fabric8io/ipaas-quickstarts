@@ -18,7 +18,10 @@
 package io.fabric8.api.registry;
 
 import io.fabric8.kubernetes.api.model.PodSchema;
+import io.fabric8.swagger.model.ApiDeclaration;
+import org.apache.cxf.jaxrs.ext.MessageContext;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,18 +30,52 @@ import java.util.Map;
  */
 public class ApiSnapshot {
     private final Map<String, PodSchema> podMap;
-    private final Map<String, List<ApiDTO>> apiMap;
+    private String urlPrefix;
+    private final Map<String, List<ApiDTO>> apiMap = new HashMap<>();
+    private final Map<PodAndContainerId, ApiDeclaration> podContainerToSwaggerMap = new HashMap<>();
+    private MessageContext messageContext;
 
-    public ApiSnapshot(Map<String, PodSchema> podMap, Map<String, List<ApiDTO>> apiMap) {
+    public ApiSnapshot(Map<String, PodSchema> podMap) {
         this.podMap = podMap;
-        this.apiMap = apiMap;
     }
 
     public Map<String, PodSchema> getPodMap() {
         return podMap;
     }
 
+    public String getUrlPrefix() {
+        return urlPrefix;
+    }
+
+    public void setUrlPrefix(String urlPrefix) {
+        this.urlPrefix = urlPrefix;
+    }
+
     public Map<String, List<ApiDTO>> getApiMap() {
         return apiMap;
+    }
+
+    public Map<PodAndContainerId, ApiDeclaration> getPodContainerToSwaggerMap() {
+        return podContainerToSwaggerMap;
+    }
+
+    public void putApis(String podId, List<ApiDTO> list) {
+        apiMap.put(podId, list);
+    }
+
+    public ApiDeclaration getSwaggerForPodAndContainer(PodAndContainerId key) {
+        return podContainerToSwaggerMap.get(key);
+    }
+
+    public void putPodAndContainerSwagger(PodAndContainerId key, ApiDeclaration swagger) {
+        podContainerToSwaggerMap.put(key, swagger);
+    }
+
+    public void setMessageContext(MessageContext messageContext) {
+        this.messageContext = messageContext;
+    }
+
+    public MessageContext getMessageContext() {
+        return messageContext;
     }
 }

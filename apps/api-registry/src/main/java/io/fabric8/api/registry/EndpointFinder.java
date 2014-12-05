@@ -27,5 +27,5 @@ import java.util.List;
  * A strategy interface for finding APIs in a JVM using JMX and jolokia
  */
 public interface EndpointFinder {
-    List<ApiDTO> findApis(PodSchema pod, ManifestContainer container, J4pClient jolokia);
+    List<ApiDTO> findApis(ApiSnapshot snapshot, PodSchema pod, ManifestContainer container, J4pClient jolokia);
 }
