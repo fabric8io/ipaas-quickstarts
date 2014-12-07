@@ -1,0 +1,148 @@
+{
+    "id": "jenkins-config",
+    "kind": "Config",
+    "apiVersion": "v1beta1",
+    "name": "jenkins-config",
+    "description": "Creates a Jenkins Server",
+    "items": [
+        {
+            "apiVersion" : "v1beta1",
+            "id":"jenkins-service",
+            "kind":"Service",
+            "port":5002,
+            "containerPort":8080,
+            "selector":{
+                "name":"jenkins"
+            }
+        },
+        {
+            "kind" : "ReplicationController",
+            "id" : "jenkins",
+            "apiVersion" : "v1beta1",
+            "desiredState" : {
+                "replicas" : 1,
+                "replicaSelector" : {
+                    "name" : "jenkins"
+                },
+                "podTemplate" : {
+                    "desiredState" : {
+                        "manifest" : {
+                            "version" : "v1beta1",
+                            "id" : "jenkinsPod",
+                            "containers" : [ {
+                                "image":"openshift/jenkins-1-centos",
+                                "name":"jenkins-container",
+                                "ports":[
+                                    {
+                                        "containerPort":8080,
+                                        "protocol":"TCP"
+                                    }]
+                            } ]
+                        }
+                    },
+                    "labels" : {
+                        "name" : "jenkins"
+                    }
+                }
+            },
+            "labels" : {
+                "name" : "jenkins"
+            }
+        },
+        {
+            "apiVersion":"v1beta1",
+            "kind":"BuildConfig",
+            "metadata":{
+                "name":"ruby-test-build",
+                "labels":{
+                    "name":"ruby-test-build"
+                }
+            },
+            "parameters":{
+                "output":{
+                    "imageTag":"openshift/origin-ruby-sample:test",
+                    "registry":"$REGISTRY_SERVICE_HOST:$REGISTRY_SERVICE_PORT"
+                },
+                "source":{
+                    "git":{
+                        "uri":"git://github.com/openshift/ruby-hello-world.git"
+                    },
+                    "type":"Git"
+                },
+                "strategy":{
+                    "stiStrategy":{
+                        "builderImage":"openshift/ruby-20-centos"
+                    },
+                    "type":"STI"
+                }
+            }
+        },
+        {
+            "apiVersion":"v1beta1",
+            "kind":"BuildConfig",
+            "metadata":{
+                "name":"ruby-test-build",
+                "labels":{
+                    "name":"ruby-test-build"
+                }
+            },
+            "parameters":{
+                "output":{
+                    "imageTag":"openshift/origin-ruby-sample:test",
+                    "registry":"$REGISTRY_SERVICE_HOST:$REGISTRY_SERVICE_PORT"
+                },
+                "source":{
+                    "git":{
+                        "uri":"git://github.com/openshift/ruby-hello-world.git"
+                    },
+                    "type":"Git"
+                },
+                "strategy":{
+                    "stiStrategy":{
+                        "builderImage":"openshift/ruby-20-centos"
+                    },
+                    "type":"STI"
+                }
+            }
+        },
+        {
+            "containers":[
+                {
+                    "env":[
+                        {
+                            "name":"ADMIN_USERNAME",
+                            "value":"${ADMIN_USERNAME}"
+                        },
+                        {
+                            "name":"ADMIN_PASSWORD",
+                            "value":"${ADMIN_PASSWORD}"
+                        },
+                        {
+                            "name":"MYSQL_ROOT_PASSWORD",
+                            "value":"${MYSQL_ROOT_PASSWORD}"
+                        },
+                        {
+                            "name":"MYSQL_DATABASE",
+                            "value":"${MYSQL_DATABASE}"
+                        },
+                        {
+                            "name":"RACK_ENV",
+                            "value":"production"
+                        },
+                        {
+                            "name":"RAILS_ENV",
+                            "value":"production"
+                        }
+                    ],
+                    "image":"$REGISTRY_SERVICE_HOST:$REGISTRY_SERVICE_PORT/openshift/origin-ruby-sample:prod",
+                    "name":"ruby-helloworld-prod",
+                    "ports":[
+                        {
+                            "containerPort":8080
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
