@@ -66,6 +66,7 @@
     <module>influxdb</module>
     <module>kibana</module>
     <module>zookeeper</module>
+    <module>jenkins</module>
   </modules>
 
   <build>
