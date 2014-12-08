@@ -4,7 +4,7 @@
   "kind": "Service",
   "description": "Runs a local development API Registry on the local host",
   "port": 8588,
-  "portalIP": "locahost",
+  "portalIP": "localhost",
   "labels": {
      "name": "apiRegistry"
   },

@@ -19,6 +19,10 @@ package io.fabric8.api.registry;
 import com.wordnik.swagger.annotations.Api;
 import io.fabric8.api.registry.rules.SwaggerHelpers;
 import io.fabric8.swagger.model.ApiDeclaration;
+import io.fabric8.swagger.model.Api_;
+import io.fabric8.swagger.model.Authorizations_;
+import io.fabric8.swagger.model.InfoObject;
+import io.fabric8.swagger.model.ResourceListing;
 import io.fabric8.utils.IOHelpers;
 import io.fabric8.utils.Objects;
 import io.fabric8.utils.Strings;
@@ -42,7 +46,10 @@ import javax.ws.rs.core.UriInfo;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import static io.fabric8.utils.URLUtils.urlPathJoin;
@@ -111,7 +118,45 @@ public class ApiRegistryService {
 
     @GET
     @Path("swagger/pod/{pod}/{container}")
-    public ApiDeclaration swagger(@PathParam("pod") String pod, @PathParam("container") String container) {
+    public ResourceListing swagger(@PathParam("pod") String pod, @PathParam("container") String container) {
+        ApiDeclaration apiDeclaration = rootSwagger(pod, container);
+        if (apiDeclaration == null) {
+            return null;
+        }
+        ResourceListing listing = new ResourceListing();
+        ApiDeclaration.SwaggerVersion swaggerVersion = apiDeclaration.getSwaggerVersion();
+        if (swaggerVersion != null) {
+            listing.setSwaggerVersion(ResourceListing.SwaggerVersion.fromValue(swaggerVersion.toString()));
+        } else {
+            listing.setSwaggerVersion(ResourceListing.SwaggerVersion._1_2);
+        }
+        listing.setApiVersion(apiDeclaration.getApiVersion());
+        listing.setAuthorizations(new Authorizations_());
+        InfoObject info = new InfoObject();
+        info.setTitle("REST API for Apache Camel");
+        listing.setInfo(info);
+        List<Api_> apis = createResourceApis(apiDeclaration);
+        listing.setApis(apis);
+        return listing;
+    }
+
+    protected static List<Api_> createResourceApis(ApiDeclaration apiDeclaration) {
+        List<Api_> answer = new ArrayList<>();
+        String resourcePath = apiDeclaration.getResourcePath();
+        if (Strings.isNotBlank(resourcePath)) {
+            Api_ listing = new Api_();
+            try {
+                listing.setPath(new URI(resourcePath));
+                answer.add(listing);
+            } catch (URISyntaxException e) {
+                System.out.println("Failed to convert " + resourcePath + " to a URI. " + e);
+                LOG.warn("Failed to convert " + resourcePath + " to a URI. " + e, e);
+            }
+        }
+        return answer;
+    }
+
+    protected ApiDeclaration rootSwagger(String pod, String container) {
         Objects.notNull(pod, "pod");
         Objects.notNull(container, "container");
         PodAndContainerId key = new PodAndContainerId(pod, container);
@@ -121,7 +166,7 @@ public class ApiRegistryService {
     @GET
     @Path("swagger/pod/{pod}/{container}/{path:.*}")
     public ApiDeclaration swagger(@PathParam("pod") String pod, @PathParam("container") String container, @PathParam("path") String path) {
-        ApiDeclaration swagger = swagger(pod, container);
+        ApiDeclaration swagger = rootSwagger(pod, container);
         if (Strings.isNotBlank(path)) {
             String pathPrefix = urlPathJoin("/", path);
             ApiDeclaration filtered = new ApiDeclaration();

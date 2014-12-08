@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.api.model.ManifestContainer;
 import io.fabric8.kubernetes.api.model.PodSchema;
 import io.fabric8.swagger.model.Api;
 import io.fabric8.swagger.model.ApiDeclaration;
+import io.fabric8.swagger.model.Models;
 import io.fabric8.swagger.model.Operation;
 import io.fabric8.swagger.model.Parameter;
 import io.fabric8.swagger.model.ResponseMessage;
@@ -59,6 +60,7 @@ public class CamelEndpointFinder extends EndpointFinderSupport {
     private static final transient Logger LOG = LoggerFactory.getLogger(CamelEndpointFinder.class);
 
     public static final String CAMEL_API_ENDPOINT_MBEAN_NAME = "org.apache.camel:type=services,name=DefaultRestRegistry,*";
+    private boolean replaceWithProxyLink = false;
 
     @Override
     protected String getObjectNamePattern() {
@@ -79,6 +81,7 @@ public class CamelEndpointFinder extends EndpointFinderSupport {
             }
 
             ApiDeclaration apiDeclaration = new ApiDeclaration();
+            apiDeclaration.setModels(new Models());
 
             // lets find the rest services...
             J4pResponse<J4pExecRequest> results = jolokia.execute(new J4pExecRequest(objectName, "listRestServices"));
@@ -107,7 +110,7 @@ public class CamelEndpointFinder extends EndpointFinderSupport {
                                 restService.setUrl(replaceHostAndPort(url, restService.getUrl()));
                                 restService.setBaseUrl(replaceHostAndPort(url, restService.getBaseUrl()));
 
-                                addToApiDescription(apiDeclaration, restService);
+                                addToApiDescription(apiDeclaration, restService, objectName);
                             }
                         }
                     }
@@ -158,34 +161,59 @@ public class CamelEndpointFinder extends EndpointFinderSupport {
         }
     }
 
-    protected void addToApiDescription(ApiDeclaration apiDeclaration, CamelRestService restService) {
+    protected void addToApiDescription(ApiDeclaration apiDeclaration, CamelRestService restService, ObjectName objectName) {
         String basePath = restService.getBaseUrl();
         String resourcePath = restService.getBasePath();
 
         if (apiDeclaration.getBasePath() == null) {
+            String uriText = basePath;
+            if (basePath.endsWith(resourcePath)) {
+                uriText = basePath.substring(0, basePath.length() - resourcePath.length());
+            }
+
+            if (replaceWithProxyLink) {
+                uriText = switchToUseProxyLink(uriText);
+            }
             try {
-                URI uri = new URI(basePath);
+                URI uri = new URI(uriText);
                 apiDeclaration.setBasePath(uri);
             } catch (URISyntaxException e) {
-                LOG.warn("Could not parse basePath: " + basePath + ". " + e, e);
+                LOG.warn("Could not parse basePath: " + uriText + ". " + e, e);
             }
         }
         if (Strings.isNullOrBlank(apiDeclaration.getResourcePath())) {
             apiDeclaration.setResourcePath(resourcePath);
         }
 
-        List<Api> apis = SwaggerHelpers.getOrCreateApis(apiDeclaration);
-        Api api = SwaggerHelpers.findOrCreateApiForPath(apis, restService.getUriTemplate());
 
+        List<Api> apis = SwaggerHelpers.getOrCreateApis(apiDeclaration);
+        String path = urlPathJoin(resourcePath, restService.getUriTemplate());
+        Api api = SwaggerHelpers.findOrCreateApiForPath(apis, path);
         List<Operation> operations = SwaggerHelpers.getOrCreateOperations(api);
         Operation operation = new Operation();
         String method = restService.getMethod();
+        String inType = restService.getInType();
         if (Strings.isNotBlank(method)) {
-            operation.setMethod(Operation.Method.fromValue(method.toUpperCase(Locale.US)));
+            method = method.toUpperCase(Locale.US);
+            operation.setMethod(Operation.Method.fromValue(method));
         }
+        String description = restService.getDescription();
+        if (Strings.isNotBlank(description)) {
+            operation.setSummary(description);
+        }
+        // TODO have way to expose the nickname? Might be nice to expose the route id?
+        String nickname = objectName.getKeyProperty("context");
+        if (Strings.isNullOrBlank(nickname)) {
+            nickname = (Strings.isNotBlank(method) ? method + " " : "") + Strings.defaultIfEmpty(inType, "") + " " + restService.getUriTemplate();
+        } else {
+            String route = restService.getRoute();
+            if (Strings.isNotBlank(route)) {
+                nickname += "." + route;
+            }
+        }
+        operation.setNickname(nickname);
         operation.setConsumes(splitStringToSet(restService.getConsumes(), ","));
         operation.setProduces(splitStringToSet(restService.getProduces(), ","));
-        String inType = restService.getInType();
         List<Parameter> parameters = SwaggerHelpers.getOrCreateParameters(operation);
         addUrlParameters(parameters, restService.getUrl());
         if (Strings.isNotBlank(inType)) {
@@ -207,6 +235,24 @@ public class CamelEndpointFinder extends EndpointFinderSupport {
         operations.add(operation);
     }
 
+    protected String switchToUseProxyLink(String uriText) {
+        try {
+            URL url = new URL(uriText);
+            String host = url.getHost();
+            if (Strings.isNotBlank(host)) {
+                int port = url.getPort();
+                if (port <= 0) {
+                    port = 80;
+                }
+                return urlPathJoin("/hawtio/proxy/" + host + "/" + port, url.getPath());
+            }
+        } catch (MalformedURLException e) {
+            LOG.warn("Failed to parse URL " + uriText + ". " + e, e);
+        }
+
+        return uriText;
+    }
+
     /**
      * Adds any path parameters on the URL
      */
@@ -223,6 +269,7 @@ public class CamelEndpointFinder extends EndpointFinderSupport {
                         parameter.setParamType(Parameter.ParamType.PATH);
                         parameter.setRequired(true);
                         parameter.setAllowMultiple(false);
+                        parameter.setType("string");
                         parameters.add(parameter);
                     }
                 }

@@ -30,6 +30,8 @@ public class CamelRestService {
     private String produces;
     private String inType;
     private String outType;
+    private String description;
+    private String route;
 
     @Override
     public String toString() {
@@ -159,5 +161,21 @@ public class CamelRestService {
 
     public void setOutType(String outType) {
         this.outType = outType;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getRoute() {
+        return route;
+    }
+
+    public void setRoute(String route) {
+        this.route = route;
     }
 }

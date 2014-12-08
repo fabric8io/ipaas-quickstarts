@@ -25,6 +25,10 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.jboss.weld.environment.servlet.BeanManagerResourceBindingListener;
 import org.jboss.weld.environment.servlet.Listener;
 
+import javax.servlet.DispatcherType;
+import java.util.Arrays;
+import java.util.EnumSet;
+
 public class Main {
 
     public static void main(final String[] args) throws Exception {
@@ -70,6 +74,9 @@ public class Main {
         }
         context.addServlet(servletHolder, servletPath);
         server.setHandler(context);
+
+        EnumSet<DispatcherType> dispatches = EnumSet.allOf(DispatcherType.class);
+        context.addFilter(RestCorsFilter.class, "/*", dispatches);
         server.start();
         return server;
     }
