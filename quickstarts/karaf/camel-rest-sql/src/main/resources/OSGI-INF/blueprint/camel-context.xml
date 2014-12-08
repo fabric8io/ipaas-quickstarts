@@ -27,13 +27,12 @@
   <bean class="org.apache.camel.component.servlet.osgi.OsgiServletRegisterer"
         init-method="register"
         destroy-method="unregister">
-    <property name="alias" value="/camel-sql"/>
+    <property name="alias" value="/camel-rest-sql"/>
     <property name="httpService" ref="httpService"/>
     <property name="servlet" ref="camelServlet"/>
   </bean>
 
   <bean id="camelServlet" class="org.apache.camel.component.servlet.CamelHttpTransportServlet"/>
-
 
 
   <!-- this is the JDBC data source which uses an in-memory only Apache Derby database -->
@@ -67,7 +66,7 @@
     <propertyPlaceholder id="placeholder" location="classpath:sql.properties"/>
 
     <!-- TODO port="{{env:HTTP_PORT:8181}}" when upgrading to Camel 2.14.1 -->
-    <restConfiguration component="servlet" bindingMode="json" contextPath="/camel-sql" port="8181"/>
+    <restConfiguration component="servlet" bindingMode="json" contextPath="/camel-rest-sql" port="8181"/>
 
     <!-- rest service for books -->
     <rest path="/books" consumes="application/json" produces="application/json">
