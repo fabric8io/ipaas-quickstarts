@@ -69,8 +69,15 @@
     <!-- TODO port="{{env:HTTP_PORT:8181}}" when upgrading to Camel 2.14.1 -->
     <restConfiguration component="servlet" bindingMode="json" contextPath="/camel-sql" port="8181"/>
 
-    <!-- rest service that fetches an order by id -->
-    <rest path="/books">
+    <!-- rest service for books -->
+    <rest path="/books" consumes="application/json" produces="application/json">
+
+      <!-- rest service that fetches names of all books -->
+      <get uri="/" outType="org.apache.camel.example.sql.model.Book">
+        <to uri="sql:{{sql.selectBooks}}?outputType=SelectList&amp;outputClass=org.apache.camel.example.sql.model.Book"/>
+      </get>
+
+      <!-- rest service that fetches an order by id -->
       <get uri="order/{id}" outType="org.apache.camel.example.sql.model.Order">
         <to uri="sql:{{sql.selectOrder}}?outputType=SelectOne&amp;outputClass=org.apache.camel.example.sql.model.Order"/>
       </get>
