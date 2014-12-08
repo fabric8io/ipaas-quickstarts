@@ -25,11 +25,11 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>quickstart-karaf-camel-sql</artifactId>
+  <artifactId>quickstart-karaf-camel-rest-sql</artifactId>
   <version>2.1-SNAPSHOT</version>
   <packaging>bundle</packaging>
-  <name>Karaf Quickstart : Camel using SQL</name>
-  <description>Camel Example with SQL Database</description>
+  <name>Karaf Quickstart : Camel Rest using SQL</name>
+  <description>Camel Example using Rest DSL with SQL Database</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -52,12 +52,12 @@
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
     <docker.port.container.http>8181</docker.port.container.http>
 
-    <fabric8.service.name>quickstart-karaf-camel-sql</fabric8.service.name>
+    <fabric8.service.name>quickstart-karaf-camel-rest-sql</fabric8.service.name>
     <fabric8.service.port>9411</fabric8.service.port>
     <fabric8.service.containerPort>8181</fabric8.service.containerPort>
-    <fabric8.kubernetes.name>quickstartKarafCamelSql</fabric8.kubernetes.name>
+    <fabric8.kubernetes.name>quickstartKarafCamelRestSql</fabric8.kubernetes.name>
 
-    <fabric8.label.component>quickstartKarafCamelSql</fabric8.label.component>
+    <fabric8.label.component>quickstartKarafCamelRestSql</fabric8.label.component>
     <fabric8.label.group>quickstarts</fabric8.label.group>
   </properties>
 
