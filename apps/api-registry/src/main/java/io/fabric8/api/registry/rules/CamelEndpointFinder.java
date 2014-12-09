@@ -206,7 +206,7 @@ public class CamelEndpointFinder extends EndpointFinderSupport {
         if (Strings.isNullOrBlank(nickname)) {
             nickname = (Strings.isNotBlank(method) ? method + " " : "") + Strings.defaultIfEmpty(inType, "") + " " + restService.getUriTemplate();
         } else {
-            String route = restService.getRoute();
+            String route = restService.getRouteId();
             if (Strings.isNotBlank(route)) {
                 nickname += "." + route;
             }

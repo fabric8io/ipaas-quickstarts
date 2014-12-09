@@ -31,21 +31,23 @@ public class CamelRestService {
     private String inType;
     private String outType;
     private String description;
-    private String route;
+    private String routeId;
 
     @Override
     public String toString() {
         return "CamelRestService{" +
-                "state='" + state + '\'' +
+                "basePath='" + basePath + '\'' +
+                ", state='" + state + '\'' +
                 ", url='" + url + '\'' +
                 ", baseUrl='" + baseUrl + '\'' +
-                ", basePath='" + basePath + '\'' +
                 ", uriTemplate='" + uriTemplate + '\'' +
                 ", method='" + method + '\'' +
                 ", consumes='" + consumes + '\'' +
                 ", produces='" + produces + '\'' +
                 ", inType='" + inType + '\'' +
                 ", outType='" + outType + '\'' +
+                ", description='" + description + '\'' +
+                ", routeId='" + routeId + '\'' +
                 '}';
     }
 
@@ -171,11 +173,11 @@ public class CamelRestService {
         this.description = description;
     }
 
-    public String getRoute() {
-        return route;
+    public String getRouteId() {
+        return routeId;
     }
 
-    public void setRoute(String route) {
-        this.route = route;
+    public void setRouteId(String routeId) {
+        this.routeId = routeId;
     }
 }
