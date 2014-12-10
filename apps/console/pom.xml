@@ -39,7 +39,7 @@
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
 
     <fabric8.kubernetes.name>fabric8Console</fabric8.kubernetes.name>
-    <fabric8.service.name>fabric-console</fabric8.service.name>
+    <fabric8.service.name>fabric8-console</fabric8.service.name>
     <fabric8.service.port>8585</fabric8.service.port>
     <fabric8.service.containerPort>8080</fabric8.service.containerPort>
 
