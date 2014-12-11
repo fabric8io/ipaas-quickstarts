@@ -25,26 +25,27 @@
     <version>2.1-SNAPSHOT</version>
   </parent>
 
-  <artifactId>console</artifactId>
+  <artifactId>registry</artifactId>
   <packaging>pom</packaging>
 
-  <name>Console</name>
+  <name>Registry</name>
   <description>
-    [Fabric8 Console](http://fabric8.io/v2/console.html) for working with Fabric8 and Kubernetes
+    [Docker Registry](https://github.com/docker/docker-registry) for hosting local docker images
   </description>
 
   <properties>
-    <docker.image>fabric8/hawtio</docker.image>
-    <docker.port.container.http>8080</docker.port.container.http>
-    <docker.port.container.jolokia>8778</docker.port.container.jolokia>
+    <docker.image>registry</docker.image>
+    <docker.port.container.tcp>5000</docker.port.container.tcp>
+    <docker.port.container.jolokia />
 
-    <fabric8.kubernetes.name>fabric8-console-controller</fabric8.kubernetes.name>
-    <fabric8.service.name>fabric8-console-service</fabric8.service.name>
-    <fabric8.service.port>8585</fabric8.service.port>
-    <fabric8.service.containerPort>8080</fabric8.service.containerPort>
-    <fabric8.container.name>fabric8-console-container</fabric8.container.name>
+    <fabric8.kubernetes.name>registry-controller</fabric8.kubernetes.name>
+    <fabric8.service.name>registry-service</fabric8.service.name>
+    <fabric8.service.port>5000</fabric8.service.port>
+    <fabric8.service.containerPort>5000</fabric8.service.containerPort>
+    <fabric8.imagePullPolicy>PullIfNotPresent</fabric8.imagePullPolicy>
+    <fabric8.container.name>registry-container</fabric8.container.name>
 
-    <fabric8.label.component>console</fabric8.label.component>
-    <fabric8.label.provider>fabric8</fabric8.label.provider>
+    <fabric8.label.component>registry</fabric8.label.component>
+    <fabric8.label.provider>docker</fabric8.label.provider>
   </properties>
 </project>

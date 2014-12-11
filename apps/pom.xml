@@ -65,9 +65,10 @@
     <module>fabric8-mq-autoscaler</module>
     <module>grafana</module>
     <module>influxdb</module>
-    <module>kibana</module>
-    <module>zookeeper</module>
     <module>jenkins</module>
+    <module>kibana</module>
+    <module>registry</module>
+    <module>zookeeper</module>
   </modules>
 
   <build>
