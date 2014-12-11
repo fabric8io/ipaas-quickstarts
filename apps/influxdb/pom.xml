@@ -43,7 +43,7 @@
     <docker.port.container.jolokia />
 
     <fabric8.kubernetes.name>influxdb</fabric8.kubernetes.name>
-    <fabric8.service.name>influxdb</fabric8.service.name>
+    <fabric8.service.name>influxdb-service</fabric8.service.name>
     <fabric8.service.port>8086</fabric8.service.port>
     <fabric8.service.containerPort>8086</fabric8.service.containerPort>
     <fabric8.imagePullPolicy>PullIfNotPresent</fabric8.imagePullPolicy>
