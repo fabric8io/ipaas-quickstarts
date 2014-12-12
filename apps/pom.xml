@@ -56,6 +56,7 @@
 
   <modules>
     <module>api-registry</module>
+    <module>apiman</module>
     <module>console</module>
     <module>elasticsearch</module>
     <module>fabric8-http-gateway</module>
