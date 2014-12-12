@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+     Copyright 2005-2014 Red Hat, Inc.
+
+     Red Hat licenses this file to you under the Apache License, version
+     2.0 (the "License"); you may not use this file except in compliance
+     with the License.  You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+     implied.  See the License for the specific language governing
+     permissions and limitations under the License.
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>io.fabric8.jube.images.fabric8</groupId>
+    <artifactId>apps</artifactId>
+    <version>2.1-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>apiman-console</artifactId>
+  <packaging>jar</packaging>
+  <name>ApiMan Console</name>
+  <description>ApiMan deployed to JBoss Wildfly-8.2.0.Final</description>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <version.compiler.plugin>2.3.1</version.compiler.plugin>
+    <maven.compiler.target>1.7</maven.compiler.target>
+    <maven.compiler.source>1.7</maven.compiler.source>
+    <version.maven-surefire-plugin>2.15</version.maven-surefire-plugin>
+    <version.maven-bundle-plugin>2.3.7</version.maven-bundle-plugin>
+    <apiman.version>1.0.0-SNAPSHOT</apiman.version>
+
+    <!-- the version of the BOM, defining all the dependency versions -->
+    <fabric8.version>2.0.15</fabric8.version>
+
+    <http.port>8080</http.port>
+    <https.port>8443</https.port>
+    <tcp.port>7600</tcp.port>
+    <tcp.fd.port>57600</tcp.fd.port>
+    <udp.port>55200</udp.port>
+    <txn.recovery.port>4712</txn.recovery.port>
+    <txn.status.manager.port>4713</txn.status.manager.port>
+
+    <docker.from>wildfly/default</docker.from>
+    <docker.registryPrefix>${env.DOCKER_REGISTRY}/</docker.registryPrefix>
+    <docker.image>${docker.registryPrefix}fabric8/${project.artifactId}:${project.version}</docker.image>
+    <docker.assemblyDescriptor>${basedir}/src/main/fabric8/assembly.xml</docker.assemblyDescriptor>
+    <docker.port.container.jolokia>8778</docker.port.container.jolokia>
+<!--
+    <docker.port.container.http>${http.port}</docker.port.container.http>
+    <docker.port.container.https>${https.port}</docker.port.container.https>
+    <docker.port.container.tcp>${tcp.port}</docker.port.container.tcp>
+    <docker.port.container.tcp.fd>${tcp.fd.port}</docker.port.container.tcp.fd>
+    <docker.port.container.udp>${udp.port}</docker.port.container.udp>
+    <docker.port.container.txn.recovery>${txn.recovery.port}</docker.port.container.txn.recovery>
+    <docker.port.container.txn.status.manager>${txn.status.manager.port}</docker.port.container.txn.status.manager>
+-->
+    <docker.port.host.http>${http.port}</docker.port.host.http>
+
+
+    <fabric8.kubernetes.name>ApiManConsole</fabric8.kubernetes.name>
+    <fabric8.label.container>wildfly</fabric8.label.container>
+    <fabric8.label.group>defaultGatewayGroup</fabric8.label.group>
+    <fabric8.service.name>apiman-console</fabric8.service.name>
+    <fabric8.service.port>9092</fabric8.service.port>
+    <fabric8.service.containerPort>${http.port}</fabric8.service.containerPort>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>fabric8-project</artifactId>
+        <version>${fabric8.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <!--
+        For logging, we will use SLF4J, which is also available in the container by default.
+      -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+    </dependency>
+
+    <!-- Test Dependencies -->
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <!--
+      Add the slf4j-log4j12 dependency jar for testing
+    -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+      <scope>test</scope>
+    </dependency>
+  
+    <dependency>
+      <groupId>io.apiman</groupId>
+      <artifactId>apiman-distro-wildfly8</artifactId>
+      <version>${apiman.version}</version>
+      <classifier>overlay</classifier>
+      <type>zip</type>
+    </dependency>
+
+
+  </dependencies>
+
+  <build>
+    <finalName>${project.artifactId}</finalName>
+    <plugins>
+      <!-- Skip Test by default and enable them only in Test profile -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${version.maven-surefire-plugin}</version>
+        <configuration>
+          <skipTests>${skipTests}</skipTests>
+        </configuration>
+      </plugin>
+      <!-- Compiler plugin enforces Java 1.7 compatibility and activates annotation processors -->
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${version.compiler.plugin}</version>
+        <configuration>
+          <source>${maven.compiler.source}</source>
+          <target>${maven.compiler.target}</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>filter-extra-resources</id>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <phase>process-resources</phase>
+            <configuration>
+              <outputDirectory>${project.build.directory}/fabric8</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>src/main/fabric8</directory>
+                  <filtering>true</filtering>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+       <plugin>
+        <groupId>org.jolokia</groupId>
+        <artifactId>docker-maven-plugin</artifactId>
+        <version>${docker.maven.plugin.version}</version>
+        <configuration>
+          <images>
+            <image>
+              <name>${docker.image}</name>
+              <build>
+                <from>${docker.from}</from>
+                <assemblyDescriptor>${docker.assemblyDescriptor}</assemblyDescriptor>
+                <exportDir>/opt/wildfly-8.2.0.Final</exportDir>
+              </build>
+            </image>
+          </images>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>test</id>
+      <properties>
+        <skipTests>false</skipTests>
+      </properties>
+      <build>
+        <defaultGoal>verify</defaultGoal>
+      </build>
+    </profile>
+
+    <profile>
+      <id>docker-build</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.jolokia</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <version>${docker.maven.plugin.version}</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>build</goal>
+                </goals>
+                <phase>package</phase>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>jube</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>io.fabric8.jube</groupId>
+            <artifactId>jube-maven-plugin</artifactId>
+            <version>${jube.version}</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>build</goal>
+                </goals>
+                <phase>package</phase>
+              </execution>
+            </executions>
+            <configuration>
+              <assemblyDescriptor>${project.build.directory}/fabric8/assembly.xml</assemblyDescriptor>
+              <exportDir>/</exportDir>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>fabric8-snapshot</id>
+      <properties>
+        <fabric8.version>2.1-SNAPSHOT</fabric8.version>
+      </properties>
+    </profile>
+    <profile>
+      <id>docker-public</id>
+      <properties>
+        <docker.registryPrefix />
+      </properties>
+    </profile>
+  </profiles>
+
+</project>
