@@ -1,1 +1,3 @@
-[Kibana](http://www.elasticsearch.org/overview/kibana/) lets you view, filter and search all logs and events that have been written to Elasticsearch.
+<img src="https://raw.githubusercontent.com/fabric8io/quickstarts/master/apps/jadvisor/src/main/fabric8/icon.png" align="left" height="64" width="64"/>
+
+jAdvisor collects stats from all your [Jolokia](http://jolokia.org)-enabled Java containers & stores in configurable sinks.
