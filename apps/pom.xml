@@ -70,6 +70,7 @@
     <module>registry</module>
     <module>zookeeper</module>
     <module>jadvisor</module>
+    <module>skydns</module>
   </modules>
 
   <build>
