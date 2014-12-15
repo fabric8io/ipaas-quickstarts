@@ -63,4 +63,6 @@ You will be prompted to login as either admin/admin123! or you can register a ne
 
 You will now need to configure users, services and applications. More on this to follow.
 
+http://vimeo.com/112063377
+
 
