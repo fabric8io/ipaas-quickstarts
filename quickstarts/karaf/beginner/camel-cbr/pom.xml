@@ -42,7 +42,7 @@
     <!-- the version of the BOM, defining all the dependency versions -->
     <fabric8.version>2.0.15</fabric8.version>
     <!-- need to declare the Camel version as features-maven-plugin needs this property (cannot inherit from BOM in maven plugin) -->
-    <camel.version>2.14.0</camel.version>
+    <camel.version>2.14.1</camel.version>
 
     <docker.from>fabric8/karaf-2.4</docker.from>
     <docker.registryPrefix>${env.DOCKER_REGISTRY}/</docker.registryPrefix>
