@@ -39,7 +39,7 @@
     <skipTests>true</skipTests>
 
     <!-- the version of the BOM, defining all the dependency versions -->
-    <fabric8.version>2.0.15</fabric8.version>
+    <fabric8.version>2.0.16</fabric8.version>
     <cxf.version>3.0.2</cxf.version>
     <camel.version>2.14.1</camel.version>
     <karaf.version>2.4.0</karaf.version>
