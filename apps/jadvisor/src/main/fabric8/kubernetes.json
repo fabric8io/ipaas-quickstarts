@@ -19,7 +19,7 @@
               "containers": [
                 {
                   "name": "jadvisor-container",
-                  "image": "jimmidyson/jadvisor:latest",
+                  "image": "fabric8/jadvisor:latest",
                   "imagePullPolicy": "PullIfNotPresent",
                   "command": [
                     "-kubernetes_master=${KUBERNETES_RO_SERVICE_HOST}:${KUBERNETES_RO_SERVICE_PORT}",
