@@ -31,7 +31,7 @@
                   "env": [
                     {
                       "name": "INFLUXDB_URL",
-                      "value": "http://${INFLUX_MASTER_SERVICE_HOST}:${INFLUX_MASTER_SERVICE_PORT}"
+                      "value": "http://${INFLUXDB_SERVICE_SERVICE_HOST}:${INFLUXDB_SERVICE_SERVICE_PORT}"
                     },
                     {
                       "name": "INFLUXDB_NAME",
