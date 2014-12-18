@@ -34,16 +34,6 @@
   </description>
 
   <properties>
-    <docker.image>tutum/grafana</docker.image>
-    <docker.port.container.http>80</docker.port.container.http>
-    <docker.port.container.jolokia />
-    <dockker.env.INFLUXDB_HOST>${INFLUXDB_SERVICE_HOST}</dockker.env.INFLUXDB_HOST>
-
-    <fabric8.kubernetes.name>grafana</fabric8.kubernetes.name>
-    <fabric8.service.name>grafana-service</fabric8.service.name>
-    <fabric8.service.port>80</fabric8.service.port>
-    <fabric8.service.containerPort>80</fabric8.service.containerPort>
-
-    <fabric8.label.component>grafana</fabric8.label.component>
+    <fabric8.generateJson>false</fabric8.generateJson>
   </properties>
 </project>
