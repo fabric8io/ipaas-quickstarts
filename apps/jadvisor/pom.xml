@@ -29,7 +29,7 @@
 
   <name>jAdvisor</name>
   <description>
-    jAdvisor collects metrics from [Jolokia](http://jolokia.org/)-enabled JVMs &amp; stores in configurable sinks.
+    Collect stats from your JVM containers
   </description>
 
   <properties>

@@ -29,7 +29,7 @@
 
   <name>Kibana</name>
   <description>
-    [Kibana](http://www.elasticsearch.org/overview/kibana/) provides a web front end to logs and events stored in Elasticsearch
+    Awesome front-end for Elasticsearch
   </description>
 
   <properties>
