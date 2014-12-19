@@ -105,6 +105,7 @@ public class ApiFinder {
         snapshot.setUrlPrefix(urlPrefix);
         snapshot.setMessageContext(messageContext);
         pollPodApis(snapshot);
+        pollServiceApis(snapshot);
         snapshotCache.set(snapshot);
         return snapshot;
     }
@@ -150,9 +151,11 @@ public class ApiFinder {
     /**
      * When we created the APIs we may not have had the {@link #urlPrefix} so we may not have completed the full URLs
      * for things like swagger. So lets fix them up now
+     *
+     * @param snapshot
      */
-    protected void completeMissingFullUrls(List<ApiDTO> list) {
-        for (ApiDTO api : list) {
+    protected void completeMissingFullUrls(List<ApiDTO> apis) {
+        for (ApiDTO api : apis) {
             String swaggerUrl = api.getSwaggerUrl();
             String swaggerPath = api.getSwaggerPath();
             if (Strings.isNotBlank(swaggerPath) && Strings.isNullOrBlank(swaggerUrl) && Strings.isNotBlank(urlPrefix)) {
@@ -183,16 +186,22 @@ public class ApiFinder {
     }
 
     public List<ApiDTO> findApisOnServices(String selector) {
-        List<ApiDTO> answer = new ArrayList<>();
-        Map<String, ServiceSchema> serviceMap = KubernetesHelper.getServiceMap(kubernetes);
-
-        // TODO pick a pod for each service and add its APIs?
-        addDiscoveredServiceApis(answer, serviceMap, messageContext);
+        ApiSnapshot snapshot = getSnapshot();
+        snapshot.setMessageContext(messageContext);
+        List<ApiDTO> answer = snapshot.getServiceApis();
         completeMissingFullUrls(answer);
         return answer;
     }
 
-    protected void addDiscoveredServiceApis(List<ApiDTO> apis, Map<String, ServiceSchema> serviceMap, MessageContext messageContext) {
+    protected void pollServiceApis(ApiSnapshot snapshot) {
+        List<ApiDTO> answer = new ArrayList<>();
+        Map<String, ServiceSchema> serviceMap = KubernetesHelper.getServiceMap(kubernetes);
+
+        // TODO pick a pod for each service and add its APIs?
+        addDiscoveredServiceApis(snapshot, serviceMap, messageContext);
+    }
+
+    protected void addDiscoveredServiceApis(ApiSnapshot snapshot, Map<String, ServiceSchema> serviceMap, MessageContext messageContext) {
         CloseableHttpClient client = createHttpClient();
         try {
             Set<Map.Entry<String, ServiceSchema>> entries = serviceMap.entrySet();
@@ -203,8 +212,8 @@ public class ApiFinder {
                 String url = KubernetesHelper.getServiceURL(service);
                 if (Strings.isNotBlank(url)) {
                     // lets check if we've not got this service already
-                    if (!apiExistsForUrl(apis, url)) {
-                        tryFindApis(client, apis, service, url, messageContext);
+                    if (!apiExistsForUrl(snapshot.getServiceApis(), url)) {
+                        tryFindApis(client, snapshot, service, url, messageContext);
                     }
                 }
             }
@@ -225,7 +234,7 @@ public class ApiFinder {
         return HttpClientBuilder.create().build();
     }
 
-    protected void tryFindApis(CloseableHttpClient client, List<ApiDTO> apis, ServiceSchema service, String url, MessageContext messageContext) {
+    protected void tryFindApis(CloseableHttpClient client, ApiSnapshot snapshot, ServiceSchema service, String url, MessageContext messageContext) {
         String podId = null;
         String containerName = null;
         String objectName = null;
@@ -235,22 +244,31 @@ public class ApiFinder {
 
         int port = 0;
         String jolokiaUrl = null;
-        String swaggerUrl = urlPathJoin(url, SWAGGER_POSTFIX);
         String wadlUrl = null;
         String wsdlUrl = null;
 
         String path = toPath(url);
-        String swaggerPath = toPath(swaggerUrl);
         String wadlPath = toPath(wadlUrl);
         String wsdlPath = toPath(wsdlUrl);
 
-        try {
-            boolean valid = isValidApiEndpoint(client, swaggerUrl);
-            if (valid) {
-                apis.add(new ApiDTO(podId, serviceId, labels, containerName, objectName, path, url, port, state, jolokiaUrl, swaggerPath, swaggerUrl, wadlPath, wadlUrl, wsdlPath, wsdlUrl));
+        List<String> swaggerPostfixes = new ArrayList<>();
+
+        // TODO use env vars to figure out what postfix to use for what service id?
+        swaggerPostfixes.add(SWAGGER_POSTFIX);
+        swaggerPostfixes.add("swaggerapi");
+
+        for (String swaggerPostfix : swaggerPostfixes) {
+            String swaggerUrl = urlPathJoin(url, swaggerPostfix);
+            String swaggerPath = toPath(swaggerUrl);
+            try {
+                boolean valid = isValidApiEndpoint(client, swaggerUrl);
+                if (valid) {
+                    snapshot.addServiceApi(new ApiDTO(podId, serviceId, labels, containerName, objectName, path, url, port, state, jolokiaUrl, swaggerPath, swaggerUrl, wadlPath, wadlUrl, wsdlPath, wsdlUrl));
+                    break;
+                }
+            } catch (Throwable e) {
+                LOG.error("Failed to discover any APIs for " + url + ". " + e, e);
             }
-        } catch (Throwable e) {
-            LOG.error("Failed to discover any APIs for " + url + ". " + e, e);
         }
     }
 

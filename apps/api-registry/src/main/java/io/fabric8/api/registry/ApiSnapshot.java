@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.api.model.PodSchema;
 import io.fabric8.swagger.model.ApiDeclaration;
 import org.apache.cxf.jaxrs.ext.MessageContext;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +35,7 @@ public class ApiSnapshot {
     private final Map<String, List<ApiDTO>> apiMap = new HashMap<>();
     private final Map<PodAndContainerId, ApiDeclaration> podContainerToSwaggerMap = new HashMap<>();
     private MessageContext messageContext;
+    private List<ApiDTO> serviceApis = new ArrayList<>();
 
     public ApiSnapshot(Map<String, PodSchema> podMap) {
         this.podMap = podMap;
@@ -77,5 +79,13 @@ public class ApiSnapshot {
 
     public MessageContext getMessageContext() {
         return messageContext;
+    }
+
+    public List<ApiDTO> getServiceApis() {
+        return serviceApis;
+    }
+
+    public void addServiceApi(ApiDTO apiDTO) {
+        serviceApis.add(apiDTO);
     }
 }
