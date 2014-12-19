@@ -73,7 +73,7 @@ public class ConsumerMain {
 
             main.addRouteBuilder(new RouteBuilder() {
                 public void configure() {
-                    from("amq:" + queueName).to("dataset:myDataSet");
+                    from("amq:" + queueName).to("dataset:myDataSet?retainLast=10");
                 }
             });
 
