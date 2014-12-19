@@ -73,6 +73,7 @@
     <module>zookeeper</module>
     <module>jadvisor</module>
     <module>cadvisor</module>
+    <module>heapster</module>
     <module>skydns</module>
   </modules>
 
