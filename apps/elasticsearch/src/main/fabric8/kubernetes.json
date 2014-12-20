@@ -21,13 +21,18 @@
             "containers": [
               {
                 "name": "elasticsearch",
-                "image": "dockerfile/elasticsearch",
+                "image": "fabric8/elasticsearch-k8s:latest",
                 "imagePullPolicy": "PullIfNotPresent",
+                "env": [
+                  {
+                    "name": "SELECTOR",
+                    "value": "component=elasticsearch,cluster=fabric8"
+                  }
+                ],
                 "ports": [
                   {
                     "name": "es-port",
-                    "containerPort": 9200,
-                    "hostPort": 9200
+                    "containerPort": 9200
                   },
                   {
                     "name": "es-transport-port",
@@ -53,7 +58,8 @@
           }
         },
         "labels": {
-          "component": "elasticsearch"
+          "component": "elasticsearch",
+          "cluster": "fabric8"
         }
       }
     }
@@ -65,7 +71,8 @@
     "containerPort": "es-port",
     "port": 9200,
     "selector": {
-      "component": "elasticsearch"
+      "component": "elasticsearch",
+      "cluster": "fabric8"
     }
   }]
 }
