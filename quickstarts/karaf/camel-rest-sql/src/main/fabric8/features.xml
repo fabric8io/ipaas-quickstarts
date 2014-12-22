@@ -22,7 +22,7 @@
   <repository>mvn:org.apache.camel.karaf/apache-camel/${camel.version}/xml/features</repository>
   <repository>mvn:org.apache.karaf.assemblies.features/spring/${karaf.version}/xml/features</repository>
 
-  <feature name="quickstart-karaf-camel-rest-sql" version="${project.version}" resolver="(obr)">
+  <feature name="quickstart-karaf-camelrest" version="${project.version}" resolver="(obr)">
     <feature version="${camel.version}">camel</feature>
     <feature version="${camel.version}">camel-blueprint</feature>
     <feature version="${camel.version}">camel-servlet</feature>
