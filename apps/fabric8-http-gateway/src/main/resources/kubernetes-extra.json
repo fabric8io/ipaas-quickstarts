@@ -1,0 +1,20 @@
+{
+    "id": "fabric8-httpgateway-apiman-config",
+    "kind": "Config",
+    "apiVersion": "v1beta1",
+    "name": "http-gateway-apiman",
+    "description": "Creates a REST service for the apiman-manager",
+    "items": [
+        {
+            "id": "http-gateway-apiman",
+            "apiVersion": "v1beta1",
+            "kind": "Service",
+            "containerPort": ${apiman.port},
+            "port": "8999",
+            "selector": {
+            "container": "java",
+            "group": "defaultGatewayGroup"
+        }
+    }
+    ]
+}

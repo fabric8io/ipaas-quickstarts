@@ -32,12 +32,13 @@ public class Main {
 
     public static final String DEFAULT_HOST = "127.0.0.1";
     public static final String DEFAULT_PORT = "9090";
+    public static final String DEFAULT_APIMAN_PORT = "9089";
     public static final String DEFAULT_INDEX_ENABLED = "true";
     public static final String DEFAULT_GATEWAY_SERVICES_SELECTORS = "[{\"container\":\"java\",\"group\":\"quickstarts\"},{\"container\":\"camel\",\"group\":\"quickstarts\"}]";
     public static final String DEFAULT_URI_TEMPLATE = "/{contextPath}";
     public static final String DEFAULT_LOADBALANCER = LoadBalancers.ROUND_ROBIN_LOAD_BALANCER;
     public static final String DEFAULT_KUBERNETES_MASTER = "http://localhost:8484/";
-    public static final String DEFAULT_API_MANAGER_ENABLED = "false";
+    public static final String DEFAULT_API_MANAGER_ENABLED = "true";
     private static final Logger LOG = LoggerFactory.getLogger(Main.class);
     
     @Inject HttpMappingRuleConfiguration httpMappingRuleConfigutation;
