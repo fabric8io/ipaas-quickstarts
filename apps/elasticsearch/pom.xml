@@ -26,7 +26,6 @@
   </parent>
 
   <artifactId>elasticsearch</artifactId>
-  <packaging>pom</packaging>
 
   <name>Elasticsearch</name>
   <description>
@@ -51,4 +50,39 @@
     <fabric8.replicas>3</fabric8.replicas>
 -->
   </properties>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/fabric8</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.jboss.arquillian.junit</groupId>
+            <artifactId>arquillian-junit-container</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>arquillian-fabric8</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>kubernetes-assertions</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 </project>
