@@ -42,11 +42,11 @@
     <maven.compiler.source>1.7</maven.compiler.source>
 
     <!-- the version of the BOM, defining all the dependency versions -->
-    <fabric8.version>2.0.18</fabric8.version>
+    <fabric8.version>2.0.19</fabric8.version>
 
     <!-- maven plugin versions -->
     <camel.version>2.14.1</camel.version>
-    <jube.version>2.0.18</jube.version>
+    <jube.version>2.0.19</jube.version>
 
     <docker.from>fabric8/java</docker.from>
     <docker.registryPrefix>${env.DOCKER_REGISTRY}/</docker.registryPrefix>

@@ -41,7 +41,7 @@
 
     <apiman.version>1.0.0.Final</apiman.version>
     <!-- the version of the BOM, defining all the dependency versions -->
-    <fabric8.version>2.0.18</fabric8.version>
+    <fabric8.version>2.0.19</fabric8.version>
 
     <http.port>8080</http.port>
     <https.port>8443</https.port>
