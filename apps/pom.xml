@@ -32,6 +32,7 @@
 
   <properties>
     <skipTests>false</skipTests>
+    <testExclusionPattern>**/*KubernetesTest.java</testExclusionPattern>
     <activemq.container.port>6162</activemq.container.port>
     <activemq.service.port>6163</activemq.service.port>
 
@@ -112,7 +113,7 @@
         <configuration>
           <skipTests>${skipTests}</skipTests>
           <excludes>
-            <exclude>**/*KubernetesTest.java</exclude>
+            <exclude>${testExclusionPattern}</exclude>
           </excludes>
         </configuration>
       </plugin>
@@ -148,19 +149,9 @@
     </profile>
     <profile>
       <id>ts.kube</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <inherited>true</inherited>
-            <version>2.17</version>
-            <configuration>
-              <skipTests>${skipTests}</skipTests>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
+      <properties>
+        <testExclusionPattern>**/*ExcludedTest.java</testExclusionPattern>
+      </properties>
     </profile>
   </profiles>
 </project>
