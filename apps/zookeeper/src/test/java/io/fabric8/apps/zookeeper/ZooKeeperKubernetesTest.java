@@ -19,7 +19,7 @@ package io.fabric8.apps.zookeeper;
 import io.fabric8.arquillian.kubernetes.Constants;
 import io.fabric8.arquillian.kubernetes.Session;
 import io.fabric8.kubernetes.api.KubernetesClient;
-import io.fabric8.kubernetes.api.model.ReplicationControllerSchema;
+import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.Service;
 import org.assertj.core.api.Condition;
 import org.jboss.arquillian.junit.Arquillian;
@@ -40,10 +40,10 @@ public class ZooKeeperKubernetesTest {
 
     @Test
     public void testZooKeeper() throws Exception {
-        assertThat(client).replicationControllers().haveAtLeast(3, new Condition<ReplicationControllerSchema>() {
+        assertThat(client).replicationControllers().haveAtLeast(3, new Condition<ReplicationController>() {
             @Override
-            public boolean matches(ReplicationControllerSchema replicationControllerSchema) {
-                return replicationControllerSchema.getId().startsWith("zookeeper-controller");
+            public boolean matches(ReplicationController replicationController) {
+                return replicationController.getId().startsWith("zookeeper-controller");
             }
         });
 
