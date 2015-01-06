@@ -14,7 +14,7 @@
  * permissions and limitations under the License.
  */
 
-package io.fabric8.apps.kibana;
+package io.fabric8.apps.skydns;
 
 import io.fabric8.arquillian.kubernetes.Constants;
 import io.fabric8.arquillian.kubernetes.Session;
@@ -29,7 +29,7 @@ import org.junit.runner.RunWith;
 import static io.fabric8.kubernetes.assertions.Assertions.assertThat;
 
 @RunWith(Arquillian.class)
-public class KibanaTest {
+public class SkyDnsKubernetesTest {
 
     @ArquillianResource
     KubernetesClient client;
@@ -38,14 +38,16 @@ public class KibanaTest {
     Session session;
 
     @Test
-    public void testKibana() throws Exception {
-        assertThat(client).replicationController("kibana-controller").isNotNull();
-        assertThat(client).service("kibana-service").hasPort(5601);
+    public void testSkyDNS() throws Exception {
+        assertThat(client).replicationController("skydns-rc").isNotNull();
+        assertThat(client).service("skydns-udp-service").hasPort(53);
+        assertThat(client).service("skydns-tcp-service").hasPort(53);
+
 
         assertThat(client).pods()
                 .runningStatus()
                 .filterLabel(Constants.ARQ_KEY, session.getId())
-                .haveAtLeast(1, new Condition<PodSchema>() {
+                .haveAtLeast(2, new Condition<PodSchema>() {
                     @Override
                     public boolean matches(PodSchema podSchema) {
                         return true;

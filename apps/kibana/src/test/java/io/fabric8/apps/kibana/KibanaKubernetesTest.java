@@ -14,7 +14,7 @@
  * permissions and limitations under the License.
  */
 
-package io.fabric8.apps.jadvisor;
+package io.fabric8.apps.kibana;
 
 import io.fabric8.arquillian.kubernetes.Constants;
 import io.fabric8.arquillian.kubernetes.Session;
@@ -29,7 +29,7 @@ import org.junit.runner.RunWith;
 import static io.fabric8.kubernetes.assertions.Assertions.assertThat;
 
 @RunWith(Arquillian.class)
-public class JadvisorTest {
+public class KibanaKubernetesTest {
 
     @ArquillianResource
     KubernetesClient client;
@@ -38,8 +38,10 @@ public class JadvisorTest {
     Session session;
 
     @Test
-    public void testJadvisor() throws Exception {
-        assertThat(client).replicationController("jadvisor-rc").isNotNull();
+    public void testKibana() throws Exception {
+        assertThat(client).replicationController("kibana-controller").isNotNull();
+        assertThat(client).service("kibana-service").hasPort(5601);
+
         assertThat(client).pods()
                 .runningStatus()
                 .filterLabel(Constants.ARQ_KEY, session.getId())

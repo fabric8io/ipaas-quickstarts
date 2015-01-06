@@ -14,7 +14,7 @@
  * permissions and limitations under the License.
  */
 
-package io.fabric8.apps.grafana;
+package io.fabric8.apps.influxdb;
 
 import io.fabric8.arquillian.kubernetes.Constants;
 import io.fabric8.arquillian.kubernetes.Session;
@@ -29,7 +29,7 @@ import org.junit.runner.RunWith;
 import static io.fabric8.kubernetes.assertions.Assertions.assertThat;
 
 @RunWith(Arquillian.class)
-public class GrafanaTest {
+public class InfluxDBKubernetesTest {
 
     @ArquillianResource
     KubernetesClient client;
@@ -38,9 +38,9 @@ public class GrafanaTest {
     Session session;
 
     @Test
-    public void testGrafana() throws Exception {
-        assertThat(client).replicationController("grafana-rc").isNotNull();
-        assertThat(client).service("grafana-service").hasPort(80);
+    public void testInfluxDB() throws Exception {
+        assertThat(client).replicationController("influxdb").isNotNull();
+        assertThat(client).service("influxdb-service").hasPort(8086);
 
         assertThat(client).pods()
                 .runningStatus()

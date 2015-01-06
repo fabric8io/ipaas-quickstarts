@@ -14,13 +14,11 @@
  * permissions and limitations under the License.
  */
 
-package io.fabric8.apps.influxdb;
+package io.fabric8.apps.jenkins;
 
 import io.fabric8.arquillian.kubernetes.Constants;
 import io.fabric8.arquillian.kubernetes.Session;
 import io.fabric8.kubernetes.api.KubernetesClient;
-import io.fabric8.kubernetes.api.model.PodSchema;
-import org.assertj.core.api.Condition;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.Test;
@@ -29,7 +27,7 @@ import org.junit.runner.RunWith;
 import static io.fabric8.kubernetes.assertions.Assertions.assertThat;
 
 @RunWith(Arquillian.class)
-public class InfluxDBTest {
+public class JenkinsKubernetesTest {
 
     @ArquillianResource
     KubernetesClient client;
@@ -38,18 +36,8 @@ public class InfluxDBTest {
     Session session;
 
     @Test
-    public void testInfluxDB() throws Exception {
-        assertThat(client).replicationController("influxdb").isNotNull();
-        assertThat(client).service("influxdb-service").hasPort(8086);
-
-        assertThat(client).pods()
-                .runningStatus()
-                .filterLabel(Constants.ARQ_KEY, session.getId())
-                .haveAtLeast(1, new Condition<PodSchema>() {
-                    @Override
-                    public boolean matches(PodSchema podSchema) {
-                        return true;
-                    }
-                });
+    public void testJenkins() throws Exception {
+        assertThat(client).replicationController("jenkins").isNotNull();
+        assertThat(client).pods().runningStatus().filterLabel(Constants.ARQ_KEY, session.getId()).hasSize(1);
     }
 }

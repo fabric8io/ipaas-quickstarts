@@ -14,12 +14,14 @@
  * permissions and limitations under the License.
  */
 
-package io.fabric8.apps.zookeeper;
+package io.fabric8.apps.registry;
 
 import io.fabric8.arquillian.kubernetes.Constants;
 import io.fabric8.arquillian.kubernetes.Session;
+import io.fabric8.kubernetes.api.IntOrString;
 import io.fabric8.kubernetes.api.KubernetesClient;
-import io.fabric8.kubernetes.api.model.ReplicationControllerSchema;
+import io.fabric8.kubernetes.api.model.PodSchema;
+import io.fabric8.kubernetes.api.model.ServiceListSchema;
 import io.fabric8.kubernetes.api.model.ServiceSchema;
 import org.assertj.core.api.Condition;
 import org.jboss.arquillian.junit.Arquillian;
@@ -30,7 +32,7 @@ import org.junit.runner.RunWith;
 import static io.fabric8.kubernetes.assertions.Assertions.assertThat;
 
 @RunWith(Arquillian.class)
-public class ZooKeeperTest {
+public class RegistryKubernetesTest {
 
     @ArquillianResource
     KubernetesClient client;
@@ -39,28 +41,18 @@ public class ZooKeeperTest {
     Session session;
 
     @Test
-    public void testZooKeeper() throws Exception {
-        assertThat(client).replicationControllers().haveAtLeast(3, new Condition<ReplicationControllerSchema>() {
-            @Override
-            public boolean matches(ReplicationControllerSchema replicationControllerSchema) {
-                return replicationControllerSchema.getId().startsWith("zookeeper-controller");
-            }
-        });
+    public void testJenkins() throws Exception {
+        assertThat(client).replicationController("registry-controller").isNotNull();
+        assertThat(client).service("registry-service").hasPort(5000);
 
-        assertThat(client).services().haveAtLeast(3, new Condition<ServiceSchema>() {
-            @Override
-            public boolean matches(ServiceSchema serviceSchema) {
-                return serviceSchema.getId().startsWith("zk-peer");
-            }
-        });
-
-        assertThat(client).services().haveAtLeast(3, new Condition<ServiceSchema>() {
-            @Override
-            public boolean matches(ServiceSchema serviceSchema) {
-                return serviceSchema.getId().startsWith("zk-election");
-            }
-        });
-
-        assertThat(client).pods().runningStatus().filterLabel(Constants.ARQ_KEY, session.getId()).hasSize(3);
+        assertThat(client).pods()
+                .runningStatus()
+                .filterLabel(Constants.ARQ_KEY, session.getId())
+                .haveAtLeast(1, new Condition<PodSchema>() {
+                    @Override
+                    public boolean matches(PodSchema podSchema) {
+                        return true;
+                    }
+                });
     }
 }

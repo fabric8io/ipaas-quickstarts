@@ -14,7 +14,7 @@
  * permissions and limitations under the License.
  */
 
-package io.fabric8.apps.skydns;
+package io.fabric8.apps.elasticsearch;
 
 import io.fabric8.arquillian.kubernetes.Constants;
 import io.fabric8.arquillian.kubernetes.Session;
@@ -29,7 +29,7 @@ import org.junit.runner.RunWith;
 import static io.fabric8.kubernetes.assertions.Assertions.assertThat;
 
 @RunWith(Arquillian.class)
-public class SkyDnsTest {
+public class ElasticSearchKubernetesTest {
 
     @ArquillianResource
     KubernetesClient client;
@@ -38,16 +38,14 @@ public class SkyDnsTest {
     Session session;
 
     @Test
-    public void testSkyDNS() throws Exception {
-        assertThat(client).replicationController("skydns-rc").isNotNull();
-        assertThat(client).service("skydns-udp-service").hasPort(53);
-        assertThat(client).service("skydns-tcp-service").hasPort(53);
-
+    public void testElasticSearch() throws Exception {
+        assertThat(client).replicationController("elasticsearch-controller").isNotNull();
+        assertThat(client).service("elasticsearch").hasPort(9200);
 
         assertThat(client).pods()
                 .runningStatus()
                 .filterLabel(Constants.ARQ_KEY, session.getId())
-                .haveAtLeast(2, new Condition<PodSchema>() {
+                .haveAtLeast(1, new Condition<PodSchema>() {
                     @Override
                     public boolean matches(PodSchema podSchema) {
                         return true;

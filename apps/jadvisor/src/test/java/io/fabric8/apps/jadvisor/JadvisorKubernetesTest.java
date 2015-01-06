@@ -14,7 +14,7 @@
  * permissions and limitations under the License.
  */
 
-package io.fabric8.apps.elasticsearch;
+package io.fabric8.apps.jadvisor;
 
 import io.fabric8.arquillian.kubernetes.Constants;
 import io.fabric8.arquillian.kubernetes.Session;
@@ -29,7 +29,7 @@ import org.junit.runner.RunWith;
 import static io.fabric8.kubernetes.assertions.Assertions.assertThat;
 
 @RunWith(Arquillian.class)
-public class ElasticSearchTest {
+public class JadvisorKubernetesTest {
 
     @ArquillianResource
     KubernetesClient client;
@@ -38,10 +38,8 @@ public class ElasticSearchTest {
     Session session;
 
     @Test
-    public void testElasticSearch() throws Exception {
-        assertThat(client).replicationController("elasticsearch-controller").isNotNull();
-        assertThat(client).service("elasticsearch").hasPort(9200);
-
+    public void testJadvisor() throws Exception {
+        assertThat(client).replicationController("jadvisor-rc").isNotNull();
         assertThat(client).pods()
                 .runningStatus()
                 .filterLabel(Constants.ARQ_KEY, session.getId())

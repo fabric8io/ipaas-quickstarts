@@ -31,6 +31,7 @@
   <name>Fabric8 :: Apps</name>
 
   <properties>
+    <skipTests>false</skipTests>
     <activemq.container.port>6162</activemq.container.port>
     <activemq.service.port>6163</activemq.service.port>
 
@@ -39,7 +40,6 @@
     <docker.image>${docker.registryPrefix}fabric8/${project.artifactId}:${project.version}</docker.image>
     <docker.assemblyDescriptorRef>artifact-with-dependencies</docker.assemblyDescriptorRef>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
-    <kubernetes.tests.skip>true</kubernetes.tests.skip>
   </properties>
 
   <dependencyManagement>
@@ -108,8 +108,12 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>2.17</version>
+        <inherited>true</inherited>
         <configuration>
-          <skipTests>${kubernetes.tests.skip}</skipTests>
+          <skipTests>${skipTests}</skipTests>
+          <excludes>
+            <exclude>**/*KubernetesTest.java</exclude>
+          </excludes>
         </configuration>
       </plugin>
     </plugins>
@@ -144,9 +148,19 @@
     </profile>
     <profile>
       <id>ts.kube</id>
-      <properties>
-        <kubernetes.tests.skip>false</kubernetes.tests.skip>
-      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <inherited>true</inherited>
+            <version>2.17</version>
+            <configuration>
+              <skipTests>${skipTests}</skipTests>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
   </profiles>
 </project>

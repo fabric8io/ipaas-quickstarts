@@ -14,15 +14,12 @@
  * permissions and limitations under the License.
  */
 
-package io.fabric8.apps.registry;
+package io.fabric8.apps.grafana;
 
 import io.fabric8.arquillian.kubernetes.Constants;
 import io.fabric8.arquillian.kubernetes.Session;
-import io.fabric8.kubernetes.api.IntOrString;
 import io.fabric8.kubernetes.api.KubernetesClient;
 import io.fabric8.kubernetes.api.model.PodSchema;
-import io.fabric8.kubernetes.api.model.ServiceListSchema;
-import io.fabric8.kubernetes.api.model.ServiceSchema;
 import org.assertj.core.api.Condition;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
@@ -32,7 +29,7 @@ import org.junit.runner.RunWith;
 import static io.fabric8.kubernetes.assertions.Assertions.assertThat;
 
 @RunWith(Arquillian.class)
-public class RegistryTest {
+public class GrafanaKubernetesTest {
 
     @ArquillianResource
     KubernetesClient client;
@@ -41,9 +38,9 @@ public class RegistryTest {
     Session session;
 
     @Test
-    public void testJenkins() throws Exception {
-        assertThat(client).replicationController("registry-controller").isNotNull();
-        assertThat(client).service("registry-service").hasPort(5000);
+    public void testGrafana() throws Exception {
+        assertThat(client).replicationController("grafana-rc").isNotNull();
+        assertThat(client).service("grafana-service").hasPort(80);
 
         assertThat(client).pods()
                 .runningStatus()
