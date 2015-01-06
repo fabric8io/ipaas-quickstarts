@@ -18,11 +18,11 @@ package io.fabric8.mq.autoscaler;
 import io.fabric8.kubernetes.api.Kubernetes;
 import io.fabric8.kubernetes.api.KubernetesFactory;
 import io.fabric8.kubernetes.api.KubernetesHelper;
-import io.fabric8.kubernetes.api.model.ControllerDesiredState;
-import io.fabric8.kubernetes.api.model.ManifestContainer;
+import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.Pod;
-import io.fabric8.kubernetes.api.model.ReplicationControllerListSchema;
-import io.fabric8.kubernetes.api.model.ReplicationControllerSchema;
+import io.fabric8.kubernetes.api.model.ReplicationControllerList;
+import io.fabric8.kubernetes.api.model.ReplicationController;
+import io.fabric8.kubernetes.api.model.ReplicationControllerState;
 import io.fabric8.kubernetes.jolokia.JolokiaClients;
 import io.fabric8.utils.JMXUtils;
 import org.apache.activemq.command.ActiveMQDestination;
@@ -426,8 +426,8 @@ public class MQAutoScaler implements MQAutoScalerMBean {
         LOG.info("Checking " + brokerSelector + ": groupSize = " + pods.size());
         for (Pod pod : pods) {
             String host = KubernetesHelper.getHost(pod);
-            List<ManifestContainer> containers = KubernetesHelper.getContainers(pod);
-            for (ManifestContainer container : containers) {
+            List<Container> containers = KubernetesHelper.getContainers(pod);
+            for (Container container : containers) {
                 LOG.info("Checking pod " + pod.getId() + " container: " + container.getName() + " image: " + container.getImage());
                 J4pClient client = clients.jolokiaClient(host, container, pod);
                 BrokerVitalSigns brokerVitalSigns = getBrokerVitalSigns(client);
@@ -541,17 +541,17 @@ public class MQAutoScaler implements MQAutoScalerMBean {
     }
 
     int getCurrentState(String selector) {
-        Map<String, ReplicationControllerSchema> replicationControllerSchemaMap = KubernetesHelper.getReplicationControllerMap(kubernetes, selector);
+        Map<String, ReplicationController> replicationControllerSchemaMap = KubernetesHelper.getReplicationControllerMap(kubernetes, selector);
         if (!replicationControllerSchemaMap.isEmpty()) {
-            ReplicationControllerSchema replicationControllerSchema = replicationControllerSchemaMap.values().iterator().next();
+            ReplicationController replicationControllerSchema = replicationControllerSchemaMap.values().iterator().next();
             if (replicationControllerSchema != null) {
                 return replicationControllerSchema.getCurrentState().getReplicas();
             }
         }
         //got here so do a dump
-        ReplicationControllerListSchema replicationControllerListSchema = kubernetes.getReplicationControllers();
-        List<ReplicationControllerSchema> replicationControllerSchemaList = replicationControllerListSchema.getItems();
-        for (ReplicationControllerSchema replicationControllerSchema : replicationControllerSchemaList) {
+        ReplicationControllerList replicationControllerListSchema = kubernetes.getReplicationControllers();
+        List<ReplicationController> replicationControllerSchemaList = replicationControllerListSchema.getItems();
+        for (ReplicationController replicationControllerSchema : replicationControllerSchemaList) {
             System.err.println("DUMP replication controller = " + replicationControllerSchema);
         }
 
@@ -560,11 +560,11 @@ public class MQAutoScaler implements MQAutoScalerMBean {
 
     boolean setDesiredState(String selector, int number) {
         boolean result = false;
-        Map<String, ReplicationControllerSchema> replicationControllerSchemaMap = KubernetesHelper.getReplicationControllerMap(kubernetes, selector);
+        Map<String, ReplicationController> replicationControllerSchemaMap = KubernetesHelper.getReplicationControllerMap(kubernetes, selector);
         if (!replicationControllerSchemaMap.isEmpty()) {
-            ReplicationControllerSchema replicationController = replicationControllerSchemaMap.values().iterator().next();
+            ReplicationController replicationController = replicationControllerSchemaMap.values().iterator().next();
             if (replicationController != null) {
-                ControllerDesiredState desiredState = replicationController.getDesiredState();
+                ReplicationControllerState desiredState = replicationController.getDesiredState();
                 desiredState.setReplicas(number);
                 replicationController.setDesiredState(desiredState);
                 try {
@@ -580,9 +580,9 @@ public class MQAutoScaler implements MQAutoScalerMBean {
     }
 /*
     private void requestDesiredBrokerNumber(int number) throws Exception {
-        Map<String, ReplicationControllerSchema> replicationControllerMap = KubernetesHelper.getReplicationControllerMap(kubernetes, getBrokerSelector());
-        Collection<ReplicationControllerSchema> replicationControllers = replicationControllerMap.values();
-        for (ReplicationControllerSchema replicationController : replicationControllers) {
+        Map<String, ReplicationController> replicationControllerMap = KubernetesHelper.getReplicationControllerMap(kubernetes, getBrokerSelector());
+        Collection<ReplicationController> replicationControllers = replicationControllerMap.values();
+        for (ReplicationController replicationController : replicationControllers) {
             ControllerDesiredState desiredState = replicationController.getDesiredState();
             desiredState.setReplicas(number);
             replicationController.setDesiredState(desiredState);
