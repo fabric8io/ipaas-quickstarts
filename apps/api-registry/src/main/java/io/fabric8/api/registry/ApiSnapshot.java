@@ -17,7 +17,7 @@
  */
 package io.fabric8.api.registry;
 
-import io.fabric8.kubernetes.api.model.PodSchema;
+import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.swagger.model.ApiDeclaration;
 import org.apache.cxf.jaxrs.ext.MessageContext;
 
@@ -30,18 +30,18 @@ import java.util.Map;
  * Represents a snapshot of the current Pod and API state.
  */
 public class ApiSnapshot {
-    private final Map<String, PodSchema> podMap;
+    private final Map<String, Pod> podMap;
     private String urlPrefix;
     private final Map<String, List<ApiDTO>> apiMap = new HashMap<>();
     private final Map<PodAndContainerId, ApiDeclaration> podContainerToSwaggerMap = new HashMap<>();
     private MessageContext messageContext;
     private List<ApiDTO> serviceApis = new ArrayList<>();
 
-    public ApiSnapshot(Map<String, PodSchema> podMap) {
+    public ApiSnapshot(Map<String, Pod> podMap) {
         this.podMap = podMap;
     }
 
-    public Map<String, PodSchema> getPodMap() {
+    public Map<String, Pod> getPodMap() {
         return podMap;
     }
 

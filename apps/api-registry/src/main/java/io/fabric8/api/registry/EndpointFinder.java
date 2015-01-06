@@ -17,8 +17,8 @@
  */
 package io.fabric8.api.registry;
 
-import io.fabric8.kubernetes.api.model.ManifestContainer;
-import io.fabric8.kubernetes.api.model.PodSchema;
+import io.fabric8.kubernetes.api.model.Container;
+import io.fabric8.kubernetes.api.model.Pod;
 import org.jolokia.client.J4pClient;
 
 import java.util.List;
@@ -27,5 +27,5 @@ import java.util.List;
  * A strategy interface for finding APIs in a JVM using JMX and jolokia
  */
 public interface EndpointFinder {
-    List<ApiDTO> findApis(ApiSnapshot snapshot, PodSchema pod, ManifestContainer container, J4pClient jolokia);
+    List<ApiDTO> findApis(ApiSnapshot snapshot, Pod pod, Container container, J4pClient jolokia);
 }

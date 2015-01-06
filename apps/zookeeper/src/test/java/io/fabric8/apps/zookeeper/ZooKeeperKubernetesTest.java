@@ -20,7 +20,7 @@ import io.fabric8.arquillian.kubernetes.Constants;
 import io.fabric8.arquillian.kubernetes.Session;
 import io.fabric8.kubernetes.api.KubernetesClient;
 import io.fabric8.kubernetes.api.model.ReplicationControllerSchema;
-import io.fabric8.kubernetes.api.model.ServiceSchema;
+import io.fabric8.kubernetes.api.model.Service;
 import org.assertj.core.api.Condition;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
@@ -47,16 +47,16 @@ public class ZooKeeperKubernetesTest {
             }
         });
 
-        assertThat(client).services().haveAtLeast(3, new Condition<ServiceSchema>() {
+        assertThat(client).services().haveAtLeast(3, new Condition<Service>() {
             @Override
-            public boolean matches(ServiceSchema serviceSchema) {
+            public boolean matches(Service serviceSchema) {
                 return serviceSchema.getId().startsWith("zk-peer");
             }
         });
 
-        assertThat(client).services().haveAtLeast(3, new Condition<ServiceSchema>() {
+        assertThat(client).services().haveAtLeast(3, new Condition<Service>() {
             @Override
-            public boolean matches(ServiceSchema serviceSchema) {
+            public boolean matches(Service serviceSchema) {
                 return serviceSchema.getId().startsWith("zk-election");
             }
         });

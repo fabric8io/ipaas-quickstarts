@@ -20,9 +20,9 @@ import io.fabric8.arquillian.kubernetes.Constants;
 import io.fabric8.arquillian.kubernetes.Session;
 import io.fabric8.kubernetes.api.IntOrString;
 import io.fabric8.kubernetes.api.KubernetesClient;
-import io.fabric8.kubernetes.api.model.PodSchema;
+import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.ServiceListSchema;
-import io.fabric8.kubernetes.api.model.ServiceSchema;
+import io.fabric8.kubernetes.api.model.Service;
 import org.assertj.core.api.Condition;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
@@ -48,9 +48,9 @@ public class RegistryKubernetesTest {
         assertThat(client).pods()
                 .runningStatus()
                 .filterLabel(Constants.ARQ_KEY, session.getId())
-                .haveAtLeast(1, new Condition<PodSchema>() {
+                .haveAtLeast(1, new Condition<Pod>() {
                     @Override
-                    public boolean matches(PodSchema podSchema) {
+                    public boolean matches(Pod podSchema) {
                         return true;
                     }
                 });

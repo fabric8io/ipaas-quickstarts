@@ -20,7 +20,7 @@ import io.fabric8.kubernetes.api.KubernetesFactory;
 import io.fabric8.kubernetes.api.KubernetesHelper;
 import io.fabric8.kubernetes.api.model.ControllerDesiredState;
 import io.fabric8.kubernetes.api.model.ManifestContainer;
-import io.fabric8.kubernetes.api.model.PodSchema;
+import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.ReplicationControllerListSchema;
 import io.fabric8.kubernetes.api.model.ReplicationControllerSchema;
 import io.fabric8.kubernetes.jolokia.JolokiaClients;
@@ -421,10 +421,10 @@ public class MQAutoScaler implements MQAutoScalerMBean {
 
     List<BrokerVitalSigns> pollBrokers() {
         List<BrokerVitalSigns> result = new ArrayList<>();
-        Map<String, PodSchema> podMap = KubernetesHelper.getPodMap(kubernetes, getBrokerSelector());
-        Collection<PodSchema> pods = podMap.values();
+        Map<String, Pod> podMap = KubernetesHelper.getPodMap(kubernetes, getBrokerSelector());
+        Collection<Pod> pods = podMap.values();
         LOG.info("Checking " + brokerSelector + ": groupSize = " + pods.size());
-        for (PodSchema pod : pods) {
+        for (Pod pod : pods) {
             String host = KubernetesHelper.getHost(pod);
             List<ManifestContainer> containers = KubernetesHelper.getContainers(pod);
             for (ManifestContainer container : containers) {

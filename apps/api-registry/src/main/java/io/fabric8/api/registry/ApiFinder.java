@@ -21,11 +21,11 @@ import io.fabric8.api.registry.rules.CamelEndpointFinder;
 import io.fabric8.api.registry.rules.CxfEndpointFinder;
 import io.fabric8.kubernetes.api.Kubernetes;
 import io.fabric8.kubernetes.api.KubernetesHelper;
-import io.fabric8.kubernetes.api.model.CurrentState;
-import io.fabric8.kubernetes.api.model.ManifestContainer;
-import io.fabric8.kubernetes.api.model.PodSchema;
+import io.fabric8.kubernetes.api.model.PodState;
+import io.fabric8.kubernetes.api.model.Container;
+import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.Port;
-import io.fabric8.kubernetes.api.model.ServiceSchema;
+import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.jolokia.JolokiaClients;
 import io.fabric8.swagger.model.ApiDeclaration;
 import io.fabric8.utils.Closeables;
@@ -100,7 +100,7 @@ public class ApiFinder {
 
 
     public ApiSnapshot refreshSnapshot() {
-        Map<String, PodSchema> podMap = KubernetesHelper.getPodMap(kubernetes);
+        Map<String, Pod> podMap = KubernetesHelper.getPodMap(kubernetes);
         ApiSnapshot snapshot = new ApiSnapshot(podMap);
         snapshot.setUrlPrefix(urlPrefix);
         snapshot.setMessageContext(messageContext);
@@ -112,10 +112,10 @@ public class ApiFinder {
 
     protected void pollPodApis(ApiSnapshot snapshot) {
         Map<String, List<ApiDTO>> answer = new HashMap<>();
-        Set<Map.Entry<String, PodSchema>> entries = snapshot.getPodMap().entrySet();
-        for (Map.Entry<String, PodSchema> entry : entries) {
+        Set<Map.Entry<String, Pod>> entries = snapshot.getPodMap().entrySet();
+        for (Map.Entry<String, Pod> entry : entries) {
             String podId = entry.getKey();
-            PodSchema pod = entry.getValue();
+            Pod pod = entry.getValue();
             List<ApiDTO> list = new ArrayList<ApiDTO>();
             addApisForPod(snapshot, pod, list);
             if (list != null && !list.isEmpty()) {
@@ -126,17 +126,17 @@ public class ApiFinder {
 
     public List<ApiDTO> findApisOnPods(String selector) {
         List<ApiDTO> answer = new ArrayList<>();
-        Filter<PodSchema> filter = KubernetesHelper.createPodFilter(selector);
+        Filter<Pod> filter = KubernetesHelper.createPodFilter(selector);
         ApiSnapshot snapshot = getSnapshot();
         snapshot.setMessageContext(messageContext);
 
-        Map<String, PodSchema> podMap = snapshot.getPodMap();
+        Map<String, Pod> podMap = snapshot.getPodMap();
         Map<String, List<ApiDTO>> cache = snapshot.getApiMap();
 
-        Set<Map.Entry<String, PodSchema>> entries = podMap.entrySet();
-        for (Map.Entry<String, PodSchema> entry : entries) {
+        Set<Map.Entry<String, Pod>> entries = podMap.entrySet();
+        for (Map.Entry<String, Pod> entry : entries) {
             String key = entry.getKey();
-            PodSchema pod = entry.getValue();
+            Pod pod = entry.getValue();
             if (filter.matches(pod)) {
                 List<ApiDTO> dtos = cache.get(key);
                 if (dtos != null) {
@@ -152,7 +152,7 @@ public class ApiFinder {
      * When we created the APIs we may not have had the {@link #urlPrefix} so we may not have completed the full URLs
      * for things like swagger. So lets fix them up now
      *
-     * @param snapshot
+     * @param apis
      */
     protected void completeMissingFullUrls(List<ApiDTO> apis) {
         for (ApiDTO api : apis) {
@@ -173,10 +173,10 @@ public class ApiFinder {
         return snapshot;
     }
 
-    public void addApisForPod(ApiSnapshot snapshot, PodSchema pod, List<ApiDTO> list) {
+    public void addApisForPod(ApiSnapshot snapshot, Pod pod, List<ApiDTO> list) {
         String host = KubernetesHelper.getHost(pod);
-        List<ManifestContainer> containers = KubernetesHelper.getContainers(pod);
-        for (ManifestContainer container : containers) {
+        List<Container> containers = KubernetesHelper.getContainers(pod);
+        for (Container container : containers) {
             J4pClient jolokia = clients.jolokiaClient(host, container, pod);
             if (jolokia != null) {
                 List<ApiDTO> apiDTOs = findServices(snapshot, pod, container, jolokia);
@@ -195,19 +195,19 @@ public class ApiFinder {
 
     protected void pollServiceApis(ApiSnapshot snapshot) {
         List<ApiDTO> answer = new ArrayList<>();
-        Map<String, ServiceSchema> serviceMap = KubernetesHelper.getServiceMap(kubernetes);
+        Map<String, Service> serviceMap = KubernetesHelper.getServiceMap(kubernetes);
 
         // TODO pick a pod for each service and add its APIs?
         addDiscoveredServiceApis(snapshot, serviceMap, messageContext);
     }
 
-    protected void addDiscoveredServiceApis(ApiSnapshot snapshot, Map<String, ServiceSchema> serviceMap, MessageContext messageContext) {
+    protected void addDiscoveredServiceApis(ApiSnapshot snapshot, Map<String, Service> serviceMap, MessageContext messageContext) {
         CloseableHttpClient client = createHttpClient();
         try {
-            Set<Map.Entry<String, ServiceSchema>> entries = serviceMap.entrySet();
-            for (Map.Entry<String, ServiceSchema> entry : entries) {
+            Set<Map.Entry<String, Service>> entries = serviceMap.entrySet();
+            for (Map.Entry<String, Service> entry : entries) {
                 String key = entry.getKey();
-                ServiceSchema service = entry.getValue();
+                Service service = entry.getValue();
                 String id = service.getId();
                 String url = KubernetesHelper.getServiceURL(service);
                 if (Strings.isNotBlank(url)) {
@@ -234,7 +234,7 @@ public class ApiFinder {
         return HttpClientBuilder.create().build();
     }
 
-    protected void tryFindApis(CloseableHttpClient client, ApiSnapshot snapshot, ServiceSchema service, String url, MessageContext messageContext) {
+    protected void tryFindApis(CloseableHttpClient client, ApiSnapshot snapshot, Service service, String url, MessageContext messageContext) {
         String podId = null;
         String containerName = null;
         String objectName = null;
@@ -324,7 +324,7 @@ public class ApiFinder {
         return false;
     }
 
-    protected List<ApiDTO> findServices(ApiSnapshot snapshot, PodSchema pod, ManifestContainer container, J4pClient jolokia) {
+    protected List<ApiDTO> findServices(ApiSnapshot snapshot, Pod pod, Container container, J4pClient jolokia) {
         List<ApiDTO> answer = new ArrayList<>();
         for (EndpointFinder finder : finders) {
             List<ApiDTO> apis = finder.findApis(snapshot, pod, container, jolokia);
@@ -336,7 +336,7 @@ public class ApiFinder {
     }
 
 
-    public static String getHttpUrl(PodSchema pod, ManifestContainer container, J4pClient jolokia) {
+    public static String getHttpUrl(Pod pod, Container container, J4pClient jolokia) {
         // lets find the HTTP port
         if (container != null) {
             List<Port> ports = container.getPorts();
@@ -353,7 +353,7 @@ public class ApiFinder {
                     String protocolName = containerPort == 443 || Objects.equals("https", name) ? "https" : "http";
 
                     if (httpPortNumber || (httpName && containerPort.intValue() > 0)) {
-                        CurrentState currentState = pod.getCurrentState();
+                        PodState currentState = pod.getCurrentState();
                         if (currentState != null) {
                             String podIP = currentState.getPodIP();
                             if (Strings.isNotBlank(podIP)) {

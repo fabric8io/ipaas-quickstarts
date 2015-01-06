@@ -19,8 +19,8 @@ package io.fabric8.api.registry.rules;
 
 import io.fabric8.api.registry.ApiDTO;
 import io.fabric8.api.registry.ApiSnapshot;
-import io.fabric8.kubernetes.api.model.ManifestContainer;
-import io.fabric8.kubernetes.api.model.PodSchema;
+import io.fabric8.kubernetes.api.model.Container;
+import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.utils.Strings;
 import org.jolokia.client.J4pClient;
 import org.jolokia.client.exception.J4pException;
@@ -40,7 +40,7 @@ public abstract class EndpointFinderSupport implements io.fabric8.api.registry.E
     private static final transient Logger LOG = LoggerFactory.getLogger(EndpointFinderSupport.class);
 
     @Override
-    public List<ApiDTO> findApis(ApiSnapshot snapshot, PodSchema pod, ManifestContainer container, J4pClient jolokia) {
+    public List<ApiDTO> findApis(ApiSnapshot snapshot, Pod pod, Container container, J4pClient jolokia) {
         List<ApiDTO> answer = new ArrayList<>();
         try {
             J4pResponse<J4pSearchRequest> results = jolokia.execute(new J4pSearchRequest(getObjectNamePattern()));
@@ -62,5 +62,5 @@ public abstract class EndpointFinderSupport implements io.fabric8.api.registry.E
 
     protected abstract String getObjectNamePattern();
 
-    protected abstract void appendObjectNameEndpoints(List<ApiDTO> list, ApiSnapshot snapshot, PodSchema pod, ManifestContainer container, J4pClient jolokia, ObjectName objectName) throws MalformedObjectNameException, J4pException;
+    protected abstract void appendObjectNameEndpoints(List<ApiDTO> list, ApiSnapshot snapshot, Pod pod, Container container, J4pClient jolokia, ObjectName objectName) throws MalformedObjectNameException, J4pException;
 }

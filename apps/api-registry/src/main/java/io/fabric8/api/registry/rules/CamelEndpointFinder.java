@@ -20,8 +20,8 @@ package io.fabric8.api.registry.rules;
 import io.fabric8.api.registry.ApiDTO;
 import io.fabric8.api.registry.ApiSnapshot;
 import io.fabric8.api.registry.PodAndContainerId;
-import io.fabric8.kubernetes.api.model.ManifestContainer;
-import io.fabric8.kubernetes.api.model.PodSchema;
+import io.fabric8.kubernetes.api.model.Container;
+import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.swagger.model.Api;
 import io.fabric8.swagger.model.ApiDeclaration;
 import io.fabric8.swagger.model.Models;
@@ -68,7 +68,7 @@ public class CamelEndpointFinder extends EndpointFinderSupport {
     }
 
     @Override
-    protected void appendObjectNameEndpoints(List<ApiDTO> list, ApiSnapshot snapshot, PodSchema pod, ManifestContainer container, J4pClient jolokia, ObjectName objectName) throws MalformedObjectNameException, J4pException {
+    protected void appendObjectNameEndpoints(List<ApiDTO> list, ApiSnapshot snapshot, Pod pod, Container container, J4pClient jolokia, ObjectName objectName) throws MalformedObjectNameException, J4pException {
         String httpUrl = getHttpUrl(pod, container, jolokia);
         String urlPrefix = snapshot.getUrlPrefix();
         if (httpUrl != null) {

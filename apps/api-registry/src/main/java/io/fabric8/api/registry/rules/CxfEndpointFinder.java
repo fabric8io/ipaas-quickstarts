@@ -19,8 +19,8 @@ package io.fabric8.api.registry.rules;
 
 import io.fabric8.api.registry.ApiDTO;
 import io.fabric8.api.registry.ApiSnapshot;
-import io.fabric8.kubernetes.api.model.ManifestContainer;
-import io.fabric8.kubernetes.api.model.PodSchema;
+import io.fabric8.kubernetes.api.model.Container;
+import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.utils.Strings;
 import org.jolokia.client.J4pClient;
 import org.jolokia.client.exception.J4pException;
@@ -56,7 +56,7 @@ public class CxfEndpointFinder extends EndpointFinderSupport {
     }
 
     @Override
-    protected void appendObjectNameEndpoints(List<ApiDTO> list, ApiSnapshot snapshot, PodSchema pod, ManifestContainer container, J4pClient jolokia, ObjectName objectName) throws MalformedObjectNameException, J4pException {
+    protected void appendObjectNameEndpoints(List<ApiDTO> list, ApiSnapshot snapshot, Pod pod, Container container, J4pClient jolokia, ObjectName objectName) throws MalformedObjectNameException, J4pException {
         String type = objectName.getKeyProperty("type");
         if (type != null && "Bus.Service.Endpoint".equals(type)) {
             J4pResponse<J4pReadRequest> results = jolokia.execute(new J4pReadRequest(objectName,

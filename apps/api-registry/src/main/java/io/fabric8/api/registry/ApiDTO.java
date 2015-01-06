@@ -15,8 +15,8 @@
  */
 package io.fabric8.api.registry;
 
-import io.fabric8.kubernetes.api.model.ManifestContainer;
-import io.fabric8.kubernetes.api.model.PodSchema;
+import io.fabric8.kubernetes.api.model.Container;
+import io.fabric8.kubernetes.api.model.Pod;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Map;
@@ -65,7 +65,7 @@ public class ApiDTO {
         this.wsdlUrl = wsdlUrl;
     }
 
-    public ApiDTO(PodSchema pod, ManifestContainer container, String serviceId, String objectName, String path, String url, int port, String state, String jolokiaUrl, String swaggerPath, String swaggerUrl, String wadlPath, String wadlUrl, String wsdlPath, String wsdlUrl) {
+    public ApiDTO(Pod pod, Container container, String serviceId, String objectName, String path, String url, int port, String state, String jolokiaUrl, String swaggerPath, String swaggerUrl, String wadlPath, String wadlUrl, String wsdlPath, String wsdlUrl) {
         this(pod.getId(), serviceId, pod.getLabels(), container.getName(), objectName, path, url, port, state, jolokiaUrl, swaggerPath, swaggerUrl, wadlPath, wadlUrl, wsdlPath, wsdlUrl);
     }
 
