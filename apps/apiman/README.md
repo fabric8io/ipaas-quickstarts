@@ -21,16 +21,11 @@ export FABRIC8_CONSOLE=http://localhost:8585/hawtio/
 ```
 To build from the source code:
 
-1. Change your working directory to `apps/apiman-console` directory.
+1. Change your working directory to `apps/apiman` directory.
 1. Run `mvn clean install` to build the app.
-
-After building from the source code, you can upload the changes to the fabric container:
-
-1. Change your working directory to `apps/apiman-console` directory.
 1. Run `mvn fabric8:deploy` to upload the application to the fabric container.
 
-If you run the `fabric:deploy` command for the first then, it will ask you for the username and password to login the fabric container.
-And then store this information in the local Maven settings file. You can find more details about this on the fabric8 website about the [Maven Plugin](http://fabric8.io/gitbook/mavenPlugin.html).
+If you run the `fabric:deploy` command for the first then, it will ask you for the username and password to login the fabric container. And then store this information in the local Maven settings file. You can find more details about this on the fabric8 website about the [Maven Plugin](http://fabric8.io/gitbook/mavenPlugin.html).
 
 
 ## How to run this example

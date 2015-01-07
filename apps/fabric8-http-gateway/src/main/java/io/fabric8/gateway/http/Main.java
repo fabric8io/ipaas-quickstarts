@@ -38,7 +38,7 @@ public class Main {
     public static final String DEFAULT_URI_TEMPLATE = "/{contextPath}";
     public static final String DEFAULT_LOADBALANCER = LoadBalancers.ROUND_ROBIN_LOAD_BALANCER;
     public static final String DEFAULT_KUBERNETES_MASTER = "http://localhost:8484/";
-    public static final String DEFAULT_API_MANAGER_ENABLED = "true";
+    public static final String DEFAULT_API_MANAGER_ENABLED = "false";
     private static final Logger LOG = LoggerFactory.getLogger(Main.class);
     
     @Inject HttpMappingRuleConfiguration httpMappingRuleConfigutation;

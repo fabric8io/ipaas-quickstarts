@@ -21,41 +21,6 @@ From the CLI or Fuse Management Console just run an instance of the **fabric8-ht
 
 ### Configuring the Gateway
 
-The implementation of the HTTP Gateway is a Fabric8 Service, with a Kubernetes/Jube Service proxying one
-or more containers.
-
-#### Service Configuration
-
-The service can be configured at deploy time by editing the `kubernetes-extra.json` file.
-```
-{
-  "id": "fabric8-httpgateway-config",
-  "kind": "Config",
-  "apiVersion": "v1beta1",
-  "name": "fabric8httpgateway",
-  "description": "Creates a fabric8 HTTP gateway service",
-  "items": [
-    {
-      "id": "fabric8httpgateway",
-      "apiVersion": "v1beta1",
-      "kind": "Service",
-      "containerPort": ${http.port},
-      "port": "9000",
-      "selector": {
-        "container": "java",
-        "name": "fabric8Fabric8HttpGateway",
-        "group": "defaultGatewayGroup"
-      }
-    }
-  ]
-}
-```
-In particular the `port` setting is of interest as this is the port that the service and therefore the HTTP Gateway will expose to the outside world. When using Jube this setting will appear in the `env.sh` file as 
-```
-export FABRIC8HTTPGATEWAY_SERVICE_PORT="9000"
-```
-
-#### Container Gateway Configuration
 The HTTP Gateway can be configured using Environmental or System parameters. If the parameter is specified for both, then the Environmental
 value takes precedence. To avoid avoid confusion with other parameters a `namespace` prefix of `<HTTP_GATEWAY_SERVICE_ID>_SERVICE_` is used, where the `<HTTP_GATEWAY_SERVICE_ID>` defaults to `FABRIC8HTTPGATEWAY`. This makes a default prefix of `FABRIC8HTTPGATEWAY_SERVICE_`.
 The table below shows a full overview of all parameters that can be used to configure the HTTP Gateway Container.
@@ -63,7 +28,7 @@ The table below shows a full overview of all parameters that can be used to conf
 | Parameter | Description | Default |
 | -------- | ----------- | ------ |
 | `HTTP_GATEWAY_SERVICE_ID` | Parameter used to construct the `HTTP_GATEWAY` parameters. The complete prefix is defined as `<HTTP_GATEWAY_SERVICE_ID>_SERVICE_` | `FABRIC8HTTPGATEWAY` |
-| `API_MANAGER_ENABLED` | Switch to enable the API Manager. When set to `false` no API management is activated and the HTTP_GATEWAY defaults to do simple URL mapping only without any of the API Management features such as security or other policies  | `true` |
+| `API_MANAGER_ENABLED` | Switch to enable the API Manager. When set to `false` no API management is activated and the HTTP_GATEWAY defaults to do simple URL mapping only without any of the API Management features such as security or other policies  | `false` |
 | `HOST` | The hostname or IP address of the HTTP Gateway | `localhost` |
 | `HTTP_PORT` | The HTTP port of the HTTP Gateway containers. **Note that this parameter has no prefix.** | `9090` |
 | `KUBERNETES_MASTER` | The URL pointing to the Kubernates API. By default Kubernetes runs on port `8484`, which Jube runs on `8585` | `http://localhost:8484/` |
@@ -130,4 +95,12 @@ The following table outlines the available variables you can use in a URI templa
 #### Viewing all the active HTTP URIs
 
 Once you've run a few web services and web applications and you are runnning the gateway you may be wondering what URIs are available. Assuming you're on a machine with the gateway, just browse the URL [http://localhost:9000/]([http://localhost:9000/) and you should see the JSON of all the URI prefixes and the underlying servers they are bound to.
+
+### API Management 
+
+By default API Management is turned off to make testing the gateway easier. In most cases however you will want
+to enable set API_MANAGER_ENABLED to true. In this case the Fabric8 HTTP Gateway routes all incoming requests through
+the APIMan Engine so policies can be applied before and after each service call. If you want to use API Management
+please deploy the APIMan console and follow the instructions in the README of that application.
+and to deploy the APIMan console.
 
