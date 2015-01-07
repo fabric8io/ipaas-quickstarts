@@ -42,15 +42,43 @@ http://localhost:8585/hawtio/
 when you click on a the 'services' tab you should find the `apiman-console` service with an `Address` of 
 http://localhost:9092, which means the apiman console can be found at http://localhost:9092/apiman-management.
 
-### Using the web console
-
-TBD
-
 
 ## How to use this application
 
-This application assumes you have an Fabric8 HttpGateway deployed have Api management on it turned on (for details
-please see the fabric8HttpGateway application). You can now navigate to the API management console at
+### Prerequisites
+
+1. Run a backend service. For example run the cxfcdi service.
+```
+cd quickstarts/java/cxf-cdi
+mvn clean fabric8:deploy
+mvn fabric8:run
+```
+Check that the service is running using the hawtio console
+
+![cxfcdi-on-hawtio](images/cxfcdi.png "CXFCDI on Hawtio")
+
+You should see a service with ID 'quickstart-java-cxf-cdi' and 1 pod. You should be able to do a GET on
+
+http://localhost:9002/quickstart-java-cxf-cdi/cxfcdi/customerservice/customers/123
+
+and the following body should be returned
+```
+<Customer><id>123</id><name>John</name></Customer>
+```
+
+2. You need a running Fabric8 HttpGateway deployed have API management on it turned on (for details
+please see the fabric8HttpGateway application). 
+
+```
+cd apps/fabric8-http-gateway
+mvn clean fabric8:deploy
+mvn fabric8:run
+```
+
+
+
+
+You can now navigate to the API management console at
 
 http://localhost:9092/apiman-management
 
