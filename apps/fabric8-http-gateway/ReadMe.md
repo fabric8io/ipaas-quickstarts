@@ -15,36 +15,34 @@ There are 2 main deployment strategies
 
 The gateway watches Kubernetes for a set of services selected using user defined sets of labels. It then uses the mapping rules to figure out how to expose those services via the HTTP gateway. The Kubernetes registry is automatically populated by fabric8 when you deploy your services. 
 
-### Running the Gateway
-
-From the CLI or Fuse Management Console just run an instance of the **fabric8-http-gateway** on a machine you wish to use as the gateway (e.g. if using Red Hat clustering and VIPs on 2 boxes).
-
 ### Configuring the Gateway
 
-The HTTP Gateway can be configured using Environmental or System parameters. If the parameter is specified for both, then the Environmental
-value takes precedence. To avoid avoid confusion with other parameters a `namespace` prefix of `<HTTP_GATEWAY_SERVICE_ID>_SERVICE_` is used, where the `<HTTP_GATEWAY_SERVICE_ID>` defaults to `FABRIC8HTTPGATEWAY`. This makes a default prefix of `FABRIC8HTTPGATEWAY_SERVICE_`.
-The table below shows a full overview of all parameters that can be used to configure the HTTP Gateway Container.
+The HTTP Gateway can be configured using Environmental or System parameters. If the parameter is specified for both, then the Environmental value takes precedence. To avoid avoid confusion with other parameters a `namespace` prefix of `<HTTP_GATEWAY_SERVICE_ID>_SERVICE_` is used, where the `<HTTP_GATEWAY_SERVICE_ID>` defaults to `FABRIC8HTTPGATEWAY`. This makes a default prefix of `FABRIC8HTTPGATEWAY_SERVICE_`. 
+
+You can set an environmental parameter in the kubernates.json file, or you can add it to the pom.xml and rerun the build to regenerate the kubernates.json file. For example set JVM_DEBUG to `true` to turn on debugging add `<fabric8.env.JVM_DEBUG>true</fabric8.env.JVM_DEBUG>`. This works for both Jube as well as Kubernetes/Docker. 
+
+The table below shows a full overview of all parameters that can be used to configure the HTTP Gateway Container, along with their default value.
 
 | Parameter | Description | Default |
 | -------- | ----------- | ------ |
 | `HTTP_GATEWAY_SERVICE_ID` | Parameter used to construct the `HTTP_GATEWAY` parameters. The complete prefix is defined as `<HTTP_GATEWAY_SERVICE_ID>_SERVICE_` | `FABRIC8HTTPGATEWAY` |
-| `API_MANAGER_ENABLED` | Switch to enable the API Manager. When set to `false` no API management is activated and the HTTP_GATEWAY defaults to do simple URL mapping only without any of the API Management features such as security or other policies  | `true` |
+| `FABRIC8HTTPGATEWAY_API_MANAGER_ENABLED` | Switch to enable the API Manager. When set to `false` no API management is activated and the HTTP_GATEWAY defaults to do simple URL mapping only without any of the API Management features such as security or other policies  | `true` |
 | `HOST` | The hostname or IP address of the HTTP Gateway | `localhost` |
 | `HTTP_PORT` | The HTTP port of the HTTP Gateway containers. **Note that this parameter has no prefix.** | `9090` |
 | `KUBERNETES_MASTER` | The URL pointing to the Kubernates API. By default Kubernetes runs on port `8484`, which Jube runs on `8585` | `http://localhost:8484/` |
-| `GATEWAY_SERVICES_SELECTORS` | A JSON structure representing the collection of selectors for the gateway to use to select the services it proxies. | `[{container:java,group:quickstarts},{container:camel,group:quickstarts}]` |
+| `FABRIC8HTTPGATEWAY_SERVICE_GATEWAY_SERVICES_SELECTORS` | A JSON structure representing the collection of selectors for the gateway to use to select the services it proxies. | `[{container:java,group:quickstarts},{container:camel,group:quickstarts}]` |
 
 #### HTTP Mapping rules
 
 | Parameter | Description | Default |
 | -------- | ----------- | ------ |
-| `URI_TEMPLATE` | URI Template to use for this HTTP Gateway instance. See the URI Template section for a full description of all template variables that can be used.  | `/{contextPath}`. 
-| `LOAD_BALANCER` | The type of load balancing the gateway should use when connecting to the backend services. This needs to be one `random`, `roundrobin` or `sticky`| `roundrobin` |
-| `ENABLED_VERSION` | By default the Gateway supports rolling upgrades, however if want to be completely specific on a version then you can specify that version with this parameter. By default this parameter is not defined. | `null` |
-| `ENABLE_INDEX` | If enabled then performing a HTTP GET on the path '/' will return a JSON representation of the gateway mappings. | `true` |
-| `REVERSE_HEADERS` | If enabled then the URL in the Location, Content-Location and URI headers from the proxied HTTP responses are rewritten from the back end service URL to match the front end URL on the gateway.This is equivalent to the ProxyPassReverse directive in mod_proxy. | `true` |
+| `FABRIC8HTTPGATEWAY_SERVICE_URI_TEMPLATE` | URI Template to use for this HTTP Gateway instance. See the URI Template section for a full description of all template variables that can be used.  | `/{contextPath}`. 
+| `FABRIC8HTTPGATEWAY_SERVICE_LOAD_BALANCER` | The type of load balancing the gateway should use when connecting to the backend services. This needs to be one `random`, `roundrobin` or `sticky`| `roundrobin` |
+| `FABRIC8HTTPGATEWAY_SERVICE_ENABLED_VERSION` | By default the Gateway supports rolling upgrades, however if want to be completely specific on a version then you can specify that version with this parameter. By default this parameter is not defined. | `null` |
+| `FABRIC8HTTPGATEWAY_SERVICE_ENABLE_INDEX` | If enabled then performing a HTTP GET on the path '/' will return a JSON representation of the gateway mappings. | `true` |
+| `FABRIC8HTTPGATEWAY_SERVICE_REVERSE_HEADERS` | If enabled then the URL in the Location, Content-Location and URI headers from the proxied HTTP responses are rewritten from the back end service URL to match the front end URL on the gateway.This is equivalent to the ProxyPassReverse directive in mod_proxy. | `true` |
 
-##### URL Mapping
+### URL Mapping using the URI_TEMPLATE
 When using the HTTP gateway, its common to wish to map different versions of web applications or web services to different URI paths on the gateway. You can perform very flexible mappings using [URI templates](http://en.wikipedia.org/wiki/URL_Template).
 
 The out of the box defaults are to expose all web applications and web services at the context path that they are running in the target server. For example if you use the **example-quickstarts-rest** profile, then that uses a URI like: **/cxf/crm/customerservice/customers/123** on whatever host/port its deployed on; so by default it is visible on the gateway at [http://localhost:9000/cxf/crm/customerservice/customers/123](http://localhost:9000/cxf/crm/customerservice/customers/123)
@@ -92,15 +90,38 @@ The following table outlines the available variables you can use in a URI templa
 |{contextPath} | The context path (the part of the URL after the host and port) of the web service or web application implementation.|
 |{version} |  The version of the web service or web application |
 
-#### Viewing all the active HTTP URIs
+### Running the Gateway
+
+From the CLI or Hawtio Console just run an instance of the **fabric8-http-gateway** on a machine you wish to use as the gateway. 
+
+If you are using Docker and Kubernetes then set
+```
+export KUBERNETES_MASTER=http://openshifthost:8484
+export FABRIC8_CONSOLE=http://localhost:8484/hawtio/
+```
+for Jube set
+```
+export KUBERNETES_MASTER=http://openshifthost:8585
+export FABRIC8_CONSOLE=http://localhost:8585/hawtio/
+
+Then from the quickstarts project
+```
+cd apps/fabric8-http-gateway
+mvn clean install fabric8:deploy
+mvn fabric8:run
+```
+Note that be default APIManagement is turned *on*. This means that you will need to register your backend services into
+the APIMan registry. Until then any service request on the gateway port will return a status code of 404 - Service not found. If you do not wish to use API Management please set FABRIC8HTTPGATEWAY_SERVICE_API_MANAGER_ENABLED to false in your kubernetes.json file, or add the 
+```
+<fabric8.env.FABRIC8HTTPGATEWAY_SERVICE_API_MANAGER_ENABLED>false</fabric8.env.FABRIC8HTTPGATEWAY_SERVICE_API_MANAGER_ENABLED>
+```
+parameter to the pom and rebuild and redeploy.
+
+### Viewing all the active HTTP URIs
 
 Once you've run a few web services and web applications and you are runnning the gateway you may be wondering what URIs are available. Assuming you're on a machine with the gateway, just browse the URL [http://localhost:9000/]([http://localhost:9000/) and you should see the JSON of all the URI prefixes and the underlying servers they are bound to.
 
 ### API Management 
 
-By default API Management is turned off to make testing the gateway easier. In most cases however you will want
-to enable set API_MANAGER_ENABLED to true. In this case the Fabric8 HTTP Gateway routes all incoming requests through
-the APIMan Engine so policies can be applied before and after each service call. If you want to use API Management
-please deploy the APIMan console and follow the instructions in the README of that application.
-and to deploy the APIMan console.
+If you want to use API Management please deploy the APIMan console from the quickstarts project (apps/apiman) and follow the instructions in the README to register your backend service endpoints into APIMan.
 
