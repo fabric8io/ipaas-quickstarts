@@ -66,12 +66,12 @@ and the following body should be returned
 <Customer><id>123</id><name>John</name></Customer>
 ```
 
-2. You need a running Fabric8 HttpGateway deployed have API management on it turned on (for details
+2. You need a running Fabric8 HttpGateway deployed and have API management on it turned on (for details
 please see the fabric8HttpGateway application). 
 
 ```
 cd apps/fabric8-http-gateway
-mvn clean fabric8:deploy
+mvn clean fabric8:deploy 
 mvn fabric8:run
 ```
 
