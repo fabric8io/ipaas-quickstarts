@@ -76,6 +76,7 @@
     <module>cadvisor</module>
     <module>heapster</module>
     <module>skydns</module>
+    <module>keycloak</module>
   </modules>
 
   <build>
