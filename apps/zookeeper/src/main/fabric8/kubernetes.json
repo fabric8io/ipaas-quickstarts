@@ -11,7 +11,6 @@
             "id": "zk-client",
             "kind": "Service",
             "port": 2181,
-            "createExternalLoadBalancer": "true",
             "containerPort": "zookeeper-client-port",
             "selector": {
                 "name": "zookeeper-pod"
@@ -118,6 +117,10 @@
                                         {
                                             "name": "ZK_SERVER_ID",
                                             "value": "1"
+                                        },
+                                        {
+                                            "name": "USE_BRIDGE",
+                                            "value": "true"
                                         }
                                     ],
                                     "ports": [
@@ -195,6 +198,10 @@
                                         {
                                             "name": "ZK_SERVER_ID",
                                             "value": "2"
+                                        },
+                                        {
+                                            "name": "USE_BRIDGE",
+                                            "value": "true"
                                         }
                                     ],
                                     "ports": [
@@ -271,6 +278,10 @@
                                         {
                                             "name": "ZK_SERVER_ID",
                                             "value": "3"
+                                        },
+                                        {
+                                            "name": "USE_BRIDGE",
+                                            "value": "true"
                                         }
                                     ],
                                     "ports": [

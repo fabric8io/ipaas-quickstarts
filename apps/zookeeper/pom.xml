@@ -31,6 +31,10 @@
   <name>ZooKeeper</name>
   <description>Creates a ZooKeeper ensemble</description>
 
+    <properties>
+        <fabric8.generateJson>false</fabric8.generateJson>
+    </properties>
+
   <build>
     <finalName>${project.artifactId}</finalName>
 
