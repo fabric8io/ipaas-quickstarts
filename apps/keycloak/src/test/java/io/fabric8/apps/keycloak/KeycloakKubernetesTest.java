@@ -14,7 +14,7 @@
  * permissions and limitations under the License.
  */
 
-package io.fabric8.apps.jadvisor;
+package io.fabric8.apps.keycloak;
 
 import io.fabric8.arquillian.kubernetes.Constants;
 import io.fabric8.arquillian.kubernetes.Session;
@@ -29,7 +29,7 @@ import org.junit.runner.RunWith;
 import static io.fabric8.kubernetes.assertions.Assertions.assertThat;
 
 @RunWith(Arquillian.class)
-public class JadvisorKubernetesTest {
+public class KeycloakKubernetesTest {
 
     @ArquillianResource
     KubernetesClient client;
@@ -38,8 +38,8 @@ public class JadvisorKubernetesTest {
     Session session;
 
     @Test
-    public void testJadvisor() throws Exception {
-        assertThat(client).replicationController("jadvisor-rc").isNotNull();
+    public void testKeycloak() throws Exception {
+        assertThat(client).replicationController("keycloak-rc").isNotNull();
         assertThat(client).pods()
                 .runningStatus()
                 .filterLabel(Constants.ARQ_KEY, session.getId())
