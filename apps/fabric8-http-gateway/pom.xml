@@ -31,6 +31,7 @@
   <description>Fabric8 HTTP Gateway provides a reverse proxy for HTTP traffic over Kubernetes Sevices</description>
 
   <properties>
+    <fabric8.version>2.2-SNAPSHOT</fabric8.version>
     <version.maven-surefire-plugin>2.15</version.maven-surefire-plugin>
     <guava.version>15.0</guava.version>
     <http.port>9090</http.port>
