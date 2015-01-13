@@ -6,7 +6,7 @@ The quickstart uses Spring Boot to configure a little application that publishes
 
 When the application is running, you can use the web console to view the ActiveMQ broker and browse the message queue, as shown in the screenshot below:
 
-![Spring Boot ActiveMQ](https://raw.githubusercontent.com/fabric8io/fabric8/master/docs/images/spring-boot-activemq.png)
+![Spring Boot ActiveMQ](https://raw.githubusercontent.com/fabric8io/fabric8/1.x/docs/images/spring-boot-activemq.png)
 
 
 ## Building this example

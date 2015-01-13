@@ -39,7 +39,7 @@
   <modules>
     <module>webmvc</module>
     <module>camel</module>
-    <!--module>activemq</module-->
+    <module>activemq</module>
   </modules>
 
 </project>
