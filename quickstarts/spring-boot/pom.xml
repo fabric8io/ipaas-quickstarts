@@ -38,8 +38,8 @@
 
   <modules>
     <module>webmvc</module>
-    <!--module>activemq</module>
-    <module>camel</module>-->
+    <module>camel</module>
+    <!--module>activemq</module-->
   </modules>
 
 </project>

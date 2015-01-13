@@ -112,7 +112,7 @@
         <artifactId>spring-boot-maven-plugin</artifactId>
         <version>${spring-boot-plugin.version}</version>
         <configuration>
-          <mainClass>${docker.env.MAIN}</mainClass>
+          <mainClass>io.fabric8.quickstarts.springbootmvc.App</mainClass>
         </configuration>
         <executions>
           <execution>
