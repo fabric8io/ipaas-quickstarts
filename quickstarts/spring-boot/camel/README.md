@@ -4,7 +4,7 @@ This example demonstrates how you can use Apache Camel with Spring Boot in a [Ja
 
 The quickstart uses Spring Boot to configure a little application that includes a Camel route that triggeres a message every 5th second, and routes the message to a log, as shown in the diagram below:
 
-![Spring Boot Camel](https://raw.githubusercontent.com/fabric8io/fabric8/master/docs/images/spring-boot-camel.png)
+![Spring Boot Camel](https://raw.githubusercontent.com/fabric8io/fabric8/1.x/docs/images/spring-boot-camel.png)
 
 
 ## Building this example
