@@ -21,39 +21,26 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>io.fabric8.quickstarts</groupId>
-    <artifactId>fabric8-quickstarts-parent</artifactId>
-    <version>2.2-SNAPSHOT</version>
+    <groupId>io.fabric8.jube.images.fabric8</groupId>
+    <artifactId>quickstart-karaf-quickstarts</artifactId>
+    <version>2.1-SNAPSHOT</version>
   </parent>
 
   <groupId>io.fabric8.jube.images.fabric8</groupId>
-  <artifactId>quickstart-karaf-quickstarts</artifactId>
-  <version>2.2-SNAPSHOT</version>
+  <artifactId>quickstart-karaf-profiles</artifactId>
+  <version>2.1-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>Karaf Quickstart : Parent</name>
+  <name>Karaf Quickstart : Profiles :: Parent</name>
 
-  <properties>
-    <fabric8.iconRef>icons/karaf.svg</fabric8.iconRef>
-  </properties>
+    <properties>
+        <version-karaf>2.4.0</version-karaf>
+        <version-camel>2.14.1</version-camel>
+        <version-cxf>3.0.2</version-cxf>
+    </properties>
 
-  <modules>
-    <module>beginner</module>
-    <module>camel-amq</module>
-    <module>camel-rest-sql</module>
-    <!-- skip dozer and drools as they are not yet ready 
-        <module>camel-dozer-wiki</module>
-        <module>camel-drools</module> 
-    -->
-    <module>cxf</module>
+    <modules>
+    <module>registry</module>
+    <module>camel-twitter</module>
   </modules>
-
-  <profiles>
-    <profile>
-      <id>profiles</id>
-      <modules>
-        <module>profiles</module>
-      </modules>
-    </profile>
-  </profiles>
 
 </project>
