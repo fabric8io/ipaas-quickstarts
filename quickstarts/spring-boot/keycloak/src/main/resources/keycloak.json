@@ -1,0 +1,11 @@
+{
+  "realm": "fabric8",
+  "realm-public-key": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDNxUFZwk3eDVoPBkNsWGGqG4iAcvOZ/F1+g5ujHbZlk4v7KbLkOTWx7DYbQcGInbHOrgfExTXINNBvnCbH9jmaSfV72x0g43hAggRmmnAqPdDuC1PuPMK2lSOgRafL7RxgAzCUK0Pp7fgWM7o3WxpOnaq+n8y+k4K6IdCFkHLPpQIDAQAB",
+  "auth-server-url": "http://localhost:8081/auth",
+  "ssl-required": "external",
+  "resource": "jimmiapp",
+  "credentials": {
+    "secret": "12264e10-7125-4fff-b50c-30da92749229"
+  },
+  "use-resource-role-mappings": true
+}

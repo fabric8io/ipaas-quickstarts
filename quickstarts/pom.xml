@@ -50,6 +50,7 @@
     <module>karaf</module>
     <module>spring-boot</module>
     <module>war</module>
+    <module>spring-boot/keycloak</module>
   </modules>
 
   <build>
