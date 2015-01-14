@@ -26,6 +26,7 @@ import io.fabric8.kubernetes.api.model.ServiceList;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.RetryNTimes;
+import org.apache.zookeeper.CreateMode;
 import org.assertj.core.api.Condition;
 import org.assertj.core.util.Preconditions;
 import org.jboss.arquillian.junit.Arquillian;
@@ -80,7 +81,7 @@ public class ZooKeeperKubernetesTest {
         try (CuratorFramework curator = CuratorFrameworkFactory.newClient(serviceURL, new RetryNTimes(5, 1000))) {
             curator.start();
             curator.blockUntilConnected();
-            curator.create().creatingParentsIfNeeded().forPath("/fabric8");
+            curator.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath("/fabric8");
         }
     }
 
