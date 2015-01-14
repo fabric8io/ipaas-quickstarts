@@ -1,11 +1,11 @@
 {
   "realm": "fabric8",
-  "realm-public-key": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDNxUFZwk3eDVoPBkNsWGGqG4iAcvOZ/F1+g5ujHbZlk4v7KbLkOTWx7DYbQcGInbHOrgfExTXINNBvnCbH9jmaSfV72x0g43hAggRmmnAqPdDuC1PuPMK2lSOgRafL7RxgAzCUK0Pp7fgWM7o3WxpOnaq+n8y+k4K6IdCFkHLPpQIDAQAB",
-  "auth-server-url": "http://localhost:8081/auth",
+  "realm-public-key": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCLCWYuxXmsmfV+Xc9Ik8QET8lD4wuHrJAXbbutS2O/eMjQQLNK7QDX/k/XhOkhxP0YBEypqeXeGaeQJjCxDhFjJXQuewUEMlmSja3IpoJ9/hFn4Cns4m7NGO+rtvnfnwgVfsEOS5EmZhRddp+40KBPPJfTH6Vgu6KjQwuFPj6DTwIDAQAB",
+  "auth-server-url": "http://172.17.0.8:8080/auth",
   "ssl-required": "external",
   "resource": "jimmiapp",
   "credentials": {
-    "secret": "12264e10-7125-4fff-b50c-30da92749229"
+    "secret": "87799398-5568-4f0c-8ad6-5cbe09238f4b"
   },
   "use-resource-role-mappings": true
 }
