@@ -27,7 +27,7 @@
     <version>2.2-SNAPSHOT</version>
   </parent>
 
-  <artifactId>keycloak</artifactId>
+  <artifactId>springboot-keycloak</artifactId>
   <name>Fabric8 :: Quickstarts :: Spring-Boot :: Keycloak</name>
   <description>Shows how to use Spring Boot with Keycloak</description>
 

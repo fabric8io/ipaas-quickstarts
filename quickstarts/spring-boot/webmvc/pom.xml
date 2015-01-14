@@ -27,7 +27,7 @@
     <version>2.2-SNAPSHOT</version>
   </parent>
 
-  <artifactId>webmvc</artifactId>
+  <artifactId>springboot-webmvc</artifactId>
   <name>Fabric8 :: Quickstarts :: Spring-Boot :: WebMVC</name>
   <description>Shows how to use Spring Boot with WebMVC in the Java Container</description>
 

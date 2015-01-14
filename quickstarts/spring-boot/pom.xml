@@ -40,6 +40,7 @@
     <module>webmvc</module>
     <module>camel</module>
     <module>activemq</module>
+    <module>keycloak</module>
   </modules>
 
 </project>
