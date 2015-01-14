@@ -19,16 +19,14 @@ package io.fabric8.apps.zookeeper;
 import io.fabric8.arquillian.kubernetes.Constants;
 import io.fabric8.arquillian.kubernetes.Session;
 import io.fabric8.kubernetes.api.KubernetesClient;
-import io.fabric8.kubernetes.api.KubernetesHelper;
+import io.fabric8.arquillian.kubernetes.annotation.Id;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.Service;
-import io.fabric8.kubernetes.api.model.ServiceList;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.RetryNTimes;
 import org.apache.zookeeper.CreateMode;
 import org.assertj.core.api.Condition;
-import org.assertj.core.util.Preconditions;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.Test;
@@ -45,8 +43,9 @@ public class ZooKeeperKubernetesTest {
     @ArquillianResource
     Session session;
 
+    @Id("zk-client")
     @ArquillianResource
-    ServiceList serviceList;
+    Service zkClient;
 
     @Test
     public void testZooKeeper() throws Exception {
@@ -76,8 +75,7 @@ public class ZooKeeperKubernetesTest {
 
     @Test
     public void testClient() throws Exception {
-        Service service = getRequiredService("zk-client");
-        String serviceURL = service.getPortalIP() + ":" + service.getPort();
+        String serviceURL = zkClient.getPortalIP() + ":" + zkClient.getPort();
         try (CuratorFramework curator = CuratorFrameworkFactory.newClient(serviceURL, new RetryNTimes(5, 1000))) {
             curator.start();
             curator.blockUntilConnected();
@@ -85,14 +83,4 @@ public class ZooKeeperKubernetesTest {
         }
     }
 
-
-    private Service getRequiredService(String id) {
-        Preconditions.checkNotNullOrEmpty(id);
-        for (Service s : serviceList.getItems()) {
-            if (id.equals(s.getId())) {
-                return s;
-            }
-        }
-        throw new IllegalStateException("Service with id:"+id+" doesn't exists.");
-    }
 }
