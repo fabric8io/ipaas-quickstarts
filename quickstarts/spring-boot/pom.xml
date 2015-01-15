@@ -38,6 +38,7 @@
 
   <modules>
     <module>webmvc</module>
+    <module>webmvc-ip</module>
     <module>camel</module>
     <module>activemq</module>
     <module>keycloak</module>
