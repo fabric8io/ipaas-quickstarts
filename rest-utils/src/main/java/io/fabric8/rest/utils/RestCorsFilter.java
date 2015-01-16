@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.fabric8.api.registry;
+package io.fabric8.rest.utils;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;

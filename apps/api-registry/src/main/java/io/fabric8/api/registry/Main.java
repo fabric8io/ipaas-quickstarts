@@ -15,19 +15,8 @@
  */
 package io.fabric8.api.registry;
 
-import io.fabric8.cxf.endpoint.ManagedApi;
-import io.fabric8.utils.Strings;
-import io.fabric8.utils.Systems;
-import org.apache.cxf.cdi.CXFCdiServlet;
+import io.fabric8.rest.utils.Servers;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
-import org.jboss.weld.environment.servlet.BeanManagerResourceBindingListener;
-import org.jboss.weld.environment.servlet.Listener;
-
-import javax.servlet.DispatcherType;
-import java.util.Arrays;
-import java.util.EnumSet;
 
 public class Main {
 
@@ -36,49 +25,6 @@ public class Main {
     }
 
     public static Server startServer() throws Exception {
-        String port = Systems.getEnvVarOrSystemProperty("HTTP_PORT", "HTTP_PORT", "8588");
-        Integer num = Integer.parseInt(port);
-        String service = Systems.getEnvVarOrSystemProperty("WEB_CONTEXT_PATH", "WEB_CONTEXT_PATH", "");
-
-        String servicesPath = "cxf/servicesList";
-        String servletContextPath = "/" + service;
-        ManagedApi.setSingletonCxfServletContext(servletContextPath);
-
-        String url = "http://localhost:" + port + servletContextPath;
-        if (!url.endsWith("/")) {
-            url += "/";
-        }
-
-
-        System.out.println();
-        System.out.println("-------------------------------------------------------------");
-        System.out.println("API Registry is now running at: " + url);
-        System.out.println("-------------------------------------------------------------");
-        System.out.println();
-
-        final Server server = new Server(num);
-
-        // Register and map the dispatcher servlet
-        final ServletHolder servletHolder = new ServletHolder(new CXFCdiServlet());
-
-        // change default service list URI
-        servletHolder.setInitParameter("service-list-path", "/" + servicesPath);
-
-        final ServletContextHandler context = new ServletContextHandler();
-        context.setContextPath("/");
-        context.addEventListener(new Listener());
-        context.addEventListener(new BeanManagerResourceBindingListener());
-        String servletPath = "/*";
-        if (Strings.isNotBlank(service)) {
-            servletPath = servletContextPath + "/*";
-        }
-        context.addServlet(servletHolder, servletPath);
-        server.setHandler(context);
-
-        EnumSet<DispatcherType> dispatches = EnumSet.allOf(DispatcherType.class);
-        context.addFilter(RestCorsFilter.class, "/*", dispatches);
-        server.start();
-        return server;
+        return Servers.startServer("API Registry");
     }
-
 }

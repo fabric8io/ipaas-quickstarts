@@ -80,6 +80,11 @@
 
   <dependencies>
     <dependency>
+      <groupId>io.fabric8.quickstarts</groupId>
+      <artifactId>rest-utils</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>fabric-utils</artifactId>
     </dependency>
