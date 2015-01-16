@@ -177,7 +177,7 @@ public class ApiFinder {
         String host = KubernetesHelper.getHost(pod);
         List<Container> containers = KubernetesHelper.getContainers(pod);
         for (Container container : containers) {
-            J4pClient jolokia = clients.jolokiaClient(host, container, pod);
+            J4pClient jolokia = clients.clientForContainer(host, container, pod);
             if (jolokia != null) {
                 List<ApiDTO> apiDTOs = findServices(snapshot, pod, container, jolokia);
                 list.addAll(apiDTOs);
