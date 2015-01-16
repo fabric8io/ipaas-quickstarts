@@ -15,14 +15,10 @@
  */
 package io.fabric8.mq.autoscaler;
 
-import io.fabric8.kubernetes.api.Kubernetes;
+import io.fabric8.kubernetes.api.KubernetesClient;
 import io.fabric8.kubernetes.api.KubernetesFactory;
 import io.fabric8.kubernetes.api.KubernetesHelper;
-import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.Pod;
-import io.fabric8.kubernetes.api.model.ReplicationControllerList;
-import io.fabric8.kubernetes.api.model.ReplicationController;
-import io.fabric8.kubernetes.api.model.ReplicationControllerState;
+import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.jolokia.JolokiaClients;
 import io.fabric8.utils.JMXUtils;
 import org.apache.activemq.command.ActiveMQDestination;
@@ -37,15 +33,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.management.ObjectName;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Hashtable;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MQAutoScaler implements MQAutoScalerMBean {
@@ -60,7 +48,7 @@ public class MQAutoScaler implements MQAutoScalerMBean {
     private ObjectName MQAutoScalerObjectName;
     private AtomicBoolean started = new AtomicBoolean();
     private JolokiaClients clients;
-    private Kubernetes kubernetes;
+    private KubernetesClient kubernetes;
     private final BrokerLimits brokerLimits = new BrokerLimits();
     private final DestinationLimits destinationLimits = new DestinationLimits();
     private Timer timer;
@@ -231,7 +219,7 @@ public class MQAutoScaler implements MQAutoScalerMBean {
             JMXUtils.registerMBean(this, MQAutoScalerObjectName);
 
             KubernetesFactory kubernetesFactory = new KubernetesFactory(getKubernetesMaster());
-            kubernetes = kubernetesFactory.createKubernetes();
+            kubernetes = new KubernetesClient(kubernetesFactory);
             clients = new JolokiaClients(kubernetes);
 
             timer = new Timer("MQAutoScaler timer");
@@ -429,7 +417,7 @@ public class MQAutoScaler implements MQAutoScalerMBean {
             List<Container> containers = KubernetesHelper.getContainers(pod);
             for (Container container : containers) {
                 LOG.info("Checking pod " + pod.getId() + " container: " + container.getName() + " image: " + container.getImage());
-                J4pClient client = clients.jolokiaClient(host, container, pod);
+                J4pClient client = clients.clientForContainer(host, container, pod);
                 BrokerVitalSigns brokerVitalSigns = getBrokerVitalSigns(client);
                 if (brokerVitalSigns != null) {
                     LOG.debug("Broker vitals for container " + container.getName() + " is: " + brokerVitalSigns);
