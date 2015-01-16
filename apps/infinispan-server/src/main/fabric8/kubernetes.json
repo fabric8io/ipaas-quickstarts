@@ -22,7 +22,7 @@
               "containers": [
                 {
                   "name": "infinispan",
-                  "image": "172.30.17.47:5000/fabric8/infinispan-server",
+                  "image": "fabric8/infinispan-server",
                   "command": ["/opt/jboss/infinispan-server/bin/standalone.sh","-b","0.0.0.0","-bmanagement","0.0.0.0"],
                   "imagePullPolicy": "PullIfNotPresent",
                   "ports": [
