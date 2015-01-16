@@ -1,0 +1,106 @@
+{
+  "id": "infinispan-config",
+  "kind": "Config",
+  "apiVersion": "v1beta1",
+  "name": "infinispan-config",
+  "description": "Creates an infinispan pod & service",
+  "items": [
+    {
+      "apiVersion": "v1beta1",
+      "kind": "ReplicationController",
+      "id": "infinispan-controller",
+      "desiredState": {
+        "replicas": 1,
+        "replicaSelector": {
+          "component": "infinispan"
+        },
+        "podTemplate": {
+          "desiredState": {
+            "manifest": {
+              "version": "v1beta1",
+              "id": "is",
+              "containers": [
+                {
+                  "name": "infinispan",
+                  "image": "172.30.17.47:5000/fabric8/infinispan-server",
+                  "command": ["/opt/jboss/infinispan-server/bin/standalone.sh","-b","0.0.0.0","-bmanagement","0.0.0.0"],
+                  "imagePullPolicy": "PullIfNotPresent",
+                  "ports": [
+                    {
+                      "name": "infinispan-rest-port",
+                      "containerPort": 8080
+                    },
+                    {
+                      "name": "infinispan-remote-port",
+                      "containerPort": 9990
+                    },
+                    {
+                      "name": "infinispan-memcached-port",
+                      "containerPort": 11211
+                    },
+                    {
+                      "name": "infinispan-hotrod-port",
+                      "containerPort": 11222
+                    }
+                  ],
+                  "livenessProbe": {
+                    "enabled": true,
+                    "type": "http",
+                    "initialDelaySeconds": 30,
+                    "httpGet": {
+                      "path": "/rest",
+                      "port": "8080"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "labels": {
+            "component": "infinispan"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "v1beta1",
+      "kind": "Service",
+      "id": "infinispan-rest",
+      "containerPort": "infinispan-rest-port",
+      "port": 8080,
+      "selector": {
+        "component": "infinispan"
+      }
+    },
+    {
+      "apiVersion": "v1beta1",
+      "kind": "Service",
+      "id": "infinispan-remote",
+      "containerPort": "infinispan-remote-port",
+      "port": 9990,
+      "selector": {
+        "component": "infinispan"
+      }
+    },
+    {
+      "apiVersion": "v1beta1",
+      "kind": "Service",
+      "id": "infinispan-memcached",
+      "containerPort": "infinispan-memcached-port",
+      "port": 11211,
+      "selector": {
+        "component": "infinispan"
+      }
+    },
+    {
+      "apiVersion": "v1beta1",
+      "kind": "Service",
+      "id": "infinispan-hotrod",
+      "containerPort": "infinispan-hotrod-port",
+      "port": 11222,
+      "selector": {
+        "component": "infinispan"
+      }
+    }
+  ]
+}
