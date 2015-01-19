@@ -57,6 +57,11 @@
       <artifactId>activemq-leveldb-store</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.apache.activemq</groupId>
+      <artifactId>activemq-mqtt</artifactId>
+      <version>5.10.0</version><!-- Added to BOM in https://github.com/fabric8io/fabric8/pull/3374 -->
+    </dependency>
+    <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
       <!-- Note: need to override guava version as leveldb has an issue with > 15.0 -->

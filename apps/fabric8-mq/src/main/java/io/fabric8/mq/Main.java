@@ -43,6 +43,7 @@ public class Main {
     private static String dataDirectory;
     private static String host;
     private static int port;
+    private static Integer mqttPort;
 
     public static void main(String args[]) {
         try {
@@ -73,6 +74,10 @@ public class Main {
                 });
                 if (portStr != null && portStr.length() > 0) {
                     port = Integer.parseInt(portStr);
+                }
+                String mqttPortStr = mqttPortString();
+                if (mqttPortStr != null && mqttPortStr.length() > 0) {
+                    mqttPort = Integer.parseInt(mqttPortStr);
                 }
                 dataDirectory = AccessController.doPrivileged(new PrivilegedAction<String>() {
                     @Override
@@ -134,12 +139,29 @@ public class Main {
             System.out.println("Starting broker on " + connector);
             brokerService.addConnector(connector);
 
+            if(mqttPort != null) {
+                String mqttConnector = "mqtt://" + host + ":" + mqttPort;
+                System.out.println("Starting MQTT connector on " + mqttConnector);
+                brokerService.addConnector(mqttConnector);
+            }
+
             brokerService.start();
 
             waitUntilStop();
         } catch (Throwable e) {
             LOG.error("Failed to Start Fabric8MQ", e);
         }
+    }
+
+    protected static String mqttPortString() {
+        return AccessController.doPrivileged(new PrivilegedAction<String>() {
+            @Override
+            public String run() {
+                String result = System.getenv("AMQ_MQTT_PORT");
+                result = (result == null || result.isEmpty()) ? System.getProperty("org.apache.activemq.AMQ_MQTT_PORT") : result;
+                return result;
+            }
+        });
     }
 
     protected static void waitUntilStop() {
@@ -165,5 +187,9 @@ public class Main {
 
     public static int getPort() {
         return port;
+    }
+
+    public static Integer getMqttPort() {
+        return mqttPort;
     }
 }
