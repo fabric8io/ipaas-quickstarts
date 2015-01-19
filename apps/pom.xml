@@ -58,6 +58,7 @@
 
   <modules>
     <module>api-registry</module>
+    <module>app-library</module>
     <module>apiman</module>
     <module>console</module>
     <module>elasticsearch</module>

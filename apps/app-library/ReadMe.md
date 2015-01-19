@@ -1,0 +1,1 @@
+Creates an App Library which can be used by the [Fabric8 Console](http://fabric8.io/v2/console.html) to keep track of installed applications which can be run.
