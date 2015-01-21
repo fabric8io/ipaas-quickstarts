@@ -1,0 +1,55 @@
+{
+  "id": "fabric8Greeter-config",
+  "kind": "Config",
+  "apiVersion": "v1beta1",
+  "name": "fabric8Greeter-config",
+  "description": "Configuration for fabric8Greeter",
+  "items": [
+
+    {
+      "id": "fabric8Greeter",
+      "kind": "ReplicationController",
+      "apiVersion": "v1beta1",
+      "desiredState": {
+        "replicas": 3,
+        "replicaSelector": {
+          "cluster": "greeter",
+          "container": "java"
+        },
+        "podTemplate": {
+          "desiredState": {
+            "manifest": {
+              "version": "v1beta1",
+              "id": "fabric8GreeterPod",
+              "containers": [
+                {
+                  "name": "fabric8-jgroups-greeter",
+                  "image": "fabric8/quickstart-java-jgroups-greeter:latest",
+                  "imagePullPolicy": "PullAlways",
+                  "env": [
+                  ],
+                  "ports": [
+                    { 
+                      "name": "jgroups-tcp-port",
+                      "containerPort": 7800,
+                      "protocol": "TCP"
+    
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          "labels": {
+            "cluster": "greeter",
+            "container": "java"
+          }
+        }
+      },
+      "labels": {
+        "cluster": "greeter",
+        "container": "java"
+      }
+    }
+  ]
+}
