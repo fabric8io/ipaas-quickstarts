@@ -31,8 +31,6 @@
   <name>Fabric8 :: Apps</name>
 
   <properties>
-    <skipTests>false</skipTests>
-    <testExclusionPattern>**/*KubernetesTest.java</testExclusionPattern>
     <activemq.container.port>6162</activemq.container.port>
     <activemq.service.port>6163</activemq.service.port>
 
@@ -108,18 +106,6 @@
           <replaceReadmeLinksPrefix>/apps/</replaceReadmeLinksPrefix>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.17</version>
-        <inherited>true</inherited>
-        <configuration>
-          <skipTests>${skipTests}</skipTests>
-          <excludes>
-            <exclude>${testExclusionPattern}</exclude>
-          </excludes>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
 
@@ -148,12 +134,6 @@
       <id>docker-public</id>
       <properties>
         <docker.registryPrefix />
-      </properties>
-    </profile>
-    <profile>
-      <id>ts.kube</id>
-      <properties>
-        <testExclusionPattern>**/*ExcludedTest.java</testExclusionPattern>
       </properties>
     </profile>
   </profiles>

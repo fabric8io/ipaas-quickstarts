@@ -69,6 +69,9 @@
     </scm>
 
     <properties>
+        <skipTests>false</skipTests>
+        <testExclusionPattern>**/*KubernetesTest.java</testExclusionPattern>
+
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
 
@@ -157,6 +160,18 @@
           <groupId>io.fabric8.jube</groupId>
           <artifactId>jube-maven-plugin</artifactId>
           <version>${jube.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>2.17</version>
+            <inherited>true</inherited>
+            <configuration>
+                <skipTests>${skipTests}</skipTests>
+                <excludes>
+                  <exclude>${testExclusionPattern}</exclude>
+                </excludes>
+            </configuration>
         </plugin>
       </plugins>
     </build>
@@ -277,8 +292,13 @@
                 </plugins>
             </build>
         </profile>
+        <profile>
+            <id>ts.kube</id>
+            <properties>
+                <testExclusionPattern>**/*ExcludedTest.java</testExclusionPattern>
+            </properties>
+        </profile>
     </profiles>
-
 
 </project>
 
