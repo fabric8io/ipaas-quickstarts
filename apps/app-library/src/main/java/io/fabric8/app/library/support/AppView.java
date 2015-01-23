@@ -26,7 +26,6 @@ import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.utils.JMXUtils;
 import io.fabric8.utils.Objects;
 import io.fabric8.utils.Strings;
-import io.hawt.kubernetes.KubernetesService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

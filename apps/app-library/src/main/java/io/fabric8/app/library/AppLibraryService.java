@@ -17,8 +17,10 @@ package io.fabric8.app.library;
 
 
 import com.wordnik.swagger.annotations.Api;
+import io.fabric8.app.library.support.AppDTO;
 import io.fabric8.app.library.support.AppView;
 import io.fabric8.app.library.support.KubernetesManager;
+import io.fabric8.app.library.support.KubernetesService;
 import io.fabric8.utils.IOHelpers;
 import io.hawt.aether.AetherFacade;
 import io.hawt.git.GitFacade;
@@ -27,8 +29,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -39,8 +39,7 @@ import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-
-import static io.fabric8.utils.URLUtils.urlPathJoin;
+import java.util.List;
 
 /**
  * Represents the App Library REST API
@@ -63,6 +62,9 @@ public class AppLibraryService {
 
     @Inject
     private KubernetesManager kubernetesManager;
+
+    @Inject
+    private KubernetesService kubernetesService;
 
     private MessageContext messageContext;
     private String urlPrefix;
@@ -98,10 +100,9 @@ public class AppLibraryService {
 
     @GET
     @Path("apps")
-    public Object podApis(@QueryParam("selector") String selector) {
-        return null;
+    public List<AppDTO> podApis(@QueryParam("branch") String branch) throws Exception {
+        return kubernetesService.findApps(branch);
     }
-
 
     @Context
     public void setMessageContext(MessageContext messageContext) {

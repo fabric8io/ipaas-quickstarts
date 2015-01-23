@@ -46,7 +46,7 @@
     <fabric8.version>2.0.24</fabric8.version>
     <hawtio.version>1.4.44</hawtio.version>
 
-    <fabric8.release.version>${project.version}</fabric8.release.version>
+    <fabric8.release.version>2.0.23</fabric8.release.version>
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <org.eclipse.jetty.version>9.1.5.v20140505</org.eclipse.jetty.version>
@@ -98,11 +98,6 @@
     <dependency>
       <groupId>io.hawt</groupId>
       <artifactId>hawtio-aether</artifactId>
-      <version>${hawtio.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.hawt</groupId>
-      <artifactId>hawtio-kubernetes</artifactId>
       <version>${hawtio.version}</version>
     </dependency>
     <dependency>
@@ -370,8 +365,14 @@
         <artifactId>exec-maven-plugin</artifactId>
         <version>1.2.1</version>
         <configuration>
-          <mainClass>io.fabric8.api.registry.Main</mainClass>
+          <mainClass>io.fabric8.app.library.Main</mainClass>
           <includePluginDependencies>false</includePluginDependencies>
+          <systemProperties>
+            <systemProperty>
+              <key>IMPORT_APP_URLS</key>
+              <value>${docker.env.IMPORT_APP_URLS}</value>
+            </systemProperty>
+          </systemProperties>
         </configuration>
       </plugin>
     </plugins>

@@ -20,7 +20,6 @@ package io.fabric8.app.library.support;
 import io.fabric8.utils.Files;
 import io.hawt.aether.AetherFacade;
 import io.hawt.git.GitFacade;
-import io.hawt.kubernetes.KubernetesService;
 import org.apache.deltaspike.core.api.config.ConfigProperty;
 
 import javax.enterprise.inject.Produces;
@@ -30,9 +29,13 @@ import java.io.File;
 /**
  */
 public class HawtioProducers {
+    /**
+     * Note we pass in the {@link io.hawt.aether.AetherFacade} to ensure that the mvn: URL handler is initialised first before we
+     * start to lazily create the git repository
+     */
     @Produces
     @Singleton
-    public GitFacade createGit(@ConfigProperty(name = "IMPORT_APP_URLS") String importUrls) throws Exception {
+    public GitFacade createGit(@ConfigProperty(name = "IMPORT_APP_URLS") String importUrls, AetherFacade aether) throws Exception {
         GitFacade git = new GitFacade();
         System.out.println("Importing urls: " + importUrls);
         git.setInitialImportURLs(importUrls);
@@ -58,12 +61,14 @@ public class HawtioProducers {
         return aether;
     }
 
+/*
     @Produces
     @Singleton
-    public KubernetesService createKubernetesService() throws Exception {
-        KubernetesService answer = new KubernetesService();
-        answer.init();
-        return answer;
-    }
+*/
+public KubernetesService createKubernetesService() throws Exception {
+    KubernetesService answer = new KubernetesService();
+    answer.init();
+    return answer;
+}
 
 }
