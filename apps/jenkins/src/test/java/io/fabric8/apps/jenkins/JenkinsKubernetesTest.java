@@ -38,6 +38,6 @@ public class JenkinsKubernetesTest {
     @Test
     public void testJenkins() throws Exception {
         assertThat(client).replicationController("jenkins").isNotNull();
-        assertThat(client).pods().runningStatus().filterLabel(Constants.ARQ_KEY, session.getId()).hasSize(1);
+        assertThat(client).pods().runningStatus().filterNamespace(session.getNamespace()).hasSize(1);
     }
 }

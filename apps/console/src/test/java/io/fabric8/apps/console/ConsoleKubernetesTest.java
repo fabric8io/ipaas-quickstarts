@@ -16,7 +16,6 @@
 
 package io.fabric8.apps.console;
 
-import io.fabric8.arquillian.kubernetes.Constants;
 import io.fabric8.arquillian.kubernetes.Session;
 import io.fabric8.kubernetes.api.KubernetesClient;
 import io.fabric8.kubernetes.api.model.Pod;
@@ -44,7 +43,7 @@ public class ConsoleKubernetesTest {
 
         assertThat(client).pods()
                 .runningStatus()
-                .filterLabel(Constants.ARQ_KEY, session.getId())
+                .filterNamespace(session.getNamespace())
                 .haveAtLeast(1, new Condition<Pod>() {
                     @Override
                     public boolean matches(Pod podSchema) {

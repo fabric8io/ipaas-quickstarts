@@ -42,7 +42,7 @@ public class CadvisorKubernetesTest {
         assertThat(client).replicationController("cadvisor-rc").isNotNull();
         assertThat(client).pods()
                 .runningStatus()
-                .filterLabel(Constants.ARQ_KEY, session.getId())
+                .filterNamespace(session.getNamespace())
                 .haveAtLeast(1, new Condition<Pod>() {
                     @Override
                     public boolean matches(Pod podSchema) {

@@ -409,7 +409,7 @@ public class MQAutoScaler implements MQAutoScalerMBean {
 
     List<BrokerVitalSigns> pollBrokers() {
         List<BrokerVitalSigns> result = new ArrayList<>();
-        Map<String, Pod> podMap = KubernetesHelper.getPodMap(kubernetes, getBrokerSelector());
+        Map<String, Pod> podMap = KubernetesHelper.getSelectedPodMap(kubernetes, getBrokerSelector());
         Collection<Pod> pods = podMap.values();
         LOG.info("Checking " + brokerSelector + ": groupSize = " + pods.size());
         for (Pod pod : pods) {
@@ -529,7 +529,7 @@ public class MQAutoScaler implements MQAutoScalerMBean {
     }
 
     int getCurrentState(String selector) {
-        Map<String, ReplicationController> replicationControllerSchemaMap = KubernetesHelper.getReplicationControllerMap(kubernetes, selector);
+        Map<String, ReplicationController> replicationControllerSchemaMap = KubernetesHelper.getSelectedReplicationControllerMap(kubernetes, selector);
         if (!replicationControllerSchemaMap.isEmpty()) {
             ReplicationController replicationControllerSchema = replicationControllerSchemaMap.values().iterator().next();
             if (replicationControllerSchema != null) {
@@ -548,7 +548,7 @@ public class MQAutoScaler implements MQAutoScalerMBean {
 
     boolean setDesiredState(String selector, int number) {
         boolean result = false;
-        Map<String, ReplicationController> replicationControllerSchemaMap = KubernetesHelper.getReplicationControllerMap(kubernetes, selector);
+        Map<String, ReplicationController> replicationControllerSchemaMap = KubernetesHelper.getSelectedReplicationControllerMap(kubernetes, selector);
         if (!replicationControllerSchemaMap.isEmpty()) {
             ReplicationController replicationController = replicationControllerSchemaMap.values().iterator().next();
             if (replicationController != null) {

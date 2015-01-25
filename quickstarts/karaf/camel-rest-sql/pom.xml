@@ -39,7 +39,7 @@
     <maven.compiler.source>1.7</maven.compiler.source>
 
     <!-- the version of the BOM, defining all the dependency versions -->
-    <fabric8.version>2.0.23</fabric8.version>
+    <fabric8.version>2.0.24</fabric8.version>
     <!-- need to declare the Camel version as features-maven-plugin needs this property (cannot inherit from BOM in maven plugin) -->
     <camel.version>2.14.1</camel.version>
     <karaf.version>2.4.0</karaf.version>
@@ -52,12 +52,12 @@
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
     <docker.port.container.http>8181</docker.port.container.http>
 
-    <fabric8.service.name>quickstart-karaf-camel-rest-sql</fabric8.service.name>
+    <fabric8.service.name>karaf-camel-rest-sql</fabric8.service.name>
     <fabric8.service.port>9411</fabric8.service.port>
     <fabric8.service.containerPort>8181</fabric8.service.containerPort>
-    <fabric8.kubernetes.name>quickstartKarafCamelRestSql</fabric8.kubernetes.name>
+    <fabric8.kubernetes.name>karaf-camel-rest-sql</fabric8.kubernetes.name>
 
-    <fabric8.label.component>quickstartKarafCamelRestSql</fabric8.label.component>
+    <fabric8.label.component>karaf-camel-rest-sql</fabric8.label.component>
     <fabric8.label.group>quickstarts</fabric8.label.group>
   </properties>
 

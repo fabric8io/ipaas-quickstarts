@@ -16,10 +16,9 @@
 
 package io.fabric8.apps.zookeeper;
 
-import io.fabric8.arquillian.kubernetes.Constants;
 import io.fabric8.arquillian.kubernetes.Session;
-import io.fabric8.kubernetes.api.KubernetesClient;
 import io.fabric8.arquillian.kubernetes.annotation.Id;
+import io.fabric8.kubernetes.api.KubernetesClient;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.Service;
 import org.apache.curator.framework.CuratorFramework;
@@ -70,7 +69,7 @@ public class ZooKeeperKubernetesTest {
             }
         });
 
-        assertThat(client).pods().runningStatus().filterLabel(Constants.ARQ_KEY, session.getId()).hasSize(3);
+        assertThat(client).pods().runningStatus().filterNamespace(session.getNamespace()).hasSize(3);
     }
 
     @Test

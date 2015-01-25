@@ -92,7 +92,7 @@ public class InfinispanServerKubernetesTest {
         });
 
 
-        assertThat(client).pods().runningStatus().filterLabel(Constants.ARQ_KEY, session.getId()).hasSize(1);
+        assertThat(client).pods().runningStatus().filterNamespace(session.getNamespace()).hasSize(1);
     }
 
     @Test
