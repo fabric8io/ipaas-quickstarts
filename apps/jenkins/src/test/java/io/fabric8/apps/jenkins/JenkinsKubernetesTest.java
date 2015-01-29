@@ -16,9 +16,11 @@
 
 package io.fabric8.apps.jenkins;
 
-import io.fabric8.arquillian.kubernetes.Constants;
 import io.fabric8.arquillian.kubernetes.Session;
 import io.fabric8.kubernetes.api.KubernetesClient;
+import io.fabric8.kubernetes.api.model.ReplicationController;
+
+import org.assertj.core.api.Condition;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.Test;
@@ -37,7 +39,12 @@ public class JenkinsKubernetesTest {
 
     @Test
     public void testJenkins() throws Exception {
-        assertThat(client).replicationController("jenkins").isNotNull();
+      	assertThat(client).replicationControllers().haveAtLeast(1, new Condition<ReplicationController>() {
+	        @Override
+	        public boolean matches(ReplicationController replicationController) {
+	            return replicationController.getId().startsWith("jenkins");
+	        }
+      	});
         assertThat(client).pods().runningStatus().filterNamespace(session.getNamespace()).hasSize(1);
     }
 }
