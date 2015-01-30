@@ -27,6 +27,14 @@
                   "image": "fabric8/quickstart-java-jgroups-greeter:latest",
                   "imagePullPolicy": "PullAlways",
                   "env": [
+                    {
+                      "name": "KUBERNETES_TRUST_CERT",
+                      "value": "true"
+                    },
+                    {
+                      "name": "JAVA_OPTS",
+                      "value": "-Djava.net.preferIPv4Stack=true"
+                    }
                   ],
                   "ports": [
                     { 

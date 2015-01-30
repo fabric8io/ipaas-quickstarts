@@ -10,7 +10,7 @@
       "kind": "ReplicationController",
       "id": "infinispan-controller",
       "desiredState": {
-        "replicas": 1,
+        "replicas": 3,
         "replicaSelector": {
           "component": "infinispan"
         },
@@ -22,10 +22,14 @@
               "containers": [
                 {
                   "name": "infinispan",
-                  "image": "fabric8/infinispan-server",
-                  "command": ["/opt/jboss/infinispan-server/bin/standalone.sh","-b","0.0.0.0","-bmanagement","0.0.0.0"],
+                  "image": "fabric8/infinispan-server:latest",
                   "imagePullPolicy": "PullIfNotPresent",
                   "ports": [
+                    {
+                      "name": "jgroups-tcp-port",
+                      "containerPort": 7600,
+                      "protocol": "TCP"
+                    },
                     {
                       "name": "infinispan-rest-port",
                       "containerPort": 8080
@@ -42,22 +46,14 @@
                       "name": "infinispan-hotrod-port",
                       "containerPort": 11222
                     }
-                  ],
-                  "livenessProbe": {
-                    "enabled": true,
-                    "type": "http",
-                    "initialDelaySeconds": 30,
-                    "httpGet": {
-                      "path": "/rest",
-                      "port": "8080"
-                    }
-                  }
+                  ]
                 }
               ]
             }
           },
           "labels": {
-            "component": "infinispan"
+            "component": "infinispan",
+            "cluster": "infinispan"
           }
         }
       }

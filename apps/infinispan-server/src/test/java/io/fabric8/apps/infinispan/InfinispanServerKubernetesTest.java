@@ -16,7 +16,6 @@
 
 package io.fabric8.apps.infinispan;
 
-import io.fabric8.arquillian.kubernetes.Constants;
 import io.fabric8.arquillian.kubernetes.Session;
 import io.fabric8.kubernetes.api.KubernetesClient;
 import io.fabric8.kubernetes.api.model.ReplicationController;
@@ -34,6 +33,8 @@ import org.assertj.core.api.Condition;
 import org.assertj.core.util.Preconditions;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
+import org.jgroups.Address;
+import org.jgroups.JChannel;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -91,8 +92,6 @@ public class InfinispanServerKubernetesTest {
             }
         });
 
-
-        assertThat(client).pods().runningStatus().filterNamespace(session.getNamespace()).hasSize(1);
     }
 
     @Test
@@ -115,6 +114,22 @@ public class InfinispanServerKubernetesTest {
                 } finally {
                     Assert.assertEquals(expectedValue, actualValue);
                 }
+            }
+        });
+    }
+
+
+    @Test
+    public void testCluster() throws Exception {
+        final JChannel channel = new JChannel(getClass().getResource("/jgroups.xml"));
+        channel.connect("infinispan");
+        Asserts.assertWaitFor(2 * 60 * 1000, new Block() {
+            @Override
+            public void invoke() throws Exception {
+                for (Address address : channel.getView().getMembers()) {
+                    System.out.println(address);
+                }
+                Assert.assertTrue(channel.getView().getMembers().size() > 3);
             }
         });
     }

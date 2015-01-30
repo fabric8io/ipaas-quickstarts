@@ -65,6 +65,13 @@
 
         <dependency>
             <groupId>io.fabric8</groupId>
+            <artifactId>fabric-jgroups</artifactId>
+            <version>${fabric8.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.fabric8</groupId>
             <artifactId>kubernetes-assertions</artifactId>
             <scope>test</scope>
         </dependency>
