@@ -41,7 +41,7 @@
     <docker.port.container.transport>9300</docker.port.container.transport>
     <docker.port.container.jolokia></docker.port.container.jolokia>
 
-    <fabric8.kubernetes.name>elasticsearch-controller</fabric8.kubernetes.name>
+    <fabric8.replicationController.name>elasticsearch-controller</fabric8.replicationController.name>
     <fabric8.service.name>elasticsearch</fabric8.service.name>
     <fabric8.service.port>9200</fabric8.service.port>
     <fabric8.service.containerPort>9200</fabric8.service.containerPort>

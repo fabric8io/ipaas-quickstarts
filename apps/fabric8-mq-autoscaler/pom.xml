@@ -34,7 +34,7 @@
         <version.maven-surefire-plugin>2.15</version.maven-surefire-plugin>
         <docker.env.MAIN>io.fabric8.mq.autoscaler.MQAutoScalerMain</docker.env.MAIN>
 
-        <fabric8.kubernetes.name>fabric8mq-auto-scaler-controller</fabric8.kubernetes.name>
+        <fabric8.replicationController.name>fabric8mq-auto-scaler-controller</fabric8.replicationController.name>
         <fabric8.env.AMQ_SERVICE_ID>fabric8MQ</fabric8.env.AMQ_SERVICE_ID>
         <fabric8.env.AMQ_GROUP_NAME>defaultMQGroup</fabric8.env.AMQ_GROUP_NAME>
         <fabric8.env.MAX_GROUP_SIZE>5</fabric8.env.MAX_GROUP_SIZE>
@@ -47,8 +47,9 @@
         <fabric8.env.MIN_PRODUCERS_PER_DESTINATION>1</fabric8.env.MIN_PRODUCERS_PER_DESTINATION>
         <fabric8.env.MIN_CONSUMERS_PER_DESTINATION>1</fabric8.env.MIN_CONSUMERS_PER_DESTINATION>
         <fabric8.env.POLL_TIME>5</fabric8.env.POLL_TIME>
-        <fabric8.label.container>java</fabric8.label.container>
-        <fabric8.label.group>fabric8MQAutoScaler</fabric8.label.group>
+        <fabric8.label.component>fabric8MQAutoScaler</fabric8.label.component>
+        <fabric8.label.group>fabric8mq</fabric8.label.group>
+        <fabric8.label.provider>fabric8</fabric8.label.provider>
         <fabric8.iconRef>icons/activemq.svg</fabric8.iconRef>
 
         <!-- jube properties -->

@@ -41,9 +41,10 @@
     <fabric8.service.port>${activemq.service.port}</fabric8.service.port>
     <fabric8.service.containerPort>${activemq.container.port}</fabric8.service.containerPort>
 
-    <fabric8.kubernetes.name>fabric8mq-controller</fabric8.kubernetes.name>
-    <fabric8.label.container>java</fabric8.label.container>
-    <fabric8.label.group>defaultMQGroup</fabric8.label.group>
+    <fabric8.replicationController.name>fabric8mq-controller</fabric8.replicationController.name>
+    <fabric8.label.component>fabric8MQ</fabric8.label.component>
+    <fabric8.label.group>fabric8mq</fabric8.label.group>
+    <fabric8.label.provider>fabric8</fabric8.label.provider>
     <fabric8.iconRef>icons/activemq.svg</fabric8.iconRef>
   </properties>
 
