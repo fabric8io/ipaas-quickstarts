@@ -36,11 +36,12 @@ public class ViewAppSummaries {
         HawtioProducers producers = new HawtioProducers();
         try {
             appView = new AppView(producers.createKubernetesService());
+            AetherFacade aether = producers.createAether();
 
             String fabric8Version = getFabric8Version();
-            GitFacade git = producers.createGit("mvn:io.fabric8.quickstarts/fabric8-quickstarts-parent/" + fabric8Version
-                    + "/zip/app,mvn:io.fabric8.jube.images.fabric8/apps/" + fabric8Version + "/zip/app");
-            AetherFacade aether = producers.createAether();
+            String importUrls = "mvn:io.fabric8.quickstarts/fabric8-quickstarts-parent/" + fabric8Version
+                    + "/zip/app,mvn:io.fabric8.jube.images.fabric8/apps/" + fabric8Version + "/zip/app";
+            GitFacade git = producers.createGit(importUrls, aether);
             boolean testTimer = false;
 
             appView.init();

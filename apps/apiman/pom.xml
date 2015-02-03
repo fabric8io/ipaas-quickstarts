@@ -65,7 +65,7 @@
     <docker.port.host.http>${http.port}</docker.port.host.http>
 
 
-    <fabric8.kubernetes.name>ApiManConsole</fabric8.kubernetes.name>
+    <fabric8.kubernetes.name>apiman-console-controller</fabric8.kubernetes.name>
     <fabric8.label.container>wildfly</fabric8.label.container>
     <fabric8.label.group>defaultGatewayGroup</fabric8.label.group>
     <fabric8.service.name>apiman-console</fabric8.service.name>

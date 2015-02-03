@@ -35,7 +35,7 @@
         <destinationName>TEST.FOO</destinationName>
         <docker.env.MAIN>io.fabric8.mq.consumer.ConsumerMain</docker.env.MAIN>
 
-        <fabric8.kubernetes.name>fabric8MQConsumer</fabric8.kubernetes.name>
+        <fabric8.kubernetes.name>fabric8mq-consumer-controller</fabric8.kubernetes.name>
         <fabric8.env.AMQ_SERVICE_ID>FABRIC8MQ</fabric8.env.AMQ_SERVICE_ID>
         <fabric8.env.AMQ_QUEUENAME>${destinationName}</fabric8.env.AMQ_QUEUENAME>
         <fabric8.label.container>java</fabric8.label.container>

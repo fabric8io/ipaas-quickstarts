@@ -34,7 +34,7 @@
         <version.maven-surefire-plugin>2.15</version.maven-surefire-plugin>
         <docker.env.MAIN>io.fabric8.mq.autoscaler.MQAutoScalerMain</docker.env.MAIN>
 
-        <fabric8.kubernetes.name>fabric8MQAutoScaler</fabric8.kubernetes.name>
+        <fabric8.kubernetes.name>fabric8mq-auto-scaler-controller</fabric8.kubernetes.name>
         <fabric8.env.AMQ_SERVICE_ID>fabric8MQ</fabric8.env.AMQ_SERVICE_ID>
         <fabric8.env.AMQ_GROUP_NAME>defaultMQGroup</fabric8.env.AMQ_GROUP_NAME>
         <fabric8.env.MAX_GROUP_SIZE>5</fabric8.env.MAX_GROUP_SIZE>

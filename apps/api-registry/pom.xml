@@ -61,7 +61,7 @@
     <fabric8.service.name>api-registry</fabric8.service.name>
     <fabric8.service.port>9393</fabric8.service.port>
     <fabric8.service.containerPort>${http.port}</fabric8.service.containerPort>
-    <fabric8.kubernetes.name>apiRegistry</fabric8.kubernetes.name>
+    <fabric8.kubernetes.name>api-registry-controller</fabric8.kubernetes.name>
     <swagger.version>1.3.10</swagger.version>
   </properties>
 

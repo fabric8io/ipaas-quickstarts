@@ -65,7 +65,7 @@
     <fabric8.service.name>app-library</fabric8.service.name>
     <fabric8.service.port>9494</fabric8.service.port>
     <fabric8.service.containerPort>${http.port}</fabric8.service.containerPort>
-    <fabric8.kubernetes.name>appLibrary</fabric8.kubernetes.name>
+    <fabric8.kubernetes.name>app-library-controller</fabric8.kubernetes.name>
   </properties>
 
   <dependencyManagement>
