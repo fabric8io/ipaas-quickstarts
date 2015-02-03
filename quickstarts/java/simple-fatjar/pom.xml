@@ -23,11 +23,11 @@
   <parent>
     <groupId>io.fabric8.jube.images.fabric8</groupId>
     <artifactId>quickstart-java</artifactId>
-    <version>2.2-SNAPSHOT</version>
+    <version>2.0.25</version>
   </parent>
 
   <artifactId>quickstart-java-simple-fatjar</artifactId>
-  <version>2.2-SNAPSHOT</version>
+  <version>2.0.25</version>
   <packaging>jar</packaging>
 
   <name>Quickstart : Simple fat jar</name>
