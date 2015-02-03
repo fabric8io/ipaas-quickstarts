@@ -29,8 +29,9 @@ public class AppDTO {
     private final String version;
     private final String groupId;
     private final String artifactId;
+    private final KubernetesNames names;
 
-    public AppDTO(String appPath, String iconPath, String name, String description, String metadataPath, String version, String groupId, String artifactId) {
+    public AppDTO(String appPath, String iconPath, String name, String description, String metadataPath, String version, String groupId, String artifactId, KubernetesNames names) {
         this.appPath = appPath;
         this.iconPath = iconPath;
         this.name = name;
@@ -39,6 +40,7 @@ public class AppDTO {
         this.version = version;
         this.groupId = groupId;
         this.artifactId = artifactId;
+        this.names = names;
     }
 
     @Override
@@ -51,6 +53,7 @@ public class AppDTO {
                 ", version='" + version + '\'' +
                 ", groupId='" + groupId + '\'' +
                 ", artifactId='" + artifactId + '\'' +
+                ", names=" + names +
                 '}';
     }
 
@@ -84,5 +87,9 @@ public class AppDTO {
 
     public String getVersion() {
         return version;
+    }
+
+    public KubernetesNames getNames() {
+        return names;
     }
 }

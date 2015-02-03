@@ -206,7 +206,12 @@ public class KubernetesService extends MBeanSupport implements KubernetesService
         if (fileOrDirectory != null && fileOrDirectory.exists()) {
             if (fileOrDirectory.isFile()) {
                 if (isKubernetesMetadataFile(fileOrDirectory)) {
-                    AppDTO app = createAppDto(rootFolder, fileOrDirectory);
+                    AppDTO app = null;
+                    try {
+                        app = createAppDto(rootFolder, fileOrDirectory);
+                    } catch (IOException e) {
+                        LOG.warn("Failed to create AppDTO for folder " + fileOrDirectory, e);
+                    }
                     if (app != null) {
                         apps.add(app);
                     }
@@ -222,7 +227,7 @@ public class KubernetesService extends MBeanSupport implements KubernetesService
         }
     }
 
-    protected AppDTO createAppDto(File rootFolder, File kubeFile) {
+    protected AppDTO createAppDto(File rootFolder, File kubeFile) throws IOException {
         File appFolder = kubeFile.getParentFile();
         String appPath = relativePath(rootFolder, appFolder);
         String kubePath = relativePath(rootFolder, kubeFile);
@@ -242,7 +247,8 @@ public class KubernetesService extends MBeanSupport implements KubernetesService
         String version = properties.getProperty("version");
         String groupId = properties.getProperty("groupId");
         String artifactId = properties.getProperty("artifactId");
-        return new AppDTO(appPath, iconPath, name, description, kubePath, version, groupId, artifactId);
+        KubernetesNames names = KubernetesNames.loadFile(kubeFile);
+        return new AppDTO(appPath, iconPath, name, description, kubePath, version, groupId, artifactId, names);
     }
 
 

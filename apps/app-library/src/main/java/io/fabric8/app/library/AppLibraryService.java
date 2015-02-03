@@ -52,17 +52,21 @@ public class AppLibraryService {
     private static final Logger LOG = LoggerFactory.getLogger(AppLibraryService.class);
 
     @Inject
-    private AppView appView;
-
-    @Inject
     private GitFacade git;
 
     @Inject
     private AetherFacade aether;
 
+/*
+    @Inject
+    private AppView appView;
+
+*/
+/*
     @Inject
     private KubernetesManager kubernetesManager;
 
+*/
     @Inject
     private KubernetesService kubernetesService;
 
