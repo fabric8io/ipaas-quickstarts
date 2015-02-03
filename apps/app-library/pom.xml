@@ -43,7 +43,7 @@
     <skipTests>false</skipTests>
 
     <!-- the version of the BOM, defining all the dependency versions -->
-    <fabric8.version>2.0.24</fabric8.version>
+    <fabric8.version>2.0.25</fabric8.version>
     <hawtio.version>1.4.44</hawtio.version>
 
     <fabric8.release.version>2.0.23</fabric8.release.version>
