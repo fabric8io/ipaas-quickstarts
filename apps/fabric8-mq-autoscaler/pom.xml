@@ -128,7 +128,9 @@
                       <name>${docker.image}</name>
                       <build>
                         <from>${docker.from}</from>
-                        <assemblyDescriptorRef>${docker.assemblyDescriptorRef}</assemblyDescriptorRef>
+                        <assembly>
+                          <descriptorRef>${docker.assemblyDescriptorRef}</descriptorRef>
+                        </assembly>
                         <env>
                           <MAIN>${docker.env.MAIN}</MAIN>
                           <AMQ_SERVICE_ID>fabric8MQ</AMQ_SERVICE_ID>
