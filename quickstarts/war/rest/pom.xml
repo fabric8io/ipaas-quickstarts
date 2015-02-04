@@ -268,7 +268,9 @@
               <name>${docker.image}</name>
               <build>
                 <from>${docker.from}</from>
-                <assemblyDescriptorRef>${docker.assemblyDescriptorRef}</assemblyDescriptorRef>
+                <assembly>
+                  <descriptorRef>${docker.assemblyDescriptorRef}</descriptorRef>
+                </assembly>
                 <env>
                 </env>
               </build>
