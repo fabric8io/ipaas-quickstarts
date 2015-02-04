@@ -16,6 +16,7 @@
 package io.fabric8.rest.utils;
 
 import io.fabric8.cxf.endpoint.ManagedApi;
+import io.fabric8.utils.Function;
 import io.fabric8.utils.Strings;
 import io.fabric8.utils.Systems;
 import org.apache.cxf.cdi.CXFCdiServlet;
@@ -26,13 +27,16 @@ import org.jboss.weld.environment.servlet.BeanManagerResourceBindingListener;
 import org.jboss.weld.environment.servlet.Listener;
 
 import javax.servlet.DispatcherType;
-import java.util.Arrays;
 import java.util.EnumSet;
 
 public class Servers {
 
 
     public static Server startServer(String appName) throws Exception {
+        return startServer(appName, null);
+    }
+
+    public static Server startServer(String appName, Function<ServletContextHandler, Void> contextCallback) throws Exception {
         String port = Systems.getEnvVarOrSystemProperty("HTTP_PORT", "HTTP_PORT", "8588");
         Integer num = Integer.parseInt(port);
         String service = Systems.getEnvVarOrSystemProperty("WEB_CONTEXT_PATH", "WEB_CONTEXT_PATH", "");
@@ -74,6 +78,10 @@ public class Servers {
 
         EnumSet<DispatcherType> dispatches = EnumSet.allOf(DispatcherType.class);
         context.addFilter(RestCorsFilter.class, "/*", dispatches);
+
+        if (contextCallback != null) {
+            contextCallback.apply(context);
+        }
         server.start();
         return server;
     }

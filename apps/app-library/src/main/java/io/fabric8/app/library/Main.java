@@ -15,8 +15,12 @@
  */
 package io.fabric8.app.library;
 
+import io.fabric8.app.library.support.GitServlet;
+import io.fabric8.app.library.support.UploadServlet;
 import io.fabric8.rest.utils.Servers;
+import io.fabric8.utils.Function;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.servlet.ServletContextHandler;
 
 public class Main {
 
@@ -25,7 +29,14 @@ public class Main {
     }
 
     public static Server startServer() throws Exception {
-        return Servers.startServer("App Library");
+        return Servers.startServer("App Library", new Function<ServletContextHandler, Void>() {
+            @Override
+            public Void apply(ServletContextHandler context) {
+                context.addServlet(UploadServlet.class, "/upload/*");
+                context.addServlet(GitServlet.class, "/git/*");
+                return null;
+            }
+        });
     }
 
 }
