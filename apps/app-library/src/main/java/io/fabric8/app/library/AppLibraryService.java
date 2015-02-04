@@ -18,8 +18,6 @@ package io.fabric8.app.library;
 
 import com.wordnik.swagger.annotations.Api;
 import io.fabric8.app.library.support.AppDTO;
-import io.fabric8.app.library.support.AppView;
-import io.fabric8.app.library.support.KubernetesManager;
 import io.fabric8.app.library.support.KubernetesService;
 import io.fabric8.utils.IOHelpers;
 import io.hawt.aether.AetherFacade;
@@ -57,16 +55,6 @@ public class AppLibraryService {
     @Inject
     private AetherFacade aether;
 
-/*
-    @Inject
-    private AppView appView;
-
-*/
-/*
-    @Inject
-    private KubernetesManager kubernetesManager;
-
-*/
     @Inject
     private KubernetesService kubernetesService;
 
