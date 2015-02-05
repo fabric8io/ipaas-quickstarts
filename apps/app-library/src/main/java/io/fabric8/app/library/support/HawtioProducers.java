@@ -32,6 +32,8 @@ public class HawtioProducers {
     /**
      * Note we pass in the {@link io.hawt.aether.AetherFacade} to ensure that the mvn: URL handler is initialised first before we
      * start to lazily create the git repository
+     *
+     * @param importUrls the list of app zips URLs to be imported to the library on startup. Supports mvn:group/artifact/version/type/classifier formats in addition to http:, file: etc.
      */
     @Produces
     @Singleton
