@@ -86,6 +86,9 @@ public class ApiFinder {
     private List<EndpointFinder> finders = new ArrayList<>();
     private String urlPrefix;
 
+    /**
+     * @param pollTimeMs the polling time interval in milliseconds
+     */
     @Inject
     public ApiFinder(@ConfigProperty(name = "API_REGISTRY_POLL_TIME", defaultValue = "5000") long pollTimeMs) {
         this.pollTimeMs = pollTimeMs;

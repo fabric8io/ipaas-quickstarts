@@ -37,6 +37,10 @@ public class UploadManager implements UploadManagerMBean {
         return factory;
     }
 
+    /**
+     * @param uploadDirectory the file system directory used for uploading new files into the library
+     * @throws Exception
+     */
     @Inject
     public UploadManager(@ConfigProperty(name = "UPLOAD_DIRECTORY", defaultValue = "") String uploadDirectory) throws Exception {
         if (Strings.isBlank(uploadDirectory)) {
