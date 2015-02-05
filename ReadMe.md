@@ -2,6 +2,9 @@
 
 This project contains the quickstarts for the [fabric8 project](http://fabric8.io/).
 
+### Prerequisites
+
+To build the quickstarts requires Maven version 3.2.1 or later.
 
 ### Pushing docker images
 
