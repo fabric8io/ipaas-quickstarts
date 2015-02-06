@@ -32,7 +32,13 @@
 
     <properties>
         <fabric8.generateJson>false</fabric8.generateJson>
+        <docker.maven.plugin.version>0.10.4</docker.maven.plugin.version>
+        <cxf.version>3.0.2</cxf.version>
+        <json.version>20140107</json.version>
+        <neethi.version>3.0.3</neethi.version>
+        <snakeyaml.version>1.5</snakeyaml.version>
     </properties>
+    
 
     <build>
         <resources>
@@ -40,11 +46,67 @@
                 <directory>src/main/fabric8</directory>
                 <filtering>true</filtering>
             </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <targetPath>${project.build.directory}/docker/maven</targetPath>
+            </resource>
         </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.jolokia</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>${docker.maven.plugin.version}</version>
+                <configuration>
+                    <images>
+                        <image>
+                            <name>${docker.image}</name>
+                            <build>
+                                <from>jboss/infinispan-server</from>
+                                <assemblyDescriptor>src/main/fabric8/assembly.xml</assemblyDescriptor>
+                                <ports>
+                                    <port>7600</port>
+                                    <port>8080</port>
+                                    <port>8181</port>
+                                    <port>9990</port>
+                                    <port>11211</port>
+                                    <port>11222</port>
+                                </ports>
+                                <exportDir>/opt/jboss/upload</exportDir>
+                                <command>/bin/sh /opt/jboss/upload/bin/run.sh</command>
+                            </build>
+                        </image>
+                    </images>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 
     <dependencies>
+        
+        <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>kubernetes-api</artifactId>
+            <version>${fabric8.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>fabric8-jgroups</artifactId>
+            <version>${fabric8.version}</version>
+        </dependency>
 
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-ws-policy</artifactId>
+            <version>${cxf.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-wsdl</artifactId>
+            <version>${cxf.version}</version>
+        </dependency>
+        
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
@@ -61,13 +123,6 @@
             <groupId>io.fabric8</groupId>
             <artifactId>arquillian-fabric8</artifactId>
             <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>io.fabric8</groupId>
-            <artifactId>fabric-jgroups</artifactId>
-            <version>${fabric8.version}</version>
-            <scope>compile</scope>
         </dependency>
 
         <dependency>

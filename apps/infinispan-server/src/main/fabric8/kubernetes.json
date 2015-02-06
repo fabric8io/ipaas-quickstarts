@@ -22,7 +22,7 @@
               "containers": [
                 {
                   "name": "infinispan",
-                  "image": "fabric8/infinispan-server:latest",
+                  "image": "${docker.image}",
                   "imagePullPolicy": "PullIfNotPresent",
                   "ports": [
                     {

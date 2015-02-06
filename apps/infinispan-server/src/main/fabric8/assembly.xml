@@ -1,0 +1,23 @@
+<assembly>
+    <dependencySets>
+        <dependencySet>
+            <includes>
+                <include>io.fabric8:kubernetes-api</include>
+                <include>io.fabric8:fabric-utils</include>
+                <include>org.apache.cxf:*</include>
+                <include>org.apache.neethi:*</include>
+                <include>org.yaml:*</include>
+                <include>org.json:*</include>
+            </includes>
+            <outputFileNameMapping>${artifact.artifactId}-${artifact.version}.jar</outputFileNameMapping>
+            <outputDirectory>modules/system/layers/base/io/fabric8/kubernetes/main</outputDirectory>
+        </dependencySet>
+        <dependencySet>
+            <includes>
+                <include>io.fabric8:fabric8-jgroups</include>
+            </includes>
+            <outputFileNameMapping>${artifact.artifactId}-${artifact.version}.jar</outputFileNameMapping>
+            <outputDirectory>modules/system/layers/base/io/fabric8/jgroups/main</outputDirectory>
+        </dependencySet>
+    </dependencySets>
+</assembly>
