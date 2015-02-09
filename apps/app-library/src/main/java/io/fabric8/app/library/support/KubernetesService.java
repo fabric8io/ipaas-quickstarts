@@ -16,10 +16,14 @@
 package io.fabric8.app.library.support;
 
 import io.hawt.git.GitFacade;
+import io.hawt.git.GitHelper;
 import io.hawt.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ws.rs.core.EntityTag;
+import javax.ws.rs.core.Request;
+import javax.ws.rs.core.Response;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -136,6 +140,27 @@ public class KubernetesService extends MBeanSupport implements KubernetesService
                 } else {
                     return null;
                 }
+            }
+        });
+    }
+
+    public Response findAppsWithETags(final String branch, final Request request) throws Exception {
+        final GitFacade facade = getGit();
+        return facade.readFile(branch, "/", new Function<File, Response>() {
+            @Override
+            public Response apply(File rootFolder) {
+                String head = facade.getHEAD();
+                EntityTag etag = new EntityTag(head);
+                Response.ResponseBuilder builder = request.evaluatePreconditions(etag);
+
+                // only query the data if its changed
+                if (builder == null) {
+                    List<AppDTO> answer = new ArrayList<AppDTO>();
+                    doAddApps(rootFolder, rootFolder, answer);
+                        builder = Response.ok(answer);
+                        builder.tag(etag);
+                }
+                return builder.build();
             }
         });
     }
