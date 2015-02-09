@@ -33,7 +33,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.EntityTag;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Request;
+import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -92,8 +95,8 @@ public class AppLibraryService {
 
     @GET
     @Path("apps")
-    public List<AppDTO> podApis(@QueryParam("branch") String branch) throws Exception {
-        return kubernetesService.findApps(branch);
+    public Response podApis(@QueryParam("branch") String branch, @Context Request request) throws Exception {
+        return kubernetesService.findAppsWithETags(branch, request);
     }
 
     @Context
