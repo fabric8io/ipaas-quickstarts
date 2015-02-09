@@ -22,7 +22,7 @@
                   "image": "fabric8/jadvisor:latest",
                   "imagePullPolicy": "PullIfNotPresent",
                   "command": [
-                    "-kubernetes_master=${KUBERNETES_RO_SERVICE_HOST}:${KUBERNETES_RO_SERVICE_PORT}",
+                    "-kubernetes_master=https://${KUBERNETES_RO_SERVICE_HOST}:${KUBERNETES_RO_SERVICE_PORT}",
                     "-sink=influxdb",
                     "-sink_influxdb_host=${INFLUXDB_SERVICE_SERVICE_HOST}:${INFLUXDB_SERVICE_SERVICE_PORT}"
                   ]
