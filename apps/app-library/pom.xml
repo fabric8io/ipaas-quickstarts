@@ -46,7 +46,7 @@
     <fabric8.version>2.0.25</fabric8.version>
     <hawtio.version>1.4.44</hawtio.version>
 
-    <fabric8.release.version>2.0.23</fabric8.release.version>
+    <fabric8.release.version>2.0.25</fabric8.release.version>
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <org.eclipse.jetty.version>9.1.5.v20140505</org.eclipse.jetty.version>
@@ -62,6 +62,7 @@
     <docker.port.container.http>${http.port}</docker.port.container.http>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
 
+    <fabric8.env.IMPORT_APP_URLS>${docker.env.IMPORT_APP_URLS}</fabric8.env.IMPORT_APP_URLS>
     <fabric8.service.name>app-library</fabric8.service.name>
     <fabric8.service.port>9494</fabric8.service.port>
     <fabric8.service.containerPort>${http.port}</fabric8.service.containerPort>
@@ -480,6 +481,13 @@
       <id>fabric8-snapshot</id>
       <properties>
         <fabric8.version>2.2-SNAPSHOT</fabric8.version>
+      </properties>
+    </profile>
+    <profile>
+      <id>release</id>
+      <properties>
+        <!-- when releasing lets use the release version -->
+        <fabric8.release.version>${project.version}</fabric8.release.version>
       </properties>
     </profile>
     <profile>
