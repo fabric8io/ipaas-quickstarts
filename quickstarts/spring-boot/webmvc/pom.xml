@@ -220,7 +220,7 @@
                 <goals>
                   <goal>build</goal>
                 </goals>
-                <phase>package</phase>
+                <phase>verify</phase>
               </execution>
             </executions>
 
