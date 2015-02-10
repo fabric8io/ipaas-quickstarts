@@ -104,7 +104,7 @@
         <artifactId>spring-boot-maven-plugin</artifactId>
         <version>${spring-boot-plugin.version}</version>
         <configuration>
-          <mainClass>io.fabric8.quickstarts.springbootwebmvcip.App</mainClass>
+          <mainClass>${docker.env.MAIN}</mainClass>
         </configuration>
         <executions>
           <execution>
@@ -213,7 +213,7 @@
                 <goals>
                   <goal>build</goal>
                 </goals>
-                <phase>package</phase>
+                <phase>verify</phase>
               </execution>
             </executions>
 
