@@ -168,7 +168,7 @@
                 <goals>
                   <goal>build</goal>
                 </goals>
-                <phase>verify</phase>
+                <phase>package</phase>
               </execution>
             </executions>
           </plugin>
@@ -213,7 +213,7 @@
                 <goals>
                   <goal>build</goal>
                 </goals>
-                <phase>package</phase>
+                <phase>verify</phase>
               </execution>
             </executions>
 
