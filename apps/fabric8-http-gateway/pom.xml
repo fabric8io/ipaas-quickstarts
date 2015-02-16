@@ -134,11 +134,11 @@
                 </assembly>
                 <env>
                   <MAIN>${docker.env.MAIN}</MAIN>
-                  <HTTPGATEWAY_PORT>${httpgateway.port}</HTTPGATEWAY_PORT>
+                  <HTTPGATEWAY_PORT>${http.port}</HTTPGATEWAY_PORT>
                 </env>
                 <ports>
                   <port>8778</port>
-                  <port>${httpgateway.port}</port>
+                  <port>${http.port}</port>
                 </ports>
               </build>
             </image>
