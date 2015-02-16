@@ -33,14 +33,13 @@
   </description>
 
   <properties>
-    <docker.image>fabric8/hawtio</docker.image>
-    <docker.port.container.http>8080</docker.port.container.http>
-    <docker.port.container.jolokia>8778</docker.port.container.jolokia>
+    <docker.image>fabric8/hawtio-kubernetes</docker.image>
+    <docker.port.container.http>9090</docker.port.container.http>
 
     <fabric8.replicationController.name>fabric8-console-controller</fabric8.replicationController.name>
     <fabric8.service.name>fabric8-console-service</fabric8.service.name>
-    <fabric8.service.port>8585</fabric8.service.port>
-    <fabric8.service.containerPort>8080</fabric8.service.containerPort>
+    <fabric8.service.port>80</fabric8.service.port>
+    <fabric8.service.containerPort>9090</fabric8.service.containerPort>
     <fabric8.container.name>fabric8-console-container</fabric8.container.name>
     <fabric8.label.component>console</fabric8.label.component>
     <fabric8.label.provider>fabric8</fabric8.label.provider>
