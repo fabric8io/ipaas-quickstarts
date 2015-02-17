@@ -48,7 +48,11 @@
     <txn.recovery.port>4712</txn.recovery.port>
     <txn.status.manager.port>4713</txn.status.manager.port>
 
+    <!-- TODO no such docker image - what should it be?? -->
+    <!--
     <docker.from>wildfly/default</docker.from>
+    -->
+    <docker.from>jboss/wildfly</docker.from>
     <docker.registryPrefix>${env.DOCKER_REGISTRY}/</docker.registryPrefix>
     <docker.image>${docker.registryPrefix}fabric8/${project.artifactId}:${project.version}</docker.image>
     <docker.assemblyDescriptor>${basedir}/src/main/fabric8/assembly.xml</docker.assemblyDescriptor>
@@ -175,8 +179,10 @@
               <name>${docker.image}</name>
               <build>
                 <from>${docker.from}</from>
-                <assemblyDescriptor>${docker.assemblyDescriptor}</assemblyDescriptor>
-                <exportDir>/opt/wildfly-8.2.0.Final</exportDir>
+                <assembly>
+                  <descriptor>${docker.assemblyDescriptor}</descriptor>
+                  <basedir>/opt/wildfly-8.2.0.Final</basedir>
+                </assembly>
               </build>
             </image>
           </images>
