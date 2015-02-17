@@ -106,11 +106,11 @@
 
     <modules>
         <module>rest-utils</module>
+        <module>apps</module>
+        <module>quickstarts</module>
         <module>archetypes-generate</module>
         <module>archetypes</module>
         <module>archetype-itests</module>
-        <module>apps</module>
-        <module>quickstarts</module>
     </modules>
 
     <build>

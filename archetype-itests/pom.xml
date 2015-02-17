@@ -170,6 +170,42 @@
 
                           <artifactItem>
                             <groupId>io.fabric8.archetypes</groupId>
+                            <artifactId>karaf-beginner-camel-cbr-archetype</artifactId>
+                            <version>${project.version}</version>
+                            <type>jar</type>
+                            <overWrite>false</overWrite>
+                          </artifactItem>
+                          <artifactItem>
+                            <groupId>io.fabric8.archetypes</groupId>
+                            <artifactId>karaf-beginner-camel-eips-archetype</artifactId>
+                            <version>${project.version}</version>
+                            <type>jar</type>
+                            <overWrite>false</overWrite>
+                          </artifactItem>
+                          <artifactItem>
+                            <groupId>io.fabric8.archetypes</groupId>
+                            <artifactId>karaf-beginner-camel-errorhandler-archetype</artifactId>
+                            <version>${project.version}</version>
+                            <type>jar</type>
+                            <overWrite>false</overWrite>
+                          </artifactItem>
+                          <artifactItem>
+                            <groupId>io.fabric8.archetypes</groupId>
+                            <artifactId>karaf-beginner-camel-log-archetype</artifactId>
+                            <version>${project.version}</version>
+                            <type>jar</type>
+                            <overWrite>false</overWrite>
+                          </artifactItem>
+                          <artifactItem>
+                            <groupId>io.fabric8.archetypes</groupId>
+                            <artifactId>karaf-beginner-camel-log-wiki-archetype</artifactId>
+                            <version>${project.version}</version>
+                            <type>jar</type>
+                            <overWrite>false</overWrite>
+                          </artifactItem>
+
+                          <artifactItem>
+                            <groupId>io.fabric8.archetypes</groupId>
                             <artifactId>karaf-camel-amq-archetype</artifactId>
                             <version>${project.version}</version>
                             <type>jar</type>
@@ -178,6 +214,63 @@
                           <artifactItem>
                             <groupId>io.fabric8.archetypes</groupId>
                             <artifactId>karaf-camel-rest-sql-archetype</artifactId>
+                            <version>${project.version}</version>
+                            <type>jar</type>
+                            <overWrite>false</overWrite>
+                          </artifactItem>
+
+                          <artifactItem>
+                            <groupId>io.fabric8.archetypes</groupId>
+                            <artifactId>karaf-cxf-camel-cxf-code-first-archetype</artifactId>
+                            <version>${project.version}</version>
+                            <type>jar</type>
+                            <overWrite>false</overWrite>
+                          </artifactItem>
+                          <artifactItem>
+                            <groupId>io.fabric8.archetypes</groupId>
+                            <artifactId>karaf-cxf-camel-cxf-contract-first-archetype</artifactId>
+                            <version>${project.version}</version>
+                            <type>jar</type>
+                            <overWrite>false</overWrite>
+                          </artifactItem>
+                          <artifactItem>
+                            <groupId>io.fabric8.archetypes</groupId>
+                            <artifactId>karaf-cxf-rest-archetype</artifactId>
+                            <version>${project.version}</version>
+                            <type>jar</type>
+                            <overWrite>false</overWrite>
+                          </artifactItem>
+                          <artifactItem>
+                            <groupId>io.fabric8.archetypes</groupId>
+                            <artifactId>karaf-cxf-secure-rest-archetype</artifactId>
+                            <version>${project.version}</version>
+                            <type>jar</type>
+                            <overWrite>false</overWrite>
+                          </artifactItem>
+                          <artifactItem>
+                            <groupId>io.fabric8.archetypes</groupId>
+                            <artifactId>karaf-cxf-secure-soap-archetype</artifactId>
+                            <version>${project.version}</version>
+                            <type>jar</type>
+                            <overWrite>false</overWrite>
+                          </artifactItem>
+                          <artifactItem>
+                            <groupId>io.fabric8.archetypes</groupId>
+                            <artifactId>karaf-cxf-soap-archetype</artifactId>
+                            <version>${project.version}</version>
+                            <type>jar</type>
+                            <overWrite>false</overWrite>
+                          </artifactItem>
+                          <artifactItem>
+                            <groupId>io.fabric8.archetypes</groupId>
+                            <artifactId>karaf-profiles-camel-twitter-archetype</artifactId>
+                            <version>${project.version}</version>
+                            <type>jar</type>
+                            <overWrite>false</overWrite>
+                          </artifactItem>
+                          <artifactItem>
+                            <groupId>io.fabric8.archetypes</groupId>
+                            <artifactId>karaf-profiles-registry-archetype</artifactId>
                             <version>${project.version}</version>
                             <type>jar</type>
                             <overWrite>false</overWrite>

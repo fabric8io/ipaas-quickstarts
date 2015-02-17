@@ -67,10 +67,7 @@ public class ArchetypeTest {
     private static List<String> outDirs = new ArrayList<String>();
 
     private static Set<String> EXCLUDED_ARCHETYPES = new HashSet<String>(Arrays.asList(new String[] {
-/*
-            "karaf-camel-amq-archetype",
-            "karaf-camel-rest-sql-archetype",
-*/
+            "karaf-beginner-camel-cbr-archetype",
     }));
 
     @Test
