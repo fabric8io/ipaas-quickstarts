@@ -204,6 +204,7 @@
       </build>
     </profile>
 
+<!--
     <profile>
       <id>jube</id>
       <activation>
@@ -224,7 +225,7 @@
               </execution>
             </executions>
 
-            <!-- TODO it'd be nice for the jube plugin to automatically download this dependency -->
+            &lt;!&ndash; TODO it'd be nice for the jube plugin to automatically download this dependency &ndash;&gt;
             <dependencies>
               <dependency>
                 <groupId>io.fabric8.jube.images.fabric8</groupId>
@@ -238,6 +239,7 @@
         </plugins>
       </build>
     </profile>
+-->
 
     <profile>
       <id>docker-public</id>
