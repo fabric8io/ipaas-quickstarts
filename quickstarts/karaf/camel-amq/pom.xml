@@ -196,8 +196,10 @@
               <name>${docker.image}</name>
               <build>
                 <from>${docker.from}</from>
-                <assemblyDescriptor>${docker.assemblyDescriptor}</assemblyDescriptor>
-                <exportDir>/opt/jboss/deploy/</exportDir>
+                <assembly>
+                  <descriptor>${docker.assemblyDescriptor}</descriptor>
+                  <basedir>/opt/jboss/deploy/</basedir>
+                </assembly>
               </build>
             </image>
           </images>

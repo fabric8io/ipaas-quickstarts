@@ -64,7 +64,10 @@
                             <name>${docker.image}</name>
                             <build>
                                 <from>jboss/infinispan-server</from>
-                                <assemblyDescriptor>src/main/fabric8/assembly.xml</assemblyDescriptor>
+                                <assembly>
+                                  <descriptor>src/main/fabric8/assembly.xml</descriptor>
+                                  <basedir>/opt/jboss/upload</basedir>
+                                </assembly>
                                 <ports>
                                     <port>7600</port>
                                     <port>8080</port>
@@ -73,7 +76,6 @@
                                     <port>11211</port>
                                     <port>11222</port>
                                 </ports>
-                                <exportDir>/opt/jboss/upload</exportDir>
                                 <command>/bin/sh /opt/jboss/upload/bin/run.sh</command>
                             </build>
                         </image>

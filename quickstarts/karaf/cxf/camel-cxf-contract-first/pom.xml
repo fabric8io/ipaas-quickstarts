@@ -239,8 +239,10 @@
               <name>${docker.image}</name>
               <build>
                 <from>${docker.from}</from>
-                <assemblyDescriptor>${docker.assemblyDescriptor}</assemblyDescriptor>
-                <exportDir>/opt/apache-karaf-2.4.0</exportDir>
+                <assembly>
+                  <descriptor>${docker.assemblyDescriptor}</descriptor>
+                  <basedir>/opt/apache-karaf-2.4.0</basedir>
+                </assembly>
               </build>
             </image>
           </images>
