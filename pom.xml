@@ -101,6 +101,12 @@
 
     <modules>
         <module>rest-utils</module>
+<!--
+        TODO enable after we cut 2.0.27 of fabric8
+
+        <module>archetypes-generate</module>
+        <module>archetypes</module>
+-->
         <module>apps</module>
         <module>quickstarts</module>
     </modules>
