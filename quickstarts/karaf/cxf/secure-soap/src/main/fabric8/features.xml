@@ -21,7 +21,7 @@
 
   <repository>mvn:org.apache.cxf.karaf/apache-cxf/${cxf.version}/xml/features</repository>
 
-  <feature name="quickstart-karaf-cxf-secure-soap" version="${project.version}" resolver="(obr)">
+  <feature name="${project.artifactId}" version="${project.version}" resolver="(obr)">
       <feature version="${cxf-version-range}">cxf-jaxws</feature>
       <feature version="${cxf-version-range}">cxf-jaxrs</feature>
       <feature version="${cxf-version-range}">cxf-ws-security</feature>

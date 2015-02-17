@@ -23,7 +23,7 @@
   <repository>mvn:org.apache.camel.karaf/apache-camel/${camel.version}/xml/features</repository>
   <repository>mvn:org.apache.karaf.assemblies.features/spring/${karaf.version}/xml/features</repository>
 
-  <feature name="quickstart-karaf-cxf-camel-cxf-contract-first" version="${project.version}" resolver="(obr)">
+  <feature name="${project.artifactId}" version="${project.version}" resolver="(obr)">
       <feature version="${cxf.version}">cxf-jaxws</feature>
       <feature version="${camel.version}">camel-cxf</feature>
       <feature version="${camel.version}">camel-blueprint</feature>

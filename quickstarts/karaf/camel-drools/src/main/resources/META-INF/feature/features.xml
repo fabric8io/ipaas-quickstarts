@@ -23,7 +23,7 @@
 
     <repository>mvn:org.drools/drools-karaf-features/${drools.version}/xml/features</repository>
 
-    <feature name="camel-drools-example" description="Drools6-Camel Example" version="${project.version}">
+    <feature name="${project.artifactId}" description="Drools6-Camel Example" version="${project.version}" resolver="(obr)">
         <feature version="${drools.version}">drools-module</feature>
         <feature version="${drools.version}">drools-decisiontable</feature>
         <feature version="${drools.version}">kie-spring</feature>
