@@ -44,7 +44,9 @@ public class AppLibraryApplication extends Application {
                         appLibraryService,
                         jacksonJsonProvider,
                         new SwaggerFeature(),
+/*
                         new EnableJMXFeature(),
+*/
                         new LoggingFeature()
                 )
         );
