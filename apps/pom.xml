@@ -57,7 +57,9 @@
   <modules>
     <module>api-registry</module>
     <module>app-library</module>
+    <!-- TODO lets disable until there's a valid base docker image
     <module>apiman</module>
+    -->
     <module>console</module>
     <module>elasticsearch</module>
     <module>fabric8-http-gateway</module>
