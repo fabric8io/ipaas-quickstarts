@@ -42,6 +42,7 @@
     <module>cxf-cdi</module>
     <module>simple-mainclass</module>
     <module>simple-fatjar</module>
+    <module>jgroups-greeter</module>
   </modules>
 
   <build>

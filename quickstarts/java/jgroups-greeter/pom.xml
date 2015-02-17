@@ -33,6 +33,7 @@
     <description>Simple Jgroups Example using Kubernetes Discovery</description>
 
     <properties>
+        <testExclusionPattern>**/*KubernetesTest.java</testExclusionPattern>
         <version.maven-surefire-plugin>2.15</version.maven-surefire-plugin>
         <fabric8.generateJson>false</fabric8.generateJson>
         <docker.from>fabric8/java</docker.from>
@@ -45,10 +46,23 @@
         <docker.env.JAVA_OPTIONS>-Djava.net.preferIPv4Stack=true</docker.env.JAVA_OPTIONS>
     </properties>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>fabric8-project</artifactId>
+        <version>${fabric8.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
     <dependencies>
         <dependency>
             <groupId>io.fabric8</groupId>
-            <artifactId>fabric-jgroups</artifactId>
+            <artifactId>fabric8-jgroups</artifactId>
+            <!-- TODO should not need this as its in the BOM -->
             <version>${fabric8.version}</version>
         </dependency>
 
@@ -91,6 +105,9 @@
                 <version>${version.maven-surefire-plugin}</version>
                 <configuration>
                     <forkMode>perTest</forkMode>
+                    <excludes>
+                      <exclude>${testExclusionPattern}</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
 
@@ -226,6 +243,14 @@
                 </plugins>
             </build>
         </profile>
+
+      <profile>
+          <id>ts.kube</id>
+          <properties>
+              <testExclusionPattern>**/*ExcludedTest.java</testExclusionPattern>
+          </properties>
+      </profile>
+
     </profiles>
 
 </project>
