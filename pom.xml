@@ -105,7 +105,6 @@
         <module>quickstarts</module>
         <module>archetypes-generate</module>
         <module>archetypes</module>
-        <module>archetype-itests</module>
     </modules>
 
     <build>
@@ -300,6 +299,12 @@
             <properties>
                 <testExclusionPattern>**/*ExcludedTest.java</testExclusionPattern>
             </properties>
+        </profile>
+        <profile>
+            <id>ts.archetype</id>
+            <modules>
+              <module>archetype-itests</module>
+            </modules>
         </profile>
     </profiles>
 
