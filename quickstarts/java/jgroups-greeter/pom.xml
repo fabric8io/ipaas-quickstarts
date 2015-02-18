@@ -24,7 +24,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.fabric8.jube.images.fabric8</groupId>
-    <artifactId>quickstart-java-jgroups-greeter</artifactId>
+    <artifactId>quickstart-java-jgroups</artifactId>
     <packaging>jar</packaging>
 
     <name>JGroups Greeter</name>
