@@ -26,6 +26,7 @@
                       "name": "keycloak-port",
                       "containerPort": 8080
                     }
+                  ]
                 }
               ]
             }
