@@ -85,14 +85,14 @@
           <executions>
               <execution>
                   <id>attach-artifacts</id>
-                  <phase>package</phase>
+                  <phase>test-compile</phase>
                   <goals>
                       <goal>attach-artifact</goal>
                   </goals>
                   <configuration>
                       <artifacts>
                           <artifact>
-                              <file>${basedir}/target/classes/archetype-catalog.xml</file>
+                              <file>target/classes/archetype-catalog.xml</file>
                               <type>xml</type>
                               <classifier>archetype-catalog</classifier>
                           </artifact>
