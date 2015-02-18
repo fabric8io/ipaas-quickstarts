@@ -38,6 +38,7 @@
     <maven.compiler.source>1.7</maven.compiler.source>
     <version.maven-surefire-plugin>2.15</version.maven-surefire-plugin>
     <version.maven-bundle-plugin>2.3.7</version.maven-bundle-plugin>
+    <docker.maven.plugin.version>0.11.1</docker.maven.plugin.version>
     <apiman.version>1.0.1.Final</apiman.version>
 
     <http.port>8080</http.port>
@@ -49,7 +50,7 @@
     <txn.status.manager.port>4713</txn.status.manager.port>
 
     <!-- TODO no such docker image - what should it be?? -->
-    <!--
+    <!-- the Jube image is wildfly/default, we should rename it to jboss/wildfly to be consistent with the docker image 
     <docker.from>wildfly/default</docker.from>
     -->
     <docker.from>jboss/wildfly</docker.from>
@@ -181,7 +182,8 @@
                 <from>${docker.from}</from>
                 <assembly>
                   <descriptor>${docker.assemblyDescriptor}</descriptor>
-                  <basedir>/opt/wildfly-8.2.0.Final</basedir>
+                  <basedir>/opt/jboss/</basedir>
+                  <dockerFileDir>${basedir}/src/main/docker</dockerFileDir>
                 </assembly>
               </build>
             </image>
@@ -245,6 +247,7 @@
             <configuration>
               <assemblyDescriptor>${project.build.directory}/fabric8/assembly.xml</assemblyDescriptor>
               <exportDir>/</exportDir>
+              <owner>jboss</owner>
             </configuration>
           </plugin>
         </plugins>
