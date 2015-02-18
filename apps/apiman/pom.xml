@@ -38,7 +38,6 @@
     <maven.compiler.source>1.7</maven.compiler.source>
     <version.maven-surefire-plugin>2.15</version.maven-surefire-plugin>
     <version.maven-bundle-plugin>2.3.7</version.maven-bundle-plugin>
-    <docker.maven.plugin.version>0.11.1</docker.maven.plugin.version>
     <apiman.version>1.0.1.Final</apiman.version>
 
     <http.port>8080</http.port>
@@ -247,7 +246,6 @@
             <configuration>
               <assemblyDescriptor>${project.build.directory}/fabric8/assembly.xml</assemblyDescriptor>
               <exportDir>/</exportDir>
-              <owner>jboss</owner>
             </configuration>
           </plugin>
         </plugins>
