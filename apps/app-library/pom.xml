@@ -354,6 +354,7 @@
                 <env>
                   <MAIN>${docker.env.MAIN}</MAIN>
                   <HTTP_PORT>${http.port}</HTTP_PORT>
+                  <IMPORT_APP_URLS>${docker.env.IMPORT_APP_URLS}</IMPORT_APP_URLS>
                 </env>
                 <ports>
                   <port>8778</port>
