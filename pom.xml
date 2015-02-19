@@ -104,10 +104,10 @@
 
     <modules>
         <module>rest-utils</module>
+        <module>archetypes-catalog</module>
+        <module>archetypes</module>
         <module>apps</module>
         <module>quickstarts</module>
-        <module>archetypes-generate</module>
-        <module>archetypes</module>
     </modules>
 
     <build>

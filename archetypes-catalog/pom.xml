@@ -26,7 +26,8 @@
     <version>2.2-SNAPSHOT</version>
   </parent>
 
-  <artifactId>fabric8-archetypes-generate</artifactId>
+  <groupId>io.fabric8.archetypes</groupId>
+  <artifactId>archetypes-catalog</artifactId>
   <packaging>pom</packaging>
   <name>Archetypes :: Generate</name>
 
