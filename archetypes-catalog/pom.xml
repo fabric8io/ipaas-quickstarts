@@ -28,7 +28,6 @@
 
   <groupId>io.fabric8.archetypes</groupId>
   <artifactId>archetypes-catalog</artifactId>
-  <packaging>pom</packaging>
   <name>Archetypes :: Generate</name>
 
   <licenses>
@@ -87,7 +86,7 @@
           <executions>
               <execution>
                   <id>attach-artifacts</id>
-                  <phase>test-compile</phase>
+                  <phase>prepare-package</phase>
                   <goals>
                       <goal>attach-artifact</goal>
                   </goals>
