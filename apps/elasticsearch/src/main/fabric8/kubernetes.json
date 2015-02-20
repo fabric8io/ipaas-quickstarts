@@ -21,12 +21,16 @@
             "containers": [
               {
                 "name": "elasticsearch",
-                "image": "fabric8/elasticsearch-k8s:latest",
+                "image": "fabric8/elasticsearch-k8s:1.4.4",
                 "imagePullPolicy": "PullIfNotPresent",
                 "env": [
                   {
                     "name": "SELECTOR",
                     "value": "component=elasticsearch,cluster=fabric8"
+                  },
+                  {
+                    "name": "KUBERNETES_TRUST_CERT",
+                    "value": "true"
                   }
                 ],
                 "ports": [
@@ -41,15 +45,15 @@
                 ],
                 "volumeMounts": [
                   {
-                    "name": "es-persistent-storage",
-                    "mountPath": "/data"
+                    "name": "es-data-storage",
+                    "mountPath": "/usr/share/elasticsearch/data"
                   }
                 ]
               }
             ],
             "volumes": [
               {
-                "name": "es-persistent-storage",
+                "name": "es-data-storage",
                 "source": {
                   "emptyDir": {}
                 }
