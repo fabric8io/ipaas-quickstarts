@@ -71,7 +71,7 @@
                 },
                 "strategy":{
                     "stiStrategy":{
-                        "builderImage":"openshift/ruby-20-centos"
+                        "builderImage":"openshift/ruby-20-centos7"
                     },
                     "type":"STI"
                 }
@@ -99,7 +99,7 @@
                 },
                 "strategy":{
                     "stiStrategy":{
-                        "builderImage":"openshift/ruby-20-centos"
+                        "builderImage":"openshift/ruby-20-centos7"
                     },
                     "type":"STI"
                 }
