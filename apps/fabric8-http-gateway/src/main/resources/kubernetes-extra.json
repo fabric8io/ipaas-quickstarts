@@ -12,7 +12,8 @@
             "containerPort": ${apiman.port},
             "port": "8999",
             "selector": {
-            "container": "java",
+            "provider": "fabric8",
+            "component": "HttpGateway",
             "group": "defaultGatewayGroup"
         }
     }
