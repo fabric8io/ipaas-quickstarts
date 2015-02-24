@@ -67,6 +67,7 @@
     <module>fabric8-mq-producer</module>
     <module>fabric8-mq-consumer</module>
     <module>fabric8-mq-autoscaler</module>
+    <module>gerrit</module>
     <module>grafana</module>
     <module>influxdb</module>
     <module>jenkins</module>

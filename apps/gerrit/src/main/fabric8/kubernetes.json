@@ -1,0 +1,78 @@
+{
+    "id": "gerrit-config",
+    "kind": "Config",
+    "apiVersion": "v1beta1",
+    "name": "gerrit-config",
+    "description": "Creates a Gerrit Server",
+    "items": [
+        {
+            "apiVersion" : "v1beta1",
+            "id":"gerrit-service",
+            "kind":"Service",
+            "port":8080,
+            "containerPort":8080,
+            "selector":{
+                "name":"gerrit"
+            }
+        },        
+        {
+            "apiVersion" : "v1beta1",
+            "id":"gerrit-daemon-service",
+            "kind":"Service",
+            "port":29418,
+            "containerPort":29418,
+            "selector":{
+                "name":"gerrit"
+            }
+        },
+        {
+            "kind" : "ReplicationController",
+            "id" : "gerrit",
+            "apiVersion" : "v1beta1",
+            "desiredState" : {
+                "replicas" : 1,
+                "replicaSelector" : {
+                    "name" : "gerrit"
+                },
+                "podTemplate" : {
+                    "desiredState" : {
+                        "manifest" : {
+                            "version" : "v1beta1",
+                            "id" : "gerritPod",
+                            "containers" : [ {
+                                "image":"edgester/gerrit",
+                                "name":"gerrit-container",
+                                "ports":[
+                                    {
+                                        "containerPort":8080,
+                                        "protocol":"TCP"
+                                    },
+                                    {
+                                        "containerPort":29418,
+                                        "protocol":"TCP"
+                                    }]
+                            } ]
+                        }
+                    },
+                    "labels" : {
+                        "name" : "gerrit"
+                    }
+                }
+            },
+            "labels" : {
+                "name" : "gerrit"
+            }
+        },
+        {
+            "id": "gerrit-route",
+            "metadata": {
+                "name": "gerrit-route"
+            },
+            "apiVersion": "v1beta1",
+            "kind": "Route",
+            "host": "gerrit.local",
+            "serviceName": "gerrit-service"
+        }
+
+    ]
+}
