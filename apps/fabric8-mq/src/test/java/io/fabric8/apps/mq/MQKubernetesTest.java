@@ -37,6 +37,9 @@ public class MQKubernetesTest {
     @ArquillianResource
     Session session;
 
+    /*
+     * If you receive java.lang.NoSuchMethodError, check issue #3499
+     */
     @Test
     public void testMQ() throws Exception {
         assertThat(client).replicationController("fabric8mq-controller").isNotNull();
