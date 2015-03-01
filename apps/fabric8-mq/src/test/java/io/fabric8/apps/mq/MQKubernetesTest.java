@@ -39,7 +39,7 @@ public class MQKubernetesTest {
 
     @Test
     public void testMQ() throws Exception {
-        assertThat(client).replicationController("fabric8MQ").isNotNull();
+        assertThat(client).replicationController("fabric8mq-controller").isNotNull();
         assertThat(client).service("fabric8mq").hasPort(6163);
 
         assertThat(client).pods()
