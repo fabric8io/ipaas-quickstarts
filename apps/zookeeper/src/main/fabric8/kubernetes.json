@@ -25,7 +25,7 @@
             "containerPort": "zookeeper-peer-port",
             "selector": {
                 "name": "zookeeper-pod",
-                "server": 1
+                "server": "1"
             }
         },
         {
@@ -37,7 +37,7 @@
             "containerPort": "zookeeper-peer-port",
             "selector": {
                 "name": "zookeeper-pod",
-                "server": 2
+                "server": "2"
             }
         },
         {
@@ -49,7 +49,7 @@
             "containerPort": "zookeeper-peer-port",
             "selector": {
                 "name": "zookeeper-pod",
-                "server": 3
+                "server": "3"
             }
         },
 
@@ -62,7 +62,7 @@
             "containerPort": "zookeeper-election-port",
             "selector": {
                 "name": "zookeeper-pod",
-                "server": 1
+                "server": "1"
             }
         },
         {
@@ -74,7 +74,7 @@
             "containerPort": "zookeeper-election-port",
             "selector": {
                 "name": "zookeeper-pod",
-                "server": 2
+                "server": "2"
             }
         },
         {
@@ -86,7 +86,7 @@
             "containerPort": "zookeeper-election-port",
             "selector": {
                 "name": "zookeeper-pod",
-                "server": 3
+                "server": "3"
             }
         },
         {
@@ -158,12 +158,12 @@
                     },
                     "labels": {
                         "name": "zookeeper-pod",
-                        "server":  1
+                        "server":  "1"
                     }
                 },
                 "replicaSelector": {
                     "name": "zookeeper-pod",
-                    "server": 1
+                    "server": "1"
                 },
                 "replicas": 1
             }
@@ -239,12 +239,12 @@
                     },
                     "labels": {
                         "name": "zookeeper-pod",
-                        "server": 2
+                        "server": "2"
                     }
                 },
                 "replicaSelector": {
                     "name": "zookeeper-pod",
-                    "server": 2
+                    "server": "2"
                 },
                 "replicas": 1
             }
@@ -319,12 +319,12 @@
                     },
                     "labels": {
                         "name": "zookeeper-pod",
-                        "server": 3
+                        "server": "3"
                     }
                 },
                 "replicaSelector": {
                     "name": "zookeeper-pod",
-                    "server": 3
+                    "server": "3"
                 },
                 "replicas": 1
             }
