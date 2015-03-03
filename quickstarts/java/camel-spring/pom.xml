@@ -40,6 +40,10 @@
     <version.maven-bundle-plugin>2.3.7</version.maven-bundle-plugin>
     <maven.compiler.target>1.7</maven.compiler.target>
     <maven.compiler.source>1.7</maven.compiler.source>
+    <maven.surefire.plugin.version>2.17</maven.surefire.plugin.version>
+
+    <skipTests>false</skipTests>
+    <testExclusionPattern>**/*KubernetesTest.java</testExclusionPattern>
 
     <!-- the version of the BOM, defining all the dependency versions -->
     <fabric8.version>2.0.29</fabric8.version>
@@ -73,7 +77,6 @@
   </dependencyManagement>
 
   <dependencies>
-
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-core</artifactId>
@@ -81,12 +84,6 @@
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-spring</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.camel</groupId>
-      <artifactId>camel-test-spring</artifactId>
-      <scope>test</scope>
     </dependency>
 
     <dependency>
@@ -102,6 +99,22 @@
       <artifactId>log4j</artifactId>
     </dependency>
 
+    <!-- testing -->
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-test-spring</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.arquillian.junit</groupId>
+      <artifactId>arquillian-junit-container</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>arquillian-fabric8</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -122,6 +135,18 @@
         <configuration>
           <source>${maven.compiler.source}</source>
           <target>${maven.compiler.target}</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${maven.surefire.plugin.version}</version>
+        <inherited>true</inherited>
+        <configuration>
+          <skipTests>${skipTests}</skipTests>
+          <excludes>
+            <exclude>${testExclusionPattern}</exclude>
+          </excludes>
         </configuration>
       </plugin>
 
@@ -273,6 +298,12 @@
       <id>docker-public</id>
       <properties>
         <docker.registryPrefix />
+      </properties>
+    </profile>
+    <profile>
+      <id>ts.kube</id>
+      <properties>
+        <testExclusionPattern>**/*ExcludedTest.java</testExclusionPattern>
       </properties>
     </profile>
   </profiles>
