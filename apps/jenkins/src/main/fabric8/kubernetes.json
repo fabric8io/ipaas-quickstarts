@@ -9,7 +9,7 @@
             "apiVersion" : "v1beta1",
             "id":"jenkins-service",
             "kind":"Service",
-            "port":5002,
+            "port":80,
             "containerPort":8080,
             "selector":{
                 "name":"jenkins"
@@ -30,7 +30,7 @@
                             "version" : "v1beta1",
                             "id" : "jenkinsPod",
                             "containers" : [ {
-                                "image":"openshift/jenkins-1-centos",
+                                "image":"rawlingsj/fabric8-jenkins",
                                 "name":"jenkins-container",
                                 "ports":[
                                     {
@@ -48,101 +48,6 @@
             "labels" : {
                 "name" : "jenkins"
             }
-        },
-        {
-            "apiVersion":"v1beta1",
-            "kind":"BuildConfig",
-            "metadata":{
-                "name":"ruby-test-build",
-                "labels":{
-                    "name":"ruby-test-build"
-                }
-            },
-            "parameters":{
-                "output":{
-                    "imageTag":"openshift/origin-ruby-sample:test",
-                    "registry":"$REGISTRY_SERVICE_HOST:$REGISTRY_SERVICE_PORT"
-                },
-                "source":{
-                    "git":{
-                        "uri":"git://github.com/openshift/ruby-hello-world.git"
-                    },
-                    "type":"Git"
-                },
-                "strategy":{
-                    "stiStrategy":{
-                        "builderImage":"openshift/ruby-20-centos7"
-                    },
-                    "type":"STI"
-                }
-            }
-        },
-        {
-            "apiVersion":"v1beta1",
-            "kind":"BuildConfig",
-            "metadata":{
-                "name":"ruby-test-build",
-                "labels":{
-                    "name":"ruby-test-build"
-                }
-            },
-            "parameters":{
-                "output":{
-                    "imageTag":"openshift/origin-ruby-sample:test",
-                    "registry":"$REGISTRY_SERVICE_HOST:$REGISTRY_SERVICE_PORT"
-                },
-                "source":{
-                    "git":{
-                        "uri":"git://github.com/openshift/ruby-hello-world.git"
-                    },
-                    "type":"Git"
-                },
-                "strategy":{
-                    "stiStrategy":{
-                        "builderImage":"openshift/ruby-20-centos7"
-                    },
-                    "type":"STI"
-                }
-            }
-        },
-        {
-            "containers":[
-                {
-                    "env":[
-                        {
-                            "name":"ADMIN_USERNAME",
-                            "value":"${ADMIN_USERNAME}"
-                        },
-                        {
-                            "name":"ADMIN_PASSWORD",
-                            "value":"${ADMIN_PASSWORD}"
-                        },
-                        {
-                            "name":"MYSQL_ROOT_PASSWORD",
-                            "value":"${MYSQL_ROOT_PASSWORD}"
-                        },
-                        {
-                            "name":"MYSQL_DATABASE",
-                            "value":"${MYSQL_DATABASE}"
-                        },
-                        {
-                            "name":"RACK_ENV",
-                            "value":"production"
-                        },
-                        {
-                            "name":"RAILS_ENV",
-                            "value":"production"
-                        }
-                    ],
-                    "image":"$REGISTRY_SERVICE_HOST:$REGISTRY_SERVICE_PORT/openshift/origin-ruby-sample:prod",
-                    "name":"ruby-helloworld-prod",
-                    "ports":[
-                        {
-                            "containerPort":8080
-                        }
-                    ]
-                }
-            ]
         }
     ]
 }
