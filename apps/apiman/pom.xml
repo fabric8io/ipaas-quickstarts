@@ -38,7 +38,7 @@
     <maven.compiler.source>1.7</maven.compiler.source>
     <version.maven-surefire-plugin>2.15</version.maven-surefire-plugin>
     <version.maven-bundle-plugin>2.3.7</version.maven-bundle-plugin>
-    <apiman.version>1.0.1.Final</apiman.version>
+    <apiman.version>1.1.0.RC1</apiman.version>
 
     <http.port>8080</http.port>
     <https.port>8443</https.port>
