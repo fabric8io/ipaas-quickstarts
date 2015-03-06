@@ -17,6 +17,7 @@ The following maven profiles can be used to enable/disable parts of the build. N
 * **docker-build** builds docker images locally
 * **docker-push** pushes docker images (i.e. when releasing to the public docker registry or a local registry of **$DOCKER_REGISTRY** is defined to point to a local docker registry
 * **jube** creates a jube image zip as part of the build (which is active by default)
+* **ts.kube** enables the kubernetes integration tests
 
 #### Building docker images
 
@@ -38,5 +39,9 @@ If you wish to push docker images to a private or public registry you will need 
         ...
   </servers>
 ```
+
+#### Building and running the integration tests
+
+    mvn install -Pdocker-push -Pts.kube -Ddocker.username=jolokia -Ddocker.password=jolokia
 
 For local containers they can be dummy login/passwords. For more details [see the docker maven plugin docs](https://github.com/rhuss/docker-maven-plugin/blob/master/doc/manual.md#authentication)
