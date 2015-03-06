@@ -16,8 +16,11 @@
 package io.fabric8.app.library.support;
 
 import io.hawt.git.GitFacade;
-import io.hawt.git.GitHelper;
-import io.hawt.util.*;
+import io.hawt.util.Files;
+import io.hawt.util.Function;
+import io.hawt.util.IOHelper;
+import io.hawt.util.MBeanSupport;
+import io.hawt.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -157,8 +160,8 @@ public class KubernetesService extends MBeanSupport implements KubernetesService
                 if (builder == null) {
                     List<AppDTO> answer = new ArrayList<AppDTO>();
                     doAddApps(rootFolder, rootFolder, answer);
-                        builder = Response.ok(answer);
-                        builder.tag(etag);
+                    builder = Response.ok(answer);
+                    builder.tag(etag);
                 }
                 return builder.build();
             }

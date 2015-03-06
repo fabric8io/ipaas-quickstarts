@@ -45,6 +45,7 @@
     <!-- the version of the BOM, defining all the dependency versions -->
     <fabric8.version>2.0.30</fabric8.version>
     <hawtio.version>1.4.44</hawtio.version>
+    <jgit.version>3.4.1.201406201815-r</jgit.version>
 
     <fabric8.release.version>2.0.26</fabric8.release.version>
 
@@ -112,6 +113,11 @@
       <groupId>io.hawt</groupId>
       <artifactId>hawtio-git</artifactId>
       <version>${hawtio.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jgit</groupId>
+      <artifactId>org.eclipse.jgit.http.server</artifactId>
+      <version>${jgit.version}</version>
     </dependency>
 
     <dependency>

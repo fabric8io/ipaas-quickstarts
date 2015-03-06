@@ -42,7 +42,7 @@ public class HawtioProducers {
         System.out.println("Importing urls: " + importUrls);
         git.setInitialImportURLs(importUrls);
         git.setCloneRemoteRepoOnStartup(false);
-        File configDir = new File("libraryConfig");
+        File configDir = new File("library");
         if (configDir.exists()) {
             Files.recursiveDelete(configDir);
         }
@@ -63,14 +63,14 @@ public class HawtioProducers {
         return aether;
     }
 
-/*
-    @Produces
-    @Singleton
-*/
-public KubernetesService createKubernetesService() throws Exception {
-    KubernetesService answer = new KubernetesService();
-    answer.init();
-    return answer;
-}
+    /*
+        @Produces
+        @Singleton
+    */
+    public KubernetesService createKubernetesService() throws Exception {
+        KubernetesService answer = new KubernetesService();
+        answer.init();
+        return answer;
+    }
 
 }

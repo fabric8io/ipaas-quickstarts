@@ -15,7 +15,8 @@
  */
 package io.fabric8.app.library;
 
-import io.fabric8.app.library.support.GitServlet;
+import io.fabric8.app.library.support.GitContentServlet;
+import io.fabric8.app.library.support.GitServletFacade;
 import io.fabric8.app.library.support.UploadServlet;
 import io.fabric8.rest.utils.Servers;
 import io.fabric8.utils.Function;
@@ -33,7 +34,8 @@ public class Main {
             @Override
             public Void apply(ServletContextHandler context) {
                 context.addServlet(UploadServlet.class, "/upload/*");
-                context.addServlet(GitServlet.class, "/git/*");
+                context.addServlet(GitContentServlet.class, "/git/*");
+                context.addServlet(GitServletFacade.class, "/repo/*");
                 return null;
             }
         });

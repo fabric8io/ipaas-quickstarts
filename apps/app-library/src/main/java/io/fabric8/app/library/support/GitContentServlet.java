@@ -27,10 +27,6 @@ import io.hawt.util.Function;
 import io.hawt.util.Strings;
 import io.hawt.util.Zips;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceReference;
-import org.osgi.util.tracker.ServiceTracker;
-import org.osgi.util.tracker.ServiceTrackerCustomizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,34 +40,21 @@ import java.util.List;
 
 /**
  */
-public class GitServlet extends UploadServlet implements ServiceTrackerCustomizer {
-    private static final transient Logger LOG = LoggerFactory.getLogger(GitServlet.class);
+public class GitContentServlet extends UploadServlet {
+    private static final transient Logger LOG = LoggerFactory.getLogger(GitContentServlet.class);
 
     private static final int DEFAULT_BUFFER_SIZE = 10240; // 10KB.
 
-    private BundleContext bundleContext;
-    private ServiceTracker serviceTracker;
     private GitFileManager gitFacade;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-
-        bundleContext = (BundleContext) getServletContext().getAttribute("osgi-bundlecontext");
-
-        if (bundleContext == null) {
-            gitFacade = GitFacade.getSingleton();
-        } else {
-            serviceTracker = new ServiceTracker(bundleContext, GitFileManager.class.getName(), this);
-            serviceTracker.open();
-        }
+        gitFacade = GitFacade.getSingleton();
     }
 
     @Override
     public void destroy() {
-        if (serviceTracker != null) {
-            serviceTracker.close();
-        }
         super.destroy();
     }
 
@@ -210,26 +193,6 @@ public class GitServlet extends UploadServlet implements ServiceTrackerCustomize
 
     protected void notFound(HttpServletResponse resp) throws IOException {
         resp.sendError(HttpServletResponse.SC_NOT_FOUND);
-    }
-
-    @Override
-    public Object addingService(ServiceReference serviceReference) {
-        LOG.debug("Using new git file manager");
-
-        gitFacade = (GitFileManager) bundleContext.getService(serviceReference);
-        return gitFacade;
-    }
-
-    @Override
-    public void modifiedService(ServiceReference serviceReference, Object o) {
-
-    }
-
-    @Override
-    public void removedService(ServiceReference serviceReference, Object o) {
-        LOG.debug("Unsetting git file manager");
-        gitFacade = null;
-        bundleContext.ungetService(serviceReference);
     }
 
     protected static class Params {
