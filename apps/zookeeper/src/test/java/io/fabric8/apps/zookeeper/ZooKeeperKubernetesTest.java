@@ -78,7 +78,9 @@ public class ZooKeeperKubernetesTest {
         try (CuratorFramework curator = CuratorFrameworkFactory.newClient(serviceURL, new RetryNTimes(5, 1000))) {
             curator.start();
             curator.blockUntilConnected();
-            curator.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath("/fabric8");
+            if (curator.checkExists().forPath("/fabric8") == null) {
+                curator.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath("/fabric8");
+            }
         }
     }
 
