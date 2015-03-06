@@ -39,7 +39,7 @@ public class GatewayKubernetesTest {
 
     @Test
     public void testGateway() throws Exception {
-        assertThat(client).replicationController("fabric8HTTPGateway").isNotNull();
+        assertThat(client).replicationController("fabric8-http-gateway-controller").isNotNull();
         assertThat(client).service("http-gateway").hasPort(9000);
 
         assertThat(client).pods()

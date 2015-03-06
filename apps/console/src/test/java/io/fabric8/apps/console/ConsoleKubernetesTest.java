@@ -39,7 +39,7 @@ public class ConsoleKubernetesTest {
     @Test
     public void testConsole() throws Exception {
         assertThat(client).replicationController("fabric8-console-controller").isNotNull();
-        assertThat(client).service("fabric8-console-service").hasPort(8080);
+        assertThat(client).service("fabric8-console-service").hasPort(80);
 
         assertThat(client).pods()
                 .runningStatus()

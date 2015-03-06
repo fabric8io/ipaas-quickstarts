@@ -39,7 +39,7 @@ public class MQConsumerKubernetesTest {
 
     @Test
     public void testMQConsumer() throws Exception {
-        assertThat(client).replicationController("fabric8MQConsumer").isNotNull();
+        assertThat(client).replicationController("fabric8-mq-consumer-container").isNotNull();
 
         assertThat(client).pods()
                 .runningStatus()

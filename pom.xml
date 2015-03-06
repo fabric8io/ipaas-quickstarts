@@ -70,7 +70,8 @@
 
     <properties>
         <skipTests>false</skipTests>
-        <testExclusionPattern>**/*KubernetesTest.java</testExclusionPattern>
+        <skipItests>false</skipItests>
+        <integrationTestPattern>**/*KubernetesTest.java</integrationTestPattern>
 
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
@@ -166,18 +167,36 @@
           <artifactId>jube-maven-plugin</artifactId>
           <version>${jube.version}</version>
         </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>2.17</version>
-            <inherited>true</inherited>
-            <configuration>
-                <skipTests>${skipTests}</skipTests>
-                <excludes>
-                  <exclude>${testExclusionPattern}</exclude>
-                </excludes>
-            </configuration>
-        </plugin>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-surefire-plugin</artifactId>
+              <version>2.17</version>
+              <inherited>true</inherited>
+              <configuration>
+                  <skipTests>${skipTests}</skipTests>
+                  <excludes>
+                      <exclude>${integrationTestPattern}</exclude>
+                  </excludes>
+              </configuration>
+              <executions>
+                  <execution>
+                      <id>int-test</id>
+                      <goals>
+                          <goal>test</goal>
+                      </goals>
+                      <phase>integration-test</phase>
+                      <configuration>
+                          <skipTests>${skipItests}</skipTests>
+                          <excludes>
+                              <exclude>none</exclude>
+                          </excludes>
+                          <includes>
+                              <include>${integrationTestPattern}</include>
+                          </includes>
+                      </configuration>
+                  </execution>
+              </executions>
+          </plugin>
       </plugins>
     </build>
 
@@ -300,7 +319,7 @@
         <profile>
             <id>ts.kube</id>
             <properties>
-                <testExclusionPattern>**/*ExcludedTest.java</testExclusionPattern>
+                <skipItests>false</skipItests>
             </properties>
         </profile>
         <profile>

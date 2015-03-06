@@ -31,7 +31,7 @@
     <description>Simple Jgroups Example using Kubernetes Discovery</description>
 
     <properties>
-        <testExclusionPattern>**/*KubernetesTest.java</testExclusionPattern>
+        <integrationTestPattern>**/*KubernetesTest.java</integrationTestPattern>
         <version.maven-surefire-plugin>2.15</version.maven-surefire-plugin>
         <fabric8.generateJson>false</fabric8.generateJson>
         <docker.from>fabric8/java</docker.from>
@@ -104,7 +104,7 @@
                 <configuration>
                     <forkMode>perTest</forkMode>
                     <excludes>
-                      <exclude>${testExclusionPattern}</exclude>
+                      <exclude>${integrationTestPattern}</exclude>
                     </excludes>
                 </configuration>
             </plugin>
@@ -247,7 +247,7 @@
       <profile>
           <id>ts.kube</id>
           <properties>
-              <testExclusionPattern>**/*ExcludedTest.java</testExclusionPattern>
+              <skipItests>false</skipItests>
           </properties>
       </profile>
 

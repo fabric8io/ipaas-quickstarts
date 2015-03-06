@@ -38,7 +38,7 @@
     <maven.surefire.plugin.version>2.17</maven.surefire.plugin.version>
 
     <skipTests>false</skipTests>
-    <testExclusionPattern>**/*KubernetesTest.java</testExclusionPattern>
+    <integrationTestPattern>**/*KubernetesTest.java</integrationTestPattern>
 
     <spring-boot.version>1.2.1.RELEASE</spring-boot.version>
     <spring-boot-plugin.version>1.1.7.RELEASE</spring-boot-plugin.version>
@@ -129,7 +129,7 @@
         <configuration>
           <skipTests>${skipTests}</skipTests>
           <excludes>
-            <exclude>${testExclusionPattern}</exclude>
+            <exclude>${integrationTestPattern}</exclude>
           </excludes>
         </configuration>
       </plugin>
@@ -277,7 +277,7 @@
     <profile>
       <id>ts.kube</id>
       <properties>
-        <testExclusionPattern>**/*ExcludedTest.java</testExclusionPattern>
+        <skipItests>false</skipItests>
       </properties>
     </profile>
   </profiles>
