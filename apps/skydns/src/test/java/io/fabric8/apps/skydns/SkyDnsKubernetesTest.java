@@ -42,16 +42,5 @@ public class SkyDnsKubernetesTest {
         assertThat(client).replicationController("skydns-rc").isNotNull();
         assertThat(client).service("skydns-udp-service").hasPort(53);
         assertThat(client).service("skydns-tcp-service").hasPort(53);
-
-
-        assertThat(client).pods()
-                .runningStatus()
-                .filterNamespace(session.getNamespace())
-                .haveAtLeast(2, new Condition<Pod>() {
-                    @Override
-                    public boolean matches(Pod podSchema) {
-                        return true;
-                    }
-                });
     }
 }
