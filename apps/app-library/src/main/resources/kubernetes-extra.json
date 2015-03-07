@@ -1,0 +1,11 @@
+{
+  "apiVersion": "v1beta2",
+  "id": "app-library-jolokia",
+  "kind": "Service",
+  "port": 8778,
+  "containerPort": 8778,
+  "selector": {
+    "component": "AppLibrary",
+    "provider": "fabric8"
+  }
+}
