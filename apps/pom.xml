@@ -78,6 +78,7 @@
     <module>cadvisor</module>
     <module>heapster</module>
     <module>skydns</module>
+    <module>sonarqube</module>
     <module>keycloak</module>
     <module>infinispan-server</module>
   </modules>

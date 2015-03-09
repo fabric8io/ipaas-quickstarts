@@ -1,0 +1,75 @@
+{
+    "id": "sonarqube-config",
+    "kind": "Config",
+    "apiVersion": "v1beta1",
+    "name": "sonarqube-config",
+    "description": "Creates a sonarqube Server",
+    "items": [
+        {
+            "apiVersion" : "v1beta1",
+            "id":"sonarqube-service",
+            "kind":"Service",
+            "port":8080,
+            "containerPort":9000,
+            "selector":{
+                "name":"sonarqube"
+            }
+        },
+        {
+            "kind" : "ReplicationController",
+            "id" : "sonarqube-controller",
+            "apiVersion" : "v1beta1",
+            "desiredState" : {
+                "replicas" : 1,
+                "replicaSelector" : {
+                    "name" : "sonarqube"
+                },
+                "podTemplate" : {
+                    "desiredState" : {
+                        "manifest" : {
+                            "version" : "v1beta1",
+                            "id" : "sonarqubePod",
+                            "containers" : [
+                              {
+                                "image":"tpires/sonar-server",
+                                "name":"sonarqube-server-container",
+                                "env": [
+                                  {
+                                    "name":"DB_PORT_3306_TCP_ADDR",
+                                    "value":"localhost"
+                                  }
+                                ],
+                                "ports":[
+                                    {
+                                        "containerPort":9000,
+                                        "protocol":"TCP"
+                                    }]
+                              },
+                              {
+                                "name": "sonarqube-database-container",
+                                "image": "tpires/sonar-mysql",
+                                "env": [
+                                ],
+                                "ports": [
+                                  {
+                                    "containerPort": 3306,
+                                    "protocol":"TCP"
+                                  }
+                                ]
+                              }
+
+                          ]
+
+                        }
+                    },
+                    "labels" : {
+                        "name" : "sonarqube"
+                    }
+                }
+            },
+            "labels" : {
+                "name" : "sonarqube"
+            }
+        }
+    ]
+}
