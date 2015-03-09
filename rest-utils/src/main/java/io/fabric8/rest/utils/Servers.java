@@ -31,13 +31,22 @@ import java.util.EnumSet;
 
 public class Servers {
 
+    protected static final String DEFAULT_PORT = "8588";
 
     public static Server startServer(String appName) throws Exception {
-        return startServer(appName, null);
+        return startServer(appName, null, DEFAULT_PORT);
     }
 
     public static Server startServer(String appName, Function<ServletContextHandler, Void> contextCallback) throws Exception {
-        String port = Systems.getEnvVarOrSystemProperty("HTTP_PORT", "HTTP_PORT", "8588");
+        return startServer(appName, contextCallback, DEFAULT_PORT);
+    }
+
+    public static Server startServer(String appName, String defaultPort) throws Exception {
+        return startServer(appName, null, defaultPort);
+    }
+
+    public static Server startServer(String appName, Function<ServletContextHandler, Void> contextCallback, String defaultPort) throws Exception {
+        String port = Systems.getEnvVarOrSystemProperty("HTTP_PORT", "HTTP_PORT", defaultPort);
         Integer num = Integer.parseInt(port);
         String service = Systems.getEnvVarOrSystemProperty("WEB_CONTEXT_PATH", "WEB_CONTEXT_PATH", "");
 
@@ -49,7 +58,6 @@ public class Servers {
         if (!url.endsWith("/")) {
             url += "/";
         }
-
 
         System.out.println();
         System.out.println("-------------------------------------------------------------");
