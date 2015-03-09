@@ -19,6 +19,7 @@
             "manifest": {
               "version": "v1beta1",
               "id": "is",
+              "name": "infinispan-container",
               "containers": [
                 {
                   "name": "infinispan",

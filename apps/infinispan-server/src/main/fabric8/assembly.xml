@@ -20,4 +20,18 @@
             <outputDirectory>modules/system/layers/base/io/fabric8/jgroups/main</outputDirectory>
         </dependencySet>
     </dependencySets>
+    <fileSets>
+        <fileSet>
+            <!--
+             Using resource filtering here throws an NPE (docker maven plugin bug?).
+             Until it gets fixed, we filter in the process resouces phase and just copy the filtered resources.
+            -->
+            <directory>${project.build.directory}/filtered-resources</directory>
+            <outputDirectory>/</outputDirectory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+            <filtered>false</filtered>
+        </fileSet>
+    </fileSets>
 </assembly>

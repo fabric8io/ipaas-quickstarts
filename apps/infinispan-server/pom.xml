@@ -48,7 +48,7 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
-                <targetPath>${project.build.directory}/docker/maven</targetPath>
+                <targetPath>${project.build.directory}/filtered-resources</targetPath>
             </resource>
         </resources>
 
@@ -62,10 +62,14 @@
                         <image>
                             <name>${docker.image}</name>
                             <build>
-                                <from>jboss/infinispan-server</from>
+                                <from>jboss/infinispan-server:7.0.0.Final</from>
                                 <assembly>
                                   <descriptor>${project.basedir}/src/main/fabric8/assembly.xml</descriptor>
-                                  <basedir>/opt/jboss/upload</basedir>
+                                    <!-- We don't use the actual infinispan server home as basedir to avoid
+                                    messing with the file permissions. So we use a tmp dir and then we copy.
+                                    
+                                    -->
+                                  <basedir>/opt/jboss/upload/</basedir>
                                 </assembly>
                                 <ports>
                                     <port>7600</port>
@@ -75,7 +79,7 @@
                                     <port>11211</port>
                                     <port>11222</port>
                                 </ports>
-                                <command>/bin/sh /opt/jboss/upload/bin/run.sh</command>
+                                <command>/bin/sh /opt/jboss/upload/bin/start.sh</command>
                             </build>
                         </image>
                     </images>
