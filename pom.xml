@@ -71,7 +71,7 @@
     <properties>
         <skipTests>false</skipTests>
         <skipItests>true</skipItests>
-        <integrationTestPattern>**/*KubernetesTest.java</integrationTestPattern>
+        <integrationTestPattern>**/*KubernetesTest*.java</integrationTestPattern>
 
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
@@ -202,6 +202,20 @@
 
     <dependencyManagement>
         <dependencies>
+
+            <dependency>
+                <groupId>io.fabric8</groupId>
+                <artifactId>fabric8-cdi</artifactId>
+                <version>${fabric8.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.fabric8</groupId>
+                <artifactId>fabric8-cdi</artifactId>
+                <version>${fabric8.version}</version>
+                <type>test-jar</type>
+            </dependency>
+            
             <dependency>
                 <groupId>org.jboss.arquillian.junit</groupId>
                 <artifactId>arquillian-junit-container</artifactId>
