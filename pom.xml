@@ -80,7 +80,7 @@
         <docker.target.dir>${basedir}/target/docker-plugin</docker.target.dir>
 
         <arquillian.version>1.1.5.Final</arquillian.version>
-        <docker.maven.plugin.version>0.11.1</docker.maven.plugin.version>
+        <docker.maven.plugin.version>0.11.2</docker.maven.plugin.version>
         <exec-maven-plugin.version>1.2.1</exec-maven-plugin.version>
         <maven.surefire.plugin.version>2.17</maven.surefire.plugin.version>
         <jube.version>2.0.31</jube.version>
