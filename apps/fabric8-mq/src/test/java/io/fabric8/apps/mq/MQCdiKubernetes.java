@@ -41,7 +41,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 
 @RunWith(Arquillian.class)
-public class MQCDIKubernetes {
+public class MQCdiKubernetes {
 
     @Inject
     @Service("fabric8mq")
