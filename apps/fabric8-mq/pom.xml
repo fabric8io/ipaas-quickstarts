@@ -50,6 +50,10 @@
 
   <dependencies>
     <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>fabric8-cdi</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.apache.activemq</groupId>
       <artifactId>activemq-broker</artifactId>
     </dependency>
@@ -87,6 +91,13 @@
 
     <dependency>
       <groupId>io.fabric8</groupId>
+      <artifactId>fabric8-cdi</artifactId>
+      <scope>test</scope>
+      <type>test-jar</type>
+    </dependency>
+
+    <dependency>
+      <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-assertions</artifactId>
       <scope>test</scope>
     </dependency>
@@ -96,6 +107,14 @@
       <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+      <groupId>org.apache.openejb</groupId>
+      <artifactId>arquillian-openejb-embedded-4</artifactId>
+      <version>4.7.1</version>
+      <scope>test</scope>
+    </dependency>
+    
   </dependencies>
 
   <build>
@@ -166,6 +185,19 @@
           <mainClass>io.fabric8.mq.Main</mainClass>
           <includePluginDependencies>false</includePluginDependencies>
         </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.5</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
