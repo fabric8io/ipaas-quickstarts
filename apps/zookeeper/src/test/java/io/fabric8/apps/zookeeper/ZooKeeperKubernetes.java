@@ -34,17 +34,13 @@ import org.junit.runner.RunWith;
 import static io.fabric8.kubernetes.assertions.Assertions.assertThat;
 
 @RunWith(Arquillian.class)
-public class ZooKeeperKubernetesTest {
+public class ZooKeeperKubernetes {
 
     @ArquillianResource
     KubernetesClient client;
 
     @ArquillianResource
     Session session;
-
-    @Id("zk-client")
-    @ArquillianResource
-    Service zkClient;
 
     @Test
     public void testZooKeeper() throws Exception {
@@ -71,17 +67,4 @@ public class ZooKeeperKubernetesTest {
 
         assertThat(client).pods().runningStatus().filterNamespace(session.getNamespace()).hasSize(3);
     }
-
-    @Test
-    public void testClient() throws Exception {
-        String serviceURL = zkClient.getPortalIP() + ":" + zkClient.getPort();
-        try (CuratorFramework curator = CuratorFrameworkFactory.newClient(serviceURL, new RetryNTimes(5, 1000))) {
-            curator.start();
-            curator.blockUntilConnected();
-            if (curator.checkExists().forPath("/fabric8") == null) {
-                curator.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath("/fabric8");
-            }
-        }
-    }
-
 }

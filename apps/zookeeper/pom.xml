@@ -48,9 +48,19 @@
 
     <dependencies>
         <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>fabric8-cdi</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>fabric8-cdi</artifactId>
+            <scope>test</scope>
+            <type>test-jar</type>
+        </dependency>
+        <dependency>
             <groupId>org.apache.curator</groupId>
             <artifactId>curator-framework</artifactId>
-            <scope>test</scope>
         </dependency>
 
         <dependency>
@@ -74,6 +84,13 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.openejb</groupId>
+            <artifactId>arquillian-openejb-embedded-4</artifactId>
+            <version>4.7.1</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
