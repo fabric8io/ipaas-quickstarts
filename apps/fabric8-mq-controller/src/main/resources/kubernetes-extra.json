@@ -1,0 +1,50 @@
+{
+    "id": "fabric8-mq-replicator-config",
+    "kind": "Config",
+    "apiVersion": "v1beta1",
+    "name": "fabric8-mq-controller-brokers",
+    "description": "Creates a replication controller for MQ Pods",
+  "items": [
+
+    {
+      "id": "fabric8mq-broker",
+      "kind": "ReplicationController",
+      "apiVersion": "v1beta1",
+      "desiredState": {
+        "replicas": 1,
+        "replicaSelector": {
+          "component": "fabric8MQ",
+          "provider": "fabric8",
+          "group": "fabric8mq"
+        },
+        "podTemplate": {
+          "desiredState": {
+            "manifest": {
+              "version": "v1beta1",
+              "id": "fabric8-mqPod",
+              "containers": [
+                {
+                  "name": "fabric8-mq-container",
+                  "image": "dockerhost:5000/fabric8/fabric8-mq:2.2-SNAPSHOT",
+                  "imagePullPolicy": "PullAlways",
+                  "env": [
+                  ],
+                  "ports": [
+                    {
+                      "containerPort": 6162
+
+                    },
+                    {
+                      "containerPort": 8778
+
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  ]
+}
