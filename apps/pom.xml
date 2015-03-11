@@ -54,7 +54,6 @@
         </dependencies>
     </dependencyManagement>
 
-
     <modules>
         <module>api-registry</module>
         <module>app-library</module>
@@ -79,7 +78,6 @@
         <module>jadvisor</module>
         <module>cadvisor</module>
         <module>heapster</module>
-        <module>skydns</module>
         <module>sonarqube</module>
         <module>keycloak</module>
         <module>infinispan-server</module>
