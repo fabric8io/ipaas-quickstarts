@@ -60,6 +60,7 @@
         <!-- TODO lets disable until there's a valid base docker image
         <module>apiman</module>
         -->
+        <module>cadvisor</module>
         <module>console</module>
         <module>elasticsearch</module>
         <module>fabric8-http-gateway</module>
@@ -69,18 +70,18 @@
         <module>fabric8-mq-autoscaler</module>
         <module>fabric8-mq-controller</module>
         <module>gerrit</module>
+        <module>gogs</module>
         <module>grafana</module>
+        <module>heapster</module>
+        <module>infinispan-server</module>
         <module>influxdb</module>
+        <module>jadvisor</module>
         <module>jenkins</module>
+        <module>keycloak</module>
         <module>kibana</module>
         <module>registry</module>
-        <module>zookeeper</module>
-        <module>jadvisor</module>
-        <module>cadvisor</module>
-        <module>heapster</module>
         <module>sonarqube</module>
-        <module>keycloak</module>
-        <module>infinispan-server</module>
+        <module>zookeeper</module>
     </modules>
 
     <build>
