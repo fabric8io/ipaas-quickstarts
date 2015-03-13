@@ -31,6 +31,9 @@
                       "name": "ssh",
                       "containerPort": 22
                     }
+                  ],
+                  "env": [
+                    {"name": "SKIP_TLS_VERIFY", "value":"true"}
                   ]
                 }
               ]
