@@ -40,6 +40,12 @@
     <skipTests>false</skipTests>
     <integrationTestPattern>**/*KubernetesTest.java</integrationTestPattern>
 
+     <!-- the version of the BOM, defining all the dependency versions -->
+    <fabric8.version>2.0.32</fabric8.version>
+
+    <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
+    <jube.version>2.0.32</jube.version>
+
     <spring-boot-plugin.version>1.1.7.RELEASE</spring-boot-plugin.version>
     <spring-boot.version>1.2.1.RELEASE</spring-boot.version>
 
@@ -62,6 +68,13 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
         <version>${spring-boot.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>fabric8-project</artifactId>
+        <version>${fabric8.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
