@@ -16,32 +16,49 @@
 
 package io.fabric8.zookeeper;
 
-
 import org.apache.curator.RetryPolicy;
+import org.apache.curator.framework.api.ACLProvider;
+import org.apache.curator.framework.imps.DefaultACLProvider;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.curator.retry.RetryNTimes;
 import org.apache.deltaspike.core.api.config.ConfigProperty;
 
-import javax.enterprise.inject.Default;
-import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 
-public class RetryPolicyProducer {
-    
-    public static final String NUMBER_OF_RETRIES = "NUMBER_OF_RETRIES";
-    public static final String SLEEP_BETWEEN_RETRIES = "SLEEP_BETWEEN_RETRIES";
-    public static final String EXPONENTIAL_BACKOFF_ENABLE = "EXPONENTIAL_BACKOFF_ENABLE";
-    public static final String EXPONENTIAL_BACKOFF_BASE_SLEEP = "EXPONENTIAL_BACKOFF_BASE_SLEEP";
-    public static final String EXPONENTIAL_BACKOFF_MAX_SLEEP = "EXPONENTIAL_BACKOFF_MAX_SLEEP";
+public class CuratorConfig {
+
+    @Inject
+    @ConfigProperty(name = "SESSION_TIMEOUT_MS", defaultValue = "60000")
+    private Integer sessionTimeoutMs;
+
+    @Inject
+    @ConfigProperty(name = "CONNECTION_TIMEOUT_MS", defaultValue = "60000")
+    private Integer connectionTimeoutMs;
+
+    @Inject
+    @ConfigProperty(name = "CAN_BE_READONLY", defaultValue = "false")
+    private Boolean canBeReadOnly;
+
+    @Inject
+    @ConfigProperty(name = "NAMESPACE")
+    private String namespace;
+
+    @Inject
+    @ConfigProperty(name = "AUTH_SCHEME")
+    private String authScheme;
+
+    @Inject
+    @ConfigProperty(name = "AUTH_DATA")
+    private String authData;
 
     @Inject
     @ConfigProperty(name = "NUMBER_OF_RETRIES", defaultValue = "3")
     private Integer numberOfRetries;
-    
+
     @Inject
     @ConfigProperty(name = "SLEEP_BETWEEN_RETRIES", defaultValue = "1000")
     private Integer sleepMsBetweenRetries;
-    
+
     @Inject
     @ConfigProperty(name = "EXPONENTIAL_BACKOFF_ENABLE", defaultValue = "false")
     private Boolean exponentialBackOffEnabled;
@@ -53,16 +70,44 @@ public class RetryPolicyProducer {
     @Inject
     @ConfigProperty(name = "EXPONENTIAL_BACKOFF_MAX_SLEEP", defaultValue = "10000")
     private Integer exponentialMaxSleep;
+
+    private ACLProvider aclProvider = new DefaultACLProvider();
+
+
+
+    public Integer getSessionTimeoutMs() {
+        return sessionTimeoutMs;
+    }
+
+    public Integer getConnectionTimeoutMs() {
+        return connectionTimeoutMs;
+    }
+
+    public Boolean getCanBeReadOnly() {
+        return canBeReadOnly;
+    }
+
+    public String getNamespace() {
+        return namespace;
+    }
+
+    public String getAuthScheme() {
+        return authScheme;
+    }
+
+    public String getAuthData() {
+        return authData;
+    }
+
+    public ACLProvider getAclProvider() {
+        return aclProvider;
+    }
     
-    
-    @Produces
-    @Default
-    RetryPolicy create(){
+    public RetryPolicy getRetryPolicy() {
         if (exponentialBackOffEnabled) {
             return new ExponentialBackoffRetry(exponentialBaseSleep, numberOfRetries, exponentialMaxSleep);
         } else {
             return new RetryNTimes(numberOfRetries, sleepMsBetweenRetries);
         }
     }
-    
 }

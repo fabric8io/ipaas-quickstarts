@@ -18,9 +18,7 @@ package io.fabric8.apps.zookeeper;
 
 import io.fabric8.cdi.annotations.Service;
 import io.fabric8.cdi.deltaspike.DeltaspikeTestBase;
-import io.fabric8.zookeeper.AclProviderProducer;
-import io.fabric8.zookeeper.CuratorFrameworkProducer;
-import io.fabric8.zookeeper.RetryPolicyProducer;
+import io.fabric8.zookeeper.CuratorConfigurer;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.zookeeper.CreateMode;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -43,7 +41,8 @@ public class ZooKeeperCDIKubernetes {
     @Deployment
     public static WebArchive createDeployment() {
         return DeltaspikeTestBase.createDeployment()
-                .addClasses(RetryPolicyProducer.class, AclProviderProducer.class, CuratorFrameworkProducer.class);
+                .addClasses(DeltaspikeTestBase.getDeltaSpikeHolders())
+                .addClasses(CuratorConfigurer.class);
     }
 
     @Test
@@ -53,6 +52,4 @@ public class ZooKeeperCDIKubernetes {
             curator.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath("/fabric8");
         }
     }
-
-
 }
