@@ -20,7 +20,7 @@
               "containers": [
                 {
                   "name": "gogs-image",
-                  "image": "jimmidyson/gogs:0.5.13",
+                  "image": "jimmidyson/gogs:latest",
                   "imagePullPolicy": "PullIfNotPresent",
                   "ports": [
                     {
