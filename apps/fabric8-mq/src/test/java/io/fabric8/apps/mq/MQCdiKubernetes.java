@@ -45,7 +45,7 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 public class MQCdiKubernetes {
 
     @Inject
-    @Service("fabric8mq")
+    @Service(id="fabric8mq")
     ActiveMQConnectionFactory connectionFactory;
 
     @Deployment

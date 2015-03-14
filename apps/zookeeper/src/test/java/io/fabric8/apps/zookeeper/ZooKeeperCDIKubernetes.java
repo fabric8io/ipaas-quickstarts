@@ -36,7 +36,7 @@ public class ZooKeeperCDIKubernetes {
 
 
     @Inject
-    @Service("zk-client")
+    @Service(id="zk-client")
     private CuratorFramework curator;
 
 
