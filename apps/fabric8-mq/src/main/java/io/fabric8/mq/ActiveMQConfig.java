@@ -16,18 +16,12 @@
 
 package io.fabric8.mq;
 
-import io.fabric8.cdi.ServiceConverters;
-import io.fabric8.cdi.annotations.Service;
-import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.deltaspike.core.api.config.ConfigProperty;
 
-import javax.enterprise.inject.New;
-import javax.enterprise.inject.Produces;
-import javax.enterprise.inject.spi.InjectionPoint;
 import javax.inject.Inject;
 
-public class ActiveMQConnectionFactoryProducer {
-
+public class ActiveMQConfig {
+    
     public static final String DISPATCH_ASYNC = "DISPATCH_ASYNC";
     public static final String ALWAYS_SESSION_ASYNC = "ALWAYS_SESSION_ASYNC";
     public static final String OPTIMIZE_MESSAGE_DISPATCH = "OPTIMIZE_MESSAGE_DISPATCH";
@@ -67,15 +61,15 @@ public class ActiveMQConnectionFactoryProducer {
     @Inject
     @ConfigProperty(name = ALWAYS_SESSION_ASYNC, defaultValue = "true")
     private Boolean alwaysSessionAsync;
-    
+
     @Inject
     @ConfigProperty(name = OPTIMIZE_MESSAGE_DISPATCH, defaultValue = "true")
     private Boolean optimizeMessageDispatch;
-    
+
     @Inject
     @ConfigProperty(name = OPTIMIZE_ACKNOWLEDGE, defaultValue = "false")
     private Boolean optimizeAcknowledge;
-    
+
     @Inject
     @ConfigProperty(name = OPTIMIZE_ACKNOWLEDGE_TIMEMOUT, defaultValue = "300")
     private Long optimizeAcknowledgeTimeOut;
@@ -99,48 +93,48 @@ public class ActiveMQConnectionFactoryProducer {
     @Inject
     @ConfigProperty(name = ALWAYS_SYNC_SEND, defaultValue = "false")
     private Boolean alwaysSyncSend;
-    
+
 
     @Inject
     @ConfigProperty(name = WATCH_TOPIC_ADVISORIES, defaultValue = "true")
     private Boolean watchTopicAdvisories;
-    
+
     @Inject
     @ConfigProperty(name = PRODUCER_WINDOW_SIZE, defaultValue = "0")
     private Integer producerWindowSize;
-    
+
     @Inject
     @ConfigProperty(name = WARN_ABOUT_UNSTARTED_CONNECTION_TIMEOUT, defaultValue = "500")
     private Long warnAboutUnstartedConnectionTimeout;
-    
+
     @Inject
     @ConfigProperty(name = SEND_TIMEOUT, defaultValue = "0")
     private Integer sendTimeout;
-    
+
     @Inject
     @ConfigProperty(name = SEND_ACKS_ASYNC, defaultValue = "true")
     private Boolean sendAcsAsync;
-    
+
     @Inject
     @ConfigProperty(name = AUDIT_DEPTH, defaultValue = "2048")
     private Long auditDepth;
-    
+
     @Inject
     @ConfigProperty(name = AUDIT_MAX_PRODUCER_NUMBER, defaultValue = "64")
     private Integer auditMaxProducerNumber;
-    
+
     @Inject
     @ConfigProperty(name = CONSUMER_FAILOVER_REDELIVERY_WAIT_PERIOD, defaultValue = "0")
     private Integer consumerFailoverRedeliveryWaitPeriod;
-    
+
     @Inject
     @ConfigProperty(name = CHECK_FOR_DUPLICATES, defaultValue = "true")
     private Boolean checkForDuplicates;
-    
+
     @Inject
     @ConfigProperty(name = MESSAGE_PRIORITY_SUPPORTED, defaultValue = "false")
     private Boolean messagePrioritySupported;
-    
+
     @Inject
     @ConfigProperty(name = TRANSACTED_IDIVIDUAL_ACK, defaultValue = "false")
     private Boolean transactedIndividualAck;
@@ -164,7 +158,7 @@ public class ActiveMQConnectionFactoryProducer {
     @Inject
     @ConfigProperty(name = CONSUMER_EXPIRY_CHECK_ENABLED, defaultValue = "false")
     private Boolean consumerExpiryCheckEnabled;
-    
+
     @Inject
     @ConfigProperty(name = DISABLE_TIMESTAPMS_BY_DEFAULT, defaultValue = "false")
     private Boolean disableTimeStampsByDefault;
@@ -185,42 +179,127 @@ public class ActiveMQConnectionFactoryProducer {
     @ConfigProperty(name = PASSWORD)
     private String password;
 
+    public Boolean getDispatchAsync() {
+        return dispatchAsync;
+    }
 
-    @Inject
-    @New
-    private ServiceConverters converters;
+    public Boolean getAlwaysSessionAsync() {
+        return alwaysSessionAsync;
+    }
 
-    @Produces
-    @Service
-    ActiveMQConnectionFactory create(InjectionPoint injectionPoint) {
-        ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(converters.serviceToString(injectionPoint));
-        connectionFactory.setDispatchAsync(dispatchAsync);
-        connectionFactory.setAlwaysSessionAsync(alwaysSessionAsync);
-        connectionFactory.setAlwaysSyncSend(alwaysSyncSend);
-        connectionFactory.setAuditMaximumProducerNumber(auditMaxProducerNumber);
-        connectionFactory.setCloseTimeout(closeTiemout);
-        connectionFactory.setConsumerExpiryCheckEnabled(consumerExpiryCheckEnabled);
-        connectionFactory.setCheckForDuplicates(checkForDuplicates);
-        connectionFactory.setCopyMessageOnSend(copyMessageOnSend);
-        connectionFactory.setDisableTimeStampsByDefault(disableTimeStampsByDefault);
-        connectionFactory.setDispatchAsync(dispatchAsync);
-        connectionFactory.setMaxThreadPoolSize(maxThreadPoolSize);
-        connectionFactory.setMessagePrioritySupported(messagePrioritySupported);
-        connectionFactory.setNestedMapAndListEnabled(nestedMapAndListEnabled);
+    public Boolean getOptimizeMessageDispatch() {
+        return optimizeMessageDispatch;
+    }
 
-        connectionFactory.setOptimizedMessageDispatch(optimizeMessageDispatch);
-        connectionFactory.setOptimizeAcknowledgeTimeOut(optimizeAcknowledgeTimeOut);
-        connectionFactory.setOptimizedAckScheduledAckInterval(optimizedAckScheduledAckInterval);
-        connectionFactory.setOptimizeAcknowledge(optimizeAcknowledge);
-        
-        connectionFactory.setProducerWindowSize(producerWindowSize);
-        connectionFactory.setSendAcksAsync(sendAcsAsync);
-        connectionFactory.setRmIdFromConnectionId(rmIdFromConnectionId);
-        connectionFactory.setSendTimeout(sendTimeout);
-        connectionFactory.setUseAsyncSend(useAsyncSend);
-        connectionFactory.setUserName(username);
-        connectionFactory.setPassword(password);
-        connectionFactory.setUseCompression(useCompression);
-        return connectionFactory;
+    public Boolean getOptimizeAcknowledge() {
+        return optimizeAcknowledge;
+    }
+
+    public Long getOptimizeAcknowledgeTimeOut() {
+        return optimizeAcknowledgeTimeOut;
+    }
+
+    public Long getOptimizedAckScheduledAckInterval() {
+        return optimizedAckScheduledAckInterval;
+    }
+
+    public Boolean getCopyMessageOnSend() {
+        return copyMessageOnSend;
+    }
+
+    public Integer getCloseTiemout() {
+        return closeTiemout;
+    }
+
+    public Boolean getNestedMapAndListEnabled() {
+        return nestedMapAndListEnabled;
+    }
+
+    public Boolean getAlwaysSyncSend() {
+        return alwaysSyncSend;
+    }
+
+    public Boolean getWatchTopicAdvisories() {
+        return watchTopicAdvisories;
+    }
+
+    public Integer getProducerWindowSize() {
+        return producerWindowSize;
+    }
+
+    public Long getWarnAboutUnstartedConnectionTimeout() {
+        return warnAboutUnstartedConnectionTimeout;
+    }
+
+    public Integer getSendTimeout() {
+        return sendTimeout;
+    }
+
+    public Boolean getSendAcsAsync() {
+        return sendAcsAsync;
+    }
+
+    public Long getAuditDepth() {
+        return auditDepth;
+    }
+
+    public Integer getAuditMaxProducerNumber() {
+        return auditMaxProducerNumber;
+    }
+
+    public Integer getConsumerFailoverRedeliveryWaitPeriod() {
+        return consumerFailoverRedeliveryWaitPeriod;
+    }
+
+    public Boolean getCheckForDuplicates() {
+        return checkForDuplicates;
+    }
+
+    public Boolean getMessagePrioritySupported() {
+        return messagePrioritySupported;
+    }
+
+    public Boolean getTransactedIndividualAck() {
+        return transactedIndividualAck;
+    }
+
+    public Boolean getNonBlockingRedelivery() {
+        return nonBlockingRedelivery;
+    }
+
+    public Integer getMaxThreadPoolSize() {
+        return maxThreadPoolSize;
+    }
+
+    public Integer getXaAckMode() {
+        return xaAckMode;
+    }
+
+    public Boolean getRmIdFromConnectionId() {
+        return rmIdFromConnectionId;
+    }
+
+    public Boolean getConsumerExpiryCheckEnabled() {
+        return consumerExpiryCheckEnabled;
+    }
+
+    public Boolean getDisableTimeStampsByDefault() {
+        return disableTimeStampsByDefault;
+    }
+
+    public Boolean getUseAsyncSend() {
+        return useAsyncSend;
+    }
+
+    public Boolean getUseCompression() {
+        return useCompression;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }

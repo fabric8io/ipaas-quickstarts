@@ -18,7 +18,8 @@ package io.fabric8.apps.mq;
 
 import io.fabric8.cdi.annotations.Service;
 import io.fabric8.cdi.deltaspike.DeltaspikeTestBase;
-import io.fabric8.mq.ActiveMQConnectionFactoryProducer;
+import io.fabric8.mq.ActiveMQConfig;
+import io.fabric8.mq.ActiveMQConfigurer;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.apache.activemq.command.ActiveMQTextMessage;
@@ -49,7 +50,9 @@ public class MQCdiKubernetes {
 
     @Deployment
     public static WebArchive createDeployment() {
-        return DeltaspikeTestBase.createDeployment().addClass(ActiveMQConnectionFactoryProducer.class);
+        return DeltaspikeTestBase.createDeployment()
+                .addClasses(DeltaspikeTestBase.getDeltaSpikeHolders())
+                .addClasses(ActiveMQConfigurer.class);
     }
     
     
