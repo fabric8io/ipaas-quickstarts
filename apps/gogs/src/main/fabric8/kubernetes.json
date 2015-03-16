@@ -20,7 +20,7 @@
               "containers": [
                 {
                   "name": "gogs-image",
-                  "image": "fabric8io/gogs:latest",
+                  "image": "fabric8/gogs:latest",
                   "imagePullPolicy": "PullIfNotPresent",
                   "ports": [
                     {
