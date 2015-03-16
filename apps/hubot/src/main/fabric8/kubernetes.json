@@ -1,0 +1,84 @@
+{
+    "id": "hubot-config",
+    "kind": "Config",
+    "apiVersion": "v1beta1",
+    "name": "hubot-config",
+    "description": "Creates a hubot chat bot",
+    "items": [
+        {
+            "apiVersion" : "v1beta1",
+            "id":"hubot",
+            "kind":"Service",
+            "port":6667,
+            "containerPort":6667,
+            "selector":{
+                "name":"hubot"
+            }
+        },
+        {
+            "kind" : "ReplicationController",
+            "id" : "hubot",
+            "apiVersion" : "v1beta1",
+            "desiredState" : {
+                "replicas" : 1,
+                "replicaSelector" : {
+                    "name" : "hubot"
+                },
+                "podTemplate" : {
+                    "desiredState" : {
+                        "manifest" : {
+                            "version" : "v1beta1",
+                            "id" : "hubotPod",
+                            "containers" : [ {
+                                "image":"fabric8/hubot",
+                                "name":"hubot-container",
+                                "ports":[
+                                    {
+                                        "containerPort":6667,
+                                        "protocol":"TCP"
+                                    }],
+                                "env": [
+                                    {
+                                        "name": "HUBOT_IRC_SERVER",
+                                        "value": "localhost"
+                                    },
+                                    {
+                                        "name": "HUBOT_IRC_ROOMS",
+                                        "value": "#fabric8-bot"
+                                    },
+                                    {
+                                        "name": "HUBOT_IRC_NICK",
+                                        "value": "fabric8"
+                                    },
+                                    {
+                                        "name": "HUBOT_IRC_DEBUG",
+                                        "value": "true"
+                                    },
+                                    {
+                                        "name": "KUBERNETES_TRUST_CERT",
+                                        "value": "true"
+                                    }
+                                ]
+                            }, 
+                            {
+                                "image":"redis",
+                                "name":"hubot-redis-container"
+                            },
+                            {
+                                "image":"lonli078/go-irc-server",
+                                "name":"irc-container"
+                            }
+                            ]
+                        }
+                    },
+                    "labels" : {
+                        "name" : "hubot"
+                    }
+                }
+            },
+            "labels" : {
+                "name" : "hubot"
+            }
+        }
+    ]
+}
