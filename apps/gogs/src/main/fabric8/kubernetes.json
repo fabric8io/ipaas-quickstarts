@@ -35,6 +35,7 @@
                   "env": [
                     {"name": "SKIP_TLS_VERIFY", "value":"true"},
                     {"name": "DOMAIN", "value":"gogs.fabric8.local"},
+                    {"name": "ROOT_URL", "value":"http://gogs.fabric8.local/"},
                     {"name": "TASK_INTERVAL", "value":"0"}
                   ]
                 }
