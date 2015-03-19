@@ -7,7 +7,7 @@
   "items": [
 
     {
-      "id": "fabric8mq-broker",
+      "id": "fabric8mq-controller",
       "kind": "ReplicationController",
       "apiVersion": "v1beta1",
       "desiredState": {
@@ -42,8 +42,18 @@
                 }
               ]
             }
+          },
+          "labels": {
+            "component": "fabric8MQ",
+            "provider": "fabric8",
+            "group": "fabric8mq"
           }
         }
+      },
+      "labels": {
+        "component": "fabric8MQ",
+        "provider": "fabric8",
+        "group": "fabric8mq"
       }
     }
   ]
