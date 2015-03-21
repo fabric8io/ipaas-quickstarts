@@ -80,6 +80,7 @@
         <module>jenkins</module>
         <module>keycloak</module>
         <module>kibana</module>
+        <module>kiwi-irc</module>
         <module>registry</module>
         <module>sonarqube</module>
         <module>zookeeper</module>
