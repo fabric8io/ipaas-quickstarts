@@ -46,11 +46,11 @@
     <integrationTestPattern>**/*KubernetesTest.java</integrationTestPattern>
 
     <!-- the version of the BOM, defining all the dependency versions -->
-    <fabric8.version>2.0.33</fabric8.version>
+    <fabric8.version>2.0.34</fabric8.version>
 
     <!-- maven plugin versions -->
     <camel.version>2.15.0</camel.version>
-    <jube.version>2.0.33</jube.version>
+    <jube.version>2.0.34</jube.version>
     <docker.maven.plugin.version>0.11.2</docker.maven.plugin.version>
 
     <docker.from>fabric8/java</docker.from>
