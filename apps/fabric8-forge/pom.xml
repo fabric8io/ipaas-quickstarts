@@ -37,13 +37,6 @@
     <addon.repository>${project.build.directory}/addon-repository</addon.repository>
 
     <docker.from>consol/jetty-9</docker.from>
-<!--
-    <docker.from>fabric8/jetty-9</docker.from>
-    <docker.from>fabric8/tomcat-8.0</docker.from>
--->
-<!--
-    <docker.env.MAIN>io.fabric8.forge.rest.main.Main</docker.env.MAIN>
--->
     <docker.env.FORGE_ADDON_DIRECTORY>/forge-addon-repo</docker.env.FORGE_ADDON_DIRECTORY>
 
     <docker.assemblyDescriptor>${basedir}/src/main/fabric8/assembly.xml</docker.assemblyDescriptor>
@@ -57,8 +50,6 @@
     <fabric8.label.provider>fabric8</fabric8.label.provider>
     <fabric8.iconRef>icons/jbossforge.svg</fabric8.iconRef>
 
-
-    <fabric8.version>2.2-SNAPSHOT</fabric8.version>
     <jboss.forge.version>2.15.2.Final</jboss.forge.version>
     <furnace.version>2.15.3.Final</furnace.version>
   </properties>
