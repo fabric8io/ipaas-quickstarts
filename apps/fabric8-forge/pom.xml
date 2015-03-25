@@ -38,6 +38,8 @@
 
     <docker.from>consol/jetty-9</docker.from>
     <docker.env.FORGE_ADDON_DIRECTORY>/forge-addon-repo</docker.env.FORGE_ADDON_DIRECTORY>
+    <fabric8.env.KUBERNETES_TRUST_CERT>true</fabric8.env.KUBERNETES_TRUST_CERT>
+    <fabric8.env.SKIP_TLS_VERIFY>true</fabric8.env.SKIP_TLS_VERIFY>
 
     <docker.assemblyDescriptor>${basedir}/src/main/fabric8/assembly.xml</docker.assemblyDescriptor>
 
@@ -133,6 +135,8 @@
                 </assembly>
                 <env>
                   <FORGE_ADDON_DIRECTORY>${docker.env.FORGE_ADDON_DIRECTORY}</FORGE_ADDON_DIRECTORY>
+                  <KUBERNETES_TRUST_CERT>${fabric8.env.KUBERNETES_TRUST_CERT}</KUBERNETES_TRUST_CERT>
+                  <SKIP_TLS_VERIFY>${fabric8.env.SKIP_TLS_VERIFY}</SKIP_TLS_VERIFY>
                 </env>
                 <ports>
                   <port>${fabric8.service.containerPort}</port>
