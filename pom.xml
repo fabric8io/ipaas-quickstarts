@@ -264,6 +264,9 @@
 
         <profile>
             <id>release</id>
+            <properties>
+              <docker.registryPrefix>registry.hub.docker.com/</docker.registryPrefix>
+            </properties>
             <build>
                 <plugins>
                     <plugin>
