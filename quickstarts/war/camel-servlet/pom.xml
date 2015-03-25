@@ -249,11 +249,5 @@
         <jube.version>2.0-SNAPSHOT</jube.version>
       </properties>
     </profile>
-    <profile>
-      <id>docker-public</id>
-      <properties>
-        <docker.registryPrefix />
-      </properties>
-    </profile>
   </profiles>
 </project>

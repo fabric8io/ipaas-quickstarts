@@ -323,12 +323,6 @@
       </properties>
     </profile>
     <profile>
-      <id>docker-public</id>
-      <properties>
-        <docker.registryPrefix />
-      </properties>
-    </profile>
-    <profile>
       <id>ts.kube</id>
       <properties>
         <skipItests>false</skipItests>

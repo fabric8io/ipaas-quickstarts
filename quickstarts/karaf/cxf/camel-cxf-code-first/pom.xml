@@ -331,12 +331,6 @@
         <fabric8.version>2.2-SNAPSHOT</fabric8.version>
       </properties>
     </profile>
-    <profile>
-      <id>docker-public</id>
-      <properties>
-        <docker.registryPrefix />
-      </properties>
-    </profile>
   </profiles>
 </project>
 

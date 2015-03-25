@@ -497,11 +497,5 @@
         <fabric8.release.version>${project.version}</fabric8.release.version>
       </properties>
     </profile>
-    <profile>
-      <id>docker-public</id>
-      <properties>
-        <docker.registryPrefix />
-      </properties>
-    </profile>
   </profiles>
 </project>

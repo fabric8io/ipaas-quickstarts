@@ -273,13 +273,6 @@
 -->
 
     <profile>
-      <id>docker-public</id>
-      <properties>
-        <docker.registryPrefix />
-      </properties>
-    </profile>
-
-    <profile>
       <id>fabric8-snapshot</id>
       <properties>
         <fabric8.version>2.2-SNAPSHOT</fabric8.version>
