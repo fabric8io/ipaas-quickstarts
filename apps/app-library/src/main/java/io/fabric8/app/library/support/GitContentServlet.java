@@ -44,8 +44,9 @@ public class GitContentServlet extends UploadServlet {
     private static final transient Logger LOG = LoggerFactory.getLogger(GitContentServlet.class);
 
     private static final int DEFAULT_BUFFER_SIZE = 10240; // 10KB.
+    public static final String ETAG_HEADER = "ETag";
 
-    private GitFileManager gitFacade;
+    private GitFacade gitFacade;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -59,7 +60,7 @@ public class GitContentServlet extends UploadServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException {
         if (gitFacade == null) {
             throw new ServletException("No GitFacade object available!");
         }
@@ -91,8 +92,19 @@ public class GitContentServlet extends UploadServlet {
                         type = "application/octet-stream";
                     }
                     resp.reset();
-                    resp.setBufferSize(DEFAULT_BUFFER_SIZE);
                     resp.setContentType(type);
+                    String etag = req.getHeader(ETAG_HEADER);
+                    String head = gitFacade.getHEAD();
+                    if (head != null) {
+                        resp.setHeader(ETAG_HEADER, head);
+                        if (etag != null && etag.equals(head)) {
+                            // ETag is the same so lets return not modified status
+                            resp.setStatus(304);
+                            resp.setContentLength(0);
+                            return null;
+                        }
+                    }
+                    resp.setBufferSize(DEFAULT_BUFFER_SIZE);
                     if (file.isFile() && file.exists()) {
                         byte[] bytes = Files.readBytes(file);
                         int length = bytes.length;
