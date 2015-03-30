@@ -17,14 +17,9 @@
 package io.fabric8.apps.zookeeper;
 
 import io.fabric8.arquillian.kubernetes.Session;
-import io.fabric8.arquillian.kubernetes.annotation.Id;
 import io.fabric8.kubernetes.api.KubernetesClient;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.Service;
-import org.apache.curator.framework.CuratorFramework;
-import org.apache.curator.framework.CuratorFrameworkFactory;
-import org.apache.curator.retry.RetryNTimes;
-import org.apache.zookeeper.CreateMode;
 import org.assertj.core.api.Condition;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;

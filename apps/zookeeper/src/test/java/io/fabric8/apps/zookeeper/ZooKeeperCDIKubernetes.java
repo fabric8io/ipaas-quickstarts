@@ -16,7 +16,7 @@
 
 package io.fabric8.apps.zookeeper;
 
-import io.fabric8.cdi.annotations.Service;
+import io.fabric8.annotations.ServiceName;
 import io.fabric8.cdi.deltaspike.DeltaspikeTestBase;
 import io.fabric8.zookeeper.CuratorConfigurer;
 import org.apache.curator.framework.CuratorFramework;
@@ -34,7 +34,7 @@ public class ZooKeeperCDIKubernetes {
 
 
     @Inject
-    @Service(id="zk-client")
+    @ServiceName("zk-client")
     private CuratorFramework curator;
 
 

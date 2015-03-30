@@ -16,9 +16,8 @@
 
 package io.fabric8.apps.mq;
 
-import io.fabric8.cdi.annotations.Service;
+import io.fabric8.annotations.ServiceName;
 import io.fabric8.cdi.deltaspike.DeltaspikeTestBase;
-import io.fabric8.mq.ActiveMQConfig;
 import io.fabric8.mq.ActiveMQConfigurer;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQQueue;
@@ -45,7 +44,7 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 public class MQCdiKubernetes {
 
     @Inject
-    @Service(id="fabric8mq")
+    @ServiceName("fabric8mq")
     ActiveMQConnectionFactory connectionFactory;
 
     @Deployment

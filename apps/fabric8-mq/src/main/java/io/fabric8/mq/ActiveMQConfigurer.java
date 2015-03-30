@@ -16,16 +16,16 @@
 
 package io.fabric8.mq;
 
-import io.fabric8.cdi.annotations.Configuration;
-import io.fabric8.cdi.annotations.Factory;
-import io.fabric8.cdi.annotations.Service;
+import io.fabric8.annotations.Configuration;
+import io.fabric8.annotations.Factory;
+import io.fabric8.annotations.ServiceName;
 import org.apache.activemq.ActiveMQConnectionFactory;
 
 public class ActiveMQConfigurer {
 
     @Factory
-    @Service
-    public ActiveMQConnectionFactory create(@Service String service, @Configuration ActiveMQConfig config) {
+    @ServiceName
+    public ActiveMQConnectionFactory create(@ServiceName String service, @Configuration ActiveMQConfig config) {
         ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(service);
         connectionFactory.setDispatchAsync(config.getDispatchAsync());
         connectionFactory.setAlwaysSessionAsync(config.getAlwaysSessionAsync());

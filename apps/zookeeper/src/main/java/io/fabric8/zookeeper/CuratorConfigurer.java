@@ -16,9 +16,9 @@
 
 package io.fabric8.zookeeper;
 
-import io.fabric8.cdi.annotations.Configuration;
-import io.fabric8.cdi.annotations.Factory;
-import io.fabric8.cdi.annotations.Service;
+import io.fabric8.annotations.Configuration;
+import io.fabric8.annotations.Factory;
+import io.fabric8.annotations.ServiceName;
 import io.fabric8.utils.Strings;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
@@ -26,8 +26,8 @@ import org.apache.curator.framework.CuratorFrameworkFactory;
 public class CuratorConfigurer {
 
     @Factory
-    @Service
-    public CuratorFramework create(@Service String url, @Configuration CuratorConfig config) {
+    @ServiceName
+    public CuratorFramework create(@ServiceName String url, @Configuration CuratorConfig config) {
         CuratorFrameworkFactory.Builder builder = CuratorFrameworkFactory.builder()
                 .connectString(url.substring(6))
                 .retryPolicy(config.getRetryPolicy())
