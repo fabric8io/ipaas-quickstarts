@@ -106,7 +106,6 @@
     </distributionManagement>
 
     <modules>
-        <module>rest-utils</module>
         <module>archetypes-catalog</module>
         <module>archetypes</module>
         <module>apps</module>
