@@ -74,6 +74,7 @@
         <module>grafana</module>
         <module>heapster</module>
         <module>hubot</module>
+        <module>hubot-notifier</module>
         <module>infinispan-server</module>
         <module>influxdb</module>
         <module>jadvisor</module>
