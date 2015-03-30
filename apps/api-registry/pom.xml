@@ -83,7 +83,6 @@
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>rest-utils</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
