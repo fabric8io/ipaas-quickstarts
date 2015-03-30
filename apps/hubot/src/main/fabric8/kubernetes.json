@@ -16,6 +16,26 @@
             }
         },
         {
+            "id": "hubot-web-hook-route",
+            "metadata": {
+                "name": "hubot-web-hook-route"
+            },
+            "apiVersion": "v1beta1",
+            "kind": "Route",
+            "host": "hubot-web-hook.local",
+            "serviceName": "hubot-web-hook"
+        },
+        {
+            "apiVersion" : "v1beta1",
+            "id":"hubot-web-hook",
+            "kind":"Service",
+            "port":8080,
+            "containerPort":8080,
+            "selector":{
+                "name":"hubot"
+            }
+        },
+        {
             "kind" : "ReplicationController",
             "id" : "hubot",
             "apiVersion" : "v1beta1",
@@ -36,7 +56,12 @@
                                     {
                                         "containerPort":6667,
                                         "protocol":"TCP"
-                                    }],
+                                    },
+                                    {
+                                        "containerPort":8080,
+                                        "protocol":"TCP"
+                                    }
+                                    ],
                                 "env": [
                                     {
                                         "name": "HUBOT_IRC_SERVER",
