@@ -22,7 +22,7 @@
     <parent>
         <groupId>io.fabric8.archetypes</groupId>
         <artifactId>archetypes</artifactId>
-        <version>2.0.35</version>
+        <version>2.2-SNAPSHOT</version>
     </parent>
 
     <artifactId>karaf-beginner-camel-errorhandler-archetype</artifactId>
