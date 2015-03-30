@@ -41,7 +41,7 @@
     <skipTests>true</skipTests>
 
     <!-- the version of the BOM, defining all the dependency versions -->
-    <fabric8.version>2.0.35</fabric8.version>
+    <fabric8.version>2.0.36</fabric8.version>
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <cxf.version>3.0.2</cxf.version>

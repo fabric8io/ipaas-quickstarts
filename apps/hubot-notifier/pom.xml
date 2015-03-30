@@ -41,9 +41,6 @@
     <maven-resources-plugin.version>2.6</maven-resources-plugin.version>
     <skipTests>false</skipTests>
 
-    <!-- TODO temp hack until next release! -->
-    <fabric8.version>2.2-SNAPSHOT</fabric8.version>
-
     <docker.from>fabric8/java</docker.from>
     <docker.registryPrefix>${env.DOCKER_REGISTRY}/</docker.registryPrefix>
     <docker.image>${docker.registryPrefix}fabric8/${project.artifactId}:${project.version}</docker.image>

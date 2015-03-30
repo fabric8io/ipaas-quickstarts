@@ -41,7 +41,7 @@
     <integrationTestPattern>**/*KubernetesTest.java</integrationTestPattern>
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
-    <fabric8.version>2.0.35</fabric8.version>
+    <fabric8.version>2.0.36</fabric8.version>
     <jube.version>2.0.35</jube.version>
     <docker.maven.plugin.version>0.11.2</docker.maven.plugin.version>
 
