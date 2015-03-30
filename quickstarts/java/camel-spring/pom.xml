@@ -50,7 +50,7 @@
 
     <!-- maven plugin versions -->
     <camel.version>2.15.0</camel.version>
-    <jube.version>2.0.35</jube.version>
+    <jube.version>2.0.36</jube.version>
     <docker.maven.plugin.version>0.11.2</docker.maven.plugin.version>
 
     <docker.from>fabric8/java</docker.from>
