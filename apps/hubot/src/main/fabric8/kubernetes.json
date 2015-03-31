@@ -82,6 +82,10 @@
                                     {
                                         "name": "KUBERNETES_TRUST_CERT",
                                         "value": "true"
+                                    },
+                                    {
+                                        "name": "HUBOT_SCRIPTS_URI",
+                                        "value": "https://github.com/fabric8io/fabric8-hubot-scripts.git"
                                     }
                                 ]
                             }, 
