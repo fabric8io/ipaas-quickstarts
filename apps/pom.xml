@@ -78,6 +78,7 @@
         <module>infinispan-server</module>
         <module>influxdb</module>
         <module>jadvisor</module>
+        <module>jbpm-designer</module>
         <module>jenkins</module>
         <module>keycloak</module>
         <module>kibana</module>

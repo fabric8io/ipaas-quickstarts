@@ -1,0 +1,1 @@
+The <a href="http://jbpm.org/" target="jbpm">jBPM</a> Designer is a web application to let you view, create and update BPM workflows visually
