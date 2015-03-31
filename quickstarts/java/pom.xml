@@ -38,6 +38,7 @@
 
   <modules>
     <module>camel-cdi</module>
+    <module>camel-cdi-mq</module>
     <module>camel-spring</module>
     <module>cxf-cdi</module>
     <module>simple-mainclass</module>
