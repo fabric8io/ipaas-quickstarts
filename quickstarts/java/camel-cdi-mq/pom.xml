@@ -237,9 +237,6 @@
                   <MAIN>${docker.env.MAIN}</MAIN>
                 </env>
               </build>
-              <run>
-                <envPropertyFile>target/env.properties</envPropertyFile>
-              </run>
             </image>
           </images>
         </configuration>
