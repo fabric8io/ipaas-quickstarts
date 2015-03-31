@@ -2,7 +2,7 @@
 
 This quickstart demonstrates how to create a SOAP Web service, using contract first style, with Apache CXF and Camel and expose it through the OSGi HTTP Service.
 
-We are using contract first style, which means the web service is defined in a `.wsdl` file, and then the sourc code is generated. The web service is then exposed as an enpoint in a Camel route.
+We are using contract first style, which means the web service is defined in a `.wsdl` file, and then the source code is generated. The web service is then exposed as an endpoint in a Camel route.
 
 
 ### Building this example
@@ -19,7 +19,7 @@ To build from the source code:
 After building from the source code, you can upload the changes to the fabric container:
 
 1. It is assumed that you have already created a fabric and are logged into a container called `root`.
-1. Change your working directory to `quickstarts/karaf/cxf/camel-cxf-contract-firt` directory.
+1. Change your working directory to `quickstarts/karaf/cxf/camel-cxf-contract-first` directory.
 1. Run `mvn fabric8:deploy` to upload the quickstart to the fabric container.
 
 If you run the `fabric:deploy` command for the first then, it will ask you for the username and password to login the fabric container.
@@ -29,7 +29,7 @@ And then store this information in the local Maven settings file. You can find m
 
 ## How to run this example
 
-The following information is divded into two sections, whether you are using the command line shell in fabric, or using the web console
+The following information is divided into two sections, whether you are using the command line shell in fabric, or using the web console
 
 ### Using the command line shell
 
@@ -79,7 +79,7 @@ You can use an external tool such as SoapUI to test web services.
 
 ## Undeploy this example
 
-The following information is divded into two sections, whether you are using the command line shell in fabric, or using the web console
+The following information is divided into two sections, whether you are using the command line shell in fabric, or using the web console
 
 ### Using the command line shell
 
