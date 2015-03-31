@@ -62,7 +62,7 @@ public class BuildWatchService {
     }
 
     @Inject
-    public BuildWatchService(@Protocol("http") @ServiceName("fabric8-console") String consoleLink,
+    public BuildWatchService(@Protocol("http") @ServiceName("fabric8-console-service") String consoleLink,
                              @ConfigProperty(name = "BUILD_NAMESPACE", defaultValue = "") String namespace,
                              @ConfigProperty(name = "BUILD_POLL_TIME", defaultValue = "" + DEFAULT_POLL_TIME) long pollTime,
                              HubotBuildListener buildListener) {
