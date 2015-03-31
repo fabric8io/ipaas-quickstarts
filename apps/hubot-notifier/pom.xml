@@ -48,6 +48,8 @@
     <docker.env.MAIN>org.jboss.weld.environment.se.StartMain</docker.env.MAIN>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
 
+    <fabric8.env.KUBERNETES_TRUST_CERT>true</fabric8.env.KUBERNETES_TRUST_CERT>
+    <fabric8.env.SKIP_TLS_VERIFY>true</fabric8.env.SKIP_TLS_VERIFY>
     <fabric8.replicationController.name>${project.artifactId}-controler</fabric8.replicationController.name>
     <fabric8.label.component>hubotNotifier</fabric8.label.component>
     <fabric8.label.provider>fabric8</fabric8.label.provider>
@@ -162,6 +164,8 @@
                 </assembly>
                 <env>
                   <MAIN>${docker.env.MAIN}</MAIN>
+                  <KUBERNETES_TRUST_CERT>${fabric8.env.KUBERNETES_TRUST_CERT}</KUBERNETES_TRUST_CERT>
+                  <SKIP_TLS_VERIFY>${fabric8.env.SKIP_TLS_VERIFY}</SKIP_TLS_VERIFY>
                 </env>
                 <ports>
                   <port>8778</port>
