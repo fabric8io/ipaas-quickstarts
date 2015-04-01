@@ -44,7 +44,7 @@
     <fabric8.version>2.0.37</fabric8.version>
     <jube.version>2.0.37</jube.version>
     <docker.maven.plugin.version>0.11.2</docker.maven.plugin.version>
-    <camel.version>2.15.0</camel.version>
+    <camel.version>2.15.1</camel.version>
 
     <drools.version>${drools.version}</drools.version>
 
