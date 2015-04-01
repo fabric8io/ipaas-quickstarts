@@ -43,8 +43,8 @@
 
     <!-- the version of the BOM, defining all the dependency versions -->
     <fabric8.version>2.0.37</fabric8.version>
-    <cxf-version-range>[3.0.1, 3.0.3)</cxf-version-range>
-    <cxf.version>3.0.2</cxf.version>
+    <cxf-version-range>[3.0.4,3.0.5)</cxf-version-range>
+    <cxf.version>3.0.4</cxf.version>
 
     <docker.from>fabric8/karaf-2.4</docker.from>
     <docker.registryPrefix>${env.DOCKER_REGISTRY}/</docker.registryPrefix>
