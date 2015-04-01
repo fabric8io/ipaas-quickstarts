@@ -47,7 +47,7 @@
     <camel.version>2.15.1</camel.version>
 
     <spring-boot-plugin.version>1.1.7.RELEASE</spring-boot-plugin.version>
-    <spring-boot.version>1.2.1.RELEASE</spring-boot.version>
+    <spring-boot.version>1.2.2.RELEASE</spring-boot.version>
 
     <docker.from>fabric8/java</docker.from>
     <docker.registryPrefix>${env.DOCKER_REGISTRY}/</docker.registryPrefix>
