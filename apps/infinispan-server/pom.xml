@@ -32,7 +32,7 @@
 
     <properties>
         <fabric8.generateJson>false</fabric8.generateJson>
-        <cxf.version>3.0.2</cxf.version>
+        <cxf.version>3.0.4</cxf.version>
         <json.version>20140107</json.version>
         <neethi.version>3.0.3</neethi.version>
         <snakeyaml.version>1.5</snakeyaml.version>

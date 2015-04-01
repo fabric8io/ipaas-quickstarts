@@ -49,7 +49,7 @@
     <jube.version>2.0.37</jube.version>
     <docker.maven.plugin.version>0.11.2</docker.maven.plugin.version>
     <camel.version>2.15.0</camel.version>
-    <cxf.version>3.0.2</cxf.version>
+    <cxf.version>3.0.4</cxf.version>
 
     <docker.from>fabric8/tomcat-8.0</docker.from>
     <docker.registryPrefix>${env.DOCKER_REGISTRY}/</docker.registryPrefix>

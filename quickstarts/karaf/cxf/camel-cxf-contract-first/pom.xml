@@ -43,7 +43,7 @@
     <fabric8.version>2.0.37</fabric8.version>
     <jube.version>2.0.37</jube.version>
     <docker.maven.plugin.version>0.11.2</docker.maven.plugin.version>
-    <cxf.version>3.0.2</cxf.version>
+    <cxf.version>3.0.4</cxf.version>
     <camel.version>2.15.0</camel.version>
     <karaf.version>2.4.0</karaf.version>
 

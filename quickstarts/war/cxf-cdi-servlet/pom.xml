@@ -44,7 +44,7 @@
     <fabric8.version>2.0.37</fabric8.version>
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
-    <cxf.version>3.0.2</cxf.version>
+    <cxf.version>3.0.4</cxf.version>
     <org.eclipse.jetty.version>9.1.5.v20140505</org.eclipse.jetty.version>
     
     <docker.from>fabric8/tomcat-8.0</docker.from>
