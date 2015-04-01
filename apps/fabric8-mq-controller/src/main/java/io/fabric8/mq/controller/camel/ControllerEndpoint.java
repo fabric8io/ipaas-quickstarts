@@ -30,7 +30,7 @@ import org.apache.camel.util.UnsafeUriCharactersEncoder;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-@UriEndpoint(scheme = "controller", syntax = "controller:name", consumerClass = ControllerConsumer.class, label = "api")
+@UriEndpoint(scheme = "controller", syntax = "controller:name", consumerClass = ControllerConsumer.class, label = "api", title="Controller")
 public class ControllerEndpoint extends DefaultEndpoint implements MultipleConsumersSupport, Service {
 
     private MessageInterceptorRegistry messageInterceptorRegistry;
