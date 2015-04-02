@@ -27,9 +27,9 @@
 
   <artifactId>jbpm-designer</artifactId>
 
-  <name>InfluxDB</name>
+  <name>jBPM Designer</name>
   <description>
-    [InfluxDB](http://influxdb.com/) database for storing historical metrics
+    [jBPM](http://jbpm.org/) Designer for creating and managing workflow processes
   </description>
 
   <properties>

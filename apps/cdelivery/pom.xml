@@ -43,14 +43,6 @@
     <version.maven-surefire-plugin>2.15</version.maven-surefire-plugin>
     <skipTests>false</skipTests>
 
-    <!-- the version of the BOM, defining all the dependency versions -->
-
-    <!-- TODO switch to 2.0.39 ASAP! -->
-    <fabric8.version>2.2-SNAPSHOT</fabric8.version>
-    <!--
-        <fabric8.version>2.0.38</fabric8.version>
-    -->
-
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <org.eclipse.jetty.version>9.1.5.v20140505</org.eclipse.jetty.version>
 
