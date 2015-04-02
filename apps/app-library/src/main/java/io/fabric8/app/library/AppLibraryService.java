@@ -46,7 +46,7 @@ import java.util.List;
  * Represents the App Library REST API
  */
 @Path("/")
-@Api(value = "/", description = "Api Registry")
+@Api(value = "/", description = "App Library")
 @Produces({"application/json", "text/xml"})
 @Consumes({"application/json", "text/xml"})
 public class AppLibraryService {
