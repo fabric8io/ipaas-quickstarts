@@ -23,12 +23,12 @@
   <parent>
     <groupId>io.fabric8.jube.images.fabric8</groupId>
     <artifactId>quickstart-karaf-quickstarts</artifactId>
-    <version>2.0.39</version>
+    <version>2.2-SNAPSHOT</version>
   </parent>
 
   <groupId>io.fabric8.jube.images.fabric8</groupId>
   <artifactId>quickstart-karaf-cxf-quickstarts</artifactId>
-  <version>2.0.39</version>
+  <version>2.2-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Karaf Quickstart : CXF :: Parent</name>
 
