@@ -60,6 +60,7 @@
         <module>apiman</module>
         -->
         <module>cadvisor</module>
+        <module>cdelivery</module>
         <module>console</module>
         <module>elasticsearch</module>
         <module>fabric8-forge</module>
