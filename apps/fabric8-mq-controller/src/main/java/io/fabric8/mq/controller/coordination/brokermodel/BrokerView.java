@@ -1,0 +1,228 @@
+/*
+ *
+ *  * Copyright 2005-2015 Red Hat, Inc.
+ *  * Red Hat licenses this file to you under the Apache License, version
+ *  * 2.0 (the "License"); you may not use this file except in compliance
+ *  * with the License.  You may obtain a copy of the License at
+ *  *    http://www.apache.org/licenses/LICENSE-2.0
+ *  * Unless required by applicable law or agreed to in writing, software
+ *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+ *  * implied.  See the License for the specific language governing
+ *  * permissions and limitations under the License.
+ *
+ */
+
+package io.fabric8.mq.controller.coordination.brokermodel;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.fabric8.mq.controller.sharding.MessageDistribution;
+import org.apache.activemq.command.ActiveMQDestination;
+import org.apache.activemq.transport.Transport;
+import org.apache.activemq.transport.TransportFactory;
+import org.apache.activemq.transport.TransportListener;
+import org.apache.activemq.util.ServiceStopper;
+import org.apache.activemq.util.ServiceSupport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
+/**
+ * The BrokerView is used to share state through coodination (maybe through Zookeepr)
+ */
+public class BrokerView extends ServiceSupport {
+    private static final Logger LOG = LoggerFactory.getLogger(BrokerView.class);
+    private final List<String> destinations = new ArrayList<>();
+    @JsonIgnore
+    private final Map<MessageDistribution, Transport> transportMap = new ConcurrentHashMap<>();
+    @JsonIgnore
+    private final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+    private String brokerName;
+    private String brokerId;
+    private String uri;
+    @JsonIgnore
+    private long timeStamp;
+    @JsonIgnore
+    private boolean gcCandidate;
+    @JsonIgnore
+    private BrokerOverview brokerOverview;
+
+    public String getBrokerId() {
+        return brokerId;
+    }
+
+    public void setBrokerId(String brokerId) {
+        this.brokerId = brokerId;
+    }
+
+    public String getBrokerName() {
+        return brokerName;
+    }
+
+    public void setBrokerName(String brokerName) {
+        this.brokerName = brokerName;
+    }
+
+    public List<String> getDestinations() {
+        return destinations;
+    }
+
+    public Set<ActiveMQDestination> getQueues() {
+        return brokerOverview.getQueueOverviews().keySet();
+    }
+
+    public BrokerOverview getBrokerOverview() {
+        return brokerOverview;
+    }
+
+    public void setBrokerOverview(BrokerOverview brokerOverview) {
+        this.brokerOverview = brokerOverview;
+        if (brokerOverview != null) {
+            synchronized (destinations) {
+                destinations.clear();
+                for (ActiveMQDestination destination : brokerOverview.getQueueOverviews().keySet()) {
+                    destinations.add(destination.toString());
+                }
+                for (ActiveMQDestination destination : brokerOverview.getTopicOverviews().keySet()) {
+                    destinations.add(destination.toString());
+                }
+            }
+        }
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
+
+    public Transport getTransport(MessageDistribution key) {
+        Transport result = null;
+        readWriteLock.readLock().lock();
+        try {
+            result = transportMap.get(key);
+        } finally {
+            readWriteLock.readLock().unlock();
+        }
+        return result;
+    }
+
+    public void addTransport(MessageDistribution messageDistribution, Transport transport) {
+        transportMap.put(messageDistribution, transport);
+    }
+
+    public void removeTransport(MessageDistribution messageDistribution) {
+        Transport transport = transportMap.remove(messageDistribution);
+        if (transport != null) {
+            if (transport.isConnected()) {
+                try {
+                    transport.stop();
+                } catch (Exception e) {
+                }
+            }
+        }
+    }
+
+    public void removeTransport(Transport transport) {
+        readWriteLock.writeLock().lock();
+        for (Map.Entry<MessageDistribution, Transport> entry : transportMap.entrySet()) {
+            if (transport.equals(entry.getValue())) {
+                transportMap.remove(entry.getKey());
+            }
+        }
+    }
+
+    public void createTransport(final MessageDistribution messageDistribution) throws Exception {
+        URI location = new URI(getUri() + "?wireFormat.cacheEnabled=false");
+        TransportFactory factory = TransportFactory.findTransportFactory(location);
+        final Transport transport = factory.doConnect(location);
+
+        transport.setTransportListener(new TransportListener() {
+            private final TransportListener transportListener = messageDistribution.getTransportListener();
+
+            public void onCommand(Object o) {
+                transportListener.onCommand(o);
+            }
+
+            public void onException(IOException e) {
+                removeTransport(transport);
+                transportListener.onException(e);
+            }
+
+            public void transportInterupted() {
+                transportListener.transportInterupted();
+            }
+
+            public void transportResumed() {
+                transportListener.transportResumed();
+            }
+        });
+        transport.start();
+        addTransport(messageDistribution, transport);
+        unlock();
+        LOG.info("Created transport for " + getBrokerName() + " to " + getUri());
+    }
+
+    public void updateTransport() throws Exception {
+        for (Map.Entry<MessageDistribution, Transport> entry : transportMap.entrySet()) {
+            Transport transport = entry.getValue();
+            if (transport == null || !transport.isConnected() || transport.isDisposed()) {
+                createTransport(entry.getKey());
+            }
+        }
+    }
+
+    public void lock() {
+        readWriteLock.writeLock().lock();
+    }
+
+    public void unlock() {
+        try {
+            readWriteLock.writeLock().unlock();
+        } catch (IllegalMonitorStateException e) {
+        }
+    }
+
+    public void reset() {
+        synchronized (destinations) {
+            destinations.clear();
+        }
+    }
+
+    public String toString() {
+        String str = "BrokerView[" + brokerName + "(" + getUri() + ")" + "]";
+        return str;
+    }
+
+    public int hashCode() {
+        return brokerName.hashCode();
+    }
+
+    public boolean equals(Object other) {
+        if (other instanceof BrokerView) {
+            BrokerView brokerView = (BrokerView) other;
+            return brokerName != null && brokerView.brokerName != null && brokerView.brokerName.equals(brokerName);
+        }
+        return false;
+    }
+
+    @Override
+    protected void doStop(ServiceStopper serviceStopper) throws Exception {
+        unlock();
+    }
+
+    @Override
+    protected void doStart() throws Exception {
+
+    }
+}

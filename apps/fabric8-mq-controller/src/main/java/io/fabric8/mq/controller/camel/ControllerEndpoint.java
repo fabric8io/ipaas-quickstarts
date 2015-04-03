@@ -32,9 +32,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @UriEndpoint(scheme = "controller", syntax = "controller:name", consumerClass = ControllerConsumer.class, label = "api", title="Controller")
 public class ControllerEndpoint extends DefaultEndpoint implements MultipleConsumersSupport, Service {
 
-    private MessageInterceptorRegistry messageInterceptorRegistry;
     @UriPath
     private final ActiveMQDestination destination;
+    private MessageInterceptorRegistry messageInterceptorRegistry;
     private List<MessageInterceptor> messageInterceptorList = new CopyOnWriteArrayList<MessageInterceptor>();
 
     public ControllerEndpoint(String uri, ControllerComponent component, ActiveMQDestination destination) {

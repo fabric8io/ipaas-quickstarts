@@ -36,8 +36,8 @@ class OpenWireReadStream extends ServiceSupport implements ReadStream<OpenWireRe
     private final OpenWireTransport transport;
     private final OpenWireFormat wireFormat;
     private final DataByteArrayOutputStream dataOut;
-    private Handler<Buffer> dataHandler;
     private final ReentrantLock lock;
+    private Handler<Buffer> dataHandler;
     private boolean paused;
     private BlockingQueue<Send> queue;
 

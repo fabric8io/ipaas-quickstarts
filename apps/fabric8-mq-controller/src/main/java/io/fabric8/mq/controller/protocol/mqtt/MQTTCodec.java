@@ -23,85 +23,10 @@ import java.io.IOException;
 public class MQTTCodec {
 
     private final MQTTFrameSink frameSink;
-
+    private final Buffer scratch = new Buffer(8 * 1024);
     private byte header;
     private int contentLength = -1;
-
     private FrameParser currentParser;
-
-    private final Buffer scratch = new Buffer(8 * 1024);
-    private Buffer currentBuffer;
-
-    /**
-     * Sink for newly decoded MQTT Frames.
-     */
-    public interface MQTTFrameSink {
-        void onFrame(MQTTFrame mqttFrame);
-    }
-
-    public MQTTCodec(MQTTFrameSink sink) {
-        this.frameSink = sink;
-    }
-
-    public MQTTCodec(final MQTTWriteStream writeStream) {
-        this.frameSink = new MQTTFrameSink() {
-
-            @Override
-            public void onFrame(MQTTFrame mqttFrame) {
-                writeStream.consume(mqttFrame);
-            }
-        };
-    }
-
-    public void parse(DataByteArrayInputStream input, int readSize) throws Exception {
-        if (currentParser == null) {
-            currentParser = initializeHeaderParser();
-        }
-
-        // Parser stack will run until current incoming data has all been consumed.
-        currentParser.parse(input, readSize);
-    }
-
-    private void processCommand() throws IOException {
-
-        Buffer frameContents = null;
-        if (currentBuffer == scratch) {
-            frameContents = scratch.deepCopy();
-        } else {
-            frameContents = currentBuffer;
-            currentBuffer = null;
-        }
-
-        MQTTFrame frame = new MQTTFrame(frameContents).header(header);
-        frameSink.onFrame(frame);
-    }
-
-    //----- Prepare the current frame parser for use -------------------------//
-
-    private FrameParser initializeHeaderParser() throws IOException {
-        headerParser.reset();
-        return headerParser;
-    }
-
-    private FrameParser initializeVariableLengthParser() throws IOException {
-        variableLengthParser.reset();
-        return variableLengthParser;
-    }
-
-    private FrameParser initializeContentParser() throws IOException {
-        contentParser.reset();
-        return contentParser;
-    }
-
-    //----- Frame parser implementations -------------------------------------//
-
-    private interface FrameParser {
-
-        void parse(DataByteArrayInputStream data, int readSize) throws IOException;
-
-        void reset() throws IOException;
-    }
-
     private final FrameParser headerParser = new FrameParser() {
 
         @Override
@@ -129,7 +54,43 @@ public class MQTTCodec {
             contentLength = -1;
         }
     };
+    private Buffer currentBuffer;
+    private final FrameParser contentParser = new FrameParser() {
 
+        private int payLoadRead = 0;
+
+        @Override
+        public void parse(DataByteArrayInputStream data, int readSize) throws IOException {
+            if (currentBuffer == null) {
+                if (contentLength < scratch.length()) {
+                    currentBuffer = scratch;
+                    currentBuffer.length = contentLength;
+                } else {
+                    currentBuffer = new Buffer(contentLength);
+                }
+            }
+
+            int length = Math.min(readSize, contentLength - payLoadRead);
+            payLoadRead += data.read(currentBuffer.data, payLoadRead, length);
+
+            if (payLoadRead == contentLength) {
+                processCommand();
+                currentParser = initializeHeaderParser();
+                readSize = readSize - length;
+                if (readSize > 0) {
+                    currentParser.parse(data, readSize);
+                }
+            }
+        }
+
+        @Override
+        public void reset() throws IOException {
+            contentLength = -1;
+            payLoadRead = 0;
+            scratch.reset();
+            currentBuffer = null;
+        }
+    };
     private final FrameParser variableLengthParser = new FrameParser() {
 
         private byte digit;
@@ -169,40 +130,73 @@ public class MQTTCodec {
         }
     };
 
-    private final FrameParser contentParser = new FrameParser() {
+    public MQTTCodec(MQTTFrameSink sink) {
+        this.frameSink = sink;
+    }
 
-        private int payLoadRead = 0;
+    public MQTTCodec(final MQTTWriteStream writeStream) {
+        this.frameSink = new MQTTFrameSink() {
 
-        @Override
-        public void parse(DataByteArrayInputStream data, int readSize) throws IOException {
-            if (currentBuffer == null) {
-                if (contentLength < scratch.length()) {
-                    currentBuffer = scratch;
-                    currentBuffer.length = contentLength;
-                } else {
-                    currentBuffer = new Buffer(contentLength);
-                }
+            @Override
+            public void onFrame(MQTTFrame mqttFrame) {
+                writeStream.consume(mqttFrame);
             }
+        };
+    }
 
-            int length = Math.min(readSize, contentLength - payLoadRead);
-            payLoadRead += data.read(currentBuffer.data, payLoadRead, length);
+    //----- Prepare the current frame parser for use -------------------------//
 
-            if (payLoadRead == contentLength) {
-                processCommand();
-                currentParser = initializeHeaderParser();
-                readSize = readSize - length;
-                if (readSize > 0) {
-                    currentParser.parse(data, readSize);
-                }
-            }
+    public void parse(DataByteArrayInputStream input, int readSize) throws Exception {
+        if (currentParser == null) {
+            currentParser = initializeHeaderParser();
         }
 
-        @Override
-        public void reset() throws IOException {
-            contentLength = -1;
-            payLoadRead = 0;
-            scratch.reset();
+        // Parser stack will run until current incoming data has all been consumed.
+        currentParser.parse(input, readSize);
+    }
+
+    private void processCommand() throws IOException {
+
+        Buffer frameContents = null;
+        if (currentBuffer == scratch) {
+            frameContents = scratch.deepCopy();
+        } else {
+            frameContents = currentBuffer;
             currentBuffer = null;
         }
-    };
+
+        MQTTFrame frame = new MQTTFrame(frameContents).header(header);
+        frameSink.onFrame(frame);
+    }
+
+    private FrameParser initializeHeaderParser() throws IOException {
+        headerParser.reset();
+        return headerParser;
+    }
+
+    //----- Frame parser implementations -------------------------------------//
+
+    private FrameParser initializeVariableLengthParser() throws IOException {
+        variableLengthParser.reset();
+        return variableLengthParser;
+    }
+
+    private FrameParser initializeContentParser() throws IOException {
+        contentParser.reset();
+        return contentParser;
+    }
+
+    /**
+     * Sink for newly decoded MQTT Frames.
+     */
+    public interface MQTTFrameSink {
+        void onFrame(MQTTFrame mqttFrame);
+    }
+
+    private interface FrameParser {
+
+        void parse(DataByteArrayInputStream data, int readSize) throws IOException;
+
+        void reset() throws IOException;
+    }
 }

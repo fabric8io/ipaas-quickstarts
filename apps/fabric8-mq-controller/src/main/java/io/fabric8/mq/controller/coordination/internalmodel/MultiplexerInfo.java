@@ -13,30 +13,9 @@
  *
  */
 
-package io.fabric8.mq.controller.coordination.singleton;
+package io.fabric8.mq.controller.coordination.internalmodel;
 
-import io.fabric8.mq.controller.coordination.BrokerCoordinator;
-import org.apache.activemq.util.ServiceStopper;
-import org.apache.activemq.util.ServiceSupport;
-
-import java.util.concurrent.TimeUnit;
-
-public class SingletonBrokerCoordinator extends ServiceSupport implements BrokerCoordinator {
-
-    public boolean acquireLock(long time, TimeUnit timeUnit) {
-        return true;
-    }
-
-    public void releaseLock() {
-    }
-
-    @Override
-    protected void doStop(ServiceStopper serviceStopper) throws Exception {
-
-    }
-
-    @Override
-    protected void doStart() throws Exception {
-
-    }
+public class MultiplexerInfo {
+    private int inboundConnections;
+    private int outbound;
 }

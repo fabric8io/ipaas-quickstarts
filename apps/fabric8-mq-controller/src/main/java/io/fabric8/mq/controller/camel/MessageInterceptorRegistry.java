@@ -25,6 +25,9 @@ public class MessageInterceptorRegistry {
     private static MessageInterceptorRegistry INSTANCE = new MessageInterceptorRegistry();
     private DestinationMap interceptorMap = new DestinationMap();
 
+    private MessageInterceptorRegistry() {
+    }
+
     public static MessageInterceptorRegistry getInstance() {
         return MessageInterceptorRegistry.INSTANCE;
     }
@@ -82,9 +85,6 @@ public class MessageInterceptorRegistry {
 
     void removeMessageInterceptor(ActiveMQDestination activeMQDestination, MessageInterceptor interceptor) {
         interceptorMap.remove(activeMQDestination, interceptor);
-    }
-
-    private MessageInterceptorRegistry() {
     }
 
 }

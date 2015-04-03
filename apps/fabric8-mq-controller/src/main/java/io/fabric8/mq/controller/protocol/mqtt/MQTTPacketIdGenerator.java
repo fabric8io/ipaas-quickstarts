@@ -68,9 +68,9 @@ public class MQTTPacketIdGenerator {
 
     private static class PacketIdMaps {
 
-        private final NonZeroSequenceGenerator messageIdGenerator = new NonZeroSequenceGenerator();
         final Map<String, Short> activemqToPacketIds = new LRUCache<String, Short>(MQTTProtocolConverter.DEFAULT_CACHE_SIZE);
         final Map<Short, String> packetIdsToActivemq = new LRUCache<Short, String>(MQTTProtocolConverter.DEFAULT_CACHE_SIZE);
+        private final NonZeroSequenceGenerator messageIdGenerator = new NonZeroSequenceGenerator();
 
         short setPacketId(MQTTSubscription subscription, ActiveMQMessage message, PUBLISH publish) {
             // subscription key

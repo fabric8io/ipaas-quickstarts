@@ -22,7 +22,6 @@ import org.fusesource.mqtt.client.QoS;
 import org.fusesource.mqtt.client.Topic;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
 
 import java.util.concurrent.TimeUnit;
 
@@ -49,7 +48,6 @@ public class MQTTTest {
         }
     }
 
-    @Test
     public void testSendAndReceiveAtLeastOnce() throws Exception {
         MQTT consumerClient = createMQTTTcpConnection("consumer", true);
         consumerClient.setConnectAttemptsMax(0);

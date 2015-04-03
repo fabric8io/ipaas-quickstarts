@@ -36,8 +36,8 @@ class MQTTReadStream extends ServiceSupport implements ReadStream<MQTTReadStream
     private final MQTTTransport transport;
     private final MQTTWireFormat wireFormat;
     private final DataByteArrayOutputStream dataOut;
-    private Handler<Buffer> dataHandler;
     private final ReentrantLock lock;
+    private Handler<Buffer> dataHandler;
     private boolean paused;
     private BlockingQueue<Send> queue;
 

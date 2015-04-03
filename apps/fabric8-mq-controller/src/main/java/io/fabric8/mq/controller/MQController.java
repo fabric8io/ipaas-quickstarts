@@ -15,7 +15,6 @@
 package io.fabric8.mq.controller;
 
 import io.fabric8.gateway.SocketWrapper;
-import io.fabric8.gateway.handlers.detecting.DetectingGateway;
 import io.fabric8.gateway.handlers.detecting.FutureHandler;
 import io.fabric8.gateway.handlers.detecting.Protocol;
 import io.fabric8.gateway.handlers.detecting.protocol.mqtt.MqttProtocol;
@@ -31,10 +30,13 @@ import io.fabric8.mq.controller.protocol.ProtocolTransportFactory;
 import io.fabric8.mq.controller.protocol.mqtt.MQTTTransportFactory;
 import io.fabric8.mq.controller.protocol.openwire.OpenWireTransportFactory;
 import io.fabric8.mq.controller.util.ProtocolMapping;
+import io.fabric8.mq.controller.util.Utils;
+import io.fabric8.utils.JMXUtils;
 import io.fabric8.utils.ShutdownTracker;
 import org.apache.activemq.transport.Transport;
 import org.apache.activemq.util.ServiceStopper;
 import org.apache.activemq.util.ServiceSupport;
+import org.jboss.netty.util.internal.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vertx.java.core.AsyncResult;
@@ -47,6 +49,7 @@ import org.vertx.java.core.net.NetSocket;
 import org.vertx.java.core.streams.Pump;
 import org.vertx.java.core.streams.ReadStream;
 
+import javax.management.ObjectName;
 import javax.net.ssl.SSLContext;
 import java.io.IOException;
 import java.net.URI;
@@ -54,6 +57,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicLong;
@@ -64,7 +68,9 @@ import java.util.concurrent.atomic.AtomicLong;
  * virtual host to handle proxying the connection to an appropriate service.
  */
 public class MQController extends ServiceSupport implements MQControllerMBean, Handler<Transport> {
-    private static final transient Logger LOG = LoggerFactory.getLogger(DetectingGateway.class);
+    private static final transient Logger LOG = LoggerFactory.getLogger(MQController.class);
+    private final String DEFAULT_DOMAIN = "io.fabric8";
+    private final String TYPE = MQController.class.getName();
     private final Vertx vertx;
     private final List<NetServer> servers;
     private final BrokerStateInfo brokerStateInfo;
@@ -77,17 +83,22 @@ public class MQController extends ServiceSupport implements MQControllerMBean, H
     private final ShutdownTracker shutdownTacker;
     private final AsyncExecutors asyncExecutors;
     private final CamelRouter camelRouter;
+    private final FutureHandler<AsyncResult<NetServer>> listenFuture;
+    SSLContext sslContext;
+    SslSocketWrapper.ClientAuth clientAuth = SslSocketWrapper.ClientAuth.WANT;
     private List<Protocol> protocols;
     private String defaultVirtualHost;
     private int maxProtocolIdentificationLength;
     private SslConfig sslConfig;
-    private long connectionTimeout = 5000;
+    private long connectionTimeout;
     private int port;
     private String host;
     private String name;
     private int numberOfServers;
     private int numberOfMultiplexers;
     private String defaultURI;
+    private Map<Object, ObjectName> objectNameMap;
+    private ObjectName rootObjectName;
 
     public MQController() {
         vertx = VertxFactory.newVertx();
@@ -97,8 +108,8 @@ public class MQController extends ServiceSupport implements MQControllerMBean, H
         receivedConnectionAttempts = new AtomicLong();
         successfulConnectionAttempts = new AtomicLong();
         failedConnectionAttempts = new AtomicLong();
-        socketsConnecting = new HashSet<SocketWrapper>();
-        socketsConnected = new HashSet<ConnectedSocketInfo>();
+        socketsConnecting = new HashSet<>();
+        socketsConnected = new HashSet<>();
         protocols = new CopyOnWriteArrayList<>();
         shutdownTacker = new ShutdownTracker();
         asyncExecutors = new AsyncExecutors();
@@ -109,21 +120,37 @@ public class MQController extends ServiceSupport implements MQControllerMBean, H
         connectionTimeout = 5000;
         name = "MQController";
         defaultURI = "tcp://localhost:61617";
+        objectNameMap = new ConcurrentHashMap<>();
+        listenFuture = new FutureHandler<AsyncResult<NetServer>>() {
+            @Override
+            public void handle(AsyncResult<NetServer> event) {
+                if (event.succeeded()) {
+                    LOG.info(String.format("MQController listening on %s:%d for protocols: %s", event.result().host(), event.result().port(), getProtocolNames()));
+                }
+                super.handle(event);
+            }
+        };
     }
 
-    private FutureHandler<AsyncResult<NetServer>> listenFuture = new FutureHandler<AsyncResult<NetServer>>() {
-        @Override
-        public void handle(AsyncResult<NetServer> event) {
-            if (event.succeeded()) {
-                LOG.info(String.format("Gateway listening on %s:%d for protocols: %s", event.result().host(), event.result().port(), getProtocolNames()));
-            }
-            super.handle(event);
+    public void registerInJmx(ObjectName objectName, Object object) throws Exception {
+        JMXUtils.registerMBean(object, objectName);
+        objectNameMap.put(object, objectName);
+    }
+
+    public void unregisterInJmx(Object object) {
+        ObjectName objectName = objectNameMap.remove(object);
+        if (objectName != null) {
+            JMXUtils.unregisterMBean(objectName);
         }
-    };
+    }
+
+    public ObjectName getRootObjectName() {
+        return rootObjectName;
+    }
 
     @Override
     public String toString() {
-        return "MQGateway{" +
+        return "MQController{" +
                    ", port=" + port +
                    ", host='" + host + '\'' +
                    ", protocols='" + getProtocolNames() + '\'' +
@@ -132,6 +159,9 @@ public class MQController extends ServiceSupport implements MQControllerMBean, H
 
     @Override
     protected void doStop(ServiceStopper stopper) throws Exception {
+        for (Object object : objectNameMap.keySet()) {
+            unregisterInJmx(object);
+        }
         stopper.stop(asyncExecutors);
         close();
     }
@@ -139,6 +169,8 @@ public class MQController extends ServiceSupport implements MQControllerMBean, H
     @Override
     protected void doStart() throws Exception {
         validateSettings();
+        rootObjectName = Utils.getObjectName(DEFAULT_DOMAIN, "type=" + TYPE);
+        registerInJmx(rootObjectName, this);
         //load protocols
         protocols.add(new MqttProtocol());
         protocols.add(new OpenwireProtocol());
@@ -228,9 +260,6 @@ public class MQController extends ServiceSupport implements MQControllerMBean, H
         return rc;
     }
 
-    SSLContext sslContext;
-    SslSocketWrapper.ClientAuth clientAuth = SslSocketWrapper.ClientAuth.WANT;
-
     public int getNumberOfServers() {
         return numberOfServers;
     }
@@ -247,12 +276,12 @@ public class MQController extends ServiceSupport implements MQControllerMBean, H
         this.numberOfMultiplexers = numberOfMultiplexers;
     }
 
-    public void setCamelRoutes(String camelRoutes) {
-        camelRouter.setCamelRoutes(camelRoutes);
-    }
-
     public String getCamelRoutes() {
         return camelRouter.getCamelRoutes();
+    }
+
+    public void setCamelRoutes(String camelRoutes) {
+        camelRouter.setCamelRoutes(camelRoutes);
     }
 
     public ScheduledFuture scheduleAtFixedRate(Runnable runnable, long period, long maxTimeInCall) {
@@ -261,6 +290,10 @@ public class MQController extends ServiceSupport implements MQControllerMBean, H
 
     public void execute(final Runnable runnable) {
         asyncExecutors.execute(runnable);
+    }
+
+    public AsyncExecutors getAsyncExecutors() {
+        return asyncExecutors;
     }
 
     public void handle(final SocketWrapper socket) {
@@ -272,7 +305,7 @@ public class MQController extends ServiceSupport implements MQControllerMBean, H
             vertx.setTimer(connectionTimeout, new Handler<Long>() {
                 public void handle(Long timerID) {
                     if (socketsConnecting.contains(socket)) {
-                        handleConnectFailure(socket, String.format("Gateway client '%s' protocol detection timeout.", socket.remoteAddress()));
+                        handleConnectFailure(socket, String.format("MQController client '%s' protocol detection timeout.", socket.remoteAddress()));
                     }
                 }
             });
@@ -282,13 +315,13 @@ public class MQController extends ServiceSupport implements MQControllerMBean, H
         readStream.exceptionHandler(new Handler<Throwable>() {
             @Override
             public void handle(Throwable e) {
-                handleConnectFailure(socket, String.format("Failed to route gateway client '%s' due to: %s", socket.remoteAddress(), e));
+                handleConnectFailure(socket, String.format("Failed to route MQController client '%s' due to: %s", socket.remoteAddress(), e));
             }
         });
         readStream.endHandler(new Handler<Void>() {
             @Override
             public void handle(Void event) {
-                handleConnectFailure(socket, String.format("Gateway client '%s' closed the connection before it could be routed.", socket.remoteAddress()));
+                handleConnectFailure(socket, String.format("MQController client '%s' closed the connection before it could be routed.", socket.remoteAddress()));
             }
         });
         readStream.dataHandler(new Handler<Buffer>() {
@@ -316,7 +349,7 @@ public class MQController extends ServiceSupport implements MQControllerMBean, H
                                     } else {
                                         sslContext = SSLContext.getDefault();
                                     }
-                                } catch (Exception e) {
+                                } catch (Throwable e) {
                                     handleConnectFailure(socket, "Could initialize SSL: " + e);
                                     return;
                                 }
@@ -372,7 +405,7 @@ public class MQController extends ServiceSupport implements MQControllerMBean, H
             LOG.info(String.format("Connecting client from '%s' requesting virtual host '%s' to '%s' using the %s protocol",
                                       socket.remoteAddress(), params.protocolVirtualHost, protocolMapping, params.protocol));
             createProtocolClient(params, socket, protocolMapping, received);
-        } catch (Exception e) {
+        } catch (Throwable e) {
             LOG.warn("Failed to create route for " + params, e);
             handleConnectFailure(socket, String.format("No endpoint available for virtual host '%s' and protocol %s", params.protocolVirtualHost, params.protocol));
         }
@@ -461,7 +494,7 @@ public class MQController extends ServiceSupport implements MQControllerMBean, H
                 }
                 handle(connectedInfo.to);
                 connectedInfo.close();
-            } catch (Exception e) {
+            } catch (Throwable e) {
             } finally {
                 shutdownTacker.release();
             }
@@ -558,6 +591,17 @@ public class MQController extends ServiceSupport implements MQControllerMBean, H
 
     }
 
+    private void validateSettings() {
+        if (getNumberOfServers() < 1) {
+            LOG.warn("Number of Servers must be 1 or greater - setting to 1");
+            setNumberOfServers(1);
+        }
+        if (getNumberOfMultiplexers() < 1) {
+            LOG.warn("Number of Multiplexers must be 1 or greater - setting to 1");
+            setNumberOfMultiplexers(1);
+        }
+    }
+
     private static class ConnectedSocketInfo {
 
         private ConnectionParameters params;
@@ -566,6 +610,9 @@ public class MQController extends ServiceSupport implements MQControllerMBean, H
         private ProtocolTransport to;
         private Pump readPump;
         private Pump writePump;
+
+        ConnectedSocketInfo() {
+        }
 
         Pump getWritePump() {
             return writePump;
@@ -615,9 +662,6 @@ public class MQController extends ServiceSupport implements MQControllerMBean, H
             this.readPump = readPump;
         }
 
-        ConnectedSocketInfo() {
-        }
-
         void close() throws Exception {
             if (from != null) {
                 from.close();
@@ -635,27 +679,16 @@ public class MQController extends ServiceSupport implements MQControllerMBean, H
         }
     }
 
-    private void validateSettings() {
-        if (getNumberOfServers() < 1) {
-            LOG.warn("Number of Servers must be 1 or greater - setting to 1");
-            setNumberOfServers(1);
-        }
-        if (getNumberOfMultiplexers() < 1) {
-            LOG.warn("Number of Multiplexers must be 1 or greater - setting to 1");
-            setNumberOfMultiplexers(1);
-        }
-    }
-
     private static class MQControllerNetSocketHandler implements Handler<NetSocket> {
-        private final MQController gateway;
+        private final MQController controller;
 
-        public MQControllerNetSocketHandler(MQController gateway) {
-            this.gateway = gateway;
+        public MQControllerNetSocketHandler(MQController controller) {
+            this.controller = controller;
         }
 
         @Override
         public void handle(final NetSocket socket) {
-            gateway.handle(SocketWrapper.wrap(socket));
+            controller.handle(SocketWrapper.wrap(socket));
         }
 
     }

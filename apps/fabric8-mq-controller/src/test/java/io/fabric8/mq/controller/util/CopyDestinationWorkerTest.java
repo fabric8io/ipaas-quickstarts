@@ -15,7 +15,7 @@
 
 package io.fabric8.mq.controller.util;
 
-import io.fabric8.mq.controller.MQController;
+import io.fabric8.mq.controller.AsyncExecutors;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.broker.BrokerService;
 import org.apache.activemq.command.ActiveMQDestination;
@@ -34,10 +34,10 @@ import java.util.List;
 public class CopyDestinationWorkerTest {
     private final String URI1 = "tcp://localhost:61616";
     private final String URI2 = "tcp://localhost:61617";
-    private List<ActiveMQDestination> destinationList = new ArrayList<>();
-    private MQController controller;
     BrokerService brokerService1;
     BrokerService brokerService2;
+    private List<ActiveMQDestination> destinationList = new ArrayList<>();
+    private AsyncExecutors asyncExecutors;
 
     @Before
     public void setUp() throws Exception {
@@ -68,9 +68,8 @@ public class CopyDestinationWorkerTest {
             }
         }
         connection.close();
-        controller = new MQController();
-        controller.setPort(0);
-        controller.start();
+        asyncExecutors = new AsyncExecutors();
+        asyncExecutors.start();
 
     }
 
@@ -83,14 +82,14 @@ public class CopyDestinationWorkerTest {
             brokerService2.stop();
             brokerService2.waitUntilStopped();
         }
-        if (controller != null) {
-            controller.stop();
+        if (asyncExecutors != null) {
+            asyncExecutors.stop();
         }
     }
 
     @Test
     public void doTest() throws Exception {
-        CopyDestinationWorker copyDestinationWorker = new CopyDestinationWorker(controller, URI1, URI2);
+        CopyDestinationWorker copyDestinationWorker = new CopyDestinationWorker(asyncExecutors, URI1, URI2);
         for (ActiveMQDestination destination : destinationList) {
             copyDestinationWorker.addDestinationToCopy(destination);
         }

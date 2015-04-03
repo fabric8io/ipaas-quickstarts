@@ -16,7 +16,8 @@
 package io.fabric8.mq.controller.sharding;
 
 import io.fabric8.mq.controller.BrokerStateInfo;
-import io.fabric8.mq.controller.coordination.BrokerView;
+import io.fabric8.mq.controller.coordination.brokermodel.BrokerView;
+import io.fabric8.mq.controller.util.LRUCache;
 import org.apache.activemq.command.ActiveMQDestination;
 import org.apache.activemq.command.Command;
 import org.apache.activemq.command.ExceptionResponse;
@@ -24,7 +25,6 @@ import org.apache.activemq.transport.FutureResponse;
 import org.apache.activemq.transport.ResponseCallback;
 import org.apache.activemq.transport.Transport;
 import org.apache.activemq.transport.TransportListener;
-import org.apache.activemq.util.LRUCache;
 import org.apache.activemq.util.ServiceStopper;
 import org.apache.activemq.util.ServiceSupport;
 import org.slf4j.Logger;
@@ -32,7 +32,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -49,8 +48,7 @@ public class ShardedMessageDistribution extends ServiceSupport implements Messag
     @Override
     public void sendAll(Command command) throws IOException {
         if (isStarted()) {
-            for (BrokerView brokerView : brokerStateInfo.getBrokerControl().getBrokerViews()) {
-                Transport transport = getTransport(brokerView);
+            for (Transport transport : brokerStateInfo.getBrokerControl().getTransports(this)) {
                 if (transport != null) {
                     transport.oneway(command);
                 }
@@ -61,12 +59,9 @@ public class ShardedMessageDistribution extends ServiceSupport implements Messag
     @Override
     public void send(ActiveMQDestination destination, Command command) throws IOException {
         if (isStarted()) {
-            BrokerView brokerView = brokerStateInfo.getBrokerControl().getBrokerView(destination);
-            if (brokerView != null) {
-                Transport transport = getTransport(brokerView);
-                if (transport != null) {
-                    transport.oneway(command);
-                }
+            Transport transport = brokerStateInfo.getBrokerControl().getTransport(this, destination);
+            if (transport != null) {
+                transport.oneway(command);
             }
         }
     }
@@ -79,9 +74,7 @@ public class ShardedMessageDistribution extends ServiceSupport implements Messag
         }
 
         if (isStarted()) {
-            List<BrokerView> list = new ArrayList(brokerStateInfo.getBrokerControl().getBrokerViews());
-            for (BrokerView brokerView : list) {
-                Transport transport = getTransport(brokerView);
+            for (Transport transport : brokerStateInfo.getBrokerControl().getTransports(this)) {
                 if (transport != null) {
                     transport.asyncRequest(command, multiCallback);
                 }
@@ -92,24 +85,21 @@ public class ShardedMessageDistribution extends ServiceSupport implements Messag
     @Override
     public void asyncSend(ActiveMQDestination destination, Command command, ResponseCallback callback) throws IOException {
         if (isStarted()) {
-            BrokerView brokerView = brokerStateInfo.getBrokerControl().getBrokerView(destination);
-            if (brokerView != null) {
-                Transport transport = getTransport(brokerView);
-                if (transport != null) {
-                    transport.asyncRequest(command, callback);
-                }
+            Transport transport = brokerStateInfo.getBrokerControl().getTransport(this, destination);
+            if (transport != null) {
+                transport.asyncRequest(command, callback);
             }
         }
     }
 
     @Override
-    public void setTransportListener(TransportListener transportListener) {
-        this.transportListener = transportListener;
+    public TransportListener getTransportListener() {
+        return transportListener;
     }
 
     @Override
-    public TransportListener getTransportListener() {
-        return transportListener;
+    public void setTransportListener(TransportListener transportListener) {
+        this.transportListener = transportListener;
     }
 
     @Override

@@ -46,26 +46,22 @@ import java.util.zip.Inflater;
 
 public class MQTTProtocolConverter {
 
-    private static final Logger LOG = LoggerFactory.getLogger(MQTTProtocolConverter.class);
-
     public static final String QOS_PROPERTY_NAME = "ActiveMQ.MQTT.QoS";
     public static final String RETAIN_PROPERTY = "ActiveMQ.Retain";
     public static final String RETAINED_PROPERTY = "ActiveMQ.Retained";
-
+    static final int DEFAULT_CACHE_SIZE = 5000;
+    private static final Logger LOG = LoggerFactory.getLogger(MQTTProtocolConverter.class);
     private static final IdGenerator CONNECTION_ID_GENERATOR = new IdGenerator();
     private static final MQTTFrame PING_RESP_FRAME = new PINGRESP().encode();
     private static final double MQTT_KEEP_ALIVE_GRACE_PERIOD = 0.5;
-    static final int DEFAULT_CACHE_SIZE = 5000;
-
+    protected final LongSequenceGenerator consumerIdGenerator = new LongSequenceGenerator();
+    protected final ConcurrentHashMap<ConsumerId, MQTTSubscription> subscriptionsByConsumerId = new ConcurrentHashMap();
+    protected final ConcurrentHashMap<String, MQTTSubscription> mqttSubscriptionByTopic = new ConcurrentHashMap();
     private final ConnectionId connectionId = new ConnectionId(CONNECTION_ID_GENERATOR.generateId());
     private final SessionId sessionId = new SessionId(connectionId, -1);
     private final ProducerId producerId = new ProducerId(sessionId, 1);
     private final LongSequenceGenerator publisherIdGenerator = new LongSequenceGenerator();
-    protected final LongSequenceGenerator consumerIdGenerator = new LongSequenceGenerator();
-
     private final ConcurrentHashMap<Integer, ResponseHandler> resposeHandlers = new ConcurrentHashMap<Integer, ResponseHandler>();
-    protected final ConcurrentHashMap<ConsumerId, MQTTSubscription> subscriptionsByConsumerId = new ConcurrentHashMap();
-    protected final ConcurrentHashMap<String, MQTTSubscription> mqttSubscriptionByTopic = new ConcurrentHashMap();
     private final Map<String, ActiveMQDestination> activeMQDestinationMap = new LRUCache<String, ActiveMQDestination>(DEFAULT_CACHE_SIZE);
     private final Map<Destination, String> mqttTopicMap = new LRUCache<Destination, String>(DEFAULT_CACHE_SIZE);
 
@@ -75,22 +71,21 @@ public class MQTTProtocolConverter {
     private final MQTTTransport mqttTransport;
 
     private final Object commnadIdMutex = new Object();
-    private int lastCommandId;
     private final AtomicBoolean connected = new AtomicBoolean(false);
     private final ConnectionInfo connectionInfo = new ConnectionInfo();
+    boolean willSent = false;
+    private int lastCommandId;
     private CONNECT connect;
     private String clientId;
     private long defaultKeepAlive;
     private int activeMQSubscriptionPrefetch = -1;
-    private boolean publishDollarTopics;
-
-
 
     /*
      * Subscription strategy configuration element.
      *   > mqtt-default-subscriptions
      *   > mqtt-virtual-topic-subscriptions
      */
+    private boolean publishDollarTopics;
 
     public MQTTProtocolConverter(MQTTTransport mqttTransport) {
         this.mqttTransport = mqttTransport;
@@ -562,8 +557,6 @@ public class MQTTProtocolConverter {
         return mqttTransport;
     }
 
-    boolean willSent = false;
-
     public void onTransportError() {
         if (connect != null) {
             if (connected.get()) {
@@ -722,12 +715,12 @@ public class MQTTProtocolConverter {
         this.activeMQSubscriptionPrefetch = activeMQSubscriptionPrefetch;
     }
 
-    public void setPublishDollarTopics(boolean publishDollarTopics) {
-        this.publishDollarTopics = publishDollarTopics;
-    }
-
     public boolean getPublishDollarTopics() {
         return publishDollarTopics;
+    }
+
+    public void setPublishDollarTopics(boolean publishDollarTopics) {
+        this.publishDollarTopics = publishDollarTopics;
     }
 
     public ConnectionId getConnectionId() {

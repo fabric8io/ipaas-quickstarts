@@ -34,9 +34,9 @@ public interface MQControllerMBean {
 
     void setConnectionTimeout(long connectionTimeout);
 
-    void setCamelRoutes(String camelRoutes);
-
     String getCamelRoutes();
+
+    void setCamelRoutes(String camelRoutes);
 
     int getNumberOfServers();
 }

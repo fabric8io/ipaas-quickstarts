@@ -13,30 +13,20 @@
  *
  */
 
-package io.fabric8.mq.controller.coordination.singleton;
+package io.fabric8.mq.controller.util;
 
-import io.fabric8.mq.controller.coordination.BrokerCoordinator;
-import org.apache.activemq.util.ServiceStopper;
-import org.apache.activemq.util.ServiceSupport;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-import java.util.concurrent.TimeUnit;
+public class LRUCache<K, V> extends LinkedHashMap<K, V> {
 
-public class SingletonBrokerCoordinator extends ServiceSupport implements BrokerCoordinator {
+    private final int maxEntries;
 
-    public boolean acquireLock(long time, TimeUnit timeUnit) {
-        return true;
+    public LRUCache(int maxEntries) {
+        this.maxEntries = maxEntries;
     }
 
-    public void releaseLock() {
-    }
-
-    @Override
-    protected void doStop(ServiceStopper serviceStopper) throws Exception {
-
-    }
-
-    @Override
-    protected void doStart() throws Exception {
-
+    protected boolean removeEldestEntry(Map.Entry eldest) {
+        return size() > maxEntries;
     }
 }

@@ -31,11 +31,11 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class AsyncExecutors extends ServiceSupport {
+    private final AtomicInteger executorThreadCount = new AtomicInteger();
+    private final AtomicInteger schedulerThreadCount = new AtomicInteger();
     private ExecutorService executor;
     private ScheduledExecutorService scheduledExecutorService;
     private Set<MonitorScheduled> scheduledSet = new ConcurrentHashSet<>();
-    private final AtomicInteger executorThreadCount = new AtomicInteger();
-    private final AtomicInteger schedulerThreadCount = new AtomicInteger();
 
     public void execute(final Runnable runnable) {
         if (!isStopped()) {

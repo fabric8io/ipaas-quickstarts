@@ -45,15 +45,13 @@ public class ExtendedBurnIn {
     private static final transient Logger LOG = LoggerFactory.getLogger(ExtendedBurnIn.class);
 
     final protected ArrayList<MQController> gateways = new ArrayList<>();
+    final HashMap<String, IMappedServices> mappedServices = new HashMap<String, IMappedServices>();
+    final ApiManager apiManager = new ApiManager();
+    HttpGatewayServer httpGatewayServer;
 
     protected void println(Object msg) {
         LOG.info(msg.toString());
     }
-
-    final HashMap<String, IMappedServices> mappedServices = new HashMap<String, IMappedServices>();
-    final ApiManager apiManager = new ApiManager();
-
-    HttpGatewayServer httpGatewayServer;
 
     public MQController startDetectingGateway() throws Exception {
 

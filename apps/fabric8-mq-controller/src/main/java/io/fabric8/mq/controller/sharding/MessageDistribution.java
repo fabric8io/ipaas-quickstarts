@@ -32,9 +32,9 @@ public interface MessageDistribution extends Service {
 
     void asyncSend(ActiveMQDestination destination, Command command, ResponseCallback callback) throws IOException;
 
-    void setTransportListener(TransportListener transportListener);
-
     TransportListener getTransportListener();
+
+    void setTransportListener(TransportListener transportListener);
 
     boolean isStopped();
 

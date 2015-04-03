@@ -17,16 +17,10 @@ package io.fabric8.mq.controller.coordination;
 
 import org.apache.activemq.Service;
 
+import java.util.concurrent.TimeUnit;
+
 public interface BrokerCoordinator extends Service {
-    public static final long LOCK_TIME = 10 * 1000;
+    boolean acquireLock(long time, TimeUnit timeUnit);
 
-    void createBroker(BrokerView brokerView);
-
-    void updateBroker(BrokerView brokerView);
-
-    void deleteBroker(BrokerView brokerView);
-
-    void addBrokerChangeListener(BrokerChangeListener brokerChangeListener);
-
-    void removeBrokerChangeListener(BrokerChangeListener brokerChangeListener);
+    void releaseLock();
 }

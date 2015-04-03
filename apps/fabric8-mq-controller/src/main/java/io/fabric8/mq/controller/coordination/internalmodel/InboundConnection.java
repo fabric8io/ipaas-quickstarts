@@ -13,28 +13,10 @@
  *
  */
 
-package io.fabric8.mq.controller.coordination;
+package io.fabric8.mq.controller.coordination.internalmodel;
 
-public interface BrokerChangeListener {
-
-    /**
-     * Called when a new Broker is created
-     *
-     * @param brokerView
-     */
-    void created(BrokerView brokerView);
-
-    /**
-     * Called when a Broker is removed
-     *
-     * @param brokerName
-     */
-    void deleted(String brokerName);
-
-    /**
-     * Called when a Broker state changed
-     *
-     * @param brokerView
-     */
-    void updated(BrokerView brokerView);
+/**
+ * Created by rajdavies on 31/03/15.
+ */
+public class InboundConnection {
 }

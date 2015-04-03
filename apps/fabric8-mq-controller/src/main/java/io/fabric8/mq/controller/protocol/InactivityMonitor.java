@@ -34,13 +34,12 @@ public abstract class InactivityMonitor extends ServiceSupport {
 
     protected static long DEFAULT_CHECK_TIME_MILLS = 30000;
     protected static long DEFAULT_MAX_COMPLETION = 2000;
-    protected long readCheckTime = DEFAULT_CHECK_TIME_MILLS;
     protected final AtomicBoolean commandReceived = new AtomicBoolean(true);
     protected final AtomicBoolean inReceive = new AtomicBoolean(false);
-    protected ScheduledFuture readFuture;
-
     protected final MQController gateway;
     protected final ProtocolTransport transport;
+    protected long readCheckTime = DEFAULT_CHECK_TIME_MILLS;
+    protected ScheduledFuture readFuture;
 
     public InactivityMonitor(MQController gateway, ProtocolTransport transport) {
         this.gateway = gateway;

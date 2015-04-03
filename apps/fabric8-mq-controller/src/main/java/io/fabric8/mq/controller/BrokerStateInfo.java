@@ -16,6 +16,7 @@
 package io.fabric8.mq.controller;
 
 import io.fabric8.mq.controller.coordination.BrokerControl;
+import io.fabric8.mq.controller.coordination.KubernetesControl;
 import io.fabric8.mq.controller.util.MapTransportConnectionStateRegister;
 import io.fabric8.mq.controller.util.TransportConnectionStateRegister;
 import org.apache.activemq.util.ServiceStopper;
@@ -32,7 +33,7 @@ public class BrokerStateInfo extends ServiceSupport {
     BrokerStateInfo(MQController controller) {
         this.controller = controller;
         transportConnectionStateRegister = new MapTransportConnectionStateRegister();
-        brokerControl = new BrokerControl(this);
+        brokerControl = new KubernetesControl(this);
     }
 
     public TransportConnectionStateRegister getTransportConnectionStateRegister() {
@@ -41,6 +42,10 @@ public class BrokerStateInfo extends ServiceSupport {
 
     public MQController getController() {
         return controller;
+    }
+
+    public AsyncExecutors getAsyncExectutors() {
+        return controller.getAsyncExecutors();
     }
 
     public BrokerControl getBrokerControl() {

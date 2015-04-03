@@ -16,13 +16,13 @@
 package io.fabric8.mq.controller.multiplexer;
 
 import io.fabric8.mq.controller.BrokerStateInfo;
+import io.fabric8.mq.controller.util.LRUCache;
 import org.apache.activemq.command.*;
 import org.apache.activemq.state.CommandVisitor;
 import org.apache.activemq.transport.DefaultTransportListener;
 import org.apache.activemq.transport.Transport;
 import org.apache.activemq.transport.TransportListener;
 import org.apache.activemq.transport.TransportSupport;
-import org.apache.activemq.util.LRUCache;
 import org.apache.activemq.util.ServiceStopper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,16 +33,16 @@ import java.util.concurrent.ConcurrentHashMap;
 
 class MultiplexerInput extends TransportSupport implements CommandVisitor {
     private static Logger LOG = LoggerFactory.getLogger(MultiplexerInput.class);
+    private final Multiplexer multiplexer;
+    private final BrokerStateInfo brokerStateInfo;
+    private final ConnectionId multiplexerId;
+    private final Transport input;
     private ConnectionInfo connectionInfo;
     private Map<SessionId, SessionId> sessionIdMap = new ConcurrentHashMap<>();
     private Map<ProducerId, ProducerId> producerIdMap = new ConcurrentHashMap<>();
     private Map<ConsumerId, ConsumerId> originalConsumerIdKeyMap = new ConcurrentHashMap<>();
     private Map<ConsumerId, ConsumerId> multiplexerConsumerIdKeyMap = new ConcurrentHashMap<>();
     private Map<TransactionId, TransactionId> transactionIdMap = new LRUCache<>(10000);
-    private final Multiplexer multiplexer;
-    private final BrokerStateInfo brokerStateInfo;
-    private final ConnectionId multiplexerId;
-    private final Transport input;
 
     MultiplexerInput(Multiplexer multiplexer, BrokerStateInfo brokerStateInfo, ConnectionId connectionId, Transport input) {
         this.multiplexer = multiplexer;

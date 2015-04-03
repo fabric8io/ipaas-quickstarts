@@ -25,9 +25,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class TransportConnectionState extends org.apache.activemq.state.ConnectionState {
 
+    private final Object connectionMutex = new Object();
     private ConnectionContext context;
     private AtomicInteger referenceCounter = new AtomicInteger();
-    private final Object connectionMutex = new Object();
 
     public TransportConnectionState(ConnectionInfo info) {
         super(info);

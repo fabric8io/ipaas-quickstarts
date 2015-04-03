@@ -36,12 +36,9 @@ public class OpenWireInactivityMonitor extends InactivityMonitor {
 
     private final AtomicBoolean commandSent = new AtomicBoolean(false);
     private final AtomicBoolean inSend = new AtomicBoolean(false);
-
-    private long writeCheckTime = DEFAULT_CHECK_TIME_MILLS;
-
-    private ScheduledFuture writeFuture;
-
     protected WireFormat wireFormat;
+    private long writeCheckTime = DEFAULT_CHECK_TIME_MILLS;
+    private ScheduledFuture writeFuture;
 
     public OpenWireInactivityMonitor(MQController gateway, ProtocolTransport transport) {
         super(gateway, transport);
