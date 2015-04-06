@@ -65,7 +65,7 @@
 
     <fabric8.env.IMPORT_APP_URLS>${docker.env.IMPORT_APP_URLS}</fabric8.env.IMPORT_APP_URLS>
     <fabric8.service.name>app-library</fabric8.service.name>
-    <fabric8.service.port>9494</fabric8.service.port>
+    <fabric8.service.port>80</fabric8.service.port>
     <fabric8.service.containerPort>${http.port}</fabric8.service.containerPort>
     <fabric8.replicationController.name>app-library-controller</fabric8.replicationController.name>
     <fabric8.label.component>AppLibrary</fabric8.label.component>
@@ -83,7 +83,7 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-  
+
 
   <dependencies>
     <dependency>
@@ -173,7 +173,7 @@
       <artifactId>weld-core</artifactId>
     </dependency>
 
-    <!-- these explicit transitive dependencies avoid issues of 8.x bleeding into the generated archetype 
+    <!-- these explicit transitive dependencies avoid issues of 8.x bleeding into the generated archetype
          WARNING - this quickstart fails with jetty-8.x, the symptoms are that the endpoints are not registered. -->
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
