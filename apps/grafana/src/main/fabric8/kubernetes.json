@@ -68,16 +68,6 @@
       "selector": {
         "component": "grafana"
       }
-    },
-    {
-      "apiVersion": "v1beta1",
-      "id": "grafana-route",
-      "metadata": {
-        "name": "grafana-route"
-      },
-      "kind": "Route",
-      "host": "metrics.fabric8.local",
-      "serviceName": "grafana-service"
     }
   ]
 }
