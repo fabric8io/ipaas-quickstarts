@@ -56,7 +56,7 @@
       "kind": "Service",
       "id": "gogs-http-service",
       "containerPort": "http",
-      "port": 3000,
+      "port": 80,
       "selector": {
         "component": "gogs"
       }
@@ -70,16 +70,6 @@
       "selector": {
         "component": "gogs"
       }
-    },
-    {
-      "apiVersion": "v1beta1",
-      "id": "gogs-route",
-      "metadata": {
-        "name": "gogs-route"
-      },
-      "kind": "Route",
-      "host": "gogs.fabric8.local",
-      "serviceName": "gogs-http-service"
     }
   ]
 }
