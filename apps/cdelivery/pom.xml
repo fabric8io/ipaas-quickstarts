@@ -57,6 +57,8 @@
 
     <fabric8.env.KUBERNETES_TRUST_CERT>true</fabric8.env.KUBERNETES_TRUST_CERT>
     <fabric8.env.SKIP_TLS_VERIFY>true</fabric8.env.SKIP_TLS_VERIFY>
+    <fabric8.env.JBPM_CONTEXT>/</fabric8.env.JBPM_CONTEXT>
+    <fabric8.env.JBPM_DEPLOYMENT_ID>demo:Builds:1.0</fabric8.env.JBPM_DEPLOYMENT_ID>
     <fabric8.service.name>${project.artifactId}</fabric8.service.name>
     <fabric8.service.port>9595</fabric8.service.port>
     <fabric8.service.containerPort>${http.port}</fabric8.service.containerPort>

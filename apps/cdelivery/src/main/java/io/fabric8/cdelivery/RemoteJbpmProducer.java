@@ -42,7 +42,7 @@ public class RemoteJbpmProducer {
                                      @ConfigProperty(name = "JBPM_CONTEXT", defaultValue = "jbpm-console") String context,
                                      @ConfigProperty(name = "JBPM_USERNAME", defaultValue = "krisv") String user,
                                      @ConfigProperty(name = "JBPM_PASSWORD", defaultValue = "krisv") String password,
-                                     @ConfigProperty(name = "JBPM_DEPLOYMENT_ID", defaultValue = "demo") String deploymentId) throws MalformedURLException {
+                                     @ConfigProperty(name = "JBPM_DEPLOYMENT_ID", defaultValue = "demo:Builds:1.0") String deploymentId) throws MalformedURLException {
 
         if (Strings.isNullOrBlank(jbpmDesignerServiceUrl)) {
             jbpmDesignerServiceUrl = "http://localhost:8080/";
