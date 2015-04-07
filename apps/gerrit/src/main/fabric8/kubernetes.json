@@ -9,12 +9,12 @@
             "apiVersion" : "v1beta1",
             "id":"gerrit-service",
             "kind":"Service",
-            "port":8080,
+            "port":80,
             "containerPort":8080,
             "selector":{
                 "name":"gerrit"
             }
-        },        
+        },
         {
             "apiVersion" : "v1beta1",
             "id":"gerrit-daemon-service",
@@ -62,17 +62,6 @@
             "labels" : {
                 "name" : "gerrit"
             }
-        },
-        {
-            "id": "gerrit-route",
-            "metadata": {
-                "name": "gerrit-route"
-            },
-            "apiVersion": "v1beta1",
-            "kind": "Route",
-            "host": "gerrit.local",
-            "serviceName": "gerrit-service"
         }
-
     ]
 }
