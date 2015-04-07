@@ -41,6 +41,8 @@
     <docker.port.container.protobuf>8099</docker.port.container.protobuf>
     <docker.port.container.jolokia />
 
+    <fabric8.env.PRE_CREATE_DB>cadvisor;k8s;grafana</fabric8.env.PRE_CREATE_DB>
+
     <fabric8.replicationController.name>influxdb-controller</fabric8.replicationController.name>
     <fabric8.service.name>influxdb-service</fabric8.service.name>
     <fabric8.service.port>8086</fabric8.service.port>
