@@ -14,17 +14,6 @@
             "selector":{
                 "name":"kiwiirc"
             }
-        },
-        {
-            "id": "kiwiirc-route",
-            "kind": "Route",
-            "apiVersion": "v1beta1",
-                "metadata": {
-                "name": "kiwiirc-route"
-            },
-            "host": "kiwiirc.local",
-            "serviceName": "kiwiirc"
-        },
         {
             "kind" : "ReplicationController",
             "id" : "kiwiirc",
