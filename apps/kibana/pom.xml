@@ -33,7 +33,20 @@
   </description>
 
   <properties>
-    <fabric8.generateJson>false</fabric8.generateJson>
+    <docker.image>jimmidyson/kibana4:latest</docker.image>
+    <docker.port.container.http>5601</docker.port.container.http>
+    <docker.port.container.jolokia />
+
+    <fabric8.env.ELASTICSEARCH_SERVICE_NAME>ELASTICSEARCH</fabric8.env.ELASTICSEARCH_SERVICE_NAME>
+
+    <fabric8.replicationController.name>kibana-controller</fabric8.replicationController.name>
+    <fabric8.service.name>kibana-service</fabric8.service.name>
+    <fabric8.service.port>80</fabric8.service.port>
+    <fabric8.service.containerPort>5601</fabric8.service.containerPort>
+    <fabric8.imagePullPolicy>PullIfNotPresent</fabric8.imagePullPolicy>
+
+    <fabric8.label.component>kibana</fabric8.label.component>
+    <fabric8.label.provider>fabric8</fabric8.label.provider>
   </properties>
 
 
