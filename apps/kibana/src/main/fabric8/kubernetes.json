@@ -49,20 +49,10 @@
       "kind": "Service",
       "id": "kibana-service",
       "containerPort": "kibana-port",
-      "port": 5601,
+      "port": 80,
       "selector": {
         "component": "kibana-viewer"
       }
-    },
-    {
-      "apiVersion": "v1beta1",
-      "id": "kibana-route",
-      "metadata": {
-        "name": "kibana-route"
-      },
-      "kind": "Route",
-      "host": "logs.fabric8.local",
-      "serviceName": "kibana-service"
     }
   ]
 }
