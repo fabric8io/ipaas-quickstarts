@@ -38,7 +38,7 @@
     <docker.port.container.jolokia />
 
     <fabric8.replicationController.name>kiwiirc-controller</fabric8.replicationController.name>
-    <fabric8.service.name>kiwiirc-service</fabric8.service.name>
+    <fabric8.service.name>kiwiirc</fabric8.service.name>
     <fabric8.service.port>80</fabric8.service.port>
     <fabric8.service.containerPort>7778</fabric8.service.containerPort>
     <fabric8.imagePullPolicy>PullIfNotPresent</fabric8.imagePullPolicy>
