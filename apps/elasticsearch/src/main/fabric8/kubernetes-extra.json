@@ -1,0 +1,12 @@
+{
+  "id": "elasticsearch-cluster",
+  "apiVersion": "v1beta1",
+  "kind": "Service",
+  "portalIP": "None",
+  "port": 9200,
+  "containerPort" : 9200,
+  "selector": {
+    "component": "elasticsearch",
+    "provider": "fabric8"
+  }
+}
