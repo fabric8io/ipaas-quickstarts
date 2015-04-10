@@ -25,16 +25,16 @@
     <version>2.3-SNAPSHOT</version>
   </parent>
 
-  <artifactId>brackets</artifactId>
+  <artifactId>orion</artifactId>
 
-  <name>Brackets</name>
+  <name>Orion</name>
   <description>
-    [Brackets](http://brackets.io/) editor for working with files in git
+    [Orion](http://eclipse.org/orion/) is a web based IDE for working files in a git repository
   </description>
 
   <properties>
-    <docker.image>fabric8/brackets</docker.image>
-    <docker.port.container.http>80</docker.port.container.http>
+    <docker.image>fabric8/eclipse-orion</docker.image>
+    <docker.port.container.http>8080</docker.port.container.http>
     <docker.port.container.jolokia></docker.port.container.jolokia>
 
     <docker.env.KUBERNETES_TRUST_CERT>true</docker.env.KUBERNETES_TRUST_CERT>
@@ -48,7 +48,7 @@
     <fabric8.service.containerPort>${docker.port.container.http}</fabric8.service.containerPort>
     <fabric8.imagePullPolicy>PullIfNotPresent</fabric8.imagePullPolicy>
 
-    <fabric8.label.component>brackets</fabric8.label.component>
+    <fabric8.label.component>orion</fabric8.label.component>
     <fabric8.label.provider>fabric8</fabric8.label.provider>
   </properties>
 
