@@ -38,7 +38,7 @@
     <docker.port.container.transport>9300</docker.port.container.transport>
     <docker.port.container.jolokia />
 
-    <fabric8.env.SELECTOR>component=elasticsearch,cluster=fabric8</fabric8.env.SELECTOR>
+    <fabric8.env.SERVICE_DNS>elasticsearch-cluster</fabric8.env.SERVICE_DNS>
     <fabric8.env.KUBERNETES_TRUST_CERT>true</fabric8.env.KUBERNETES_TRUST_CERT>
 
     <fabric8.replicationController.name>elasticsearch-rc</fabric8.replicationController.name>
