@@ -87,6 +87,7 @@
         <module>kiwi-irc</module>
         <module>registry</module>
         <module>sonarqube</module>
+        <module>taiga</module>
         <module>zookeeper</module>
     </modules>
 
