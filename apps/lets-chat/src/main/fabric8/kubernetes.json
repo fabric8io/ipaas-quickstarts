@@ -1,0 +1,73 @@
+{
+    "id": "letschat-config",
+    "kind": "Config",
+    "apiVersion": "v1beta1",
+    "name": "letschat-config",
+    "description": "Creates a letschat",
+    "items": [
+        {
+            "apiVersion" : "v1beta1",
+            "id":"letschat",
+            "kind":"Service",
+            "port":80,
+            "containerPort":5000,
+            "selector":{
+                "name":"letschat"
+            }
+        },
+        {
+            "kind" : "ReplicationController",
+            "id" : "letschat",
+            "apiVersion" : "v1beta1",
+            "desiredState" : {
+                "replicas" : 1,
+                "replicaSelector" : {
+                    "name" : "letschat"
+                },
+                "podTemplate" : {
+                    "desiredState" : {
+                        "manifest" : {
+                            "version" : "v1beta1",
+                            "id" : "letschatPod",
+                            "containers" : [
+                            {
+                                "image":"mongo",
+                                "name":"letschat-mongodb",
+                                "ports":[
+                                    {
+                                        "containerPort":27017,
+                                        "protocol":"TCP"
+                                    }
+                                    ]
+                            },
+                            {
+                                "image":"fabric8/lets-chat",
+                                "name":"letschat",
+                                "ports":[
+                                    {
+                                        "containerPort":5000,
+                                        "protocol":"TCP"
+                                    }
+                                    ],
+                                "env": [
+                                    {
+                                        "name": "LCB_DATABASE_URI",
+                                        "value": "mongodb://127.0.0.1:27017/letschat"
+                                    }
+
+                                ]
+                            }
+                            ]
+                        }
+                    },
+                    "labels" : {
+                        "name" : "letschat"
+                    }
+                }
+            },
+            "labels" : {
+                "name" : "letschat"
+            }
+        }
+    ]
+}
