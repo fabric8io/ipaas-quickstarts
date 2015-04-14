@@ -59,6 +59,10 @@
     <fabric8.env.SKIP_TLS_VERIFY>true</fabric8.env.SKIP_TLS_VERIFY>
     <fabric8.env.JBPM_CONTEXT>/</fabric8.env.JBPM_CONTEXT>
     <fabric8.env.JBPM_DEPLOYMENT_ID>demo:Builds:1.0</fabric8.env.JBPM_DEPLOYMENT_ID>
+
+    <!-- TODO until secrets work we must default to a namespace for polling builds -->
+    <fabric8.env.BUILD_NAMESPACE>default</fabric8.env.BUILD_NAMESPACE>
+
     <fabric8.service.name>${project.artifactId}</fabric8.service.name>
     <fabric8.service.port>9595</fabric8.service.port>
     <fabric8.service.containerPort>${http.port}</fabric8.service.containerPort>
