@@ -33,7 +33,25 @@
   </description>
 
   <properties>
-    <fabric8.generateJson>false</fabric8.generateJson>
+    <docker.image>fabric8/gogs:0.6.1</docker.image>
+    <docker.port.container.http>3000</docker.port.container.http>
+    <docker.port.container.ssh>22</docker.port.container.ssh>
+    <docker.port.container.jolokia />
+
+    <fabric8.env.GOGS_SERVER__DOMAIN>gogs.fabric8.local</fabric8.env.GOGS_SERVER__DOMAIN>
+    <fabric8.env.GOGS_SERVER__ROOT_URL>https://gogs.fabric8.local</fabric8.env.GOGS_SERVER__ROOT_URL>
+    <fabric8.env.GOGS_SERVER__PROTOCOL>https</fabric8.env.GOGS_SERVER__PROTOCOL>
+    <fabric8.env.GOGS_WEBHOOK__SKIP_TLS_VERIFY>true</fabric8.env.GOGS_WEBHOOK__SKIP_TLS_VERIFY>
+    <fabric8.env.GOGS_WEBHOOK__TASK_INTERVAL>true</fabric8.env.GOGS_WEBHOOK__TASK_INTERVAL>
+
+    <fabric8.replicationController.name>gogs-controller</fabric8.replicationController.name>
+    <fabric8.service.name>gogs-http-service</fabric8.service.name>
+    <fabric8.service.port>443</fabric8.service.port>
+    <fabric8.service.containerPort>http</fabric8.service.containerPort>
+    <fabric8.imagePullPolicy>PullIfNotPresent</fabric8.imagePullPolicy>
+
+    <fabric8.label.component>gogs</fabric8.label.component>
+    <fabric8.label.provider>fabric8</fabric8.label.provider>
   </properties>
 
     <build>
