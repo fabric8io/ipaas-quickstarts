@@ -17,6 +17,8 @@ package io.fabric8.cdelivery;
 
 import com.wordnik.swagger.annotations.Api;
 import io.fabric8.cdelivery.support.BuildTriggerDTO;
+import io.fabric8.io.fabric8.workflow.build.trigger.BuildTrigger;
+import io.fabric8.io.fabric8.workflow.build.trigger.BuildTriggers;
 import io.fabric8.io.fabric8.workflow.build.trigger.BuildWorkItemHandler;
 import io.fabric8.utils.IOHelpers;
 import org.apache.cxf.jaxrs.ext.MessageContext;
@@ -27,6 +29,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -108,6 +111,23 @@ public class CDeliveryService {
         } else {
             return Response.status(422).entity("Missing " + errorMessage).build();
         }
+    }
+
+
+    /**
+     * A proxy replacement for the standard OpenShift build trigger REST API as its currently
+     * kinda flaky and barfs if you pass any headers
+     */
+    @POST
+    @Path("buildConfigHooks/{namespace}/{name}")
+    @Produces("text/plain")
+    @Consumes("*/*")
+    public Response triggerBuildProxy(@PathParam("namespace") String namespace, @PathParam("name") String name, @Context Request request) throws Exception {
+        BuildTrigger buildTrigger = BuildTriggers.getSingleton();
+        LOG.info("Invoking build on namespace: " + namespace + " and buildConfig name: " + name);
+        String buildUuid = buildTrigger.trigger(namespace, name);
+        LOG.info("Build on namespace: " + namespace + " and buildConfig name: " + name + " generated uuid: " + buildUuid);
+        return Response.ok(buildUuid).build();
     }
 
     protected void checkNotNullProperty(StringBuilder errors, Object value, String name) {
