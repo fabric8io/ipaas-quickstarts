@@ -36,7 +36,7 @@ public class HubotBuildListener implements BuildListener {
 
     @Inject
     public HubotBuildListener(HubotNotifier notifier,
-                              @ConfigProperty(name = "BUILD_ROOM", defaultValue = "#fabric8-${namespace}") String room) {
+                              @ConfigProperty(name = "BUILD_ROOM", defaultValue = "#fabric8_${namespace}") String room) {
         this.notifier = notifier;
         this.room = room;
     }
