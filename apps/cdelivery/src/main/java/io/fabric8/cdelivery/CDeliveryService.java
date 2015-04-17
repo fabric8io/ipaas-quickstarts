@@ -16,15 +16,21 @@
 package io.fabric8.cdelivery;
 
 import com.wordnik.swagger.annotations.Api;
+import io.fabric8.annotations.External;
+import io.fabric8.annotations.Protocol;
+import io.fabric8.annotations.ServiceName;
 import io.fabric8.cdelivery.support.BuildTriggerDTO;
+import io.fabric8.hubot.HubotNotifier;
 import io.fabric8.io.fabric8.workflow.build.trigger.BuildTrigger;
 import io.fabric8.io.fabric8.workflow.build.trigger.BuildTriggers;
 import io.fabric8.io.fabric8.workflow.build.trigger.BuildWorkItemHandler;
+import io.fabric8.kubernetes.api.builds.Builds;
 import io.fabric8.utils.IOHelpers;
 import org.apache.cxf.jaxrs.ext.MessageContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -48,6 +54,13 @@ import java.net.URL;
 @Consumes({"application/json", "text/xml"})
 public class CDeliveryService {
     private static final Logger LOG = LoggerFactory.getLogger(CDeliveryService.class);
+
+    @Inject
+    @External @Protocol("http") @ServiceName("fabric8-console-service")
+    String consoleLink;
+
+    @Inject
+    private HubotNotifier hubot;
 
     private MessageContext messageContext;
     private String urlPrefix;
@@ -127,6 +140,11 @@ public class CDeliveryService {
         LOG.info("Invoking build on namespace: " + namespace + " and buildConfig name: " + name);
         String buildUuid = buildTrigger.trigger(namespace, name);
         LOG.info("Build on namespace: " + namespace + " and buildConfig name: " + name + " generated uuid: " + buildUuid);
+
+        String buildLink = Builds.createConsoleBuildLink(consoleLink, name);
+        String message = "@fabric8 workflow triggered build " + buildLink;
+        hubot.notifyBuild(namespace, name, message);
+
         return Response.ok(buildUuid).build();
     }
 

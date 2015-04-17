@@ -17,6 +17,7 @@
  */
 package io.fabric8.hubot.notifier;
 
+import io.fabric8.hubot.HubotNotifier;
 import io.fabric8.kubernetes.api.builds.BuildFinishedEvent;
 import io.fabric8.kubernetes.api.builds.BuildListener;
 import org.apache.deltaspike.core.api.config.ConfigProperty;
@@ -32,13 +33,10 @@ public class HubotBuildListener implements BuildListener {
     private static final transient Logger LOG = LoggerFactory.getLogger(HubotBuildListener.class);
 
     private final HubotNotifier notifier;
-    private final String room;
 
     @Inject
-    public HubotBuildListener(HubotNotifier notifier,
-                              @ConfigProperty(name = "BUILD_ROOM", defaultValue = "#fabric8_${namespace}") String room) {
+    public HubotBuildListener(HubotNotifier notifier) {
         this.notifier = notifier;
-        this.room = room;
     }
 
     @Override
@@ -49,12 +47,7 @@ public class HubotBuildListener implements BuildListener {
         String namespace = event.getNamespace();
 
         String message = "build " + status + " for " + namespace + "/" + configName + ": " + link;
-        String room = createRoom(namespace, configName);
 
-        notifier.notify(room, message);
-    }
-
-    protected String createRoom(String namespace, String configName) {
-        return room.replace("${namespace}", namespace).replace("${buildConfig}", configName);
+        notifier.notifyBuild(namespace, configName, message);
     }
 }

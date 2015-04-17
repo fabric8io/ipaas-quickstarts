@@ -90,6 +90,10 @@
       <artifactId>rest-utils</artifactId>
     </dependency>
     <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>hubot-api</artifactId>
+    </dependency>
+    <dependency>
       <groupId>com.wordnik</groupId>
       <artifactId>swagger-jaxrs_2.10</artifactId>
       <optional>true</optional>
