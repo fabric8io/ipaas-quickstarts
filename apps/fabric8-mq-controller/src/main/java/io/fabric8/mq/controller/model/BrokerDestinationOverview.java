@@ -13,10 +13,17 @@
  *
  */
 
-package io.fabric8.mq.controller.coordination.internalmodel;
+package io.fabric8.mq.controller.model;
 
-/**
- * Created by rajdavies on 31/03/15.
- */
-public class InboundConnection {
+import javax.management.MXBean;
+
+@MXBean
+public interface BrokerDestinationOverview extends Comparable<BrokerDestinationOverview> {
+    String getName();
+
+    int getNumberOfConsumers();
+
+    int getNumberOfProducers();
+
+    int getQueueDepth();
 }

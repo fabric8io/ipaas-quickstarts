@@ -15,37 +15,30 @@
  */
 package io.fabric8.mq.controller;
 
-import io.fabric8.utils.Systems;
+import org.jboss.weld.environment.se.Weld;
+import org.jboss.weld.environment.se.WeldContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Main {
     private static final Logger LOG = LoggerFactory.getLogger(Main.class);
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
+
         try {
-            MQController mqController = new MQController();
+            Weld weld = new Weld();
 
-            String host = Systems.getEnvVarOrSystemProperty("HOST", mqController.getHost());
-            if (host == null || host.trim().isEmpty()) {
-                host = "0.0.0.0";
-            }
-            mqController.setHost(host);
-            Number port = Systems.getEnvVarOrSystemProperty("AMQ_PORT", mqController.getPort());
-            mqController.setPort(port.intValue());
-            Number connectionTimeout = Systems.getEnvVarOrSystemProperty("CONNECTION_TIMEOUT", mqController.getConnectionTimeout());
-            mqController.setConnectionTimeout(connectionTimeout.intValue());
-            Number numberOfServers = Systems.getEnvVarOrSystemProperty("SERVER_NUMBER", mqController.getNumberOfServers());
-            mqController.setNumberOfServers(numberOfServers.intValue());
-            Number numberOfMultiplexers = Systems.getEnvVarOrSystemProperty("MULTIPLEXER_NUMBER", mqController.getNumberOfMultiplexers());
-            mqController.setNumberOfMultiplexers(numberOfMultiplexers.intValue());
-            mqController.start();
-            LOG.info("Started Fabric8-MQ-Controller");
+            WeldContainer container = weld.initialize();
 
+            MQController controller = container.instance().select(MQController.class).get();
+            controller.start();
             waitUntilStop();
+
         } catch (Throwable e) {
+            e.printStackTrace();
             LOG.error("Failed to Start Fabric8-MQ-Controller", e);
         }
+
     }
 
     protected static void waitUntilStop() {

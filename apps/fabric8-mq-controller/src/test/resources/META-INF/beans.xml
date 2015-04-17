@@ -17,7 +17,7 @@
 
 -->
 <beans>
-    <default>
-        <class>io.fabric8.mq.controller.coordination.KubernetesControl</class>
-    </default>
+    <alternatives>
+        <class>io.fabric8.mq.controller.coordination.BrokerControlTestImpl</class>
+    </alternatives>
 </beans>

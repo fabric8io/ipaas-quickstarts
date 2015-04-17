@@ -15,7 +15,10 @@
 
 package io.fabric8.mq.controller.multiplexer;
 
+import io.fabric8.mq.controller.AsyncExecutors;
 import io.fabric8.mq.controller.BrokerStateInfo;
+import io.fabric8.mq.controller.model.BrokerControl;
+import io.fabric8.mq.controller.model.Model;
 import io.fabric8.mq.controller.sharding.ShardedMessageDistribution;
 import org.apache.activemq.transport.Transport;
 import org.apache.activemq.util.ServiceStopper;
@@ -23,23 +26,22 @@ import org.apache.activemq.util.ServiceSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
-
 public class MultiplexerController extends ServiceSupport {
     private static final Logger LOG = LoggerFactory.getLogger(MultiplexerController.class);
     private final String name;
     private final BrokerStateInfo brokerStateInfo;
     private final ShardedMessageDistribution shardedMessageDistribution;
     private final Multiplexer multiplexer;
-    private final Map<Transport, URI> transportURIMap = new HashMap<>();
 
     public MultiplexerController(String name, BrokerStateInfo brokerStateInfo) {
         this.name = name;
         this.brokerStateInfo = brokerStateInfo;
-        shardedMessageDistribution = new ShardedMessageDistribution(brokerStateInfo);
-        multiplexer = new Multiplexer(getName(), brokerStateInfo, shardedMessageDistribution);
+        Model model = brokerStateInfo.getModel();
+        BrokerControl brokerControl = brokerStateInfo.getBrokerControl();
+        AsyncExecutors asyncExecutors = brokerStateInfo.getAsyncExectutors();
+
+        shardedMessageDistribution = new ShardedMessageDistribution(brokerControl);
+        multiplexer = new Multiplexer(model, getName() + ".multiplexer", asyncExecutors, shardedMessageDistribution);
     }
 
     public String getName() {
@@ -50,13 +52,11 @@ public class MultiplexerController extends ServiceSupport {
         return multiplexer.getInputSize();
     }
 
-    public synchronized void addTransport(URI uri, Transport inbound) throws Exception {
-        multiplexer.addInput(inbound);
-        transportURIMap.put(inbound, uri);
+    public synchronized void addTransport(String protocol, Transport inbound) throws Exception {
+        multiplexer.addInput(protocol, inbound);
     }
 
     public synchronized void removeTransport(Transport inbound) {
-        transportURIMap.remove(inbound);
         multiplexer.removeInput(inbound);
     }
 

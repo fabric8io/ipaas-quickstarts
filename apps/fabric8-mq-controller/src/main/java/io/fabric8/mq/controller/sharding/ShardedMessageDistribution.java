@@ -15,9 +15,13 @@
 
 package io.fabric8.mq.controller.sharding;
 
-import io.fabric8.mq.controller.BrokerStateInfo;
-import io.fabric8.mq.controller.coordination.brokermodel.BrokerView;
+import io.fabric8.mq.controller.MessageDistribution;
+import io.fabric8.mq.controller.TransportChangedListener;
+import io.fabric8.mq.controller.coordination.brokers.BrokerTransport;
+import io.fabric8.mq.controller.model.BrokerControl;
+import io.fabric8.mq.controller.model.BrokerModelChangedListener;
 import io.fabric8.mq.controller.util.LRUCache;
+import io.fabric8.mq.controller.util.MultiCallback;
 import org.apache.activemq.command.ActiveMQDestination;
 import org.apache.activemq.command.Command;
 import org.apache.activemq.command.ExceptionResponse;
@@ -32,83 +36,154 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CountDownLatch;
 
-public class ShardedMessageDistribution extends ServiceSupport implements MessageDistribution {
+public class ShardedMessageDistribution extends ServiceSupport implements MessageDistribution, BrokerModelChangedListener {
     private static Logger LOG = LoggerFactory.getLogger(ShardedMessageDistribution.class);
-    private final BrokerStateInfo brokerStateInfo;
+    private final BrokerControl brokerControl;
+    private final List<TransportChangedListener> transportChangedListeners = new CopyOnWriteArrayList<>();
     private final Map<MultiCallback, MultiCallback> requestMap = new LRUCache<>(50000);
-    private TransportListener transportListener;
+    private final InternalTransportListener listener = new InternalTransportListener();
+    private final CountDownLatch countDownLatch = new CountDownLatch(1);
 
-    public ShardedMessageDistribution(BrokerStateInfo brokerStateInfo) {
-        this.brokerStateInfo = brokerStateInfo;
+    public ShardedMessageDistribution(BrokerControl brokerControl) {
+        this.brokerControl = brokerControl;
     }
 
     @Override
     public void sendAll(Command command) throws IOException {
+        sendAll(command, false);
+    }
+
+    @Override
+    public void sendAll(Command command, boolean force) throws IOException {
+        if (!force) {
+            waitForBroker();
+        }
         if (isStarted()) {
-            for (Transport transport : brokerStateInfo.getBrokerControl().getTransports(this)) {
-                if (transport != null) {
-                    transport.oneway(command);
+            Collection<BrokerTransport> transports = brokerControl.getTransports(this);
+            for (BrokerTransport brokerTransport : transports) {
+                if (brokerTransport != null) {
+                    brokerTransport.getTransport().oneway(command);
+                    brokerTransport.release();
                 }
             }
+        } else {
+            throw new IOException("ShardedMessageBroker not started");
         }
     }
 
     @Override
     public void send(ActiveMQDestination destination, Command command) throws IOException {
+        waitForBroker();
         if (isStarted()) {
-            Transport transport = brokerStateInfo.getBrokerControl().getTransport(this, destination);
-            if (transport != null) {
-                transport.oneway(command);
+            BrokerTransport brokerTransport = brokerControl.getTransport(this, destination);
+            if (brokerTransport != null) {
+                brokerTransport.getTransport().oneway(command);
+                brokerTransport.release();
             }
+        } else {
+            throw new IOException("ShardedMessageBroker not started");
         }
     }
 
     @Override
     public void asyncSendAll(final Command command, final ResponseCallback callback) throws IOException {
-        MultiCallback multiCallback = new MultiCallback(command, callback);
-        synchronized (requestMap) {
-            requestMap.put(multiCallback, multiCallback);
-        }
-
+        waitForBroker();
         if (isStarted()) {
-            for (Transport transport : brokerStateInfo.getBrokerControl().getTransports(this)) {
-                if (transport != null) {
-                    transport.asyncRequest(command, multiCallback);
+            MultiCallback multiCallback = new MultiCallback(requestMap, command, callback);
+            synchronized (requestMap) {
+                requestMap.put(multiCallback, multiCallback);
+            }
+            Collection<BrokerTransport> brokerTransports = brokerControl.getTransports(this);
+            for (BrokerTransport brokerTransport : brokerTransports) {
+                if (brokerTransport != null) {
+                    brokerTransport.getTransport().asyncRequest(command, multiCallback);
+                    brokerTransport.release();
                 }
             }
+        } else {
+            throw new IOException("ShardedMessageBroker not started");
         }
     }
 
     @Override
     public void asyncSend(ActiveMQDestination destination, Command command, ResponseCallback callback) throws IOException {
+        waitForBroker();
         if (isStarted()) {
-            Transport transport = brokerStateInfo.getBrokerControl().getTransport(this, destination);
-            if (transport != null) {
-                transport.asyncRequest(command, callback);
+            BrokerTransport brokerTransport = brokerControl.getTransport(this, destination);
+            if (brokerTransport != null) {
+                brokerTransport.getTransport().asyncRequest(command, callback);
+                brokerTransport.release();
             }
+        } else {
+            throw new IOException("ShardedMessageBroker not started");
         }
     }
 
     @Override
     public TransportListener getTransportListener() {
-        return transportListener;
+        return listener;
     }
 
     @Override
     public void setTransportListener(TransportListener transportListener) {
-        this.transportListener = transportListener;
+        listener.setTransportListener(transportListener);
+    }
+
+    @Override
+    public void addTransportCreatedListener(TransportChangedListener transportChangedListener) {
+        transportChangedListeners.add(transportChangedListener);
+    }
+
+    @Override
+    public void removeTransportCreatedListener(TransportChangedListener transportChangedListener) {
+        transportChangedListeners.remove(transportChangedListener);
+    }
+
+    @Override
+    public void transportCreated(String brokerId, Transport transport) {
+        if (isStarted()) {
+            for (TransportChangedListener transportChangedListener : transportChangedListeners) {
+                transportChangedListener.transportCreated(brokerId, transport);
+            }
+        }
+
+    }
+
+    @Override
+    public void transportDestroyed(String brokerIdl) {
+
+    }
+
+    @Override
+    public int getCurrentConnectedBrokerCount() {
+        return brokerControl.getBrokerModels().size();
+    }
+
+    @Override
+    public void brokerNumberChanged(int numberOfBrokers) {
+        if (numberOfBrokers > 0) {
+            countDownLatch.countDown();
+        }
     }
 
     @Override
     protected void doStart() throws Exception {
-        brokerStateInfo.getBrokerControl().addMessageDistribution(this);
+        brokerControl.addMessageDistribution(this);
+        brokerControl.addBrokerModelChangedListener(this);
+        if (!brokerControl.getBrokerModels().isEmpty()) {
+            countDownLatch.countDown();
+        }
     }
 
     protected void doStop(ServiceStopper serviceStopper) throws IOException {
-        brokerStateInfo.getBrokerControl().removeMessageDistribution(this);
+        brokerControl.removeBrokerModelChangedListener(this);
+        brokerControl.removeMessageDistribution(this);
         IOException stopped = new IOException("stopped");
         ArrayList<MultiCallback> requests = null;
         synchronized (requestMap) {
@@ -125,37 +200,48 @@ public class ShardedMessageDistribution extends ServiceSupport implements Messag
         }
     }
 
-    private Transport getTransport(BrokerView brokerView) {
-        Transport result = null;
-        if (brokerView != null) {
-            result = brokerView.getTransport(this);
+    private void waitForBroker() {
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
-        return result;
     }
 
-    private class MultiCallback implements ResponseCallback {
-        private final AtomicBoolean called = new AtomicBoolean();
-        private final Command command;
-        private final ResponseCallback callback;
+    private class InternalTransportListener implements TransportListener {
+        private TransportListener listener;
 
-        MultiCallback(Command command, ResponseCallback callback) {
-            this.command = command;
-            this.callback = callback;
+        void setTransportListener(TransportListener l) {
+            this.listener = l;
         }
 
-        ResponseCallback getCallback() {
-            return callback;
-        }
-
-        public void onCompletion(FutureResponse futureResponse) {
-            if (called.compareAndSet(false, true)) {
-                synchronized (requestMap) {
-                    requestMap.remove(this);
-                }
-                callback.onCompletion(futureResponse);
+        public void onCommand(Object command) {
+            TransportListener l = this.listener;
+            if (l != null) {
+                l.onCommand(command);
             }
         }
 
+        public void onException(IOException ex) {
+            TransportListener l = this.listener;
+            if (l != null) {
+                l.onException(ex);
+            }
+        }
+
+        public void transportInterupted() {
+            TransportListener l = this.listener;
+            if (l != null) {
+                l.transportInterupted();
+            }
+        }
+
+        public void transportResumed() {
+            TransportListener l = this.listener;
+            if (l != null) {
+                l.transportResumed();
+            }
+        }
     }
 }
 

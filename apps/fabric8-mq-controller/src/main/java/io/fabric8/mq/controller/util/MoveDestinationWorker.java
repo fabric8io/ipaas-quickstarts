@@ -15,7 +15,9 @@
 
 package io.fabric8.mq.controller.util;
 
+import com.google.common.util.concurrent.FutureCallback;
 import io.fabric8.mq.controller.AsyncExecutors;
+import io.fabric8.mq.controller.coordination.brokers.BrokerModel;
 import org.apache.activemq.ActiveMQConnection;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQDestination;
@@ -32,11 +34,12 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 
-public class CopyDestinationWorker extends ServiceSupport {
-    private static final transient Logger LOG = LoggerFactory.getLogger(CopyDestinationWorker.class);
+public class MoveDestinationWorker extends ServiceSupport {
+    private static final transient Logger LOG = LoggerFactory.getLogger(MoveDestinationWorker.class);
     private final AsyncExecutors asyncExecutors;
-    private final String fromURI;
-    private final String toURI;
+    private final BrokerModel fromBroker;
+    private final BrokerModel toBroker;
+    private final FutureCallback<Void> callback;
     private final List<ActiveMQDestination> copyList = new CopyOnWriteArrayList<>();
     private final List<ActiveMQDestination> completedList = new CopyOnWriteArrayList<>();
     private ActiveMQConnection fromConnection;
@@ -45,10 +48,15 @@ public class CopyDestinationWorker extends ServiceSupport {
 
     private Throwable error;
 
-    public CopyDestinationWorker(AsyncExecutors asyncExecutors, String fromURI, String toURI) {
+    public MoveDestinationWorker(AsyncExecutors asyncExecutors, BrokerModel from, BrokerModel to) {
+        this(asyncExecutors, from, to, null);
+    }
+
+    public MoveDestinationWorker(AsyncExecutors asyncExecutors, BrokerModel from, BrokerModel to, FutureCallback<Void> callback) {
         this.asyncExecutors = asyncExecutors;
-        this.fromURI = fromURI;
-        this.toURI = toURI;
+        this.fromBroker = from;
+        this.toBroker = to;
+        this.callback = callback;
     }
 
     public void addDestinationToCopy(ActiveMQDestination destination) {
@@ -109,8 +117,8 @@ public class CopyDestinationWorker extends ServiceSupport {
     @Override
     protected void doStart() throws Exception {
         countDownLatch = new CountDownLatch(getCopyList().size());
-        fromConnection = (ActiveMQConnection) new ActiveMQConnectionFactory(fromURI).createConnection();
-        toConnection = (ActiveMQConnection) new ActiveMQConnectionFactory(toURI).createConnection();
+        fromConnection = (ActiveMQConnection) new ActiveMQConnectionFactory(fromBroker.getUri()).createConnection();
+        toConnection = (ActiveMQConnection) new ActiveMQConnectionFactory(toBroker.getUri()).createConnection();
         toConnection.setSendAcksAsync(true);
         fromConnection.start();
         toConnection.start();
@@ -122,6 +130,8 @@ public class CopyDestinationWorker extends ServiceSupport {
     }
 
     private void doWork() {
+        LOG.info("Moving Destinations from " + fromBroker.getBrokerId() + " to " + toBroker.getBrokerId());
+        boolean success = false;
         try {
 
             Session fromSession = fromConnection.createSession(false, Session.AUTO_ACKNOWLEDGE);
@@ -138,15 +148,24 @@ public class CopyDestinationWorker extends ServiceSupport {
 
                 consumer.close();
                 producer.close();
+                LOG.info("Moved " + destination + " From " + fromBroker.getBrokerId() + " + to " + toBroker.getBrokerId() + " " + percentageComplete() + "% of work done");
             }
+            success = true;
         } catch (Throwable e) {
-            LOG.error("Failed to complete copy ", e);
+            LOG.error("Failed to complete Move Destinations ", e);
             setError(e);
+            if (callback != null) {
+                callback.onFailure(e);
+            }
         } finally {
             try {
                 stop();
             } catch (Exception e) {
             }
+        }
+        LOG.info("Finished copying destinations from " + fromBroker.getBrokerId() + " to " + toBroker.getBrokerId());
+        if (success && callback != null) {
+            callback.onSuccess(null);
         }
     }
 }

@@ -20,17 +20,23 @@ import org.apache.activemq.util.ServiceSupport;
 import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.camel.model.RouteDefinition;
 import org.apache.camel.model.RoutesDefinition;
+import org.apache.deltaspike.core.api.config.ConfigProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
+@ApplicationScoped
 public class CamelRouter extends ServiceSupport {
     private static Logger LOG = LoggerFactory.getLogger(CamelRouter.class);
+    @Inject
+    @ConfigProperty(name = "CAMEL_ROUTES", defaultValue = "")
     private String camelRoutes;
     private DefaultCamelContext camelContext;
     private long lastRoutesModified = -1;
@@ -59,7 +65,7 @@ public class CamelRouter extends ServiceSupport {
             camelContext.start();
             doLoadRoutes();
         } else {
-            LOG.info("No camel routes to load");
+            LOG.info("No camel routes to getLoad");
         }
     }
 
@@ -103,7 +109,7 @@ public class CamelRouter extends ServiceSupport {
             }
             is.close();
         } catch (Throwable e) {
-            LOG.error("Failed to load routes " + e.getMessage(), e);
+            LOG.error("Failed to getLoad routes " + e.getMessage(), e);
         } finally {
             latch.countDown();
             this.countDownLatch = null;

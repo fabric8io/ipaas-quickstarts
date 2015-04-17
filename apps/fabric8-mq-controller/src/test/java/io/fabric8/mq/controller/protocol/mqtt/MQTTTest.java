@@ -35,8 +35,6 @@ public class MQTTTest {
     @Before
     public void setUp() throws Exception {
         controller = new MQController();
-        controller.setPort(0);
-        controller.setNumberOfServers(2);
         //controller.getCamelRouter().setCamelRoutes("<route><from uri = \"controller:topic:foo\"/> <to uri=\"controller:topic:foo\"/> </route>");
         controller.start();
     }

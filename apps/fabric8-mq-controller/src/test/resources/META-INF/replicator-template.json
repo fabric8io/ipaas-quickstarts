@@ -1,5 +1,5 @@
 {
-  "id": "fabric8MQ-sharding-controller",
+  "id": "fabric8MQGroup-controller",
   "kind": "ReplicationController",
   "apiVersion": "v1beta1",
   "desiredState": {

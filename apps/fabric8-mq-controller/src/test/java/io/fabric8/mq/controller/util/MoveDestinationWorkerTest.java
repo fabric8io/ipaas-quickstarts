@@ -16,6 +16,8 @@
 package io.fabric8.mq.controller.util;
 
 import io.fabric8.mq.controller.AsyncExecutors;
+import io.fabric8.mq.controller.coordination.brokers.BrokerModel;
+import io.fabric8.mq.controller.coordination.brokers.BrokerView;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.broker.BrokerService;
 import org.apache.activemq.command.ActiveMQDestination;
@@ -31,7 +33,7 @@ import javax.jms.TextMessage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CopyDestinationWorkerTest {
+public class MoveDestinationWorkerTest {
     private final String URI1 = "tcp://localhost:61616";
     private final String URI2 = "tcp://localhost:61617";
     BrokerService brokerService1;
@@ -89,16 +91,23 @@ public class CopyDestinationWorkerTest {
 
     @Test
     public void doTest() throws Exception {
-        CopyDestinationWorker copyDestinationWorker = new CopyDestinationWorker(asyncExecutors, URI1, URI2);
+        BrokerView brokerView1 = new BrokerView();
+        brokerView1.setUri(brokerService1.getDefaultSocketURIString());
+        BrokerModel brokerModel1 = new BrokerModel(null, brokerView1);
+        brokerModel1.start();
+
+        BrokerView brokerView2 = new BrokerView();
+        brokerView2.setUri(brokerService2.getDefaultSocketURIString());
+        BrokerModel brokerModel2 = new BrokerModel(null, brokerView2);
+        brokerModel2.start();
+
+        MoveDestinationWorker moveDestinationWorker = new MoveDestinationWorker(asyncExecutors, brokerModel1, brokerModel2);
         for (ActiveMQDestination destination : destinationList) {
-            copyDestinationWorker.addDestinationToCopy(destination);
+            moveDestinationWorker.addDestinationToCopy(destination);
         }
-        copyDestinationWorker.start();
-        while (!copyDestinationWorker.isDone()) {
-            System.err.println("Progress = " + copyDestinationWorker.percentageComplete());
-            Thread.sleep(1000);
-        }
-        Assert.assertEquals(copyDestinationWorker.getCompletedList(), destinationList);
+        moveDestinationWorker.start();
+        moveDestinationWorker.aWait();
+        Assert.assertEquals(moveDestinationWorker.getCompletedList(), destinationList);
 
     }
 }

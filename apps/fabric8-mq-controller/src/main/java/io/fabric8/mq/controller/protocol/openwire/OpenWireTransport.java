@@ -52,7 +52,7 @@ public class OpenWireTransport extends TransportSupport implements ProtocolTrans
     private final OpenWireFormat openWireFormat;
     private final OpenWireWriteStream writeStream;
     private final OpenWireReadStream readStream;
-    private final MQController gateway;
+    private final MQController controller;
     private final OpenWireInactivityMonitor inactivityMonitor;
     private final AtomicBoolean firstStart;
     private final CountDownLatch readyCountDownLatch;
@@ -62,9 +62,9 @@ public class OpenWireTransport extends TransportSupport implements ProtocolTrans
     private Handler<Void> stopHandler;
     private long negotiateTimeout = NEGIOTIATE_TIMEOUT;
 
-    protected OpenWireTransport(MQController gateway, String name, OpenWireFormat wireFormat) {
+    protected OpenWireTransport(MQController controller, String name, OpenWireFormat wireFormat) {
         this.name = name;
-        this.gateway = gateway;
+        this.controller = controller;
         this.openWireFormat = wireFormat;
         writeStream = new OpenWireWriteStream(this, wireFormat);
         readStream = new OpenWireReadStream(this, wireFormat);
@@ -72,7 +72,7 @@ public class OpenWireTransport extends TransportSupport implements ProtocolTrans
         readyCountDownLatch = new CountDownLatch(1);
         wireInfoSentDownLatch = new CountDownLatch(1);
         minimumVersion = 1;
-        inactivityMonitor = new OpenWireInactivityMonitor(gateway, this);
+        inactivityMonitor = new OpenWireInactivityMonitor(controller.getAsyncExectutors(), this);
         try {
             if (wireFormat.getPreferedWireFormatInfo() != null) {
                 setNegotiateTimeout(wireFormat.getPreferedWireFormatInfo().getMaxInactivityDurationInitalDelay());
@@ -159,7 +159,7 @@ public class OpenWireTransport extends TransportSupport implements ProtocolTrans
     }
 
     protected void runOnContext(Handler<Void> handler) {
-        gateway.runOnContext(handler);
+        controller.runOnContext(handler);
     }
 
     public OpenWireTransport setWriteQueueMaxSize(int i) {

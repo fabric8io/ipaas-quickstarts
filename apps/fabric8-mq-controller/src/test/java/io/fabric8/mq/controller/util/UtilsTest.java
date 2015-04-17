@@ -13,9 +13,21 @@
  *
  */
 
-package io.fabric8.mq.controller.coordination.internalmodel;
+package io.fabric8.mq.controller.util;
 
-public class MultiplexerInfo {
-    private int inboundConnections;
-    private int outbound;
+import io.fabric8.mq.controller.model.Model;
+import org.junit.Assert;
+import org.junit.Test;
+
+import javax.management.ObjectName;
+
+public class UtilsTest {
+
+    @Test
+    public void testObjectName() throws Exception {
+        ObjectName objectName = Utils.getObjectName(Model.DEFAULT_JMX_DOMAIN, "type=broker",
+                                                       "brokerId=blag");
+        Assert.assertNotNull(objectName);
+
+    }
 }

@@ -15,7 +15,7 @@
 
 package io.fabric8.mq.controller.protocol.mqtt;
 
-import io.fabric8.mq.controller.MQController;
+import io.fabric8.mq.controller.AsyncExecutors;
 import io.fabric8.mq.controller.protocol.InactivityMonitor;
 import io.fabric8.mq.controller.protocol.ProtocolTransport;
 import org.apache.activemq.transport.InactivityIOException;
@@ -34,8 +34,8 @@ public class MQTTInactivityMonitor extends InactivityMonitor {
     private ScheduledFuture connectionFuture;
     private ScheduledFuture readFuture;
 
-    public MQTTInactivityMonitor(MQController gateway, ProtocolTransport transport) {
-        super(gateway, transport);
+    public MQTTInactivityMonitor(AsyncExecutors asyncExecutors, ProtocolTransport transport) {
+        super(asyncExecutors, transport);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class MQTTInactivityMonitor extends InactivityMonitor {
                     connectionCheck(now);
                 }
             };
-            connectionFuture = gateway.scheduleAtFixedRate(connection, connectionCheckInterval, DEFAULT_MAX_COMPLETION);
+            connectionFuture = asyncExecutors.scheduleAtFixedRate(connection, connectionCheckInterval, DEFAULT_MAX_COMPLETION);
         }
     }
 

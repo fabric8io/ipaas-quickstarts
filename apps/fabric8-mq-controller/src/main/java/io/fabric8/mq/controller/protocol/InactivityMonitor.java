@@ -14,7 +14,7 @@
  */
 package io.fabric8.mq.controller.protocol;
 
-import io.fabric8.mq.controller.MQController;
+import io.fabric8.mq.controller.AsyncExecutors;
 import org.apache.activemq.transport.TransportListener;
 import org.apache.activemq.util.ServiceStopper;
 import org.apache.activemq.util.ServiceSupport;
@@ -36,13 +36,13 @@ public abstract class InactivityMonitor extends ServiceSupport {
     protected static long DEFAULT_MAX_COMPLETION = 2000;
     protected final AtomicBoolean commandReceived = new AtomicBoolean(true);
     protected final AtomicBoolean inReceive = new AtomicBoolean(false);
-    protected final MQController gateway;
+    protected final AsyncExecutors asyncExecutors;
     protected final ProtocolTransport transport;
     protected long readCheckTime = DEFAULT_CHECK_TIME_MILLS;
     protected ScheduledFuture readFuture;
 
-    public InactivityMonitor(MQController gateway, ProtocolTransport transport) {
-        this.gateway = gateway;
+    public InactivityMonitor(AsyncExecutors asyncExecutors, ProtocolTransport transport) {
+        this.asyncExecutors = asyncExecutors;
         this.transport = transport;
     }
 
@@ -74,7 +74,7 @@ public abstract class InactivityMonitor extends ServiceSupport {
                 readCheck();
             }
         };
-        readFuture = gateway.scheduleAtFixedRate(reader, getReadCheckTime(), DEFAULT_MAX_COMPLETION);
+        readFuture = asyncExecutors.scheduleAtFixedRate(reader, getReadCheckTime(), DEFAULT_MAX_COMPLETION);
     }
 
     protected void stopReadCheck() {
@@ -99,7 +99,7 @@ public abstract class InactivityMonitor extends ServiceSupport {
     }
 
     protected void onException(final Throwable e) {
-        gateway.execute(new Runnable() {
+        asyncExecutors.execute(new Runnable() {
             @Override
             public void run() {
                 handleException(e);

@@ -15,51 +15,68 @@
 
 package io.fabric8.mq.controller;
 
-import io.fabric8.mq.controller.coordination.BrokerControl;
-import io.fabric8.mq.controller.coordination.KubernetesControl;
-import io.fabric8.mq.controller.util.MapTransportConnectionStateRegister;
-import io.fabric8.mq.controller.util.TransportConnectionStateRegister;
+import io.fabric8.mq.controller.camel.CamelRouter;
+import io.fabric8.mq.controller.model.BrokerControl;
+import io.fabric8.mq.controller.model.Model;
 import org.apache.activemq.util.ServiceStopper;
 import org.apache.activemq.util.ServiceSupport;
+
+import javax.enterprise.inject.Default;
+import javax.inject.Inject;
 
 /**
  * Holder of state for Brokers
  */
+@Default
 public class BrokerStateInfo extends ServiceSupport {
-    private final MQController controller;
-    private final BrokerControl brokerControl;
-    private final TransportConnectionStateRegister transportConnectionStateRegister;
-
-    BrokerStateInfo(MQController controller) {
-        this.controller = controller;
-        transportConnectionStateRegister = new MapTransportConnectionStateRegister();
-        brokerControl = new KubernetesControl(this);
-    }
-
-    public TransportConnectionStateRegister getTransportConnectionStateRegister() {
-        return transportConnectionStateRegister;
-    }
-
-    public MQController getController() {
-        return controller;
-    }
+    @Inject
+    protected BrokerControl brokerControl;
+    @Inject
+    protected Model model;
+    @Inject
+    protected AsyncExecutors asyncExecutors;
+    @Inject
+    protected MQControllerStatus controllerStatus;
+    @Inject
+    protected CamelRouter camelRouter;
 
     public AsyncExecutors getAsyncExectutors() {
-        return controller.getAsyncExecutors();
+        return asyncExecutors;
     }
 
     public BrokerControl getBrokerControl() {
         return brokerControl;
     }
 
+    public MQControllerStatus getControllerStatus() {
+        return controllerStatus;
+    }
+
+    public Model getModel() {
+        return model;
+    }
+
     @Override
     protected void doStop(ServiceStopper serviceStopper) throws Exception {
-        transportConnectionStateRegister.clear();
         serviceStopper.stop(brokerControl);
+        serviceStopper.stop(model);
+        serviceStopper.stop(asyncExecutors);
+        serviceStopper.stop(camelRouter);
     }
 
     @Override
     protected void doStart() throws Exception {
+        asyncExecutors.start();
+        int numberOfCores = Runtime.getRuntime().availableProcessors();
+        if (controllerStatus.getNumberOfSevers() < 1) {
+            controllerStatus.setNumberOfSevers(numberOfCores);
+        }
+        if (controllerStatus.getNumberOfMultiplexers() < 1) {
+            controllerStatus.setNumberOfMultiplexers(numberOfCores);
+        }
+        model.start();
         brokerControl.start();
+        camelRouter.start();
+        controllerStatus.setCamelRoutes(camelRouter.getCamelRoutes());
     }
 }

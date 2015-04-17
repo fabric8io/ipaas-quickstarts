@@ -14,7 +14,7 @@
  */
 package io.fabric8.mq.controller.protocol.openwire;
 
-import io.fabric8.mq.controller.MQController;
+import io.fabric8.mq.controller.AsyncExecutors;
 import io.fabric8.mq.controller.protocol.InactivityMonitor;
 import io.fabric8.mq.controller.protocol.ProtocolTransport;
 import org.apache.activemq.command.KeepAliveInfo;
@@ -40,8 +40,8 @@ public class OpenWireInactivityMonitor extends InactivityMonitor {
     private long writeCheckTime = DEFAULT_CHECK_TIME_MILLS;
     private ScheduledFuture writeFuture;
 
-    public OpenWireInactivityMonitor(MQController gateway, ProtocolTransport transport) {
-        super(gateway, transport);
+    public OpenWireInactivityMonitor(AsyncExecutors asyncExecutors, ProtocolTransport transport) {
+        super(asyncExecutors, transport);
     }
 
     protected void doStart() {
@@ -53,7 +53,7 @@ public class OpenWireInactivityMonitor extends InactivityMonitor {
                 writeCheck();
             }
         };
-        writeFuture = gateway.scheduleAtFixedRate(writer, writeCheckTime, DEFAULT_MAX_COMPLETION);
+        writeFuture = asyncExecutors.scheduleAtFixedRate(writer, writeCheckTime, DEFAULT_MAX_COMPLETION);
     }
 
     protected void doStop(ServiceStopper stopper) {
@@ -94,7 +94,7 @@ public class OpenWireInactivityMonitor extends InactivityMonitor {
     private void writeCheck() {
         if (!inSend.get() && !isStopping() && !isStopped()) {
             if (!commandSent.get()) {
-                gateway.execute(new Runnable() {
+                asyncExecutors.execute(new Runnable() {
                     @Override
                     public void run() {
                         KeepAliveInfo info = new KeepAliveInfo();

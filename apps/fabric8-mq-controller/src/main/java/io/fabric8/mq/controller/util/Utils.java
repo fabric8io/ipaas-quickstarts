@@ -44,18 +44,18 @@ public class Utils {
                 string += ",";
             }
         }
+        System.err.println("UTIL getObjectName " + domain + " : " + string);
         String name = getOrderedProperties(getProperties(string));
         ObjectName objectName = new ObjectName(domain + ":" + name);
         return objectName;
     }
 
     public static Hashtable<String, String> getProperties(String string) {
-        System.err.println("PROPS = " + string);
         Hashtable<String, String> result = new Hashtable<>();
         String[] props = string.split(",");
         for (int i = 0; i < props.length; i++) {
             String[] keyValues = props[i].split("=");
-            result.put(keyValues[0].trim(), keyValues[1].trim());
+            result.put(keyValues[0].trim(), ObjectName.quote(keyValues[1].trim()));
         }
         return result;
     }

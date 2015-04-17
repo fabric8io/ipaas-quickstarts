@@ -13,10 +13,10 @@
  *
  */
 
-package io.fabric8.mq.controller.coordination.brokermodel;
+package io.fabric8.mq.controller.coordination.brokers;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.fabric8.mq.controller.sharding.MessageDistribution;
+import io.fabric8.mq.controller.MessageDistribution;
 import org.apache.activemq.command.ActiveMQDestination;
 import org.apache.activemq.transport.Transport;
 import org.apache.activemq.transport.TransportFactory;
@@ -36,7 +36,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
- * The BrokerView is used to share state through coodination (maybe through Zookeepr)
+ * The BrokerView is used to hold the current state of a broker - typically populated
+ * via discovery
  */
 public class BrokerView extends ServiceSupport {
     private static final Logger LOG = LoggerFactory.getLogger(BrokerView.class);
@@ -48,11 +49,6 @@ public class BrokerView extends ServiceSupport {
     private String brokerName;
     private String brokerId;
     private String uri;
-    @JsonIgnore
-    private long timeStamp;
-    @JsonIgnore
-    private boolean gcCandidate;
-    @JsonIgnore
     private BrokerOverview brokerOverview;
 
     public String getBrokerId() {
@@ -119,6 +115,8 @@ public class BrokerView extends ServiceSupport {
 
     public void addTransport(MessageDistribution messageDistribution, Transport transport) {
         transportMap.put(messageDistribution, transport);
+        messageDistribution.transportCreated(brokerId, transport);
+
     }
 
     public void removeTransport(MessageDistribution messageDistribution) {
@@ -143,10 +141,9 @@ public class BrokerView extends ServiceSupport {
     }
 
     public void createTransport(final MessageDistribution messageDistribution) throws Exception {
-        URI location = new URI(getUri() + "?wireFormat.cacheEnabled=false");
+        URI location = new URI("failover:(" + uri + "?wireFormat.cacheEnabled=false)?maxReconnectAttempts=0");
         TransportFactory factory = TransportFactory.findTransportFactory(location);
         final Transport transport = factory.doConnect(location);
-
         transport.setTransportListener(new TransportListener() {
             private final TransportListener transportListener = messageDistribution.getTransportListener();
 
@@ -169,7 +166,6 @@ public class BrokerView extends ServiceSupport {
         });
         transport.start();
         addTransport(messageDistribution, transport);
-        unlock();
         LOG.info("Created transport for " + getBrokerName() + " to " + getUri());
     }
 
@@ -182,11 +178,22 @@ public class BrokerView extends ServiceSupport {
         }
     }
 
-    public void lock() {
+    public void getReadLock() {
+        readWriteLock.readLock().lock();
+    }
+
+    public void unlockReadLock() {
+        try {
+            readWriteLock.readLock().unlock();
+        } catch (IllegalMonitorStateException e) {
+        }
+    }
+
+    public void getWriteLock() {
         readWriteLock.writeLock().lock();
     }
 
-    public void unlock() {
+    public void unlockWriteLock() {
         try {
             readWriteLock.writeLock().unlock();
         } catch (IllegalMonitorStateException e) {
@@ -200,7 +207,7 @@ public class BrokerView extends ServiceSupport {
     }
 
     public String toString() {
-        String str = "BrokerView[" + brokerName + "(" + getUri() + ")" + "]";
+        String str = "BrokerView:" + brokerName + "[" + brokerId + "(" + getUri() + ")" + "]";
         return str;
     }
 
@@ -218,7 +225,8 @@ public class BrokerView extends ServiceSupport {
 
     @Override
     protected void doStop(ServiceStopper serviceStopper) throws Exception {
-        unlock();
+        unlockWriteLock();
+        unlockReadLock();
     }
 
     @Override

@@ -15,10 +15,17 @@
 
 package io.fabric8.mq.controller.multiplexer;
 
-import io.fabric8.mq.controller.BrokerStateInfo;
+import io.fabric8.mq.controller.AsyncExecutors;
+import io.fabric8.mq.controller.model.DestinationStatistics;
+import io.fabric8.mq.controller.model.InboundConnection;
+import io.fabric8.mq.controller.model.Model;
 import io.fabric8.mq.controller.util.LRUCache;
+import io.fabric8.mq.controller.util.TransportConnectionStateRegister;
+import org.apache.activemq.advisory.AdvisorySupport;
 import org.apache.activemq.command.*;
 import org.apache.activemq.state.CommandVisitor;
+import org.apache.activemq.state.ConsumerState;
+import org.apache.activemq.state.ProducerState;
 import org.apache.activemq.transport.DefaultTransportListener;
 import org.apache.activemq.transport.Transport;
 import org.apache.activemq.transport.TransportListener;
@@ -28,35 +35,52 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
-class MultiplexerInput extends TransportSupport implements CommandVisitor {
+public class MultiplexerInput extends TransportSupport implements CommandVisitor, InboundConnection {
     private static Logger LOG = LoggerFactory.getLogger(MultiplexerInput.class);
     private final Multiplexer multiplexer;
-    private final BrokerStateInfo brokerStateInfo;
-    private final ConnectionId multiplexerId;
+    private final Model model;
+    private final String protocol;
+    private final String name;
+    private final AsyncExecutors asyncExecutors;
+    private final TransportConnectionStateRegister multiplexerConnectionStateRegister;
+    private final ConnectionId multiplexerConnectionId;
+    private final SessionId multiplexerSessionId;
     private final Transport input;
+    final private Map<SessionId, SessionId> sessionIdMap = new ConcurrentHashMap<>();
+    final private Map<ProducerId, ProducerId> producerIdMap = new ConcurrentHashMap<>();
+    final private Map<ConsumerId, ConsumerId> originalConsumerIdKeyMap = new ConcurrentHashMap<>();
+    final private Map<ConsumerId, ConsumerId> multiplexerConsumerIdKeyMap = new ConcurrentHashMap<>();
+    final private Map<TransactionId, TransactionId> transactionIdMap = new LRUCache<>(10000);
+    final private DestinationRegister destinationRegister;
     private ConnectionInfo connectionInfo;
-    private Map<SessionId, SessionId> sessionIdMap = new ConcurrentHashMap<>();
-    private Map<ProducerId, ProducerId> producerIdMap = new ConcurrentHashMap<>();
-    private Map<ConsumerId, ConsumerId> originalConsumerIdKeyMap = new ConcurrentHashMap<>();
-    private Map<ConsumerId, ConsumerId> multiplexerConsumerIdKeyMap = new ConcurrentHashMap<>();
-    private Map<TransactionId, TransactionId> transactionIdMap = new LRUCache<>(10000);
+    private AtomicLong inboundMessageCount = new AtomicLong();
+    private AtomicLong outboundMessageCount = new AtomicLong();
 
-    MultiplexerInput(Multiplexer multiplexer, BrokerStateInfo brokerStateInfo, ConnectionId connectionId, Transport input) {
+    MultiplexerInput(Multiplexer multiplexer, String name, String protocol, AsyncExecutors asyncExecutors, TransportConnectionStateRegister transportConnectionStateRegister, Transport input) {
         this.multiplexer = multiplexer;
-        this.brokerStateInfo = brokerStateInfo;
+        this.name = name;
+        this.protocol = protocol;
+        this.model = multiplexer.getModel();
+        this.asyncExecutors = asyncExecutors;
+        this.multiplexerConnectionStateRegister = transportConnectionStateRegister;
         this.input = input;
-        this.multiplexerId = connectionId;
+        this.multiplexerConnectionId = multiplexer.getMultiplexerConnectionInfo().getConnectionId();
+        this.multiplexerSessionId = multiplexer.getMultiplexerSessionInfo().getSessionId();
+        this.destinationRegister = new DestinationRegister(model, this);
+
     }
 
     public Transport getInput() {
         return input;
     }
 
-    public ConnectionId getMultiplexerId() {
-        return multiplexerId;
+    public ConnectionId getMultiplexerConnectionId() {
+        return multiplexerConnectionId;
     }
 
     public void setTransportListener(TransportListener commandListener) {
@@ -64,8 +88,17 @@ class MultiplexerInput extends TransportSupport implements CommandVisitor {
         input.setTransportListener(commandListener);
     }
 
+    public Multiplexer getMultiplexer() {
+        return multiplexer;
+    }
+
     @Override
     protected void doStop(ServiceStopper serviceStopper) throws Exception {
+        //clear down our ConnectionState
+        for (SessionId sessionId : sessionIdMap.values()) {
+            removeSession(sessionId);
+        }
+
         multiplexer.removeInput(this);
         if (serviceStopper != null) {
             serviceStopper.stop(input);
@@ -77,6 +110,7 @@ class MultiplexerInput extends TransportSupport implements CommandVisitor {
         sessionIdMap.clear();
         producerIdMap.clear();
         transactionIdMap.clear();
+        model.remove(this);
 
     }
 
@@ -107,6 +141,7 @@ class MultiplexerInput extends TransportSupport implements CommandVisitor {
         });
 
         this.input.start();
+        model.add(this);
     }
 
     protected void processCommand(Object o) {
@@ -134,6 +169,13 @@ class MultiplexerInput extends TransportSupport implements CommandVisitor {
         ConsumerId originalConsumerId = getOriginalConsumerId(consumerId);
         messageDispatch.setConsumerId(originalConsumerId);
         input.oneway(messageDispatch);
+        destinationRegister.addMessageOutbound(messageDispatch.getDestination());
+        outboundMessageCount.incrementAndGet();
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
     @Override
@@ -160,13 +202,14 @@ class MultiplexerInput extends TransportSupport implements CommandVisitor {
     public Response processAddConnection(ConnectionInfo connectionInfo) throws Exception {
         this.connectionInfo = connectionInfo;
         ConnectionInfo copy = connectionInfo.copy();
-        copy.setConnectionId(getMultiplexerId());
-        brokerStateInfo.getTransportConnectionStateRegister().registerConnectionState(copy.getConnectionId(), copy);
-        multiplexer.sendOutAll(this, connectionInfo);
+        copy.setConnectionId(getMultiplexerConnectionId());
+        /*
+        multiplexer.sendOutAll(this, copy);
+        multiplexerConnectionStateRegister.registerConnectionState(copy.getConnectionId(), copy);
+        */
         Response response = new Response();
         response.setCorrelationId(connectionInfo.getCommandId());
-        input.oneway(response);
-        return null;
+        return response;
     }
 
     @Override
@@ -174,11 +217,11 @@ class MultiplexerInput extends TransportSupport implements CommandVisitor {
         SessionInfo copy = new SessionInfo();
         sessionInfo.copy(copy);
         SessionId originalSessionId = sessionInfo.getSessionId();
-        SessionId sessionId = new SessionId(getMultiplexerId(), multiplexer.getNextSessionId());
+        SessionId sessionId = new SessionId(getMultiplexerConnectionId(), multiplexer.getNextSessionId());
         sessionIdMap.put(originalSessionId, sessionId);
         copy.setSessionId(sessionId);
-        brokerStateInfo.getTransportConnectionStateRegister().addSession(copy);
         multiplexer.sendOutAll(this, copy);
+        multiplexerConnectionStateRegister.addSession(copy);
         return null;
     }
 
@@ -188,14 +231,15 @@ class MultiplexerInput extends TransportSupport implements CommandVisitor {
         SessionId originalSessionId = producerInfo.getProducerId().getParentId();
         SessionId newSessionId = sessionIdMap.get(originalSessionId);
         if (newSessionId == null) {
-            newSessionId = new SessionId(getMultiplexerId(), multiplexer.getNextSessionId());
+            newSessionId = new SessionId(getMultiplexerConnectionId(), multiplexer.getNextSessionId());
             sessionIdMap.put(originalSessionId, newSessionId);
         }
         ProducerId producerId = new ProducerId(newSessionId, multiplexer.getNextProducerId());
         copy.setProducerId(producerId);
         producerIdMap.put(producerInfo.getProducerId(), producerId);
-        brokerStateInfo.getTransportConnectionStateRegister().addProducer(copy);
         multiplexer.sendOutAll(this, copy);
+        multiplexerConnectionStateRegister.addProducer(copy);
+        destinationRegister.registerProducer(producerInfo.getDestination());
         return null;
     }
 
@@ -209,9 +253,9 @@ class MultiplexerInput extends TransportSupport implements CommandVisitor {
         if (newSessionId == null) {
             //Connection Advisory Consumer sets session id to -1
             if (originalSessionId.getValue() == -1) {
-                newSessionId = new SessionId(getMultiplexerId(), -1);
+                newSessionId = multiplexerSessionId;
             } else {
-                newSessionId = new SessionId(getMultiplexerId(), multiplexer.getNextSessionId());
+                newSessionId = new SessionId(getMultiplexerConnectionId(), multiplexer.getNextSessionId());
             }
             sessionIdMap.put(originalSessionId, newSessionId);
         }
@@ -220,8 +264,11 @@ class MultiplexerInput extends TransportSupport implements CommandVisitor {
         copy.setConsumerId(multiplexConsumerId);
         storeConsumerId(originalConsumerId, multiplexConsumerId);
         multiplexer.registerConsumer(multiplexConsumerId, this);
-        brokerStateInfo.getTransportConnectionStateRegister().addConsumer(copy);
         multiplexer.sendOutAll(this, copy);
+        multiplexerConnectionStateRegister.addConsumer(copy);
+        if (!AdvisorySupport.isAdvisoryTopic(consumerInfo.getDestination())) {
+            destinationRegister.registerConsumer(consumerInfo.getDestination());
+        }
         return null;
     }
 
@@ -236,21 +283,41 @@ class MultiplexerInput extends TransportSupport implements CommandVisitor {
             RemoveInfo removeCommand = connectionInfo.createRemoveCommand();
             removeCommand.setResponseRequired(false);
             removeCommand.setLastDeliveredSequenceId(l);
-            brokerStateInfo.getTransportConnectionStateRegister().unregisterConnectionState(getMultiplexerId());
+            /*
+            multiplexerConnectionStateRegister.unregisterConnectionState(getMultiplexerConnectionId());
+
             if (!multiplexer.isStopping() && !multiplexer.isStopped()) {
                 multiplexer.sendOutAll(this, removeCommand);
             }
+            */
         }
+
+        //clear down our ConnectionState
+        for (SessionId sessionId : sessionIdMap.values()) {
+            if (multiplexerConnectionStateRegister.removeSession(sessionId) != null) {
+                removeSession(sessionId);
+            }
+        }
+        asyncExecutors.execute(new Runnable() {
+            public void run() {
+                try {
+                    Thread.sleep(1000);
+                    stop();
+                } catch (Throwable e) {
+                    LOG.warn("Caught an error trying to stop");
+                }
+            }
+        });
         return new Response();
     }
 
     @Override
     public Response processRemoveSession(SessionId sessionId, long l) throws Exception {
-        SessionId originalSessionId = sessionIdMap.remove(sessionId);
-        if (originalSessionId != null) {
-            RemoveInfo removeInfo = new RemoveInfo(originalSessionId);
+        SessionId multiplexerSessionId = sessionIdMap.remove(sessionId);
+        if (multiplexerSessionId != null) {
+            RemoveInfo removeInfo = new RemoveInfo(multiplexerSessionId);
             removeInfo.setLastDeliveredSequenceId(l);
-            brokerStateInfo.getTransportConnectionStateRegister().removeSession(originalSessionId);
+            multiplexerConnectionStateRegister.removeSession(multiplexerSessionId);
             multiplexer.sendOutAll(this, removeInfo);
         }
         return null;
@@ -261,8 +328,11 @@ class MultiplexerInput extends TransportSupport implements CommandVisitor {
         ProducerId originalProducerId = producerIdMap.remove(producerId);
         if (originalProducerId != null) {
             RemoveInfo removeInfo = new RemoveInfo(originalProducerId);
-            brokerStateInfo.getTransportConnectionStateRegister().removeProducer(originalProducerId);
+            ProducerState state = multiplexerConnectionStateRegister.removeProducer(originalProducerId);
             multiplexer.sendOutAll(this, removeInfo);
+            if (state != null && state.getInfo() != null) {
+                destinationRegister.unregisterProducer(state.getInfo().getDestination());
+            }
         }
         return null;
     }
@@ -274,8 +344,11 @@ class MultiplexerInput extends TransportSupport implements CommandVisitor {
         if (multiplexerConsumerId != null) {
             RemoveInfo removeInfo = new RemoveInfo(multiplexerConsumerId);
             removeInfo.setLastDeliveredSequenceId(l);
-            brokerStateInfo.getTransportConnectionStateRegister().removeConsumer(multiplexerConsumerId);
+            ConsumerState state = multiplexerConnectionStateRegister.removeConsumer(multiplexerConsumerId);
             multiplexer.sendOutAll(this, removeInfo);
+            if (state != null && state.getInfo() != null) {
+                destinationRegister.unregisterConsumer(state.getInfo().getDestination());
+            }
         }
         return null;
     }
@@ -283,7 +356,7 @@ class MultiplexerInput extends TransportSupport implements CommandVisitor {
     @Override
     public Response processAddDestination(DestinationInfo destinationInfo) throws Exception {
         DestinationInfo copy = destinationInfo.copy();
-        copy.setConnectionId(getMultiplexerId());
+        copy.setConnectionId(getMultiplexerConnectionId());
         multiplexer.sendOut(this, destinationInfo.getDestination(), copy);
         return null;
     }
@@ -291,14 +364,14 @@ class MultiplexerInput extends TransportSupport implements CommandVisitor {
     @Override
     public Response processRemoveDestination(DestinationInfo destinationInfo) throws Exception {
         DestinationInfo copy = destinationInfo.copy();
-        copy.setConnectionId(getMultiplexerId());
+        copy.setConnectionId(getMultiplexerConnectionId());
         multiplexer.sendOut(this, destinationInfo.getDestination(), copy);
         return null;
     }
 
     @Override
     public Response processRemoveSubscription(RemoveSubscriptionInfo removeSubscriptionInfo) throws Exception {
-        removeSubscriptionInfo.setConnectionId(getMultiplexerId());
+        removeSubscriptionInfo.setConnectionId(getMultiplexerConnectionId());
         multiplexer.sendOutAll(this, removeSubscriptionInfo);
         return null;
     }
@@ -309,10 +382,13 @@ class MultiplexerInput extends TransportSupport implements CommandVisitor {
         ProducerId originalProducerId = message.getProducerId();
         ProducerId newProducerId = producerIdMap.get(originalProducerId);
         if (newProducerId != null) {
+            ActiveMQDestination destination = message.getDestination();
             Message copy = message.copy();
             copy.setProducerId(newProducerId);
             copy.setTransactionId(getMultiplexTransactionId(message.getOriginalTransactionId()));
-            multiplexer.sendOut(this, copy.getDestination(), copy);
+            multiplexer.sendOut(this, destination, copy);
+            destinationRegister.addMessageInbound(destination);
+            inboundMessageCount.incrementAndGet();
         } else {
             LOG.error("Cannot find producerId for " + originalProducerId);
         }
@@ -487,7 +563,7 @@ class MultiplexerInput extends TransportSupport implements CommandVisitor {
                 result = transactionIdMap.get(originalId);
                 if (result == null) {
                     long multiplexerTransactionId = multiplexer.getNextTransactionId();
-                    result = new LocalTransactionId(getMultiplexerId(), multiplexerTransactionId);
+                    result = new LocalTransactionId(getMultiplexerConnectionId(), multiplexerTransactionId);
                     transactionIdMap.put(originalId, result);
                 }
             }
@@ -521,6 +597,13 @@ class MultiplexerInput extends TransportSupport implements CommandVisitor {
         return multiplexerId;
     }
 
+    private void removeByMultiplexerId(ConsumerId multiplexerId) {
+        ConsumerId originalId = multiplexerConsumerIdKeyMap.remove(multiplexerId);
+        if (originalId != null) {
+            originalConsumerIdKeyMap.remove(originalId);
+        }
+    }
+
     private ConsumerId getMultiplexConsumerId(ConsumerId original) {
         return originalConsumerIdKeyMap.get(original);
     }
@@ -529,4 +612,78 @@ class MultiplexerInput extends TransportSupport implements CommandVisitor {
         return multiplexerConsumerIdKeyMap.get(multiplex);
     }
 
+    private void removeSession(SessionId multiplexerDefinedSessionId) {
+
+        for (ConsumerId multiplexerConsumerId : multiplexerConsumerIdKeyMap.keySet()) {
+            if (multiplexerConsumerId.getParentId().equals(multiplexerDefinedSessionId)) {
+                removeConsumer(multiplexerConsumerId);
+            }
+        }
+        for (Map.Entry<ProducerId, ProducerId> entry : producerIdMap.entrySet()) {
+            if (entry.getValue().getParentId().equals(multiplexerDefinedSessionId)) {
+                removeProducer(entry.getValue());
+                producerIdMap.remove(entry.getKey());
+            }
+        }
+        if (!multiplexerDefinedSessionId.equals(multiplexerSessionId)) {
+            multiplexerConnectionStateRegister.removeSession(multiplexerDefinedSessionId);
+            for (Map.Entry<SessionId, SessionId> entry : sessionIdMap.entrySet()) {
+                if (entry.getValue().equals(multiplexerDefinedSessionId)) {
+                    sessionIdMap.remove(entry.getKey());
+                    break;
+                }
+            }
+            RemoveInfo removeInfo = new RemoveInfo(multiplexerDefinedSessionId);
+            removeInfo.setLastDeliveredSequenceId(0);
+            multiplexer.sendOutAll(this, removeInfo);
+        }
+    }
+
+    private void removeConsumer(ConsumerId multiplexerConsumerId) {
+        if (multiplexerConsumerId != null) {
+            removeByMultiplexerId(multiplexerConsumerId);
+            if (multiplexerConnectionStateRegister.removeConsumer(multiplexerConsumerId) != null) {
+                multiplexer.unregisterConsumer(multiplexerConsumerId);
+
+                RemoveInfo removeInfo = new RemoveInfo(multiplexerConsumerId);
+                removeInfo.setLastDeliveredSequenceId(0);
+                multiplexer.sendOutAll(this, removeInfo);
+            }
+        }
+
+    }
+
+    private void removeProducer(ProducerId multiplexerProducerId) {
+
+        if (multiplexerProducerId != null) {
+            multiplexerConnectionStateRegister.removeProducer(multiplexerProducerId);
+            RemoveInfo removeInfo = new RemoveInfo(multiplexerProducerId);
+            multiplexer.sendOutAll(this, removeInfo);
+        }
+    }
+
+    @Override
+    public long getOutboundMessageCount() {
+        return outboundMessageCount.get();
+    }
+
+    @Override
+    public long getInboundMessageCount() {
+        return inboundMessageCount.get();
+    }
+
+    @Override
+    public String getUrl() {
+        return input.getRemoteAddress();
+    }
+
+    @Override
+    public String getProtocol() {
+        return protocol;
+    }
+
+    @Override
+    public List<DestinationStatistics> getDestinations() {
+        return destinationRegister.getDestinations();
+    }
 }

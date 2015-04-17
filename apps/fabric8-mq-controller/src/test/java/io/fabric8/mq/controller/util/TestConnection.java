@@ -13,23 +13,18 @@
  *
  */
 
-package io.fabric8.mq.controller.coordination;
+package io.fabric8.mq.controller.util;
 
-import io.fabric8.mq.controller.sharding.MessageDistribution;
-import org.apache.activemq.Service;
-import org.apache.activemq.command.ActiveMQDestination;
+import org.apache.activemq.ActiveMQConnection;
+import org.apache.activemq.broker.region.policy.RedeliveryPolicyMap;
+import org.apache.activemq.management.JMSStatsImpl;
 import org.apache.activemq.transport.Transport;
+import org.apache.activemq.util.IdGenerator;
 
-import java.util.Collection;
-
-public interface BrokerControl extends Service {
-    Collection<Transport> getTransports(MessageDistribution messageDistribution);
-
-    Transport getTransport(MessageDistribution messageDistribution, ActiveMQDestination destination);
-
-    void addMessageDistribution(MessageDistribution messageDistribution);
-
-    void removeMessageDistribution(MessageDistribution messageDistribution);
+public class TestConnection extends ActiveMQConnection {
+    public TestConnection(Transport transport) throws Exception {
+        super(transport, new IdGenerator(), new IdGenerator(), new JMSStatsImpl());
+        setRedeliveryPolicyMap(new RedeliveryPolicyMap());
+        transport.start();
+    }
 }
-
-

@@ -47,7 +47,7 @@ public class TestBrokerScaling extends Thread {
     private int numberOfConsumers = 2;
     private int numberOfProducers = 2;
     private int numberOfMessagesInABatch = 1000;
-    private int numberOfDestinations = 20;
+    private int numberOfDestinations = 25;
     private int rumTimeMinutes = 10;
     private String destinationName = "test.scaling";
 
@@ -65,7 +65,7 @@ public class TestBrokerScaling extends Thread {
 
             TestBrokerScaling testBrokerScaling = new TestBrokerScaling();
 
-            String AMQ_PORT = Systems.getEnvVarOrSystemProperty("AMQ_PORT", "48004").trim();
+            String AMQ_PORT = Systems.getEnvVarOrSystemProperty("AMQ_PORT", "48002").trim();
             String AMQ_HOST = Systems.getEnvVarOrSystemProperty("AMQ_HOST", "localhost").trim();
             Number DESTINATIONS = Systems.getEnvVarOrSystemProperty("DESTINATIONS", testBrokerScaling.getNumberOfDestinations());
             Number RUNNING_TIME = Systems.getEnvVarOrSystemProperty("RUNNING_TIME", testBrokerScaling.getRumTimeMinutes());

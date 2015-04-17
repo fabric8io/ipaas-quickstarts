@@ -15,6 +15,7 @@
 
 package io.fabric8.mq.controller.protocol.mqtt;
 
+import io.fabric8.mq.controller.AsyncExecutors;
 import io.fabric8.mq.controller.MQController;
 import io.fabric8.mq.controller.protocol.ProtocolTransport;
 import org.apache.activemq.command.Command;
@@ -39,21 +40,23 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class MQTTTransport extends TransportSupport implements ProtocolTransport<MQTTTransport> {
     private static final transient Logger LOG = LoggerFactory.getLogger(MQTTTransport.class);
 
+    private final MQController controller;
+    private final AsyncExecutors asyncExecutors;
     private final AtomicInteger receiveCounter = new AtomicInteger();
     private final String name;
     private final MQTTWriteStream writeStream;
     private final MQTTReadStream readStream;
     private final MQTTProtocolConverter protocolConverter;
-    private final MQController gateway;
     private final MQTTInactivityMonitor inactivityMonitor;
     private Handler<Throwable> exceptionHandler;
     private long connectAttemptTimeout;
     private Handler<Void> stopHandler;
 
-    protected MQTTTransport(MQController gateway, String name, MQTTWireFormat wireFormat) {
+    protected MQTTTransport(MQController controller, String name, MQTTWireFormat wireFormat) {
         this.name = name;
-        this.gateway = gateway;
-        this.inactivityMonitor = new MQTTInactivityMonitor(gateway, this);
+        this.controller = controller;
+        this.asyncExecutors = controller.getAsyncExectutors();
+        this.inactivityMonitor = new MQTTInactivityMonitor(asyncExecutors, this);
         writeStream = new MQTTWriteStream(this, wireFormat);
         readStream = new MQTTReadStream(this, wireFormat);
         protocolConverter = new MQTTProtocolConverter(this);
@@ -127,7 +130,7 @@ public class MQTTTransport extends TransportSupport implements ProtocolTransport
     }
 
     protected void runOnContext(Handler<Void> handler) {
-        gateway.runOnContext(handler);
+        controller.runOnContext(handler);
     }
 
     public MQTTTransport setWriteQueueMaxSize(int i) {

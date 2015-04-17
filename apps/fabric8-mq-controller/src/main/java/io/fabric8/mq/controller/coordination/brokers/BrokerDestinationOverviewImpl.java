@@ -12,28 +12,35 @@
  *  * permissions and limitations under the License.
  *
  */
-package io.fabric8.mq.controller.coordination.brokermodel;
+package io.fabric8.mq.controller.coordination.brokers;
 
+import io.fabric8.mq.controller.model.BrokerDestinationOverview;
 import org.apache.activemq.command.ActiveMQDestination;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DestinationOverview implements Comparable<DestinationOverview> {
-    private static final Logger LOG = LoggerFactory.getLogger(DestinationOverview.class);
+public class BrokerDestinationOverviewImpl implements BrokerDestinationOverview {
+    private static final Logger LOG = LoggerFactory.getLogger(BrokerDestinationOverviewImpl.class);
     private final ActiveMQDestination destination;
     private int queueDepth;
     private int numberOfProducers;
     private int numberOfConsumers;
     private int queueDepthRate;
 
-    public DestinationOverview(ActiveMQDestination destination) {
+    public BrokerDestinationOverviewImpl(ActiveMQDestination destination) {
         this.destination = destination;
+    }
+
+    @Override
+    public String getName() {
+        return destination.getPhysicalName();
     }
 
     public ActiveMQDestination getDestination() {
         return destination;
     }
 
+    @Override
     public int getNumberOfConsumers() {
         return numberOfConsumers;
     }
@@ -42,6 +49,7 @@ public class DestinationOverview implements Comparable<DestinationOverview> {
         this.numberOfConsumers = numberOfConsumers;
     }
 
+    @Override
     public int getNumberOfProducers() {
         return numberOfProducers;
     }
@@ -50,6 +58,7 @@ public class DestinationOverview implements Comparable<DestinationOverview> {
         this.numberOfProducers = numberOfProducers;
     }
 
+    @Override
     public int getQueueDepth() {
         return queueDepth;
     }
@@ -64,7 +73,7 @@ public class DestinationOverview implements Comparable<DestinationOverview> {
     }
 
     @Override
-    public int compareTo(DestinationOverview other) {
+    public int compareTo(BrokerDestinationOverview other) {
         int result = other.getQueueDepth() - getQueueDepth();
         if (result == 0) {
             result = other.getNumberOfProducers() - getNumberOfProducers();

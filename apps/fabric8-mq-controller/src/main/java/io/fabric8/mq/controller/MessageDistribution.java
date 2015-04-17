@@ -13,18 +13,21 @@
  *
  */
 
-package io.fabric8.mq.controller.sharding;
+package io.fabric8.mq.controller;
 
 import org.apache.activemq.Service;
 import org.apache.activemq.command.ActiveMQDestination;
 import org.apache.activemq.command.Command;
 import org.apache.activemq.transport.ResponseCallback;
+import org.apache.activemq.transport.Transport;
 import org.apache.activemq.transport.TransportListener;
 
 import java.io.IOException;
 
 public interface MessageDistribution extends Service {
     void sendAll(Command command) throws IOException;
+
+    void sendAll(Command command, boolean force) throws IOException;
 
     void send(ActiveMQDestination destination, Command command) throws IOException;
 
@@ -36,6 +39,16 @@ public interface MessageDistribution extends Service {
 
     void setTransportListener(TransportListener transportListener);
 
+    void transportCreated(String brokerId, Transport transport);
+
+    void transportDestroyed(String brokerId);
+
+    int getCurrentConnectedBrokerCount();
+
     boolean isStopped();
+
+    void addTransportCreatedListener(TransportChangedListener transportChangedListener);
+
+    void removeTransportCreatedListener(TransportChangedListener transportChangedListener);
 
 }

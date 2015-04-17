@@ -12,31 +12,14 @@
  *  * permissions and limitations under the License.
  *
  */
+
 package io.fabric8.mq.controller;
 
-/**
- * This interface defines the attributes/operations that are exposed
- * for JMX management by the detecting gateway.
- */
-public interface MQControllerMBean {
+import org.apache.activemq.transport.Transport;
 
-    long getReceivedConnectionAttempts();
+public interface TransportChangedListener {
 
-    long getSuccessfulConnectionAttempts();
+    void transportCreated(String brokerId, Transport transport);
 
-    long getFailedConnectionAttempts();
-
-    String[] getConnectingClients();
-
-    String[] getConnectedClients();
-
-    long getConnectionTimeout();
-
-    void setConnectionTimeout(long connectionTimeout);
-
-    String getCamelRoutes();
-
-    void setCamelRoutes(String camelRoutes);
-
-    int getNumberOfServers();
+    void transportDestroyed(String brokerId);
 }

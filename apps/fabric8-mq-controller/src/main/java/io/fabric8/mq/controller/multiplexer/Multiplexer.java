@@ -14,9 +14,18 @@
  */
 package io.fabric8.mq.controller.multiplexer;
 
-import io.fabric8.mq.controller.BrokerStateInfo;
-import io.fabric8.mq.controller.sharding.MessageDistribution;
+import io.fabric8.mq.controller.AsyncExecutors;
+import io.fabric8.mq.controller.MessageDistribution;
+import io.fabric8.mq.controller.TransportChangedListener;
+import io.fabric8.mq.controller.model.InboundConnection;
+import io.fabric8.mq.controller.model.Model;
+import io.fabric8.mq.controller.model.Multiplex;
+import io.fabric8.mq.controller.util.TransportConnectionState;
+import io.fabric8.mq.controller.util.TransportConnectionStateRegister;
 import org.apache.activemq.command.*;
+import org.apache.activemq.state.ConsumerState;
+import org.apache.activemq.state.ProducerState;
+import org.apache.activemq.state.SessionState;
 import org.apache.activemq.transport.DefaultTransportListener;
 import org.apache.activemq.transport.FutureResponse;
 import org.apache.activemq.transport.ResponseCallback;
@@ -32,32 +41,56 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 
-public class Multiplexer extends ServiceSupport {
+public class Multiplexer extends ServiceSupport implements Multiplex, TransportChangedListener {
 
     private static final Logger LOG = LoggerFactory.getLogger(Multiplexer.class);
-
-    private final BrokerStateInfo brokerStateInfo;
+    private final String name;
+    private final AsyncExecutors asyncExecutors;
     private final MessageDistribution messageDistribution;
-    private final Map<Transport, MultiplexerInput> inputs = new ConcurrentHashMap<>();
-    private final Map<ConsumerId, MultiplexerInput> consumerIdMultiplexerInputMap = new ConcurrentHashMap<>();
+    private final TransportConnectionStateRegister transportConnectionStateRegister;
+    private final Map<Transport, MultiplexerInput> inputs;
+    private final Map<ConsumerId, MultiplexerInput> consumerIdMultiplexerInputMap;
     private final IdGenerator inputId;
     private final ConnectionInfo multiplexerConnectionInfo;
-    private final AtomicLong sessionIdGenerator = new AtomicLong();
-    private final AtomicLong producerIdGenerator = new AtomicLong();
-    private final AtomicLong consumerIdGenerator = new AtomicLong();
-    private final AtomicLong transactionIdGenerator = new AtomicLong();
-    private final String name;
-    private String userName = "";
-    private String password = "";
+    private final SessionInfo multiplexerSessionInfo; //for advisories
+    private final AtomicLong sessionIdGenerator;
+    private final AtomicLong producerIdGenerator;
+    private final AtomicLong consumerIdGenerator;
+    private final AtomicLong transactionIdGenerator;
+    private final AtomicLong inputCount;
+    private final AtomicReference<CountDownLatch> attachedToBroker;
+    private Model model;
+    private String userName;
+    private String password;
 
-    public Multiplexer(String name, BrokerStateInfo brokerStateInfo, MessageDistribution messageDistribution) {
+    public Multiplexer(Model model, String name, AsyncExecutors asyncExecutors, MessageDistribution messageDistribution) {
+        this.model = model;
         this.name = name;
-        this.brokerStateInfo = brokerStateInfo;
+        this.asyncExecutors = asyncExecutors;
         this.messageDistribution = messageDistribution;
+        this.transportConnectionStateRegister = new TransportConnectionStateRegister();
+        inputs = new ConcurrentHashMap<>();
+        consumerIdMultiplexerInputMap = new ConcurrentHashMap<>();
         inputId = new IdGenerator("InTransport");
         multiplexerConnectionInfo = new ConnectionInfo(new ConnectionId(inputId.generateSanitizedId()));
+        multiplexerSessionInfo = new SessionInfo(multiplexerConnectionInfo, -1);
+        sessionIdGenerator = new AtomicLong();
+        producerIdGenerator = new AtomicLong();
+        consumerIdGenerator = new AtomicLong();
+        transactionIdGenerator = new AtomicLong();
+        inputCount = new AtomicLong();
+        userName = "";
+        password = "";
+        attachedToBroker = new AtomicReference<>(new CountDownLatch(1));
+    }
+
+    public Model getModel() {
+        return model;
     }
 
     public int getInputSize() {
@@ -113,9 +146,18 @@ public class Multiplexer extends ServiceSupport {
         return transactionIdGenerator.incrementAndGet();
     }
 
-    public void addInput(Transport transport) throws Exception {
+    public ConnectionInfo getMultiplexerConnectionInfo() {
+        return multiplexerConnectionInfo;
+    }
+
+    public SessionInfo getMultiplexerSessionInfo() {
+        return multiplexerSessionInfo;
+    }
+
+    public void addInput(String protocol, Transport transport) throws Exception {
         if (transport != null && !isStopping() && !isStopped()) {
-            MultiplexerInput multiplexerInput = new MultiplexerInput(this, brokerStateInfo, multiplexerConnectionInfo.getConnectionId(), transport);
+            String name = getName() + ".input." + inputCount.getAndIncrement();
+            MultiplexerInput multiplexerInput = new MultiplexerInput(this, name, protocol, asyncExecutors, transportConnectionStateRegister, transport);
             inputs.put(transport, multiplexerInput);
             multiplexerInput.start();
         }
@@ -138,12 +180,21 @@ public class Multiplexer extends ServiceSupport {
         }
     }
 
+    public List<InboundConnection> getInboundConnections() {
+        List<InboundConnection> list = new ArrayList<>();
+        for (InboundConnection inboundConnection : inputs.values()) {
+            list.add(inboundConnection);
+        }
+        return list;
+    }
+
     public void removeInput(Transport transport) {
         MultiplexerInput multiplexerInput = inputs.get(transport);
         removeInput(multiplexerInput);
     }
 
     public void sendOutAll(final MultiplexerInput input, final Command command) {
+        waitForBroker();
         if (command != null) {
             try {
                 if (command.isResponseRequired()) {
@@ -172,6 +223,7 @@ public class Multiplexer extends ServiceSupport {
     }
 
     public void sendOut(final MultiplexerInput input, ActiveMQDestination destination, Command command) {
+        waitForBroker();
         if (command != null) {
             try {
                 if (command.isResponseRequired()) {
@@ -206,6 +258,50 @@ public class Multiplexer extends ServiceSupport {
     }
 
     @Override
+    public void transportCreated(String brokerId, Transport transport) {
+        if (isStarted()) {
+            try {
+                for (TransportConnectionState transportConnectionState : transportConnectionStateRegister.listConnectionStates()) {
+
+                    ConnectionInfo connectionInfo = transportConnectionState.getInfo();
+                    transport.oneway(connectionInfo);
+
+                    int sessionCount = transportConnectionState.getSessionStates().size();
+                    int consumerCount = 0;
+                    int producerCount = 0;
+                    for (SessionState sessionState : transportConnectionState.getSessionStates()) {
+                        SessionInfo sessionInfo = sessionState.getInfo();
+                        transport.oneway(sessionInfo);
+                        consumerCount = sessionState.getConsumerStates().size();
+                        for (ConsumerState consumerState : sessionState.getConsumerStates()) {
+                            ConsumerInfo consumerInfo = consumerState.getInfo();
+                            transport.oneway(consumerInfo);
+                        }
+                        producerCount = sessionState.getProducerStates().size();
+                        for (ProducerState producerState : sessionState.getProducerStates()) {
+                            ProducerInfo producerInfo = producerState.getInfo();
+                            transport.oneway(producerInfo);
+                        }
+                    }
+                    LOG.info("Sent to " + transport + " Connection Info " + connectionInfo.getClientId() + " [ sessions = " + sessionCount + ",consumers = " + consumerCount + ",producers=" + producerCount + "]");
+                }
+            } catch (Throwable e) {
+                LOG.error("Failed to update connection state ", e);
+            }
+        }
+        CountDownLatch countDownLatch = attachedToBroker.get();
+        countDownLatch.countDown();
+
+    }
+
+    @Override
+    public void transportDestroyed(String brokerId) {
+        if (messageDistribution.getCurrentConnectedBrokerCount() == 0) {
+            attachedToBroker.set(new CountDownLatch(1));
+        }
+    }
+
+    @Override
     protected void doStart() throws Exception {
 
         messageDistribution.setTransportListener(new DefaultTransportListener() {
@@ -221,28 +317,40 @@ public class Multiplexer extends ServiceSupport {
             @Override
             public void onException(IOException error) {
                 if (!isStopping()) {
+                    error.printStackTrace();
                     onFailure(error);
                 }
             }
         });
 
-        messageDistribution.start();
         multiplexerConnectionInfo.setClientId(getName());
         multiplexerConnectionInfo.setUserName(getUserName());
         multiplexerConnectionInfo.setPassword(getPassword());
-        messageDistribution.sendAll(multiplexerConnectionInfo);
-
+        transportConnectionStateRegister.registerConnectionState(multiplexerConnectionInfo.getConnectionId(), multiplexerConnectionInfo);
+        transportConnectionStateRegister.addSession(multiplexerSessionInfo);
+        messageDistribution.addTransportCreatedListener(this);
+        messageDistribution.start();
+        if (messageDistribution.getCurrentConnectedBrokerCount() > 0) {
+            messageDistribution.sendAll(multiplexerConnectionInfo);
+            messageDistribution.sendAll(multiplexerSessionInfo);
+            CountDownLatch countDownLatch = attachedToBroker.get();
+            countDownLatch.countDown();
+        }
+        model.add(this);
     }
 
     @Override
     protected void doStop(ServiceStopper serviceStopper) {
+        messageDistribution.removeTransportCreatedListener(this);
+        transportConnectionStateRegister.clear();
         try {
             if (!messageDistribution.isStopped()) {
-                messageDistribution.sendAll(new ShutdownInfo());
+                messageDistribution.sendAll(new ShutdownInfo(), true);
             }
             serviceStopper.stop(messageDistribution);
         } catch (Throwable e) {
         }
+        model.remove(this);
     }
 
     protected void processCommand(Object o) throws Exception {
@@ -278,7 +386,7 @@ public class Multiplexer extends ServiceSupport {
     }
 
     protected void doAsyncProcess(Runnable run) {
-        brokerStateInfo.getController().execute(run);
+        asyncExecutors.execute(run);
     }
 
     protected void process(MultiplexerInput input, int realCorrelationId, Response response) throws IOException {
@@ -292,6 +400,19 @@ public class Multiplexer extends ServiceSupport {
             copy.setCorrelationId(realCorrelationId);
             input.oneway(copy);
         }
-
     }
+
+    private void waitForBroker() {
+        CountDownLatch countDownLatch = attachedToBroker.get();
+        try {
+            while (!isStopping()) {
+                if (countDownLatch.await(100, TimeUnit.MILLISECONDS)) {
+                    break;
+                }
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
 }

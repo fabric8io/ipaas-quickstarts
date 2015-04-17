@@ -22,21 +22,18 @@ import io.fabric8.gateway.handlers.detecting.protocol.openwire.OpenwireProtocol;
 import io.fabric8.gateway.handlers.detecting.protocol.ssl.SslConfig;
 import io.fabric8.gateway.handlers.detecting.protocol.ssl.SslSocketWrapper;
 import io.fabric8.gateway.handlers.loadbalancer.ConnectionParameters;
-import io.fabric8.mq.controller.camel.CamelRouter;
 import io.fabric8.mq.controller.camel.DefaultMessageRouter;
+import io.fabric8.mq.controller.model.Model;
 import io.fabric8.mq.controller.multiplexer.MultiplexerController;
 import io.fabric8.mq.controller.protocol.ProtocolTransport;
 import io.fabric8.mq.controller.protocol.ProtocolTransportFactory;
 import io.fabric8.mq.controller.protocol.mqtt.MQTTTransportFactory;
 import io.fabric8.mq.controller.protocol.openwire.OpenWireTransportFactory;
 import io.fabric8.mq.controller.util.ProtocolMapping;
-import io.fabric8.mq.controller.util.Utils;
 import io.fabric8.utils.JMXUtils;
 import io.fabric8.utils.ShutdownTracker;
 import org.apache.activemq.transport.Transport;
 import org.apache.activemq.util.ServiceStopper;
-import org.apache.activemq.util.ServiceSupport;
-import org.jboss.netty.util.internal.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vertx.java.core.AsyncResult;
@@ -49,160 +46,132 @@ import org.vertx.java.core.net.NetSocket;
 import org.vertx.java.core.streams.Pump;
 import org.vertx.java.core.streams.ReadStream;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Default;
 import javax.management.ObjectName;
 import javax.net.ssl.SSLContext;
 import java.io.IOException;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * A MQ Controller which listens on a port and snoops the initial request bytes from a client
  * to detect the protocol and protocol specific connection parameters such a requested
  * virtual host to handle proxying the connection to an appropriate service.
  */
-public class MQController extends ServiceSupport implements MQControllerMBean, Handler<Transport> {
+@ApplicationScoped
+@Default
+public class MQController extends BrokerStateInfo implements Handler<Transport> {
     private static final transient Logger LOG = LoggerFactory.getLogger(MQController.class);
-    private final String DEFAULT_DOMAIN = "io.fabric8";
     private final String TYPE = MQController.class.getName();
     private final Vertx vertx;
     private final List<NetServer> servers;
-    private final BrokerStateInfo brokerStateInfo;
     private final List<MultiplexerController> multiplexerControllers;
-    private final AtomicLong receivedConnectionAttempts;
-    private final AtomicLong successfulConnectionAttempts;
-    private final AtomicLong failedConnectionAttempts;
     private final HashSet<SocketWrapper> socketsConnecting;
     private final HashSet<ConnectedSocketInfo> socketsConnected;
     private final ShutdownTracker shutdownTacker;
-    private final AsyncExecutors asyncExecutors;
-    private final CamelRouter camelRouter;
-    private final FutureHandler<AsyncResult<NetServer>> listenFuture;
     SSLContext sslContext;
     SslSocketWrapper.ClientAuth clientAuth = SslSocketWrapper.ClientAuth.WANT;
     private List<Protocol> protocols;
-    private String defaultVirtualHost;
     private int maxProtocolIdentificationLength;
     private SslConfig sslConfig;
-    private long connectionTimeout;
-    private int port;
+    private ObjectName controllerObjectName;
+    private int boundPort;
     private String host;
-    private String name;
-    private int numberOfServers;
-    private int numberOfMultiplexers;
-    private String defaultURI;
-    private Map<Object, ObjectName> objectNameMap;
-    private ObjectName rootObjectName;
 
     public MQController() {
         vertx = VertxFactory.newVertx();
         servers = new CopyOnWriteArrayList<>();
-        brokerStateInfo = new BrokerStateInfo(this);
         multiplexerControllers = new CopyOnWriteArrayList<>();
-        receivedConnectionAttempts = new AtomicLong();
-        successfulConnectionAttempts = new AtomicLong();
-        failedConnectionAttempts = new AtomicLong();
         socketsConnecting = new HashSet<>();
         socketsConnected = new HashSet<>();
         protocols = new CopyOnWriteArrayList<>();
         shutdownTacker = new ShutdownTracker();
-        asyncExecutors = new AsyncExecutors();
-        camelRouter = new CamelRouter();
-        numberOfServers = Runtime.getRuntime().availableProcessors();
-        numberOfMultiplexers = numberOfServers;
-        defaultVirtualHost = "broker";
-        connectionTimeout = 5000;
-        name = "MQController";
-        defaultURI = "tcp://localhost:61617";
-        objectNameMap = new ConcurrentHashMap<>();
-        listenFuture = new FutureHandler<AsyncResult<NetServer>>() {
-            @Override
-            public void handle(AsyncResult<NetServer> event) {
-                if (event.succeeded()) {
-                    LOG.info(String.format("MQController listening on %s:%d for protocols: %s", event.result().host(), event.result().port(), getProtocolNames()));
-                }
-                super.handle(event);
-            }
-        };
-    }
-
-    public void registerInJmx(ObjectName objectName, Object object) throws Exception {
-        JMXUtils.registerMBean(object, objectName);
-        objectNameMap.put(object, objectName);
-    }
-
-    public void unregisterInJmx(Object object) {
-        ObjectName objectName = objectNameMap.remove(object);
-        if (objectName != null) {
-            JMXUtils.unregisterMBean(objectName);
-        }
-    }
-
-    public ObjectName getRootObjectName() {
-        return rootObjectName;
     }
 
     @Override
     public String toString() {
         return "MQController{" +
-                   ", port=" + port +
-                   ", host='" + host + '\'' +
+                   ", url='" + getControllerStatus().getControllerHost() + ":" + getControllerStatus().getControllerPort() + '\'' +
                    ", protocols='" + getProtocolNames() + '\'' +
                    '}';
     }
 
     @Override
     protected void doStop(ServiceStopper stopper) throws Exception {
-        for (Object object : objectNameMap.keySet()) {
-            unregisterInJmx(object);
-        }
-        stopper.stop(asyncExecutors);
+        super.doStop(stopper);
         close();
     }
 
     @Override
     protected void doStart() throws Exception {
-        validateSettings();
-        rootObjectName = Utils.getObjectName(DEFAULT_DOMAIN, "type=" + TYPE);
-        registerInJmx(rootObjectName, this);
-        //load protocols
+        super.doStart();
+
+        //getLoad protocols
         protocols.add(new MqttProtocol());
         protocols.add(new OpenwireProtocol());
 
         for (Protocol protocol : protocols) {
             maxProtocolIdentificationLength = Math.max(protocol.getMaxIdentificationLength(), maxProtocolIdentificationLength);
         }
+        final String hostName = getControllerStatus().getControllerHost();
+        int port = getControllerStatus().getControllerPort();
 
-        asyncExecutors.start();
-        for (int i = 0; i < getNumberOfServers(); i++) {
+        int numberOfMultiplexers = getControllerStatus().getNumberOfMultiplexers();
+        int numberOfServers = getControllerStatus().getNumberOfSevers();
+        final CountDownLatch countDownLatch = new CountDownLatch(numberOfServers);
+
+        FutureHandler<AsyncResult<NetServer>> listenFuture = new FutureHandler<AsyncResult<NetServer>>() {
+            @Override
+            public void handle(AsyncResult<NetServer> event) {
+                if (event.succeeded()) {
+                    if (event.result().port() != 0) {
+                        boundPort = event.result().port();
+                        host = event.result().host();
+                    }
+                    countDownLatch.countDown();
+                }
+                super.handle(event);
+            }
+        };
+
+        for (int i = 0; i < getControllerStatus().getNumberOfSevers(); i++) {
             NetServer server = vertx.createNetServer().connectHandler(new MQControllerNetSocketHandler(this));
-            if (host != null) {
-                server = server.listen(port, host, listenFuture);
+            if (hostName != null && !hostName.isEmpty()) {
+                server = server.listen(port, hostName, listenFuture);
             } else {
                 server = server.listen(port, listenFuture);
             }
             servers.add(server);
         }
+        countDownLatch.await();
 
-        brokerStateInfo.start();
-        for (int i = 0; i < getNumberOfMultiplexers(); i++) {
-            MultiplexerController multiplexerController = new MultiplexerController(getName() + "-MultiplexController-" + i, brokerStateInfo);
+        for (int i = 0; i < numberOfMultiplexers; i++) {
+            String name = getControllerStatus().getName();
+            MultiplexerController multiplexerController = new MultiplexerController(name
+                                                                                        + "-MultiplexController-" + i, this);
             multiplexerController.start();
             multiplexerControllers.add(multiplexerController);
-
         }
-        camelRouter.start();
+        controllerObjectName = new ObjectName(Model.DEFAULT_JMX_DOMAIN, "name", MQController.class.getName());
+        JMXUtils.registerMBean(getControllerStatus(), controllerObjectName);
+        getControllerStatus().setBoundPort(boundPort);
+        getControllerStatus().setHost(host);
+
+        String info = String.format("Successfully launched MQController: listening on %s:%d for protocols: %s", host, boundPort, getProtocolNames());
+        LOG.info(info);
+        System.err.print(info);
     }
 
-    public void close() {
+    private void close() {
         try {
-            camelRouter.stop();
+            if (controllerObjectName != null) {
+                JMXUtils.unregisterMBean(controllerObjectName);
+            }
             for (MultiplexerController multiplexerController : multiplexerControllers) {
                 multiplexerController.stop();
             }
@@ -220,36 +189,12 @@ public class MQController extends ServiceSupport implements MQControllerMBean, H
         }
     }
 
+    public int getBoundPort() {
+        return boundPort;
+    }
+
     public String getHost() {
         return host;
-    }
-
-    public void setHost(String host) {
-        this.host = host;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getBoundPort() throws Exception {
-        return FutureHandler.result(listenFuture).port();
-    }
-
-    public String getDefaultVirtualHost() {
-        return defaultVirtualHost;
-    }
-
-    public void setDefaultVirtualHost(String defaultVirtualHost) {
-        this.defaultVirtualHost = defaultVirtualHost;
-    }
-
-    public CamelRouter getCamelRouter() {
-        return camelRouter;
     }
 
     public Collection<String> getProtocolNames() {
@@ -260,49 +205,14 @@ public class MQController extends ServiceSupport implements MQControllerMBean, H
         return rc;
     }
 
-    public int getNumberOfServers() {
-        return numberOfServers;
-    }
-
-    public void setNumberOfServers(int numberOfServers) {
-        this.numberOfServers = numberOfServers;
-    }
-
-    public int getNumberOfMultiplexers() {
-        return numberOfMultiplexers;
-    }
-
-    public void setNumberOfMultiplexers(int numberOfMultiplexers) {
-        this.numberOfMultiplexers = numberOfMultiplexers;
-    }
-
-    public String getCamelRoutes() {
-        return camelRouter.getCamelRoutes();
-    }
-
-    public void setCamelRoutes(String camelRoutes) {
-        camelRouter.setCamelRoutes(camelRoutes);
-    }
-
-    public ScheduledFuture scheduleAtFixedRate(Runnable runnable, long period, long maxTimeInCall) {
-        return asyncExecutors.scheduleAtFixedRate(runnable, period, maxTimeInCall);
-    }
-
-    public void execute(final Runnable runnable) {
-        asyncExecutors.execute(runnable);
-    }
-
-    public AsyncExecutors getAsyncExecutors() {
-        return asyncExecutors;
-    }
-
     public void handle(final SocketWrapper socket) {
+        MQControllerStatus status = getControllerStatus();
         shutdownTacker.retain();
-        receivedConnectionAttempts.incrementAndGet();
+        status.incrementReceivedConnectionAttempts();
         socketsConnecting.add(socket);
 
-        if (connectionTimeout > 0) {
-            vertx.setTimer(connectionTimeout, new Handler<Long>() {
+        if (status.getConnectionTimeout() > 0) {
+            vertx.setTimer(status.getConnectionTimeout(), new Handler<Long>() {
                 public void handle(Long timerID) {
                     if (socketsConnecting.contains(socket)) {
                         handleConnectFailure(socket, String.format("MQController client '%s' protocol detection timeout.", socket.remoteAddress()));
@@ -390,7 +300,8 @@ public class MQController extends ServiceSupport implements MQControllerMBean, H
             if (reason != null) {
                 LOG.info(reason);
             }
-            failedConnectionAttempts.incrementAndGet();
+            MQControllerStatus status = getControllerStatus();
+            status.incrementFailedConnectionAttempts();
             socket.close();
             shutdownTacker.release();
         }
@@ -398,7 +309,7 @@ public class MQController extends ServiceSupport implements MQControllerMBean, H
 
     public void route(final SocketWrapper socket, ConnectionParameters params, final Buffer received) {
         if (params.protocolVirtualHost == null) {
-            params.protocolVirtualHost = defaultVirtualHost;
+            params.protocolVirtualHost = getControllerStatus().getDefaultVirtualHost();
         }
         ProtocolMapping protocolMapping = createProtocolMapping(params);
         try {
@@ -414,7 +325,8 @@ public class MQController extends ServiceSupport implements MQControllerMBean, H
     private void createProtocolClient(final ConnectionParameters params, final SocketWrapper socketFromClient, ProtocolMapping protocolMapping, final Buffer received) throws Exception {
         ProtocolTransport transport = getTransport(protocolMapping);
         if (transport != null) {
-            successfulConnectionAttempts.incrementAndGet();
+            MQControllerStatus status = getControllerStatus();
+            status.incrementSuccessfulConnectionAttempts();
             socketsConnecting.remove(socketFromClient);
 
             final ConnectedSocketInfo connectedInfo = new ConnectedSocketInfo();
@@ -513,67 +425,17 @@ public class MQController extends ServiceSupport implements MQControllerMBean, H
         vertx.runOnContext(handler);
     }
 
-    public long getReceivedConnectionAttempts() {
-        return receivedConnectionAttempts.get();
-    }
-
-    public long getSuccessfulConnectionAttempts() {
-        return successfulConnectionAttempts.get();
-    }
-
-    public long getFailedConnectionAttempts() {
-        return failedConnectionAttempts.get();
-    }
-
-    public String[] getConnectingClients() {
-        ArrayList<String> rc = new ArrayList<>();
-        for (SocketWrapper socket : socketsConnecting) {
-            rc.add(socket.remoteAddress().toString());
-        }
-        return rc.toArray(new String[rc.size()]);
-    }
-
-    public String[] getConnectedClients() {
-        ArrayList<String> rc = new ArrayList<>();
-        for (ConnectedSocketInfo info : socketsConnected) {
-            rc.add(info.from.remoteAddress().toString());
-        }
-        return rc.toArray(new String[rc.size()]);
-    }
-
-    public long getConnectionTimeout() {
-        return connectionTimeout;
-    }
-
-    public void setConnectionTimeout(long connectionTimeout) {
-        this.connectionTimeout = connectionTimeout;
-    }
-
-    public int getPort() {
-        return port;
-    }
-
-    public void setPort(int port) {
-        this.port = port;
-    }
-
-    public String getDefaultURI() {
-        return defaultURI;
-    }
-
-    public void setDefaultURI(String defaultURI) {
-        this.defaultURI = defaultURI;
-    }
-
     protected void addOutbound(ProtocolMapping protocolMapping, ProtocolTransport transport) throws Exception {
-        URI uri = new URI(getDefaultURI());
+        String fromURI = transport.getRemoteAddress();
+        String protocol = protocolMapping.getProtocol();
+
         //add in Camel Interceptor
         DefaultMessageRouter messageRouter = new DefaultMessageRouter(transport);
         //round robin
         synchronized (multiplexerControllers) {
             if (!multiplexerControllers.isEmpty()) {
                 MultiplexerController multiplexerController = multiplexerControllers.remove(0);
-                multiplexerController.addTransport(uri, transport);
+                multiplexerController.addTransport(protocol, transport);
                 multiplexerControllers.add(multiplexerController);
             }
         }
@@ -589,17 +451,6 @@ public class MQController extends ServiceSupport implements MQControllerMBean, H
         }
         return factory.connect(this, protocolMapping.toString());
 
-    }
-
-    private void validateSettings() {
-        if (getNumberOfServers() < 1) {
-            LOG.warn("Number of Servers must be 1 or greater - setting to 1");
-            setNumberOfServers(1);
-        }
-        if (getNumberOfMultiplexers() < 1) {
-            LOG.warn("Number of Multiplexers must be 1 or greater - setting to 1");
-            setNumberOfMultiplexers(1);
-        }
     }
 
     private static class ConnectedSocketInfo {

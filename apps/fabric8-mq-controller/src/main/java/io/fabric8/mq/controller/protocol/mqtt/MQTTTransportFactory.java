@@ -27,10 +27,10 @@ import java.net.URI;
 
 public class MQTTTransportFactory extends TransportFactory implements ProtocolTransportFactory {
 
-    public ProtocolTransport connect(MQController gateway, String name) throws IOException {
+    public ProtocolTransport connect(MQController controller, String name) throws IOException {
         MQTTWireFormat wireFormat = new MQTTWireFormat();
         //OpenWireFormat wireFormat = new OpenWireFormat(1);
-        MQTTTransport transport = new MQTTTransport(gateway, name, wireFormat);
+        MQTTTransport transport = new MQTTTransport(controller, name, wireFormat);
         return transport;
     }
 

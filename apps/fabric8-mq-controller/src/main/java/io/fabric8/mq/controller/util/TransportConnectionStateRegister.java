@@ -15,57 +15,164 @@
 package io.fabric8.mq.controller.util;
 
 import org.apache.activemq.command.ConnectionId;
+import org.apache.activemq.command.ConnectionInfo;
 import org.apache.activemq.command.ConsumerId;
 import org.apache.activemq.command.ConsumerInfo;
 import org.apache.activemq.command.ProducerId;
 import org.apache.activemq.command.ProducerInfo;
 import org.apache.activemq.command.SessionId;
 import org.apache.activemq.command.SessionInfo;
+import org.apache.activemq.state.ConsumerState;
+import org.apache.activemq.state.ProducerState;
+import org.apache.activemq.state.SessionState;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  *
  */
 
-public interface TransportConnectionStateRegister {
+public class TransportConnectionStateRegister {
 
-    TransportConnectionState registerConnectionState(ConnectionId connectionId,
-                                                     org.apache.activemq.command.ConnectionInfo state);
+    private Map<ConnectionId, TransportConnectionState> connectionStates = new ConcurrentHashMap<ConnectionId, TransportConnectionState>();
 
-    TransportConnectionState unregisterConnectionState(ConnectionId connectionId);
+    public TransportConnectionState registerConnectionState(ConnectionId connectionId, ConnectionInfo info) {
+        TransportConnectionState state = new TransportConnectionState(info);
+        TransportConnectionState rc = connectionStates.put(connectionId, state);
+        return rc;
+    }
 
-    List<TransportConnectionState> listConnectionStates();
+    public TransportConnectionState unregisterConnectionState(ConnectionId connectionId) {
+        TransportConnectionState rc = connectionStates.remove(connectionId);
+        if (rc != null && rc.getReferenceCounter() != null && rc.getReferenceCounter().get() > 1) {
+            rc.decrementReference();
+            connectionStates.put(connectionId, rc);
+        }
+        return rc;
+    }
 
-    Map<ConnectionId, TransportConnectionState> mapStates();
+    public List<TransportConnectionState> listConnectionStates() {
 
-    TransportConnectionState lookupConnectionState(String connectionId);
+        List<TransportConnectionState> rc = new ArrayList<TransportConnectionState>();
+        rc.addAll(connectionStates.values());
+        return rc;
+    }
 
-    TransportConnectionState lookupConnectionState(ConsumerId id);
+    public TransportConnectionState lookupConnectionState(String connectionId) {
+        return connectionStates.get(new ConnectionId(connectionId));
+    }
 
-    TransportConnectionState lookupConnectionState(ProducerId id);
+    public TransportConnectionState lookupConnectionState(ConsumerId id) {
+        TransportConnectionState cs = lookupConnectionState(id.getConnectionId());
+        return cs;
+    }
 
-    TransportConnectionState lookupConnectionState(SessionId id);
+    public TransportConnectionState lookupConnectionState(ProducerId id) {
+        TransportConnectionState cs = lookupConnectionState(id.getConnectionId());
+        return cs;
+    }
 
-    TransportConnectionState lookupConnectionState(ConnectionId connectionId);
+    public TransportConnectionState lookupConnectionState(SessionId id) {
+        TransportConnectionState cs = lookupConnectionState(id.getConnectionId());
+        return cs;
+    }
 
-    void addSession(SessionInfo info);
+    public TransportConnectionState lookupConnectionState(ConnectionId connectionId) {
+        TransportConnectionState cs = connectionStates.get(connectionId);
+        return cs;
+    }
 
-    void removeSession(SessionId sessionId);
+    public void addSession(SessionInfo info) {
+        if (info != null && info.getSessionId() != null && info.getSessionId().getConnectionId() != null) {
+            TransportConnectionState cs = lookupConnectionState(info.getSessionId().getConnectionId());
+            if (cs != null) {
+                cs.addSession(info);
+            }
+        }
+    }
 
-    void addProducer(ProducerInfo info);
+    public SessionState removeSession(SessionId sessionId) {
+        if (sessionId != null && sessionId.getConnectionId() != null) {
+            TransportConnectionState cs = lookupConnectionState(sessionId.getConnectionId());
+            if (cs != null) {
+                return cs.removeSession(sessionId);
+            }
+        }
+        return null;
+    }
 
-    void removeProducer(ProducerId producerId);
+    public void addProducer(ProducerInfo info) {
+        if (info != null && info.getProducerId() != null && info.getProducerId().getParentId() != null && info.getProducerId().getConnectionId() != null) {
+            TransportConnectionState cs = lookupConnectionState(info.getProducerId().getConnectionId());
+            if (cs != null) {
+                SessionState sessionState = cs.getSessionState(info.getProducerId().getParentId());
+                if (sessionState != null) {
+                    sessionState.addProducer(info);
+                }
+            }
+        }
+    }
 
-    void addConsumer(ConsumerInfo info);
+    public ProducerState removeProducer(ProducerId producerId) {
+        ProducerState result = null;
+        if (producerId != null && producerId.getConnectionId() != null && producerId.getParentId() != null) {
+            TransportConnectionState cs = lookupConnectionState(producerId.getConnectionId());
+            if (cs != null) {
+                SessionState sessionState = cs.getSessionState(producerId.getParentId());
+                if (sessionState != null) {
+                    result = sessionState.removeProducer(producerId);
+                }
+            }
+        }
+        return result;
+    }
 
-    void removeConsumer(ConsumerId consumerId);
+    public void addConsumer(ConsumerInfo info) {
+        if (info != null && info.getConsumerId() != null && info.getConsumerId().getParentId() != null && info.getConsumerId().getConnectionId() != null) {
+            TransportConnectionState cs = lookupConnectionState(info.getConsumerId().getConnectionId());
+            if (cs != null) {
+                SessionState sessionState = cs.getSessionState(info.getConsumerId().getParentId());
+                if (sessionState != null) {
+                    sessionState.addConsumer(info);
+                }
+            }
+        }
+    }
 
-    boolean isEmpty();
+    public ConsumerState removeConsumer(ConsumerId consumerId) {
+        if (consumerId != null && consumerId.getConnectionId() != null && consumerId.getParentId() != null) {
+            TransportConnectionState cs = lookupConnectionState(consumerId.getConnectionId());
+            if (cs != null) {
+                SessionState sessionState = cs.getSessionState(consumerId.getParentId());
+                if (sessionState != null) {
+                    return sessionState.removeConsumer(consumerId);
+                }
+            }
 
-    boolean doesHandleMultipleConnectionStates();
+        }
+        return null;
+    }
 
-    void clear();
+    public boolean doesHandleMultipleConnectionStates() {
+        return true;
+    }
+
+    public boolean isEmpty() {
+        return connectionStates.isEmpty();
+    }
+
+    public void clear() {
+        connectionStates.clear();
+
+    }
+
+    public Map<ConnectionId, TransportConnectionState> mapStates() {
+        HashMap<ConnectionId, TransportConnectionState> map = new HashMap<ConnectionId, TransportConnectionState>(connectionStates);
+        return map;
+    }
 
 }

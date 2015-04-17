@@ -23,22 +23,15 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.jolokia.JolokiaClients;
-import io.fabric8.mq.controller.BrokerStateInfo;
-import io.fabric8.mq.controller.coordination.brokermodel.BrokerModel;
-import io.fabric8.mq.controller.coordination.brokermodel.BrokerOverview;
-import io.fabric8.mq.controller.coordination.brokermodel.BrokerView;
-import io.fabric8.mq.controller.coordination.brokermodel.DestinationOverview;
-import io.fabric8.mq.controller.sharding.MessageDistribution;
-import io.fabric8.mq.controller.util.CopyDestinationWorker;
+import io.fabric8.mq.controller.MessageDistribution;
+import io.fabric8.mq.controller.coordination.brokers.BrokerDestinationOverviewImpl;
+import io.fabric8.mq.controller.coordination.brokers.BrokerModel;
+import io.fabric8.mq.controller.coordination.brokers.BrokerOverview;
+import io.fabric8.mq.controller.coordination.brokers.BrokerView;
 import io.fabric8.mq.controller.util.Utils;
-import io.fabric8.utils.Systems;
 import org.apache.activemq.command.ActiveMQDestination;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.apache.activemq.command.ActiveMQTopic;
-import org.apache.activemq.filter.DestinationMap;
-import org.apache.activemq.transport.Transport;
-import org.apache.activemq.util.ServiceStopper;
-import org.apache.activemq.util.ServiceSupport;
 import org.jolokia.client.J4pClient;
 import org.jolokia.client.request.J4pReadRequest;
 import org.jolokia.client.request.J4pResponse;
@@ -46,295 +39,40 @@ import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.enterprise.inject.Default;
 import javax.management.ObjectName;
 import java.io.File;
 import java.net.URL;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
-public class KubernetesControl extends ServiceSupport implements BrokerControl {
+@Default
+public class KubernetesControl extends BaseBrokerControl {
     static final int DEFAULT_POLLING_TIME = 2000;
     private static final Logger LOG = LoggerFactory.getLogger(KubernetesControl.class);
-    private final BrokerStateInfo brokerStateInfo;
-    private final DestinationMap destinationMap;
-    private final List<MessageDistribution> messageDistributionList;
-    private final WorkInProgress scalingInProgress;
-    private Map<String, BrokerModel> brokerModelMap = new ConcurrentHashMap<>();
+
     private KubernetesClient kubernetes;
-    private int pollTime;
     private JolokiaClients clients;
-    private ScheduledFuture poller;
-    private String brokerName;
-    private String groupName;
-    private String brokerTemplateLocation;
-    private String brokerSelector;
-    private BrokerCoordinator brokerCoordinator;
-    private String brokerCoordinatorType;
     private String replicationControllerId;
-
-    public KubernetesControl(BrokerStateInfo brokerStateInfo) {
-        this.brokerStateInfo = brokerStateInfo;
-        pollTime = DEFAULT_POLLING_TIME;
-        brokerSelector = "container=java,component=fabric8MQ,provider=fabric8,group=fabric8MQGroup";
-        brokerName = "fabric8MQ";
-        groupName = "mqGroup";
-        brokerTemplateLocation = "META-INF/replicator-template.json";
-        brokerCoordinatorType = "singleton";
-        destinationMap = new DestinationMap();
-        messageDistributionList = new CopyOnWriteArrayList();
-        scalingInProgress = new WorkInProgress();
-    }
-
-    public String getBrokerSelector() {
-        return brokerSelector;
-    }
-
-    public void setBrokerSelector(String brokerSelector) {
-        this.brokerSelector = brokerSelector;
-    }
-
-    public String getGroupName() {
-        return groupName;
-    }
-
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
-    }
-
-    public String getBrokerName() {
-        return brokerName;
-    }
-
-    public void setBrokerName(String brokerName) {
-        this.brokerName = brokerName;
-    }
-
-    public int getPollTime() {
-        return pollTime;
-    }
-
-    public void setPollTime(int pollTime) {
-        this.pollTime = pollTime;
-    }
-
-    public String getBrokerTemplateLocation() {
-        return brokerTemplateLocation;
-    }
-
-    public void setBrokerTemplateLocation(String brokerTemplateLocation) {
-        this.brokerTemplateLocation = brokerTemplateLocation;
-    }
-
-    public String getBrokerCoordinatorType() {
-        return brokerCoordinatorType;
-    }
-
-    public void setBrokerCoordinatorType(String brokerCoordinatorType) {
-        this.brokerCoordinatorType = brokerCoordinatorType;
-    }
-
-    @Override
-    public Collection<Transport> getTransports(MessageDistribution messageDistribution) {
-        List<Transport> list = new ArrayList<>();
-        for (BrokerModel brokerModel : brokerModelMap.values()) {
-            list.add(brokerModel.getTransport(messageDistribution));
-        }
-        return list;
-    }
-
-    @Override
-    public Transport getTransport(MessageDistribution messageDistribution, ActiveMQDestination destination) {
-        Set<BrokerModel> set = destinationMap.get(destination);
-        if (set != null && !set.isEmpty()) {
-            BrokerModel brokerModel = set.iterator().next();
-            return brokerModel.getTransport(messageDistribution);
-        } else {
-            //allocate a broker for the destination
-            List<BrokerModel> list = new ArrayList<>(brokerModelMap.values());
-            Collections.sort(list);
-            BrokerModel brokerModel = list.get(0);
-            destinationMap.put(destination, brokerModel);
-            return brokerModel.getTransport(messageDistribution);
-        }
-    }
-
-    @Override
-    public void addMessageDistribution(MessageDistribution messageDistribution) {
-        messageDistributionList.add(messageDistribution);
-        if (isStarted()) {
-            for (BrokerModel brokerModel : brokerModelMap.values()) {
-                try {
-                    brokerModel.createTransport(messageDistribution);
-                } catch (Exception e) {
-                    LOG.warn("Failed to create transport to " + brokerModel + " for " + messageDistribution);
-                }
-            }
-        }
-    }
-
-    @Override
-    public void removeMessageDistribution(MessageDistribution messageDistribution) {
-        messageDistributionList.remove(messageDistribution);
-        for (BrokerModel brokerModel : brokerModelMap.values()) {
-            brokerModel.removeTransport(messageDistribution);
-        }
-    }
-
-    @Override
-    protected void doStop(ServiceStopper serviceStopper) throws Exception {
-        if (poller != null) {
-            poller.cancel(true);
-        }
-        for (BrokerModel model : brokerModelMap.values()) {
-            serviceStopper.stop(model);
-        }
-        serviceStopper.stop(brokerCoordinator);
-    }
 
     @Override
     protected void doStart() throws Exception {
-        String brokerName = Systems.getEnvVarOrSystemProperty("BROKER_NAME", getBrokerName());
-        setBrokerName(brokerName);
-        String groupName = Systems.getEnvVarOrSystemProperty("GROUP_NAME", getGroupName());
-        setGroupName(groupName);
-        String brokerSelector = Systems.getEnvVarOrSystemProperty("BROKER_SELECTOR", getBrokerSelector());
-        setBrokerSelector(brokerSelector);
-        setGroupName(groupName);
-        Number pollTime = Systems.getEnvVarOrSystemProperty("POLL_INTERVAL", getPollTime());
-        setPollTime(pollTime.intValue());
-        String brokerTemplateLocation = Systems.getEnvVarOrSystemProperty("BBROKER_TEMPLATE_LOCATION", getBrokerTemplateLocation());
-        setBrokerTemplateLocation(brokerTemplateLocation);
-        String coordinationType = Systems.getEnvVarOrSystemProperty("BROKER_COORDINATION_TYPE", getBrokerCoordinatorType());
-        setBrokerCoordinatorType(coordinationType);
-        brokerCoordinator = BrokerCoordinatorFactory.getCoordinator(brokerCoordinatorType);
-        brokerCoordinator.start();
-        KubernetesFactory kubernetesFactory = new KubernetesFactory();
-        kubernetes = new KubernetesClient(kubernetesFactory);
+        kubernetes = new KubernetesClient();
+
         clients = new JolokiaClients(kubernetes);
         //this will create the broker ReplicationController if it doesn't exist
         this.replicationControllerId = getOrCreateBrokerReplicationControllerId();
-        pollBrokers();
-        if (brokerModelMap.isEmpty()) {
-            createBroker();
-        }
-        Runnable run = new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    scheduleTasks();
-
-                } catch (Throwable e) {
-                    LOG.error("Failed to validate MQ load: ", e);
-                }
-            }
-        };
-        poller = brokerStateInfo.getController().scheduleAtFixedRate(run, getPollTime(), getPollTime() * 2);
-        for (BrokerModel model : brokerModelMap.values()) {
-            model.start();
-        }
-
+        super.doStart();
     }
 
-    private void scheduleTasks() {
-        pollBrokers();
-        checkScaling();
-        distributeLoad();
-    }
-
-    private void distributeLoad() {
-        if (!scalingInProgress.isWorking()) {
-            if (brokerModelMap.size() > 1) {
-                List<BrokerModel> list = new ArrayList<>(brokerModelMap.values());
-                Collections.sort(list);
-
-                final BrokerModel leastLoaded = list.get(0);
-                final BrokerModel mostLoaded = list.get(list.size() - 1);
-                if (mostLoaded.areBrokerLimitsExceeded() || mostLoaded.areDestinationLimitsExceeded()) {
-                    //move queues to least loaded
-                    Set<ActiveMQDestination> queues = mostLoaded.getQueues();
-                    //take half the queues
-                    List<ActiveMQDestination> copyList = new ArrayList<>();
-                    if (queues.size() > 1) {
-                        List<ActiveMQDestination> sortedList = new ArrayList<>(queues);
-                        Collections.sort(sortedList, new Comparator<ActiveMQDestination>() {
-                            @Override
-                            public int compare(ActiveMQDestination dest1, ActiveMQDestination dest2) {
-                                int depth1 = mostLoaded.getDepth(dest1);
-                                int depth2 = mostLoaded.getDepth(dest2);
-                                int result = depth2 - depth1;
-                                if (result == 0) {
-                                    result = mostLoaded.getNumberOfProducers(dest2) - mostLoaded.getNumberOfProducers(dest1);
-                                    if (result == 0) {
-                                        result = mostLoaded.getNumberOfConsumers(dest2) - mostLoaded.getNumberOfConsumers(dest1);
-                                    }
-                                }
-                                return result;
-                            }
-                        });
-                        int toCopy = sortedList.size() / 2;
-                        for (int i = 0; i < toCopy; i++) {
-                            copyList.add(sortedList.get(i));
-                        }
-                    } else {
-                        copyList.addAll(queues);
-                    }
-                    copyDestinations(mostLoaded, leastLoaded, copyList);
-                }
-            }
-        }
-        scalingInProgress.finished(brokerModelMap.size());
-    }
-
-    private void checkScaling() {
-        boolean scaledBack = false;
-        //can we scale back ?
-        if (brokerModelMap.size() > 1) {
-            List<BrokerModel> list = new ArrayList<>(brokerModelMap.values());
-            Collections.sort(list);
-            int load = 0;
-            for (BrokerModel model : brokerModelMap.values()) {
-                load += model.load();
-            }
-            if ((load * 100) / list.size() < 50) {
-                scaledBack = true;
-                final BrokerModel leastLoaded = list.get(0);
-                final BrokerModel mostLoaded = list.get(list.size() - 1);
-                if (copyDestinations(leastLoaded, mostLoaded)) {
-                    destroyBroker(leastLoaded);
-                } else {
-                    LOG.error("Scale back failed");
-                }
-            }
-        }
-
-        if (!scaledBack) {
-            //do we need more brokers ?
-            for (BrokerModel model : brokerModelMap.values()) {
-                if (model.areBrokerLimitsExceeded() || model.areDestinationLimitsExceeded()) {
-                    createBroker();
-                    break;
-                }
-            }
-        }
-    }
-
-    private void pollBrokers() {
+    public void pollBrokers() {
         try {
             Map<String, Pod> podMap = KubernetesHelper.getSelectedPodMap(kubernetes, getBrokerSelector());
             Collection<Pod> pods = podMap.values();
-            LOG.info("Checking " + brokerSelector + ": groupSize = " + pods.size());
+            LOG.info("Checking " + getBrokerSelector() + ": groupSize = " + pods.size());
             for (Pod pod : pods) {
                 String host = KubernetesHelper.getHost(pod);
                 List<Container> containers = KubernetesHelper.getContainers(pod);
@@ -373,7 +111,7 @@ public class KubernetesControl extends ServiceSupport implements BrokerControl {
                 attribute = "OpenWireURL";
                 Object uri = getAttribute(client, root, attribute);
 
-                BrokerModel brokerModel = brokerModelMap.get(brokerId.toString());
+                BrokerModel brokerModel = model.getBrokerById(brokerId.toString());
                 if (brokerModel == null) {
                     BrokerView brokerView = new BrokerView();
                     brokerView.setBrokerName(brokerName.toString());
@@ -381,7 +119,7 @@ public class KubernetesControl extends ServiceSupport implements BrokerControl {
                     brokerView.setUri(uri.toString());
                     brokerModel = new BrokerModel(pod, brokerView);
                     brokerModel.start();
-                    brokerModelMap.put(brokerId.toString(), brokerModel);
+                    model.add(brokerModel);
                     //add transports
                     for (MessageDistribution messageDistribution : messageDistributionList) {
                         brokerView.createTransport(messageDistribution);
@@ -392,7 +130,7 @@ public class KubernetesControl extends ServiceSupport implements BrokerControl {
                     brokerModel.updateTransport();
                 }
 
-                BrokerOverview brokerOverview = new BrokerOverview(brokerId.toString(), brokerName.toString());
+                BrokerOverview brokerOverview = new BrokerOverview();
 
                 attribute = "TotalConnectionsCount";
                 Number result = (Number) getAttribute(client, root, attribute);
@@ -423,16 +161,16 @@ public class KubernetesControl extends ServiceSupport implements BrokerControl {
     }
 
     private BrokerOverview populateDestinations(J4pClient client, ObjectName root, BrokerOverview brokerOverview) throws Exception {
-        populateDestinations(client, root, DestinationOverview.Type.QUEUE, brokerOverview);
-        populateDestinations(client, root, DestinationOverview.Type.TOPIC, brokerOverview);
+        populateDestinations(client, root, BrokerDestinationOverviewImpl.Type.QUEUE, brokerOverview);
+        populateDestinations(client, root, BrokerDestinationOverviewImpl.Type.TOPIC, brokerOverview);
         return brokerOverview;
     }
 
-    private BrokerOverview populateDestinations(J4pClient client, ObjectName root, DestinationOverview.Type type, BrokerOverview brokerOverview) {
+    private BrokerOverview populateDestinations(J4pClient client, ObjectName root, BrokerDestinationOverviewImpl.Type type, BrokerOverview brokerOverview) {
 
         try {
             Hashtable<String, String> props = root.getKeyPropertyList();
-            props.put("destinationType", type == DestinationOverview.Type.QUEUE ? "Queue" : "Topic");
+            props.put("destinationType", type == BrokerDestinationOverviewImpl.Type.QUEUE ? "Queue" : "Topic");
             props.put("destinationName", "*");
             String objectName = root.getDomain() + ":" + Utils.getOrderedProperties(props);
 
@@ -447,12 +185,12 @@ public class KubernetesControl extends ServiceSupport implements BrokerControl {
                 String queueSize = jsonObject.get("QueueSize").toString().trim();
 
                 if (!name.contains("Advisory") && !name.contains(ActiveMQDestination.TEMP_DESTINATION_NAME_PREFIX)) {
-                    ActiveMQDestination destination = type == DestinationOverview.Type.QUEUE ? new ActiveMQQueue(name) : new ActiveMQTopic(name);
-                    DestinationOverview destinationOverview = new DestinationOverview(destination);
-                    destinationOverview.setNumberOfConsumers(Integer.parseInt(consumerCount));
-                    destinationOverview.setNumberOfProducers(Integer.parseInt(producerCount));
-                    destinationOverview.setQueueDepth(Integer.parseInt(queueSize));
-                    brokerOverview.addDestinationStatistics(destinationOverview);
+                    ActiveMQDestination destination = type == BrokerDestinationOverviewImpl.Type.QUEUE ? new ActiveMQQueue(name) : new ActiveMQTopic(name);
+                    BrokerDestinationOverviewImpl brokerDestinationOverviewImpl = new BrokerDestinationOverviewImpl(destination);
+                    brokerDestinationOverviewImpl.setNumberOfConsumers(Integer.parseInt(consumerCount));
+                    brokerDestinationOverviewImpl.setNumberOfProducers(Integer.parseInt(producerCount));
+                    brokerDestinationOverviewImpl.setQueueDepth(Integer.parseInt(queueSize));
+                    brokerOverview.addDestinationStatistics(brokerDestinationOverviewImpl);
                 }
             }
         } catch (Exception ex) {
@@ -462,9 +200,9 @@ public class KubernetesControl extends ServiceSupport implements BrokerControl {
         return brokerOverview;
     }
 
-    private void createBroker() {
-        int desiredNumber = brokerModelMap.size() + 1;
-        if (scalingInProgress.startWork(desiredNumber)) {
+    public void createBroker() {
+        int desiredNumber = model.getBrokerCount() + 1;
+        if (workInProgress.startWork(desiredNumber)) {
             try {
                 String id = getOrCreateBrokerReplicationControllerId();
                 ReplicationController replicationController = kubernetes.getReplicationController(id);
@@ -480,16 +218,16 @@ public class KubernetesControl extends ServiceSupport implements BrokerControl {
         }
     }
 
-    private void destroyBroker(BrokerModel brokerModel) {
-        int desiredNumber = brokerModelMap.size() - 1;
-        if (scalingInProgress.startWork(desiredNumber)) {
+    public void destroyBroker(BrokerModel brokerModel) {
+        int desiredNumber = model.getBrokerCount() - 1;
+        if (workInProgress.startWork(desiredNumber)) {
             try {
                 String id = getOrCreateBrokerReplicationControllerId();
                 ReplicationController replicationController = kubernetes.getReplicationController(id);
                 int currentDesiredNumber = replicationController.getDesiredState().getReplicas();
                 if (desiredNumber == (currentDesiredNumber - 1)) {
                     replicationController.getDesiredState().setReplicas(desiredNumber);
-                    brokerModelMap.remove(brokerModel.getBrokerId());
+                    model.remove(brokerModel);
                     //Todo update when Kubernetes allows you to target exact pod to discard from replication controller
                     kubernetes.deletePod(brokerModel.getPod());
                     kubernetes.updateReplicationController(id, replicationController);
@@ -536,69 +274,5 @@ public class KubernetesControl extends ServiceSupport implements BrokerControl {
             }
         }
         return replicationControllerId;
-    }
-
-    private boolean copyDestinations(BrokerModel from, BrokerModel to) {
-        List<ActiveMQDestination> list = new ArrayList<>(from.getQueues());
-        return copyDestinations(from, to, list);
-    }
-
-    private boolean copyDestinations(BrokerModel from, BrokerModel to, Collection<ActiveMQDestination> destinations) {
-        boolean result = false;
-        if (!destinations.isEmpty()) {
-            try {
-                //lock the brokers
-                from.lock();
-                to.lock();
-                //move the queues
-                CopyDestinationWorker copyDestinationWorker = new CopyDestinationWorker(brokerStateInfo.getAsyncExectutors(), from.getUri(), to.getUri());
-                for (ActiveMQDestination destination : destinations) {
-                    copyDestinationWorker.addDestinationToCopy(destination);
-                    destinationMap.remove(destination, from);
-                }
-                copyDestinationWorker.start();
-                copyDestinationWorker.aWait();
-                //update the sharding map
-                for (ActiveMQDestination destination : destinations) {
-                    destinationMap.put(destination, to);
-                }
-                result = true;
-
-            } catch (Exception e) {
-                LOG.error("Failed in copy from " + from + " to " + to, e);
-            } finally {
-                from.unlock();
-                to.unlock();
-            }
-        } else {
-            result = true;
-        }
-        return result;
-    }
-
-    private static class WorkInProgress {
-        private final AtomicBoolean working = new AtomicBoolean();
-        private final AtomicInteger expectedCount = new AtomicInteger();
-
-        boolean startWork(int countWhenFinished) {
-            boolean result = working.compareAndSet(false, true);
-            if (result) {
-                expectedCount.set(countWhenFinished);
-            }
-            return result;
-        }
-
-        boolean isWorking() {
-            return working.get();
-        }
-
-        boolean finished(int currentCount) {
-            boolean result = false;
-            if (expectedCount.compareAndSet(expectedCount.get(), currentCount)) {
-                working.compareAndSet(true, false);
-                result = true;
-            }
-            return result;
-        }
     }
 }
