@@ -18,6 +18,7 @@
 package io.fabric8.hubot.notifier;
 
 import io.fabric8.annotations.Eager;
+import io.fabric8.annotations.External;
 import io.fabric8.annotations.Protocol;
 import io.fabric8.annotations.ServiceName;
 import io.fabric8.kubernetes.api.KubernetesClient;
@@ -62,7 +63,7 @@ public class BuildWatchService {
     }
 
     @Inject
-    public BuildWatchService(@Protocol("http") @ServiceName("fabric8-console-service") String consoleLink,
+    public BuildWatchService(@External @Protocol("http") @ServiceName("fabric8-console-service") String consoleLink,
                              @ConfigProperty(name = "BUILD_NAMESPACE", defaultValue = "") String namespace,
                              @ConfigProperty(name = "BUILD_POLL_TIME", defaultValue = "" + DEFAULT_POLL_TIME) long pollTime,
                              HubotBuildListener buildListener) {
