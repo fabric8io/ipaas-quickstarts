@@ -40,6 +40,7 @@
     <docker.port.host.http>${http.port}</docker.port.host.http>
     <docker.port.container.apiman>${apiman.port}</docker.port.container.apiman>
     
+    <fabric8.env.MAIN>${docker.env.MAIN}</fabric8.env.MAIN>
     <fabric8.replicationController.name>fabric8-http-gateway-controller</fabric8.replicationController.name>
     <fabric8.label.component>HttpGateway</fabric8.label.component>
     <fabric8.label.group>defaultGatewayGroup</fabric8.label.group>
