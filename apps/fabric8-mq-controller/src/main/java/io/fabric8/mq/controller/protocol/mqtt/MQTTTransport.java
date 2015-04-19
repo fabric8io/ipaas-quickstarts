@@ -16,7 +16,6 @@
 package io.fabric8.mq.controller.protocol.mqtt;
 
 import io.fabric8.mq.controller.AsyncExecutors;
-import io.fabric8.mq.controller.MQController;
 import io.fabric8.mq.controller.protocol.ProtocolTransport;
 import org.apache.activemq.command.Command;
 import org.apache.activemq.transport.TransportListener;
@@ -27,6 +26,7 @@ import org.fusesource.mqtt.codec.MQTTFrame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vertx.java.core.Handler;
+import org.vertx.java.core.Vertx;
 import org.vertx.java.core.buffer.Buffer;
 
 import java.io.IOException;
@@ -40,8 +40,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class MQTTTransport extends TransportSupport implements ProtocolTransport<MQTTTransport> {
     private static final transient Logger LOG = LoggerFactory.getLogger(MQTTTransport.class);
 
-    private final MQController controller;
-    private final AsyncExecutors asyncExecutors;
+    private final Vertx vertx;
     private final AtomicInteger receiveCounter = new AtomicInteger();
     private final String name;
     private final MQTTWriteStream writeStream;
@@ -52,10 +51,9 @@ public class MQTTTransport extends TransportSupport implements ProtocolTransport
     private long connectAttemptTimeout;
     private Handler<Void> stopHandler;
 
-    protected MQTTTransport(MQController controller, String name, MQTTWireFormat wireFormat) {
+    protected MQTTTransport(Vertx vertx, AsyncExecutors asyncExecutors, String name, MQTTWireFormat wireFormat) {
         this.name = name;
-        this.controller = controller;
-        this.asyncExecutors = controller.getAsyncExectutors();
+        this.vertx = vertx;
         this.inactivityMonitor = new MQTTInactivityMonitor(asyncExecutors, this);
         writeStream = new MQTTWriteStream(this, wireFormat);
         readStream = new MQTTReadStream(this, wireFormat);
@@ -130,7 +128,7 @@ public class MQTTTransport extends TransportSupport implements ProtocolTransport
     }
 
     protected void runOnContext(Handler<Void> handler) {
-        controller.runOnContext(handler);
+        vertx.runOnContext(handler);
     }
 
     public MQTTTransport setWriteQueueMaxSize(int i) {

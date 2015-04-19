@@ -14,7 +14,7 @@
  */
 package io.fabric8.mq.controller.protocol.mqtt;
 
-import io.fabric8.mq.controller.MQController;
+import io.fabric8.mq.controller.protocol.TestProtocolServer;
 import org.fusesource.mqtt.client.BlockingConnection;
 import org.fusesource.mqtt.client.MQTT;
 import org.fusesource.mqtt.client.Message;
@@ -22,6 +22,7 @@ import org.fusesource.mqtt.client.QoS;
 import org.fusesource.mqtt.client.Topic;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Test;
 
 import java.util.concurrent.TimeUnit;
 
@@ -30,22 +31,23 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class MQTTTest {
-    private MQController controller;
+    private TestProtocolServer testProtocolServer;
 
     @Before
     public void setUp() throws Exception {
-        controller = new MQController();
-        //controller.getCamelRouter().setCamelRoutes("<route><from uri = \"controller:topic:foo\"/> <to uri=\"controller:topic:foo\"/> </route>");
-        controller.start();
+        testProtocolServer = new TestProtocolServer();
+        testProtocolServer.setProtocolTransportFactory(new MQTTTransportFactory());
+        testProtocolServer.start();
     }
 
     @After
     public void tearDown() throws Exception {
-        if (controller != null) {
-            controller.stop();
+        if (testProtocolServer != null){
+            testProtocolServer.stop();
         }
     }
 
+    @Test
     public void testSendAndReceiveAtLeastOnce() throws Exception {
         MQTT consumerClient = createMQTTTcpConnection("consumer", true);
         consumerClient.setConnectAttemptsMax(0);
@@ -84,7 +86,7 @@ public class MQTTTest {
             mqtt.setClientId(clientId);
         }
         mqtt.setCleanSession(clean);
-        mqtt.setHost("localhost", controller.getBoundPort());
+        mqtt.setHost("localhost", testProtocolServer.getBoundPort());
         return mqtt;
     }
 

@@ -15,10 +15,11 @@
 
 package io.fabric8.mq.controller.protocol;
 
-import io.fabric8.mq.controller.MQController;
+import io.fabric8.mq.controller.AsyncExecutors;
+import org.vertx.java.core.Vertx;
 
 import java.io.IOException;
 
 public interface ProtocolTransportFactory {
-    ProtocolTransport connect(MQController gateway, String name) throws IOException;
+    ProtocolTransport connect(Vertx vertx,AsyncExecutors asyncExecutors, String name) throws IOException;
 }

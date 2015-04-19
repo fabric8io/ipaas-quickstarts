@@ -15,7 +15,7 @@
 
 package io.fabric8.mq.controller.protocol.openwire;
 
-import io.fabric8.mq.controller.MQController;
+import io.fabric8.mq.controller.AsyncExecutors;
 import io.fabric8.mq.controller.protocol.ProtocolTransport;
 import org.apache.activemq.AsyncCallback;
 import org.apache.activemq.command.Command;
@@ -29,6 +29,7 @@ import org.apache.activemq.util.ServiceStopper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vertx.java.core.Handler;
+import org.vertx.java.core.Vertx;
 import org.vertx.java.core.buffer.Buffer;
 
 import javax.jms.JMSException;
@@ -52,7 +53,7 @@ public class OpenWireTransport extends TransportSupport implements ProtocolTrans
     private final OpenWireFormat openWireFormat;
     private final OpenWireWriteStream writeStream;
     private final OpenWireReadStream readStream;
-    private final MQController controller;
+    private final Vertx vertx;
     private final OpenWireInactivityMonitor inactivityMonitor;
     private final AtomicBoolean firstStart;
     private final CountDownLatch readyCountDownLatch;
@@ -62,9 +63,9 @@ public class OpenWireTransport extends TransportSupport implements ProtocolTrans
     private Handler<Void> stopHandler;
     private long negotiateTimeout = NEGIOTIATE_TIMEOUT;
 
-    protected OpenWireTransport(MQController controller, String name, OpenWireFormat wireFormat) {
+    protected OpenWireTransport(Vertx vertx, AsyncExecutors asyncExecutors, String name, OpenWireFormat wireFormat) {
         this.name = name;
-        this.controller = controller;
+        this.vertx = vertx;
         this.openWireFormat = wireFormat;
         writeStream = new OpenWireWriteStream(this, wireFormat);
         readStream = new OpenWireReadStream(this, wireFormat);
@@ -72,7 +73,7 @@ public class OpenWireTransport extends TransportSupport implements ProtocolTrans
         readyCountDownLatch = new CountDownLatch(1);
         wireInfoSentDownLatch = new CountDownLatch(1);
         minimumVersion = 1;
-        inactivityMonitor = new OpenWireInactivityMonitor(controller.getAsyncExectutors(), this);
+        inactivityMonitor = new OpenWireInactivityMonitor(asyncExecutors, this);
         try {
             if (wireFormat.getPreferedWireFormatInfo() != null) {
                 setNegotiateTimeout(wireFormat.getPreferedWireFormatInfo().getMaxInactivityDurationInitalDelay());
@@ -159,7 +160,7 @@ public class OpenWireTransport extends TransportSupport implements ProtocolTrans
     }
 
     protected void runOnContext(Handler<Void> handler) {
-        controller.runOnContext(handler);
+        vertx.runOnContext(handler);
     }
 
     public OpenWireTransport setWriteQueueMaxSize(int i) {

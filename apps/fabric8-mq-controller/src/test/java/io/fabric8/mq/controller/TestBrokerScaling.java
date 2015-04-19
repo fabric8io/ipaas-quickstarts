@@ -65,7 +65,7 @@ public class TestBrokerScaling extends Thread {
 
             TestBrokerScaling testBrokerScaling = new TestBrokerScaling();
 
-            String AMQ_PORT = Systems.getEnvVarOrSystemProperty("AMQ_PORT", "48002").trim();
+            String AMQ_PORT = Systems.getEnvVarOrSystemProperty("AMQ_PORT", "6194").trim();
             String AMQ_HOST = Systems.getEnvVarOrSystemProperty("AMQ_HOST", "localhost").trim();
             Number DESTINATIONS = Systems.getEnvVarOrSystemProperty("DESTINATIONS", testBrokerScaling.getNumberOfDestinations());
             Number RUNNING_TIME = Systems.getEnvVarOrSystemProperty("RUNNING_TIME", testBrokerScaling.getRumTimeMinutes());

@@ -29,6 +29,7 @@ import io.fabric8.mq.controller.protocol.ProtocolTransport;
 import io.fabric8.mq.controller.protocol.ProtocolTransportFactory;
 import io.fabric8.mq.controller.protocol.mqtt.MQTTTransportFactory;
 import io.fabric8.mq.controller.protocol.openwire.OpenWireTransportFactory;
+import io.fabric8.mq.controller.util.ConnectedSocketInfo;
 import io.fabric8.mq.controller.util.ProtocolMapping;
 import io.fabric8.utils.JMXUtils;
 import io.fabric8.utils.ShutdownTracker;
@@ -384,7 +385,7 @@ public class MQController extends BrokerStateInfo implements Handler<Transport> 
     public void handleShutdown(Transport transport) {
         if (transport != null) {
             for (ConnectedSocketInfo info : socketsConnected) {
-                if (info.to != null && info.to.equals(transport)) {
+                if (info.getTo() != null && info.getTo().equals(transport)) {
                     handleShutdown(info);
                     break;
                 }
@@ -402,9 +403,9 @@ public class MQController extends BrokerStateInfo implements Handler<Transport> 
         if (socketsConnected.remove(connectedInfo)) {
             try {
                 for (MultiplexerController multiplexerController : multiplexerControllers) {
-                    multiplexerController.removeTransport(connectedInfo.to);
+                    multiplexerController.removeTransport(connectedInfo.getTo());
                 }
-                handle(connectedInfo.to);
+                handle(connectedInfo.getTo());
                 connectedInfo.close();
             } catch (Throwable e) {
             } finally {
@@ -449,86 +450,10 @@ public class MQController extends BrokerStateInfo implements Handler<Transport> 
         } else {
             factory = new OpenWireTransportFactory();
         }
-        return factory.connect(this, protocolMapping.toString());
+        return factory.connect(vertx,asyncExecutors, protocolMapping.toString());
 
     }
 
-    private static class ConnectedSocketInfo {
-
-        private ConnectionParameters params;
-        private ProtocolMapping protocolMapping;
-        private SocketWrapper from;
-        private ProtocolTransport to;
-        private Pump readPump;
-        private Pump writePump;
-
-        ConnectedSocketInfo() {
-        }
-
-        Pump getWritePump() {
-            return writePump;
-        }
-
-        void setWritePump(Pump writePump) {
-            this.writePump = writePump;
-        }
-
-        ConnectionParameters getParams() {
-            return params;
-        }
-
-        void setParams(ConnectionParameters params) {
-            this.params = params;
-        }
-
-        ProtocolMapping getProtocolMapping() {
-            return protocolMapping;
-        }
-
-        void setProtocolMapping(ProtocolMapping protocolMapping) {
-            this.protocolMapping = protocolMapping;
-        }
-
-        SocketWrapper getFrom() {
-            return from;
-        }
-
-        void setFrom(SocketWrapper from) {
-            this.from = from;
-        }
-
-        public ProtocolTransport getTo() {
-            return to;
-        }
-
-        void setTo(ProtocolTransport to) {
-            this.to = to;
-        }
-
-        Pump getReadPump() {
-            return readPump;
-        }
-
-        void setReadPump(Pump readPump) {
-            this.readPump = readPump;
-        }
-
-        void close() throws Exception {
-            if (from != null) {
-                from.close();
-            }
-            if (to != null) {
-                to.stop();
-            }
-            if (readPump != null) {
-                readPump.stop();
-            }
-            if (writePump != null) {
-                writePump.stop();
-            }
-
-        }
-    }
 
     private static class MQControllerNetSocketHandler implements Handler<NetSocket> {
         private final MQController controller;

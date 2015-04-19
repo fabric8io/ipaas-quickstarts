@@ -15,22 +15,23 @@
 
 package io.fabric8.mq.controller.protocol.mqtt;
 
-import io.fabric8.mq.controller.MQController;
+import io.fabric8.mq.controller.AsyncExecutors;
 import io.fabric8.mq.controller.protocol.ProtocolTransport;
 import io.fabric8.mq.controller.protocol.ProtocolTransportFactory;
 import org.apache.activemq.transport.TransportFactory;
 import org.apache.activemq.transport.TransportServer;
 import org.apache.activemq.transport.mqtt.MQTTWireFormat;
+import org.vertx.java.core.Vertx;
 
 import java.io.IOException;
 import java.net.URI;
 
 public class MQTTTransportFactory extends TransportFactory implements ProtocolTransportFactory {
 
-    public ProtocolTransport connect(MQController controller, String name) throws IOException {
+    public ProtocolTransport connect(Vertx vertx,AsyncExecutors asyncExecutors, String name) throws IOException {
         MQTTWireFormat wireFormat = new MQTTWireFormat();
         //OpenWireFormat wireFormat = new OpenWireFormat(1);
-        MQTTTransport transport = new MQTTTransport(controller, name, wireFormat);
+        MQTTTransport transport = new MQTTTransport(vertx,asyncExecutors, name, wireFormat);
         return transport;
     }
 
