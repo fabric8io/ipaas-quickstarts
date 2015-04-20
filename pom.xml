@@ -85,7 +85,7 @@
         <docker.maven.plugin.version>0.11.2</docker.maven.plugin.version>
         <exec-maven-plugin.version>1.2.1</exec-maven-plugin.version>
         <maven.surefire.plugin.version>2.17</maven.surefire.plugin.version>
-        <jube.version>2.0.43</jube.version>
+        <jube.version>2.0.44</jube.version>
         <junit.version>4.12</junit.version>
         <fabric8.version>2.0.44</fabric8.version>
         <maven.require.version>3.1.1</maven.require.version>

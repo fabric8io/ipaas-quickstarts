@@ -47,7 +47,7 @@
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <camel.version>2.15.1</camel.version>
-    <jube.version>2.0.43</jube.version>
+    <jube.version>2.0.44</jube.version>
 
     <docker.from>fabric8/java</docker.from>
     <docker.registryPrefix>${env.DOCKER_REGISTRY}/</docker.registryPrefix>
