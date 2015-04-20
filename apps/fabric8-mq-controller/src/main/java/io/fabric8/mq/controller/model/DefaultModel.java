@@ -187,29 +187,6 @@ public class DefaultModel extends ServiceSupport implements Model {
     }
 
     @Override
-    public boolean canScaleDownBrokers() {
-        boolean result = false;
-        int load = 0;
-        for (BrokerModel model : brokerModelMap.values()) {
-            load += getLoad(model);
-        }
-        if (load == 0 || (load * 100) / getBrokerCount() < 50) {
-            result = true;
-        }
-        return result;
-    }
-
-    @Override
-    public boolean shouldScaleUpBrokers() {
-        for (BrokerModel brokerModel : brokerModelMap.values()) {
-            if (areBrokerLimitsExceeded(brokerModel) || areDestinationLimitsExceeded(brokerModel)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
     public Collection<BrokerModel> getBrokers() {
         return brokerModelMap.values();
     }
@@ -332,6 +309,8 @@ public class DefaultModel extends ServiceSupport implements Model {
             JMXUtils.unregisterMBean(objectName);
         }
     }
+
+
 
     private class BrokerComparable implements Comparator<BrokerModel> {
 

@@ -19,5 +19,6 @@
 <beans>
     <default>
         <class>io.fabric8.mq.controller.coordination.KubernetesControl</class>
+        <class>org.easyrules.jmx.DefaultJMXRulesEngine</class>
     </default>
 </beans>

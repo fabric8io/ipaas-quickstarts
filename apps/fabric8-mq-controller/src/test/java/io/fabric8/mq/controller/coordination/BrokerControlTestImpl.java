@@ -50,7 +50,7 @@ public class BrokerControlTestImpl extends BaseBrokerControl {
 
     public void createBroker() {
         int desiredNumber = model.getBrokerCount() + 1;
-        if (workInProgress.startWork(desiredNumber)) {
+        if (scalingInProgress.startWork(desiredNumber)) {
             try {
                 String brokerName = "Broker-" + model.getBrokerCount();
                 BrokerService broker = new BrokerService();
@@ -70,7 +70,7 @@ public class BrokerControlTestImpl extends BaseBrokerControl {
 
     public void destroyBroker(BrokerModel brokerModel) {
         int desiredNumber = model.getBrokerCount() - 1;
-        if (workInProgress.startWork(desiredNumber)) {
+        if (scalingInProgress.startWork(desiredNumber)) {
             try {
 
                 model.remove(brokerModel);

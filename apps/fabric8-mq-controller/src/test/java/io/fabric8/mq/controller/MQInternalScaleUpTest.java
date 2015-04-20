@@ -75,8 +75,6 @@ public class MQInternalScaleUpTest implements BrokerModelChangedListener {
 
     @Test
     public void scalingTest() throws Exception {
-        System.err.println("SCALING TEST");
-        //Thread.sleep(2000);
         TestConnection testConnection = testController.createTestConnection("foo");
         for (ActiveMQDestination destination : destinations) {
             Session session = testConnection.createSession(false, Session.AUTO_ACKNOWLEDGE);

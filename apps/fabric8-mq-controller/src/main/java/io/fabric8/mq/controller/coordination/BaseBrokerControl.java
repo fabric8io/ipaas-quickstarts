@@ -20,6 +20,8 @@ import io.fabric8.mq.controller.MessageDistribution;
 import io.fabric8.mq.controller.coordination.brokers.BrokerModel;
 import io.fabric8.mq.controller.coordination.brokers.BrokerTransport;
 import io.fabric8.mq.controller.coordination.brokers.DefaultBrokerTransport;
+import io.fabric8.mq.controller.coordination.scaling.ScalingEngine;
+import io.fabric8.mq.controller.coordination.scaling.ScalingEventListener;
 import io.fabric8.mq.controller.model.BrokerControl;
 import io.fabric8.mq.controller.model.BrokerModelChangedListener;
 import io.fabric8.mq.controller.model.Model;
@@ -42,15 +44,17 @@ import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ScheduledFuture;
 
-public abstract class BaseBrokerControl extends ServiceSupport implements BrokerControl {
+public abstract class BaseBrokerControl extends ServiceSupport implements BrokerControl, ScalingEventListener {
     private static final Logger LOG = LoggerFactory.getLogger(BaseBrokerControl.class);
     @Inject
     protected Model model;
     @Inject
     protected AsyncExecutors asyncExecutors;
+    @Inject
+    protected ScalingEngine scalingEngine;
     protected DestinationMap destinationMap;
     protected List<MessageDistribution> messageDistributionList;
-    protected WorkInProgress workInProgress;
+    protected WorkInProgress scalingInProgress;
     //protected Map<String, BrokerModel> brokerModelMap;
     protected BrokerCoordinator brokerCoordinator;
     protected List<BrokerModelChangedListener> brokerModelChangedListeners;
@@ -77,7 +81,7 @@ public abstract class BaseBrokerControl extends ServiceSupport implements Broker
     protected BaseBrokerControl() {
         destinationMap = new DestinationMap();
         messageDistributionList = new CopyOnWriteArrayList();
-        workInProgress = new WorkInProgress();
+        scalingInProgress = new WorkInProgress();
         brokerModelChangedListeners = new CopyOnWriteArrayList<>();
     }
 
@@ -202,10 +206,71 @@ public abstract class BaseBrokerControl extends ServiceSupport implements Broker
     }
 
     @Override
+    public void scaleDown() {
+        //take destinations from least loaded
+        BrokerModel leastLoaded = model.getLeastLoadedBroker();
+        if (leastLoaded != null) {
+            BrokerModel nextLeastLoaded = model.getNextLeastLoadedBroker(leastLoaded);
+            if (nextLeastLoaded != null) {
+                leastLoaded.getWriteLock();
+                nextLeastLoaded.getWriteLock();
+                try {
+                    leastLoaded.getWriteLock();
+                    nextLeastLoaded.getWriteLock();
+                    if (copyDestinations(leastLoaded, nextLeastLoaded)) {
+                        destroyBroker(leastLoaded);
+                    } else {
+                        LOG.error("Scale back failed");
+                    }
+                } finally {
+                    leastLoaded.unlockWriteLock();
+                    nextLeastLoaded.unlockWriteLock();
+                }
+            }
+        }
+    }
+
+    @Override
+    public void scaleUp() {
+        createBroker();
+    }
+
+    @Override
+    public void distributeLoad() {
+        if (!scalingInProgress.isWorking()) {
+            if (model.getBrokerCount() > 1) {
+
+                final BrokerModel leastLoaded = model.getLeastLoadedBroker();
+                final BrokerModel mostLoaded = model.getMostLoadedBroker();
+
+                try {
+                    leastLoaded.getWriteLock();
+                    mostLoaded.getWriteLock();
+
+                    int maxToCopy = model.getBrokerLimitsConfig().getMaxDestinationsPerBroker() - leastLoaded.getActiveDestinationCount();
+
+                    if (maxToCopy > 0) {
+                        List<ActiveMQDestination> copyList = model.getSortedDestinations(mostLoaded, maxToCopy);
+                        //check to see we won't break limits
+                        if (!copyList.isEmpty()) {
+                            copyDestinations(mostLoaded, leastLoaded, copyList);
+                        }
+                    }
+                } finally {
+                    leastLoaded.unlockWriteLock();
+                    mostLoaded.unlockWriteLock();
+                }
+            }
+        }
+    }
+
+    @Override
     protected void doStop(ServiceStopper serviceStopper) throws Exception {
         if (poller != null) {
             poller.cancel(true);
         }
+        scalingEngine.remove(this);
+        serviceStopper.stop(scalingEngine);
         for (BrokerModel brokerModel : model.getBrokers()) {
             serviceStopper.stop(brokerModel);
         }
@@ -217,6 +282,8 @@ public abstract class BaseBrokerControl extends ServiceSupport implements Broker
         setBrokerTemplateLocation(getBrokerTemplateLocation());
 
         model.start();
+        scalingEngine.add(this);
+        scalingEngine.start();
 
         setBrokerCoordinatorType(getBrokerCoordinatorType());
         brokerCoordinator = BrokerCoordinatorFactory.getCoordinator(brokerCoordinatorType);
@@ -240,92 +307,17 @@ public abstract class BaseBrokerControl extends ServiceSupport implements Broker
         for (BrokerModel brokerModel : model.getBrokers()) {
             brokerModel.start();
         }
-
     }
 
     private void scheduledTasks() {
         int brokerCount = model.getBrokerCount();
         pollBrokers();
-        workInProgress.finished(model.getBrokerCount());
-        if (!distributeLoad()) {
-            checkScaling();
-        }
+        scalingInProgress.finished(model.getBrokerCount());
+        //check scaling Rules
+        scalingEngine.process();
         if (brokerCount != model.getBrokerCount()) {
             for (BrokerModelChangedListener brokerModelChangedListener : brokerModelChangedListeners) {
                 brokerModelChangedListener.brokerNumberChanged(model.getBrokerCount());
-            }
-        }
-    }
-
-    @Override
-    public boolean distributeLoad() {
-        boolean result = false;
-        if (!workInProgress.isWorking()) {
-            if (model.getBrokerCount() > 1) {
-
-                final BrokerModel leastLoaded = model.getLeastLoadedBroker();
-                final BrokerModel mostLoaded = model.getMostLoadedBroker();
-
-                if ((model.areBrokerLimitsExceeded(mostLoaded) || model.areDestinationLimitsExceeded(mostLoaded)) &&
-                        (!model.areBrokerLimitsExceeded(leastLoaded) && !model.areDestinationLimitsExceeded(leastLoaded))) {
-
-                    try {
-                        leastLoaded.getWriteLock();
-                        mostLoaded.getWriteLock();
-
-                        int maxToCopy = model.getBrokerLimitsConfig().getMaxDestinationsPerBroker() - leastLoaded.getActiveDestinationCount();
-
-                        if (maxToCopy > 0) {
-                            List<ActiveMQDestination> copyList = model.getSortedDestinations(mostLoaded, maxToCopy);
-                            //check to see we won't break limits
-                            if (!copyList.isEmpty()) {
-                                copyDestinations(mostLoaded, leastLoaded, copyList);
-                                result = true;
-                            }
-                        }
-                    } finally {
-                        leastLoaded.unlockWriteLock();
-                        mostLoaded.unlockWriteLock();
-                    }
-                }
-            }
-        }
-        return result;
-    }
-
-    private void checkScaling() {
-        boolean scaledBack = model.canScaleDownBrokers();
-        if (scaledBack) {
-            //take destinations from least loaded
-            BrokerModel leastLoaded = model.getLeastLoadedBroker();
-            if (leastLoaded != null) {
-                BrokerModel nextLeastLoaded = model.getNextLeastLoadedBroker(leastLoaded);
-                if (nextLeastLoaded != null) {
-                    leastLoaded.getWriteLock();
-                    nextLeastLoaded.getWriteLock();
-                    try {
-                        leastLoaded.getWriteLock();
-                        nextLeastLoaded.getWriteLock();
-                        if (copyDestinations(leastLoaded, nextLeastLoaded)) {
-                            destroyBroker(leastLoaded);
-                        } else {
-                            LOG.error("Scale back failed");
-                        }
-                    } finally {
-                        leastLoaded.unlockWriteLock();
-                        nextLeastLoaded.unlockWriteLock();
-                    }
-                }
-            }
-        }
-
-        if (!scaledBack) {
-            //do we need more brokers ?
-            for (BrokerModel brokerModel : model.getBrokers()) {
-                if (model.areBrokerLimitsExceeded(brokerModel) || model.areDestinationLimitsExceeded(brokerModel)) {
-                    createBroker();
-                    break;
-                }
             }
         }
     }

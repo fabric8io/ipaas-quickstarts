@@ -53,10 +53,6 @@ public interface Model extends Service {
 
     boolean areDestinationLimitsExceeded(BrokerModel brokerModel);
 
-    boolean canScaleDownBrokers();
-
-    boolean shouldScaleUpBrokers();
-
     BrokerModel getMostLoadedBroker();
 
     BrokerModel getNextLeastLoadedBroker(BrokerModel brokerModel);

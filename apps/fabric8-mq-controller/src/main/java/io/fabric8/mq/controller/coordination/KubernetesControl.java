@@ -202,7 +202,7 @@ public class KubernetesControl extends BaseBrokerControl {
 
     public void createBroker() {
         int desiredNumber = model.getBrokerCount() + 1;
-        if (workInProgress.startWork(desiredNumber)) {
+        if (scalingInProgress.startWork(desiredNumber)) {
             try {
                 String id = getOrCreateBrokerReplicationControllerId();
                 ReplicationController replicationController = kubernetes.getReplicationController(id);
@@ -220,7 +220,7 @@ public class KubernetesControl extends BaseBrokerControl {
 
     public void destroyBroker(BrokerModel brokerModel) {
         int desiredNumber = model.getBrokerCount() - 1;
-        if (workInProgress.startWork(desiredNumber)) {
+        if (scalingInProgress.startWork(desiredNumber)) {
             try {
                 String id = getOrCreateBrokerReplicationControllerId();
                 ReplicationController replicationController = kubernetes.getReplicationController(id);

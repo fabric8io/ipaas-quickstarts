@@ -35,7 +35,6 @@ public interface BrokerControl extends Service {
 
     Collection<BrokerModel> getBrokerModels();
 
-    boolean distributeLoad();
 
     void addBrokerModelChangedListener(BrokerModelChangedListener brokerModelChangedListener);
 
