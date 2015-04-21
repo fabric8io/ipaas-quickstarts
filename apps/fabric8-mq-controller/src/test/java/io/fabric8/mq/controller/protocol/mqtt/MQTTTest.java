@@ -15,6 +15,7 @@
 package io.fabric8.mq.controller.protocol.mqtt;
 
 import io.fabric8.mq.controller.protocol.TestProtocolServer;
+import io.fabric8.mq.controller.util.WeldJUnitRunner;
 import org.fusesource.mqtt.client.BlockingConnection;
 import org.fusesource.mqtt.client.MQTT;
 import org.fusesource.mqtt.client.Message;
@@ -23,19 +24,22 @@ import org.fusesource.mqtt.client.Topic;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import javax.inject.Inject;
 import java.util.concurrent.TimeUnit;
 
 import static org.fusesource.hawtbuf.UTF8Buffer.utf8;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+@RunWith(WeldJUnitRunner.class)
 public class MQTTTest {
+    @Inject
     private TestProtocolServer testProtocolServer;
 
     @Before
     public void setUp() throws Exception {
-        testProtocolServer = new TestProtocolServer();
         testProtocolServer.setProtocolTransportFactory(new MQTTTransportFactory());
         testProtocolServer.start();
     }
