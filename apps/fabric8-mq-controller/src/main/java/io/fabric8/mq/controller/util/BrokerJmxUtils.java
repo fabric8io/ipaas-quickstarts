@@ -43,7 +43,6 @@ public class BrokerJmxUtils {
                 string += ",";
             }
         }
-        System.err.println("UTIL getObjectName " + domain + " : " + string);
         String name = getOrderedProperties(getProperties(string));
         ObjectName objectName = new ObjectName(domain + ":" + name);
         return objectName;

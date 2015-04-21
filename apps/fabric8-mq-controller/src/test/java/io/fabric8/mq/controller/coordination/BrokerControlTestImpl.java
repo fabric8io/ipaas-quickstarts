@@ -39,7 +39,6 @@ public class BrokerControlTestImpl extends BaseBrokerControl {
 
     public void pollBrokers() {
         try {
-            System.err.println("POLL BROKERS " + brokers.size());
             for (BrokerService broker : brokers) {
                 populateBrokerStatistics(broker);
             }
@@ -149,7 +148,6 @@ public class BrokerControlTestImpl extends BaseBrokerControl {
                                 brokerDestinationOverviewImpl.setNumberOfProducers((int) destination.getDestinationStatistics().getProducers().getCount());
                                 brokerDestinationOverviewImpl.setQueueDepth((int) destination.getDestinationStatistics().getMessages().getCount());
                                 brokerOverview.addDestinationStatistics(brokerDestinationOverviewImpl);
-                                System.err.println("ADDED BROKER DEST OVERVIEW = " + brokerDestinationOverviewImpl);
                             }
                     }
 
