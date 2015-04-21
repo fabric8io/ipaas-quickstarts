@@ -18,8 +18,8 @@ package io.fabric8.mq.controller.coordination;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.KubernetesFactory;
 import io.fabric8.kubernetes.api.model.ReplicationController;
+import org.junit.Assert;
 import org.junit.Test;
-import org.springframework.util.Assert;
 
 import java.net.URL;
 
@@ -38,6 +38,6 @@ public class ReplicationControllerTest {
 
         ReplicationController result = mapper.reader(ReplicationController.class).readValue(url);
 
-        Assert.notNull(result);
+        Assert.assertNotNull(result);
     }
 }

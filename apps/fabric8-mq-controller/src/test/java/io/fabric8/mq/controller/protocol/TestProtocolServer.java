@@ -18,7 +18,7 @@ package io.fabric8.mq.controller.protocol;
 import io.fabric8.gateway.SocketWrapper;
 import io.fabric8.gateway.handlers.detecting.FutureHandler;
 import io.fabric8.mq.controller.AsyncExecutors;
-import io.fabric8.mq.controller.model.DefaultModel;
+import io.fabric8.mq.controller.model.Model;
 import io.fabric8.mq.controller.multiplexer.Multiplexer;
 import org.apache.activemq.transport.Transport;
 import org.apache.activemq.util.ServiceStopper;
@@ -35,6 +35,7 @@ import org.vertx.java.core.net.NetSocket;
 import org.vertx.java.core.streams.Pump;
 import org.vertx.java.core.streams.ReadStream;
 
+import javax.inject.Inject;
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 
@@ -42,7 +43,10 @@ public class TestProtocolServer extends ServiceSupport {
     private static final transient Logger LOG = LoggerFactory.getLogger(TestProtocolServer.class);
     private TestMessageDistribution testMessageDistribution = new TestMessageDistribution();
     private Vertx vertx = VertxFactory.newVertx();
-    private AsyncExecutors asyncExecutors = new AsyncExecutors();
+    @Inject
+    private Model model;
+    @Inject
+    private AsyncExecutors asyncExecutors;
     private NetServer netServer;
     private ProtocolTransportFactory protocolTransportFactory;
     private Transport outBound;
@@ -131,7 +135,6 @@ public class TestProtocolServer extends ServiceSupport {
         });
 
         netServer.listen(port, listenFuture);
-        DefaultModel model = new DefaultModel();
         model.start();
         multiplexer = new Multiplexer(model,"test",asyncExecutors,testMessageDistribution);
         multiplexer.start();

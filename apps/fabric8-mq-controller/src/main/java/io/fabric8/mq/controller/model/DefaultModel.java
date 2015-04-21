@@ -16,12 +16,15 @@
 package io.fabric8.mq.controller.model;
 
 import com.codahale.metrics.JmxReporter;
+import io.fabric8.mq.controller.AsyncExecutors;
 import io.fabric8.mq.controller.coordination.brokers.BrokerModel;
 import io.fabric8.mq.controller.coordination.brokers.BrokerOverview;
 import io.fabric8.mq.controller.multiplexer.Multiplexer;
 import io.fabric8.mq.controller.multiplexer.MultiplexerInput;
+import io.fabric8.mq.controller.util.MoveDestinationWorker;
 import io.fabric8.utils.JMXUtils;
 import org.apache.activemq.command.ActiveMQDestination;
+import org.apache.activemq.filter.DestinationMap;
 import org.apache.activemq.util.ServiceStopper;
 import org.apache.activemq.util.ServiceSupport;
 import org.slf4j.Logger;
@@ -46,8 +49,11 @@ public class DefaultModel extends ServiceSupport implements Model {
     private static Logger LOG = LoggerFactory.getLogger(DefaultModel.class);
     private final ConcurrentMap<Object, ObjectName> objectNameMap = new ConcurrentHashMap<>();
     private final ConcurrentMap<String, BrokerModel> brokerModelMap = new ConcurrentHashMap<>();
+    private final DestinationMap destinationMap = new DestinationMap();
     @Inject
     BrokerLimitsConfig brokerLimitsConfig;
+    @Inject
+    AsyncExecutors asyncExecutors;
     private JmxReporter jmxReporter = JmxReporter.forRegistry(METRIC_REGISTRY).inDomain(DEFAULT_JMX_DOMAIN).build();
 
     public BrokerLimitsConfig getBrokerLimitsConfig() {
@@ -289,8 +295,67 @@ public class DefaultModel extends ServiceSupport implements Model {
     }
 
     @Override
+    public Set<BrokerModel> getBrokersForDestination(ActiveMQDestination destination){
+        return destinationMap.get(destination);
+    }
+
+    @Override
+    public void addBrokerForDestination(ActiveMQDestination destination,BrokerModel brokerModel){
+        destinationMap.put(destination, brokerModel);
+    }
+
+    @Override
+    public BrokerModel addBrokerForDestination(ActiveMQDestination destination){
+        BrokerModel brokerModel = getLeastLoadedBroker();
+        if (brokerModel != null) {
+            destinationMap.put(destination, brokerModel);
+        }
+        return brokerModel;
+    }
+
+    @Override
+    public void removeBrokerFromDestination(ActiveMQDestination destination,BrokerModel brokerModel){
+        destinationMap.remove(destination, brokerModel);
+    }
+
+    @Override
+    public boolean copyDestinations(BrokerModel from, BrokerModel to) {
+        List<ActiveMQDestination> list = new ArrayList<>(from.getActiveDestinations());
+        return copyDestinations(from, to, list);
+    }
+
+    @Override
+    public boolean copyDestinations(BrokerModel from, BrokerModel to, Collection<ActiveMQDestination> destinations) {
+        boolean result = false;
+        if (!destinations.isEmpty()) {
+            try {
+                //move the queues
+                MoveDestinationWorker moveDestinationWorker = new MoveDestinationWorker(asyncExecutors, from, to);
+                for (ActiveMQDestination destination : destinations) {
+                    moveDestinationWorker.addDestinationToCopy(destination);
+                    removeBrokerFromDestination(destination, from);
+                }
+                moveDestinationWorker.start();
+                moveDestinationWorker.aWait();
+                //update the sharding map
+                for (ActiveMQDestination destination : destinations) {
+                    addBrokerForDestination(destination, to);
+                }
+                result = true;
+
+            } catch (Exception e) {
+                LOG.error("Failed in copy from " + from + " to " + to, e);
+            }
+        } else {
+            result = true;
+        }
+        return result;
+    }
+
+    @Override
     protected void doStart() throws Exception {
         jmxReporter.start();
+        asyncExecutors.start();
     }
 
     @Override
@@ -309,7 +374,6 @@ public class DefaultModel extends ServiceSupport implements Model {
             JMXUtils.unregisterMBean(objectName);
         }
     }
-
 
 
     private class BrokerComparable implements Comparator<BrokerModel> {

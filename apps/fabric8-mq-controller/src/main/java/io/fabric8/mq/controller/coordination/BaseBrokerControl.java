@@ -25,10 +25,8 @@ import io.fabric8.mq.controller.coordination.scaling.ScalingEventListener;
 import io.fabric8.mq.controller.model.BrokerControl;
 import io.fabric8.mq.controller.model.BrokerModelChangedListener;
 import io.fabric8.mq.controller.model.Model;
-import io.fabric8.mq.controller.util.MoveDestinationWorker;
 import io.fabric8.mq.controller.util.WorkInProgress;
 import org.apache.activemq.command.ActiveMQDestination;
-import org.apache.activemq.filter.DestinationMap;
 import org.apache.activemq.transport.Transport;
 import org.apache.activemq.util.ServiceStopper;
 import org.apache.activemq.util.ServiceSupport;
@@ -52,7 +50,6 @@ public abstract class BaseBrokerControl extends ServiceSupport implements Broker
     protected AsyncExecutors asyncExecutors;
     @Inject
     protected ScalingEngine scalingEngine;
-    protected DestinationMap destinationMap;
     protected List<MessageDistribution> messageDistributionList;
     protected WorkInProgress scalingInProgress;
     //protected Map<String, BrokerModel> brokerModelMap;
@@ -79,7 +76,6 @@ public abstract class BaseBrokerControl extends ServiceSupport implements Broker
     private String brokerCoordinatorType;
 
     protected BaseBrokerControl() {
-        destinationMap = new DestinationMap();
         messageDistributionList = new CopyOnWriteArrayList();
         scalingInProgress = new WorkInProgress();
         brokerModelChangedListeners = new CopyOnWriteArrayList<>();
@@ -156,7 +152,7 @@ public abstract class BaseBrokerControl extends ServiceSupport implements Broker
 
     @Override
     public BrokerTransport getTransport(MessageDistribution messageDistribution, ActiveMQDestination destination) {
-        Set<BrokerModel> set = destinationMap.get(destination);
+        Set<BrokerModel> set = model.getBrokersForDestination(destination);
         if (set != null && !set.isEmpty()) {
             BrokerModel brokerModel = set.iterator().next();
             Transport transport = brokerModel.getTransport(messageDistribution);
@@ -164,9 +160,7 @@ public abstract class BaseBrokerControl extends ServiceSupport implements Broker
             return new DefaultBrokerTransport(brokerModel, transport);
         } else {
             //allocate a broker for the destination
-
-            BrokerModel brokerModel = model.getLeastLoadedBroker();
-            destinationMap.put(destination, brokerModel);
+            BrokerModel brokerModel = model.addBrokerForDestination(destination);
             Transport transport = brokerModel.getTransport(messageDistribution);
             brokerModel.getReadLock();
             return new DefaultBrokerTransport(brokerModel, transport);
@@ -217,7 +211,7 @@ public abstract class BaseBrokerControl extends ServiceSupport implements Broker
                 try {
                     leastLoaded.getWriteLock();
                     nextLeastLoaded.getWriteLock();
-                    if (copyDestinations(leastLoaded, nextLeastLoaded)) {
+                    if (model.copyDestinations(leastLoaded, nextLeastLoaded)) {
                         destroyBroker(leastLoaded);
                     } else {
                         LOG.error("Scale back failed");
@@ -253,7 +247,7 @@ public abstract class BaseBrokerControl extends ServiceSupport implements Broker
                         List<ActiveMQDestination> copyList = model.getSortedDestinations(mostLoaded, maxToCopy);
                         //check to see we won't break limits
                         if (!copyList.isEmpty()) {
-                            copyDestinations(mostLoaded, leastLoaded, copyList);
+                            model.copyDestinations(mostLoaded, leastLoaded, copyList);
                         }
                     }
                 } finally {
@@ -322,35 +316,5 @@ public abstract class BaseBrokerControl extends ServiceSupport implements Broker
         }
     }
 
-    private boolean copyDestinations(BrokerModel from, BrokerModel to) {
-        List<ActiveMQDestination> list = new ArrayList<>(from.getActiveDestinations());
-        return copyDestinations(from, to, list);
-    }
 
-    private boolean copyDestinations(BrokerModel from, BrokerModel to, Collection<ActiveMQDestination> destinations) {
-        boolean result = false;
-        if (!destinations.isEmpty()) {
-            try {
-                //move the queues
-                MoveDestinationWorker moveDestinationWorker = new MoveDestinationWorker(asyncExecutors, from, to);
-                for (ActiveMQDestination destination : destinations) {
-                    moveDestinationWorker.addDestinationToCopy(destination);
-                    destinationMap.remove(destination, from);
-                }
-                moveDestinationWorker.start();
-                moveDestinationWorker.aWait();
-                //update the sharding map
-                for (ActiveMQDestination destination : destinations) {
-                    destinationMap.put(destination, to);
-                }
-                result = true;
-
-            } catch (Exception e) {
-                LOG.error("Failed in copy from " + from + " to " + to, e);
-            }
-        } else {
-            result = true;
-        }
-        return result;
-    }
 }
