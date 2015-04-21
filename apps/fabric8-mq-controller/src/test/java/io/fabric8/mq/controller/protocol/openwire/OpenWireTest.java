@@ -16,12 +16,15 @@
 package io.fabric8.mq.controller.protocol.openwire;
 
 import io.fabric8.mq.controller.protocol.TestProtocolServer;
+import io.fabric8.mq.controller.util.WeldJUnitRunner;
 import junit.framework.Assert;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import javax.inject.Inject;
 import javax.jms.Connection;
 import javax.jms.Message;
 import javax.jms.MessageConsumer;
@@ -33,12 +36,13 @@ import javax.jms.TextMessage;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+@RunWith(WeldJUnitRunner.class)
 public class OpenWireTest {
+    @Inject
     private TestProtocolServer testProtocolServer;
 
     @Before
     public void setUp() throws Exception {
-        testProtocolServer = new TestProtocolServer();
         testProtocolServer.setProtocolTransportFactory(new OpenWireTransportFactory());
         testProtocolServer.start();
     }
