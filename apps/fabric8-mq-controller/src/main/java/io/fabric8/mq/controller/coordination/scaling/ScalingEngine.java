@@ -86,21 +86,18 @@ public class ScalingEngine extends ServiceSupport{
     }
 
     protected void fireScalingUp(){
-        System.err.println("Fire Scalue up");
         for (ScalingEventListener scalingEventListener:eventListenerList){
             scalingEventListener.scaleUp();
         }
     }
 
     protected void fireScalingDown(){
-        System.err.println("Fire Scalue down");
         for (ScalingEventListener scalingEventListener:eventListenerList){
             scalingEventListener.scaleDown();
         }
     }
 
     protected void fireDistributeLoad(){
-        System.err.println("Fire distribute load");
         for (ScalingEventListener scalingEventListener:eventListenerList){
             scalingEventListener.distributeLoad();
         }
