@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.api.KubernetesFactory;
 import io.fabric8.kubernetes.api.KubernetesHelper;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.api.model.Port;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.jolokia.JolokiaClients;
 import io.fabric8.mq.controller.MessageDistribution;
@@ -28,14 +29,11 @@ import io.fabric8.mq.controller.coordination.brokers.BrokerDestinationOverviewIm
 import io.fabric8.mq.controller.coordination.brokers.BrokerModel;
 import io.fabric8.mq.controller.coordination.brokers.BrokerOverview;
 import io.fabric8.mq.controller.coordination.brokers.BrokerView;
-import io.fabric8.mq.controller.util.Utils;
+import io.fabric8.mq.controller.util.BrokerJmxUtils;
 import org.apache.activemq.command.ActiveMQDestination;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.apache.activemq.command.ActiveMQTopic;
 import org.jolokia.client.J4pClient;
-import org.jolokia.client.request.J4pReadRequest;
-import org.jolokia.client.request.J4pResponse;
-import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,7 +43,6 @@ import java.io.File;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.util.Collection;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
@@ -101,22 +98,35 @@ public class KubernetesControl extends BaseBrokerControl {
         if (client != null) {
 
             try {
-                root = getBrokerJMXRoot(client);
+                root = BrokerJmxUtils.getRoot(client);
                 attribute = "BrokerName";
-                Object brokerName = getAttribute(client, root, attribute);
+                Object brokerName = BrokerJmxUtils.getAttribute(client, root, attribute);
 
                 attribute = "BrokerId";
-                Object brokerId = getAttribute(client, root, attribute);
+                Object brokerId = BrokerJmxUtils.getAttribute(client, root, attribute);
 
                 attribute = "OpenWireURL";
-                Object uri = getAttribute(client, root, attribute);
+                Object uri = BrokerJmxUtils.getAttribute(client, root, attribute);
 
                 BrokerModel brokerModel = model.getBrokerById(brokerId.toString());
                 if (brokerModel == null) {
                     BrokerView brokerView = new BrokerView();
                     brokerView.setBrokerName(brokerName.toString());
                     brokerView.setBrokerId(brokerId.toString());
-                    brokerView.setUri(uri.toString());
+                    List<Container> containers = KubernetesHelper.getContainers(pod);
+                    //will only be one container
+                    if (containers.size() != 1) {
+                        throw new IllegalStateException("Expected one container for pod:" + pod.getId() + " found " + containers.size());
+                    }
+                    Container container = containers.get(0);
+                    List<Port> ports = container.getPorts();
+                    //get the first port
+                    if (ports.isEmpty()) {
+                        throw new IllegalStateException("Expected to find ports on container " + container.getName());
+                    }
+                    Port port = ports.get(0);
+                    String uriString = "tcp://" + port.getHostIP() + ":" + port.getHostPort();
+                    brokerView.setUri(uriString);
                     brokerModel = new BrokerModel(pod, brokerView);
                     brokerModel.start();
                     model.add(brokerModel);
@@ -133,7 +143,7 @@ public class KubernetesControl extends BaseBrokerControl {
                 BrokerOverview brokerOverview = new BrokerOverview();
 
                 attribute = "TotalConnectionsCount";
-                Number result = (Number) getAttribute(client, root, attribute);
+                Number result = (Number) BrokerJmxUtils.getAttribute(client, root, attribute);
                 brokerOverview.setTotalConnections(result.intValue());
                 populateDestinations(client, root, brokerOverview);
                 brokerModel.setBrokerStatistics(brokerOverview);
@@ -144,22 +154,6 @@ public class KubernetesControl extends BaseBrokerControl {
         }
     }
 
-    private ObjectName getBrokerJMXRoot(J4pClient client) throws Exception {
-
-        String type = "org.apache.activemq:*,type=Broker";
-        String attribute = "BrokerName";
-        ObjectName objectName = new ObjectName(type);
-        J4pResponse<J4pReadRequest> result = client.execute(new J4pReadRequest(objectName, attribute));
-        JSONObject jsonObject = result.getValue();
-        return new ObjectName(jsonObject.keySet().iterator().next().toString());
-
-    }
-
-    private Object getAttribute(J4pClient client, ObjectName objectName, String attribute) throws Exception {
-        J4pResponse<J4pReadRequest> result = client.execute(new J4pReadRequest(objectName, attribute));
-        return result.getValue();
-    }
-
     private BrokerOverview populateDestinations(J4pClient client, ObjectName root, BrokerOverview brokerOverview) throws Exception {
         populateDestinations(client, root, BrokerDestinationOverviewImpl.Type.QUEUE, brokerOverview);
         populateDestinations(client, root, BrokerDestinationOverviewImpl.Type.TOPIC, brokerOverview);
@@ -167,25 +161,17 @@ public class KubernetesControl extends BaseBrokerControl {
     }
 
     private BrokerOverview populateDestinations(J4pClient client, ObjectName root, BrokerDestinationOverviewImpl.Type type, BrokerOverview brokerOverview) {
-
         try {
-            Hashtable<String, String> props = root.getKeyPropertyList();
-            props.put("destinationType", type == BrokerDestinationOverviewImpl.Type.QUEUE ? "Queue" : "Topic");
-            props.put("destinationName", "*");
-            String objectName = root.getDomain() + ":" + Utils.getOrderedProperties(props);
+            String typeName = type == BrokerDestinationOverviewImpl.Type.QUEUE ? "Queue" : "Topic";
+            List<ObjectName> list = BrokerJmxUtils.getDestinations(client, root, typeName);
 
-            J4pResponse<J4pReadRequest> response = client.execute(new J4pReadRequest(objectName, "Name", "QueueSize", "ConsumerCount", "ProducerCount"));
-            JSONObject value = response.getValue();
-            for (Object key : value.keySet()) {
-                //get the destinations
-                JSONObject jsonObject = (JSONObject) value.get(key);
-                String name = jsonObject.get("Name").toString();
-                String producerCount = jsonObject.get("ProducerCount").toString().trim();
-                String consumerCount = jsonObject.get("ConsumerCount").toString().trim();
-                String queueSize = jsonObject.get("QueueSize").toString().trim();
-
-                if (!name.contains("Advisory") && !name.contains(ActiveMQDestination.TEMP_DESTINATION_NAME_PREFIX)) {
-                    ActiveMQDestination destination = type == BrokerDestinationOverviewImpl.Type.QUEUE ? new ActiveMQQueue(name) : new ActiveMQTopic(name);
+            for (ObjectName objectName : list) {
+                String destinationName = objectName.getKeyProperty("destinationName");
+                if (destinationName.toLowerCase().contains("advisory") && !destinationName.contains(ActiveMQDestination.TEMP_DESTINATION_NAME_PREFIX)) {
+                    String producerCount = BrokerJmxUtils.getAttribute(client, objectName, "ProducerCount").toString().trim();
+                    String consumerCount = BrokerJmxUtils.getAttribute(client, objectName, "ConsumerCount").toString().trim();
+                    String queueSize = BrokerJmxUtils.getAttribute(client, objectName, "QueueSize").toString().trim();
+                    ActiveMQDestination destination = type == BrokerDestinationOverviewImpl.Type.QUEUE ? new ActiveMQQueue(destinationName) : new ActiveMQTopic(destinationName);
                     BrokerDestinationOverviewImpl brokerDestinationOverviewImpl = new BrokerDestinationOverviewImpl(destination);
                     brokerDestinationOverviewImpl.setNumberOfConsumers(Integer.parseInt(consumerCount));
                     brokerDestinationOverviewImpl.setNumberOfProducers(Integer.parseInt(producerCount));

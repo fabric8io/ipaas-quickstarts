@@ -19,7 +19,7 @@ import org.apache.activemq.util.ServiceStopper;
 import org.apache.activemq.util.ServiceSupport;
 import org.vertx.java.core.impl.ConcurrentHashSet;
 
-import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Singleton;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
@@ -31,7 +31,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@ApplicationScoped
+@Singleton
 public class AsyncExecutors extends ServiceSupport {
     private final AtomicInteger executorThreadCount = new AtomicInteger();
     private final AtomicInteger schedulerThreadCount = new AtomicInteger();

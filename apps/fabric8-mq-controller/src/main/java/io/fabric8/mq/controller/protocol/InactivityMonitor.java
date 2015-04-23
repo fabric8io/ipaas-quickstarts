@@ -15,9 +15,12 @@
 package io.fabric8.mq.controller.protocol;
 
 import io.fabric8.mq.controller.AsyncExecutors;
+import org.apache.activemq.command.KeepAliveInfo;
+import org.apache.activemq.transport.InactivityIOException;
 import org.apache.activemq.transport.TransportListener;
 import org.apache.activemq.util.ServiceStopper;
 import org.apache.activemq.util.ServiceSupport;
+import org.apache.activemq.wireformat.WireFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +31,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * Used to check transports are alive
  */
-public abstract class InactivityMonitor extends ServiceSupport {
+public class InactivityMonitor extends ServiceSupport {
 
     private static final Logger LOG = LoggerFactory.getLogger(InactivityMonitor.class);
 
@@ -38,12 +41,26 @@ public abstract class InactivityMonitor extends ServiceSupport {
     protected final AtomicBoolean inReceive = new AtomicBoolean(false);
     protected final AsyncExecutors asyncExecutors;
     protected final ProtocolTransport transport;
+    private final AtomicBoolean commandSent = new AtomicBoolean(false);
+    private final AtomicBoolean inSend = new AtomicBoolean(false);
+    private final boolean enableWriteCheck;
     protected long readCheckTime = DEFAULT_CHECK_TIME_MILLS;
     protected ScheduledFuture readFuture;
+    protected WireFormat wireFormat;
+    private ScheduledFuture writeFuture;
+    private long writeCheckTime = DEFAULT_CHECK_TIME_MILLS;
+    private long connectionTimeout = DEFAULT_CHECK_TIME_MILLS;
+    private long readGraceTime = DEFAULT_CHECK_TIME_MILLS;
+    private long readKeepAliveTime = DEFAULT_CHECK_TIME_MILLS;
+    private long initialDelayTime;
+    private boolean useKeepAlive;
+    private boolean keepAliveResponseRequired;
+    private ScheduledFuture connectionFuture;
 
-    public InactivityMonitor(AsyncExecutors asyncExecutors, ProtocolTransport transport) {
+    public InactivityMonitor(AsyncExecutors asyncExecutors, ProtocolTransport transport, boolean enableWriteCheck) {
         this.asyncExecutors = asyncExecutors;
         this.transport = transport;
+        this.enableWriteCheck = enableWriteCheck;
     }
 
     public void startRead() {
@@ -63,8 +80,55 @@ public abstract class InactivityMonitor extends ServiceSupport {
         this.readCheckTime = readCheckTime;
     }
 
+    public void setUseKeepAlive(boolean val) {
+        this.useKeepAlive = val;
+    }
+
+    public long getWriteCheckTime() {
+        return this.writeCheckTime;
+    }
+
+    public void setWriteCheckTime(long writeCheckTime) {
+        this.writeCheckTime = writeCheckTime;
+    }
+
+    public long getInitialDelayTime() {
+        return this.initialDelayTime;
+    }
+
+    public void setInitialDelayTime(long initialDelayTime) {
+        this.initialDelayTime = initialDelayTime;
+    }
+
+    public boolean isKeepAliveResponseRequired() {
+        return this.keepAliveResponseRequired;
+    }
+
+    public void setKeepAliveResponseRequired(boolean value) {
+        this.keepAliveResponseRequired = value;
+    }
+
+    protected void doStart() {
+        startReadCheck();
+        if (enableWriteCheck) {
+            startWriteCheck();
+        }
+
+    }
+
     protected void doStop(ServiceStopper stopper) {
+        stopWriteCheck();
         stopReadCheck();
+        stopConnectionCheck();
+    }
+
+    public void startWrite() {
+        inSend.set(true);
+    }
+
+    public void finishedWrite() {
+        inSend.set(false);
+        commandSent.set(true);
     }
 
     protected void startReadCheck() {
@@ -123,6 +187,100 @@ public abstract class InactivityMonitor extends ServiceSupport {
             stop();
         } catch (Throwable ex) {
             LOG.debug("Caught an exception in onException", ex);
+        }
+    }
+
+    public void processKeepAliveReceived(KeepAliveInfo info) {
+        if (info.isResponseRequired()) {
+            info.setResponseRequired(false);
+            try {
+                transport.oneway(info);
+            } catch (Exception e) {
+                LOG.warn("Failed to send KeepAlive", e);
+            }
+        }
+    }
+
+    private void stopWriteCheck() {
+        ScheduledFuture future = writeFuture;
+        try {
+            if (future != null) {
+                future.cancel(true);
+            }
+        } catch (Throwable e) {
+        }
+    }
+
+    private void startWriteCheck() {
+        writeCheckTime = readCheckTime > 3 ? readCheckTime / 3 : readCheckTime;
+        Runnable writer = new Runnable() {
+            @Override
+            public void run() {
+                writeCheck();
+            }
+        };
+        writeFuture = asyncExecutors.scheduleAtFixedRate(writer, writeCheckTime, DEFAULT_MAX_COMPLETION);
+    }
+
+    private void writeCheck() {
+        if (!inSend.get() && !isStopping() && !isStopped()) {
+            if (!commandSent.get()) {
+                asyncExecutors.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        KeepAliveInfo info = new KeepAliveInfo();
+                        info.setResponseRequired(true);
+                        try {
+                            transport.oneway(info);
+                        } catch (IOException e) {
+                            onException(e);
+                        }
+                    }
+                });
+            }
+        }
+        commandSent.set(false);
+    }
+
+    public synchronized void startConnectCheck(long connectionTimeout) {
+        this.connectionTimeout = connectionTimeout;
+        if (connectionTimeout > 0 && connectionFuture == null) {
+
+            long connectionCheckInterval = Math.min(connectionTimeout, 1000);
+
+            Runnable connection = new Runnable() {
+                long now = System.currentTimeMillis();
+
+                public void run() {
+                    connectionCheck(now);
+                }
+            };
+            connectionFuture = asyncExecutors.scheduleAtFixedRate(connection, connectionCheckInterval, DEFAULT_MAX_COMPLETION);
+        }
+    }
+
+    public synchronized void stopConnectionCheck() {
+        ScheduledFuture future = connectionFuture;
+        try {
+            if (future != null) {
+                future.cancel(true);
+            }
+        } catch (Throwable e) {
+        }
+        connectionFuture = null;
+    }
+
+    private void connectionCheck(long startTime) {
+        long now = System.currentTimeMillis();
+
+        if (!isStopping() && !isStopped()) {
+            if ((now - startTime) >= connectionTimeout && connectionFuture != null && !connectionFuture.isCancelled()) {
+                LOG.debug("No CONNECT frame received in time for " + InactivityMonitor.this.toString() + "! Throwing InactivityIOException.");
+
+                stopConnectionCheck();
+                onException(new InactivityIOException("Channel was inactive for too (>" + (readKeepAliveTime + readGraceTime) + ") long: "
+                                                          + transport.getRemoteAddress()));
+            }
         }
     }
 }

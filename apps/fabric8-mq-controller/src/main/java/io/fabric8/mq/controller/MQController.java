@@ -17,10 +17,12 @@ package io.fabric8.mq.controller;
 import io.fabric8.gateway.SocketWrapper;
 import io.fabric8.gateway.handlers.detecting.FutureHandler;
 import io.fabric8.gateway.handlers.detecting.Protocol;
+import io.fabric8.gateway.handlers.detecting.protocol.amqp.AmqpProtocol;
 import io.fabric8.gateway.handlers.detecting.protocol.mqtt.MqttProtocol;
 import io.fabric8.gateway.handlers.detecting.protocol.openwire.OpenwireProtocol;
 import io.fabric8.gateway.handlers.detecting.protocol.ssl.SslConfig;
 import io.fabric8.gateway.handlers.detecting.protocol.ssl.SslSocketWrapper;
+import io.fabric8.gateway.handlers.detecting.protocol.stomp.StompProtocol;
 import io.fabric8.gateway.handlers.loadbalancer.ConnectionParameters;
 import io.fabric8.mq.controller.camel.DefaultMessageRouter;
 import io.fabric8.mq.controller.model.Model;
@@ -29,6 +31,7 @@ import io.fabric8.mq.controller.protocol.ProtocolTransport;
 import io.fabric8.mq.controller.protocol.ProtocolTransportFactory;
 import io.fabric8.mq.controller.protocol.mqtt.MQTTTransportFactory;
 import io.fabric8.mq.controller.protocol.openwire.OpenWireTransportFactory;
+import io.fabric8.mq.controller.protocol.stomp.StompTransportFactory;
 import io.fabric8.mq.controller.util.ConnectedSocketInfo;
 import io.fabric8.mq.controller.util.ProtocolMapping;
 import io.fabric8.utils.JMXUtils;
@@ -115,6 +118,8 @@ public class MQController extends BrokerStateInfo implements Handler<Transport> 
         //getLoad protocols
         protocols.add(new MqttProtocol());
         protocols.add(new OpenwireProtocol());
+        protocols.add(new StompProtocol());
+        protocols.add(new AmqpProtocol());
 
         for (Protocol protocol : protocols) {
             maxProtocolIdentificationLength = Math.max(protocol.getMaxIdentificationLength(), maxProtocolIdentificationLength);
@@ -447,13 +452,16 @@ public class MQController extends BrokerStateInfo implements Handler<Transport> 
         ProtocolTransportFactory factory;
         if (protocol.equalsIgnoreCase("mqtt")) {
             factory = new MQTTTransportFactory();
+        } else if (protocol.equalsIgnoreCase("stomp")) {
+            factory = new StompTransportFactory();
+        } else if (protocol.equalsIgnoreCase("amqp")) {
+            throw new IOException("AMQP not supported");
         } else {
             factory = new OpenWireTransportFactory();
         }
-        return factory.connect(vertx,asyncExecutors, protocolMapping.toString());
+        return factory.connect(vertx, asyncExecutors, protocolMapping.toString());
 
     }
-
 
     private static class MQControllerNetSocketHandler implements Handler<NetSocket> {
         private final MQController controller;

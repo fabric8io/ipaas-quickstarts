@@ -21,5 +21,5 @@ import org.vertx.java.core.Vertx;
 import java.io.IOException;
 
 public interface ProtocolTransportFactory {
-    ProtocolTransport connect(Vertx vertx,AsyncExecutors asyncExecutors, String name) throws IOException;
+    ProtocolTransport connect(Vertx vertx, AsyncExecutors asyncExecutors, String name) throws IOException;
 }

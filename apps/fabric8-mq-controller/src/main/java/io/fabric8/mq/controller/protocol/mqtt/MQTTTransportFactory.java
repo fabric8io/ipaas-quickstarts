@@ -28,10 +28,9 @@ import java.net.URI;
 
 public class MQTTTransportFactory extends TransportFactory implements ProtocolTransportFactory {
 
-    public ProtocolTransport connect(Vertx vertx,AsyncExecutors asyncExecutors, String name) throws IOException {
+    public ProtocolTransport connect(Vertx vertx, AsyncExecutors asyncExecutors, String name) throws IOException {
         MQTTWireFormat wireFormat = new MQTTWireFormat();
-        //OpenWireFormat wireFormat = new OpenWireFormat(1);
-        MQTTTransport transport = new MQTTTransport(vertx,asyncExecutors, name, wireFormat);
+        MQTTTransport transport = new MQTTTransport(vertx, asyncExecutors, name, wireFormat);
         return transport;
     }
 

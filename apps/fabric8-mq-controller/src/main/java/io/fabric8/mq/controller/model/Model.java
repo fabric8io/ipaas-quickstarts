@@ -72,4 +72,21 @@ public interface Model extends Service {
     Set<ActiveMQDestination> getActiveDestinations(BrokerModel brokerModel);
 
     int getBrokerCount();
+
+    Set<BrokerModel> getBrokersForDestination(ActiveMQDestination destination);
+
+    void addBrokerForDestination(ActiveMQDestination destination, BrokerModel brokerModel);
+
+    /**
+     * Allocates least loaded Broker
+     *
+     * @param destination
+     */
+    BrokerModel addBrokerForDestination(ActiveMQDestination destination);
+
+    void removeBrokerFromDestination(ActiveMQDestination destination, BrokerModel brokerModel);
+
+    boolean copyDestinations(BrokerModel from, BrokerModel to);
+
+    boolean copyDestinations(BrokerModel from, BrokerModel to, Collection<ActiveMQDestination> destinations);
 }

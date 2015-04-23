@@ -15,6 +15,8 @@
 
 package io.fabric8.mq.controller.coordination;
 
+import io.fabric8.mq.controller.util.BrokerJmxUtils;
+import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.broker.BrokerService;
 import org.jolokia.client.J4pClient;
 import org.jolokia.client.request.J4pReadRequest;
@@ -23,11 +25,18 @@ import org.jolokia.jvmagent.JolokiaServer;
 import org.jolokia.jvmagent.JvmAgentConfig;
 import org.json.simple.JSONObject;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.util.Assert;
 
+import javax.jms.Connection;
+import javax.jms.ConnectionFactory;
+import javax.jms.MessageProducer;
+import javax.jms.Session;
+import javax.jms.Topic;
 import javax.management.ObjectName;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BrokerJMXPropertiesTest {
     static final String BROKER_NAME = "fred";
@@ -64,16 +73,56 @@ public class BrokerJMXPropertiesTest {
         }
     }
 
-    @Test
-    public void testGetBrokerName() throws Exception {
+    public String getBrokerName() throws Exception {
         String type = "org.apache.activemq:type=Broker,*";
         String attribute = "BrokerName";
         ObjectName objectName = new ObjectName(type);
         J4pResponse<J4pReadRequest> result = client.execute(new J4pReadRequest(objectName, attribute));
         JSONObject jsonObject = result.getValue();
-        Assert.notNull(jsonObject);
-        String name = jsonObject.keySet().iterator().next().toString();
-        Assert.notNull(name);
+        Assert.assertNotNull(jsonObject);
+        Object key = jsonObject.keySet().iterator().next();
+        JSONObject value = (JSONObject) jsonObject.get(key);
+        String name = value.values().iterator().next().toString();
         System.err.println("BROKER NAME = " + name);
+        Assert.assertNotNull(value);
+
+        Assert.assertEquals(BROKER_NAME, name);
+        return name;
     }
+
+    @Test
+    public void testNumberOfTopicProducers() throws Exception {
+        String uriString = brokerService.getDefaultSocketURIString();
+        ConnectionFactory factory = new ActiveMQConnectionFactory(uriString);
+        Connection connection = factory.createConnection();
+        connection.start();
+        Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+        int numberOfProducers = 10;
+        List<MessageProducer> producers = new ArrayList<>();
+        Topic topic = session.createTopic("topic.test");
+        for (int i = 0; i < numberOfProducers; i++) {
+
+            MessageProducer producer = session.createProducer(topic);
+            producers.add(producer);
+
+        }
+        ObjectName root = BrokerJmxUtils.getRoot(client);
+        Assert.assertNotNull(root);
+        List<ObjectName> list = BrokerJmxUtils.getDestinations(client, root, "Topic");
+        Assert.assertNotNull(list);
+        Assert.assertFalse(list.isEmpty());
+        ObjectName result = null;
+        for (ObjectName objectName : list) {
+            if (objectName.getKeyProperty("destinationName").equals("topic.test")) {
+                result = objectName;
+            }
+        }
+        Assert.assertNotNull(result);
+        Object producerCount = BrokerJmxUtils.getAttribute(client, result, "ProducerCount");
+        Assert.assertNotNull(producerCount);
+        int pc = Integer.parseInt(producerCount.toString());
+        Assert.assertEquals(pc, numberOfProducers);
+        connection.close();
+    }
+
 }
