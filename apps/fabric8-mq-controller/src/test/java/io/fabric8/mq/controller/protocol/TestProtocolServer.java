@@ -59,8 +59,12 @@ public class TestProtocolServer extends ServiceSupport {
         return vertx;
     }
 
-    public AsyncExecutors getAsyncExecutors(){
+    public AsyncExecutors getAsyncExecutors() {
         return asyncExecutors;
+    }
+
+    public String getBrokerURI() {
+        return testMessageDistribution.getBrokerURI();
     }
 
     public int getBoundPort() {
@@ -87,20 +91,20 @@ public class TestProtocolServer extends ServiceSupport {
         return outBound;
     }
 
-    ProtocolTransport getProtocolTransport() throws IOException{
-        return protocolTransportFactory.connect(vertx,asyncExecutors,"testConnection-" + (transportCounter++));
+    ProtocolTransport getProtocolTransport() throws IOException {
+        return protocolTransportFactory.connect(vertx, asyncExecutors, "testConnection-" + (transportCounter++));
     }
 
     @Override
     protected void doStop(ServiceStopper serviceStopper) throws Exception {
-        if (testMessageDistribution != null){
+        if (testMessageDistribution != null) {
             testMessageDistribution.stop();
         }
         if (netServer != null) {
             netServer.close();
         }
 
-        if (asyncExecutors != null){
+        if (asyncExecutors != null) {
             asyncExecutors.stop();
         }
     }
@@ -124,9 +128,6 @@ public class TestProtocolServer extends ServiceSupport {
             }
         };
 
-
-
-
         netServer = vertx.createNetServer().connectHandler(new Handler<NetSocket>() {
             @Override
             public void handle(final NetSocket socket) {
@@ -136,7 +137,7 @@ public class TestProtocolServer extends ServiceSupport {
 
         netServer.listen(port, listenFuture);
         model.start();
-        multiplexer = new Multiplexer(model,"test",asyncExecutors,testMessageDistribution);
+        multiplexer = new Multiplexer(model, "test", asyncExecutors, testMessageDistribution);
         multiplexer.start();
 
         countDownLatch.await();
@@ -223,7 +224,7 @@ public class TestProtocolServer extends ServiceSupport {
     }
 
     private void addOutbound(final ProtocolTransport inbound) throws Exception {
-        multiplexer.addInput("test",inbound);
+        multiplexer.addInput("test", inbound);
     }
 }
 

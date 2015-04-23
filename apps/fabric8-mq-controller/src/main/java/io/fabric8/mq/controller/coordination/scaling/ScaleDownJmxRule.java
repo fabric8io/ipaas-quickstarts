@@ -20,5 +20,6 @@ import org.easyrules.jmx.api.JMXRule;
 public interface ScaleDownJmxRule extends JMXRule {
 
     public int getScaleDownLoadThreshold();
+
     public void setScaleDownLoadThreshold(int load);
 }

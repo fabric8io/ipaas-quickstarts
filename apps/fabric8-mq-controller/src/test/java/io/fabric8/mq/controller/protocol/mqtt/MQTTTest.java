@@ -46,7 +46,7 @@ public class MQTTTest {
 
     @After
     public void tearDown() throws Exception {
-        if (testProtocolServer != null){
+        if (testProtocolServer != null) {
             testProtocolServer.stop();
         }
     }
@@ -71,7 +71,7 @@ public class MQTTTest {
         BlockingConnection producerConnection = producerClient.blockingConnection();
         producerConnection.connect();
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 100; i++) {
             String payload = "Test Message: " + i;
             producerConnection.publish(topic, payload.getBytes(), QoS.values()[1], false);
             Message message = consumeConnection.receive(10, TimeUnit.SECONDS);

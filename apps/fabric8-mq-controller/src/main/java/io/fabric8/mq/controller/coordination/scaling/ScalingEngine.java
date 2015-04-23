@@ -26,7 +26,7 @@ import javax.inject.Inject;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class ScalingEngine extends ServiceSupport{
+public class ScalingEngine extends ServiceSupport {
 
     @Inject
     @ConfigProperty(name = "SCALE_UP_RULE_PRIORITY", defaultValue = "1")
@@ -43,13 +43,13 @@ public class ScalingEngine extends ServiceSupport{
     @Inject
     private Model model;
 
-    public Model getModel(){
+    public Model getModel() {
         return model;
     }
-    public void process(){
+
+    public void process() {
         rulesEngine.fireRules();
     }
-
 
     public int getDistributeLoadRulePriority() {
         return distributeLoadRulePriority;
@@ -67,7 +67,6 @@ public class ScalingEngine extends ServiceSupport{
         this.scaleDownRulePriority = scaleDownRulePriority;
     }
 
-
     public int getScaleUpRulePriority() {
         return scaleUpRulePriority;
     }
@@ -76,29 +75,28 @@ public class ScalingEngine extends ServiceSupport{
         this.scaleUpRulePriority = scaleUpRulePriority;
     }
 
-
-    public void add(ScalingEventListener scalingEventListener){
+    public void add(ScalingEventListener scalingEventListener) {
         eventListenerList.add(scalingEventListener);
     }
 
-    public void remove(ScalingEventListener scalingEventListener){
+    public void remove(ScalingEventListener scalingEventListener) {
         eventListenerList.remove(scalingEventListener);
     }
 
-    protected void fireScalingUp(){
-        for (ScalingEventListener scalingEventListener:eventListenerList){
+    protected void fireScalingUp() {
+        for (ScalingEventListener scalingEventListener : eventListenerList) {
             scalingEventListener.scaleUp();
         }
     }
 
-    protected void fireScalingDown(){
-        for (ScalingEventListener scalingEventListener:eventListenerList){
+    protected void fireScalingDown() {
+        for (ScalingEventListener scalingEventListener : eventListenerList) {
             scalingEventListener.scaleDown();
         }
     }
 
-    protected void fireDistributeLoad(){
-        for (ScalingEventListener scalingEventListener:eventListenerList){
+    protected void fireDistributeLoad() {
+        for (ScalingEventListener scalingEventListener : eventListenerList) {
             scalingEventListener.distributeLoad();
         }
     }
@@ -111,8 +109,8 @@ public class ScalingEngine extends ServiceSupport{
 
     @Override
     protected void doStart() throws Exception {
-        rulesEngine.registerJMXRule(new DefaultDistributeLoadRule(this,getDistributeLoadRulePriority()));
-        rulesEngine.registerJMXRule(new DefaultScaleUpRule(this,getScaleUpRulePriority()));
-        rulesEngine.registerJMXRule(new DefaultScaleDownRule(this,getScaleDownRulePriority()));
+        rulesEngine.registerJMXRule(new DefaultDistributeLoadRule(this, getDistributeLoadRulePriority()));
+        rulesEngine.registerJMXRule(new DefaultScaleUpRule(this, getScaleUpRulePriority()));
+        rulesEngine.registerJMXRule(new DefaultScaleDownRule(this, getScaleDownRulePriority()));
     }
 }

@@ -295,17 +295,17 @@ public class DefaultModel extends ServiceSupport implements Model {
     }
 
     @Override
-    public Set<BrokerModel> getBrokersForDestination(ActiveMQDestination destination){
+    public Set<BrokerModel> getBrokersForDestination(ActiveMQDestination destination) {
         return destinationMap.get(destination);
     }
 
     @Override
-    public void addBrokerForDestination(ActiveMQDestination destination,BrokerModel brokerModel){
+    public void addBrokerForDestination(ActiveMQDestination destination, BrokerModel brokerModel) {
         destinationMap.put(destination, brokerModel);
     }
 
     @Override
-    public BrokerModel addBrokerForDestination(ActiveMQDestination destination){
+    public BrokerModel addBrokerForDestination(ActiveMQDestination destination) {
         BrokerModel brokerModel = getLeastLoadedBroker();
         if (brokerModel != null) {
             destinationMap.put(destination, brokerModel);
@@ -314,7 +314,7 @@ public class DefaultModel extends ServiceSupport implements Model {
     }
 
     @Override
-    public void removeBrokerFromDestination(ActiveMQDestination destination,BrokerModel brokerModel){
+    public void removeBrokerFromDestination(ActiveMQDestination destination, BrokerModel brokerModel) {
         destinationMap.remove(destination, brokerModel);
     }
 
@@ -374,7 +374,6 @@ public class DefaultModel extends ServiceSupport implements Model {
             JMXUtils.unregisterMBean(objectName);
         }
     }
-
 
     private class BrokerComparable implements Comparator<BrokerModel> {
 
