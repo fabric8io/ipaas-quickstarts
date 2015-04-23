@@ -14,6 +14,7 @@
  */
 package io.fabric8.mq.controller.protocol.mqtt;
 
+import io.fabric8.mq.controller.protocol.InactivityMonitor;
 import org.apache.activemq.ActiveMQPrefetchPolicy;
 import org.apache.activemq.command.*;
 import org.apache.activemq.transport.mqtt.MQTTProtocolException;
@@ -584,7 +585,7 @@ public class MQTTProtocolConverter {
     }
 
     void configureInactivityMonitor(short keepAliveSeconds) {
-        MQTTInactivityMonitor monitor = getMQTTTransport().getInactivityMonitor();
+        InactivityMonitor monitor = getMQTTTransport().getInactivityMonitor();
 
         // If the user specifically shuts off the InactivityMonitor with transport.useInactivityMonitor=false,
         // then ignore configuring it because it won't exist
@@ -593,7 +594,7 @@ public class MQTTProtocolConverter {
         }
 
         // Client has sent a valid CONNECT frame, we can stop the connect checker.
-        monitor.stopConnectionChecker();
+        monitor.stopConnectionCheck();
 
         long keepAliveMS = keepAliveSeconds * 1000;
 

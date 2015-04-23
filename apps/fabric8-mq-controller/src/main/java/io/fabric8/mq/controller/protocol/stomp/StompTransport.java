@@ -12,8 +12,21 @@
  *  * permissions and limitations under the License.
  *
  */
-
-package io.fabric8.mq.controller.protocol.mqtt;
+/*
+ *
+ *  * Copyright 2005-2015 Red Hat, Inc.
+ *  * Red Hat licenses this file to you under the Apache License, version
+ *  * 2.0 (the "License"); you may not use this file except in compliance
+ *  * with the License.  You may obtain a copy of the License at
+ *  *    http://www.apache.org/licenses/LICENSE-2.0
+ *  * Unless required by applicable law or agreed to in writing, software
+ *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+ *  * implied.  See the License for the specific language governing
+ *  * permissions and limitations under the License.
+ *
+ */
+package io.fabric8.mq.controller.protocol.stomp;
 
 import io.fabric8.mq.controller.AsyncExecutors;
 import io.fabric8.mq.controller.protocol.InactivityMonitor;
@@ -21,9 +34,8 @@ import io.fabric8.mq.controller.protocol.ProtocolTransport;
 import org.apache.activemq.command.Command;
 import org.apache.activemq.transport.TransportListener;
 import org.apache.activemq.transport.TransportSupport;
-import org.apache.activemq.transport.mqtt.MQTTWireFormat;
+import org.apache.activemq.transport.stomp.StompFrame;
 import org.apache.activemq.util.ServiceStopper;
-import org.fusesource.mqtt.codec.MQTTFrame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vertx.java.core.Handler;
@@ -38,34 +50,34 @@ import java.util.concurrent.atomic.AtomicInteger;
  * What could possibly go wrong ??
  */
 
-public class MQTTTransport extends TransportSupport implements ProtocolTransport<MQTTTransport> {
-    private static final transient Logger LOG = LoggerFactory.getLogger(MQTTTransport.class);
+public class StompTransport extends TransportSupport implements ProtocolTransport<StompTransport> {
+    private static final transient Logger LOG = LoggerFactory.getLogger(StompTransport.class);
 
     private final Vertx vertx;
     private final AtomicInteger receiveCounter = new AtomicInteger();
     private final String name;
-    private final MQTTWriteStream writeStream;
-    private final MQTTReadStream readStream;
-    private final MQTTProtocolConverter protocolConverter;
+    private final StompWriteStream writeStream;
+    private final StompReadStream readStream;
+    private final StompProtocolConverter protocolConverter;
     private final InactivityMonitor inactivityMonitor;
     private Handler<Throwable> exceptionHandler;
     private long connectAttemptTimeout;
     private Handler<Void> stopHandler;
 
-    protected MQTTTransport(Vertx vertx, AsyncExecutors asyncExecutors, String name, MQTTWireFormat wireFormat) {
+    protected StompTransport(Vertx vertx, AsyncExecutors asyncExecutors, String name, StompWireFormat wireFormat) {
         this.name = name;
         this.vertx = vertx;
-        this.inactivityMonitor = new InactivityMonitor(asyncExecutors, this, false);
-        writeStream = new MQTTWriteStream(this, wireFormat);
-        readStream = new MQTTReadStream(this, wireFormat);
-        protocolConverter = new MQTTProtocolConverter(this);
+        this.inactivityMonitor = new InactivityMonitor(asyncExecutors, this, true);
+        writeStream = new StompWriteStream(this, wireFormat);
+        readStream = new StompReadStream(this, wireFormat);
+        protocolConverter = new StompProtocolConverter(this, wireFormat);
     }
 
     public InactivityMonitor getInactivityMonitor() {
         return inactivityMonitor;
     }
 
-    public MQTTTransport stopHandler(Handler<Void> handler) {
+    public StompTransport stopHandler(Handler<Void> handler) {
         stopHandler = handler;
         return this;
     }
@@ -91,15 +103,15 @@ public class MQTTTransport extends TransportSupport implements ProtocolTransport
         super.doConsume(command);
     }
 
-    protected void doConsumeMQTT(MQTTFrame frame) {
+    protected void doConsumeStomp(StompFrame frame) {
         try {
-            protocolConverter.onMQTTCommand(frame);
+            protocolConverter.onStompCommand(frame);
         } catch (Throwable e) {
             handleException(e);
         }
     }
 
-    public void sendToMQTT(MQTTFrame command) throws IOException {
+    public void sendToStomp(StompFrame command) throws IOException {
         readStream.sendToVertx(command);
     }
 
@@ -123,7 +135,7 @@ public class MQTTTransport extends TransportSupport implements ProtocolTransport
     }
 
     @Override
-    public MQTTTransport write(final Buffer buffer) {
+    public StompTransport write(final Buffer buffer) {
         writeStream.write(buffer);
         return this;
     }
@@ -132,7 +144,7 @@ public class MQTTTransport extends TransportSupport implements ProtocolTransport
         vertx.runOnContext(handler);
     }
 
-    public MQTTTransport setWriteQueueMaxSize(int i) {
+    public StompTransport setWriteQueueMaxSize(int i) {
         writeStream.setWriteQueueMaxSize(i);
         return this;
     }
@@ -143,37 +155,37 @@ public class MQTTTransport extends TransportSupport implements ProtocolTransport
     }
 
     @Override
-    public MQTTTransport drainHandler(Handler<Void> handler) {
+    public StompTransport drainHandler(Handler<Void> handler) {
         writeStream.drainHandler(handler);
         return this;
     }
 
     @Override
-    public MQTTTransport endHandler(Handler<Void> handler) {
+    public StompTransport endHandler(Handler<Void> handler) {
         readStream.endHandler(handler);
         return this;
     }
 
     @Override
-    public MQTTTransport dataHandler(Handler<Buffer> handler) {
+    public StompTransport dataHandler(Handler<Buffer> handler) {
         readStream.dataHandler(handler);
         return this;
     }
 
     @Override
-    public MQTTTransport pause() {
+    public StompTransport pause() {
         readStream.pause();
         return this;
     }
 
     @Override
-    public MQTTTransport resume() {
+    public StompTransport resume() {
         readStream.resume();
         return this;
     }
 
     @Override
-    public MQTTTransport exceptionHandler(Handler<Throwable> handler) {
+    public StompTransport exceptionHandler(Handler<Throwable> handler) {
         this.exceptionHandler = handler;
         return this;
     }

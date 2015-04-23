@@ -19,11 +19,9 @@ import io.fabric8.mq.controller.coordination.brokers.BrokerModel;
 
 public class DefaultScaleUpRule extends BaseScalingRule {
 
-
-    public DefaultScaleUpRule(ScalingEngine scalingEngine,int priority){
-       super(scalingEngine,"ScaleUpRule","scale up brokers",priority);
+    public DefaultScaleUpRule(ScalingEngine scalingEngine, int priority) {
+        super(scalingEngine, "ScaleUpRule", "scale up brokers", priority);
     }
-
 
     @Override
     public boolean evaluateConditions() {

@@ -73,7 +73,6 @@ public class BrokerJMXPropertiesTest {
         }
     }
 
-
     public String getBrokerName() throws Exception {
         String type = "org.apache.activemq:type=Broker,*";
         String attribute = "BrokerName";
@@ -82,7 +81,7 @@ public class BrokerJMXPropertiesTest {
         JSONObject jsonObject = result.getValue();
         Assert.assertNotNull(jsonObject);
         Object key = jsonObject.keySet().iterator().next();
-        JSONObject value  = (JSONObject) jsonObject.get(key);
+        JSONObject value = (JSONObject) jsonObject.get(key);
         String name = value.values().iterator().next().toString();
         System.err.println("BROKER NAME = " + name);
         Assert.assertNotNull(value);
@@ -101,7 +100,7 @@ public class BrokerJMXPropertiesTest {
         int numberOfProducers = 10;
         List<MessageProducer> producers = new ArrayList<>();
         Topic topic = session.createTopic("topic.test");
-        for (int i = 0; i< numberOfProducers; i++){
+        for (int i = 0; i < numberOfProducers; i++) {
 
             MessageProducer producer = session.createProducer(topic);
             producers.add(producer);
@@ -109,20 +108,20 @@ public class BrokerJMXPropertiesTest {
         }
         ObjectName root = BrokerJmxUtils.getRoot(client);
         Assert.assertNotNull(root);
-        List<ObjectName> list = BrokerJmxUtils.getDestinations(client,root,"Topic");
+        List<ObjectName> list = BrokerJmxUtils.getDestinations(client, root, "Topic");
         Assert.assertNotNull(list);
         Assert.assertFalse(list.isEmpty());
         ObjectName result = null;
-        for (ObjectName objectName:list){
-            if (objectName.getKeyProperty("destinationName").equals("topic.test")){
+        for (ObjectName objectName : list) {
+            if (objectName.getKeyProperty("destinationName").equals("topic.test")) {
                 result = objectName;
             }
         }
         Assert.assertNotNull(result);
-        Object producerCount = BrokerJmxUtils.getAttribute(client,result,"ProducerCount");
+        Object producerCount = BrokerJmxUtils.getAttribute(client, result, "ProducerCount");
         Assert.assertNotNull(producerCount);
         int pc = Integer.parseInt(producerCount.toString());
-        Assert.assertEquals(pc,numberOfProducers);
+        Assert.assertEquals(pc, numberOfProducers);
         connection.close();
     }
 
