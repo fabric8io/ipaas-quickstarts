@@ -25,14 +25,14 @@ public abstract class BaseScalingRule extends BasicRule implements JMXRule {
     private final String name;
     private int priority;
     private String description;
-    public BaseScalingRule(ScalingEngine scalingEngine, String name, String description, int priority){
+
+    public BaseScalingRule(ScalingEngine scalingEngine, String name, String description, int priority) {
         this.scalingEngine = scalingEngine;
         this.model = scalingEngine.getModel();
-        this.name=name;
-        this.description=description;
-        this.priority=priority;
+        this.name = name;
+        this.description = description;
+        this.priority = priority;
     }
-
 
     public String getDescription() {
         return description;

@@ -30,7 +30,6 @@ import java.util.TreeMap;
 
 public class BrokerJmxUtils {
 
-
     /**
      * @param names - should be of the form name=foo,type=blah etc
      * @return
@@ -70,25 +69,25 @@ public class BrokerJmxUtils {
         return result;
     }
 
-    public static ObjectName getRoot(J4pClient client) throws Exception{
+    public static ObjectName getRoot(J4pClient client) throws Exception {
         String type = "org.apache.activemq:*,type=Broker";
         String attribute = "BrokerName";
         ObjectName objectName = new ObjectName(type);
         J4pResponse<J4pReadRequest> response = client.execute(new J4pReadRequest(objectName, attribute));
 
         JSONObject jsonObject = response.getValue();
-        JSONObject nameObject = (JSONObject)jsonObject.values().iterator().next();
+        JSONObject nameObject = (JSONObject) jsonObject.values().iterator().next();
         String name = nameObject.values().iterator().next().toString();
-        ObjectName result =  new ObjectName("org.apache.activemq:type=Broker,brokerName="+name);
+        ObjectName result = new ObjectName("org.apache.activemq:type=Broker,brokerName=" + name);
         return result;
     }
 
-    public static List<ObjectName> getDestinations(J4pClient client, ObjectName root, String type) throws Exception{
+    public static List<ObjectName> getDestinations(J4pClient client, ObjectName root, String type) throws Exception {
         List<ObjectName> list = new ArrayList<>();
-        String objectNameStr = root.toString() + ",destinationType="+type+",destinationName=*";
+        String objectNameStr = root.toString() + ",destinationType=" + type + ",destinationName=*";
         J4pResponse<J4pReadRequest> response = client.execute(new J4pReadRequest(new ObjectName(objectNameStr), "Name"));
         JSONObject value = response.getValue();
-        for (Object key:value.keySet()){
+        for (Object key : value.keySet()) {
             ObjectName objectName = new ObjectName(key.toString());
             list.add(objectName);
         }

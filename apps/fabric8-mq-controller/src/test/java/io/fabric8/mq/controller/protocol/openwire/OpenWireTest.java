@@ -51,26 +51,26 @@ public class OpenWireTest {
 
     @After
     public void tearDown() throws Exception {
-        if (testProtocolServer != null){
+        if (testProtocolServer != null) {
             testProtocolServer.stop();
         }
     }
 
     @Test
-   public void testProtocol() throws  Exception{
-       int port = testProtocolServer.getBoundPort();
-       String url = "tcp://localhost:" + port;
+    public void testProtocol() throws Exception {
+        int port = testProtocolServer.getBoundPort();
+        String url = "tcp://localhost:" + port;
 
-        int numberOfMessages = 10;
+        int numberOfMessages = 5000;
         final CountDownLatch countDownLatch = new CountDownLatch(numberOfMessages);
 
-       ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(url);
-       Connection sc = factory.createConnection();
-       sc.start();
+        ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(url);
+        Connection sc = factory.createConnection();
+        sc.start();
 
         Connection cc = factory.createConnection();
         cc.start();
-        Session s = cc.createSession(false,Session.AUTO_ACKNOWLEDGE);
+        Session s = cc.createSession(false, Session.AUTO_ACKNOWLEDGE);
         Queue queue = s.createQueue("test.queue");
         MessageConsumer messageConsumer = s.createConsumer(queue);
         messageConsumer.setMessageListener(new MessageListener() {
@@ -80,13 +80,13 @@ public class OpenWireTest {
             }
         });
 
-        s = sc.createSession(false,Session.AUTO_ACKNOWLEDGE);
+        s = sc.createSession(false, Session.AUTO_ACKNOWLEDGE);
         MessageProducer producer = s.createProducer(queue);
-        for (int i = 0 ; i < numberOfMessages; i++){
+        for (int i = 0; i < numberOfMessages; i++) {
             TextMessage message = s.createTextMessage("test message " + i);
             producer.send(message);
         }
-        countDownLatch.await((long)(numberOfMessages*100), TimeUnit.MILLISECONDS);
-        Assert.assertTrue(countDownLatch.getCount()==0);
-   }
+        countDownLatch.await((long) (numberOfMessages * 100), TimeUnit.MILLISECONDS);
+        Assert.assertTrue(countDownLatch.getCount() == 0);
+    }
 }

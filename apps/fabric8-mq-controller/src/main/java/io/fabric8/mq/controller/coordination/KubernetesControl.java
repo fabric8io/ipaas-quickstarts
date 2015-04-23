@@ -113,15 +113,15 @@ public class KubernetesControl extends BaseBrokerControl {
                     BrokerView brokerView = new BrokerView();
                     brokerView.setBrokerName(brokerName.toString());
                     brokerView.setBrokerId(brokerId.toString());
-                    List<Container> containers= KubernetesHelper.getContainers(pod);
+                    List<Container> containers = KubernetesHelper.getContainers(pod);
                     //will only be one container
-                    if (containers.size()!=1){
-                        throw new IllegalStateException("Expected one container for pod:"+pod.getId() + " found " + containers.size());
+                    if (containers.size() != 1) {
+                        throw new IllegalStateException("Expected one container for pod:" + pod.getId() + " found " + containers.size());
                     }
                     Container container = containers.get(0);
                     List<Port> ports = container.getPorts();
                     //get the first port
-                    if (ports.isEmpty()){
+                    if (ports.isEmpty()) {
                         throw new IllegalStateException("Expected to find ports on container " + container.getName());
                     }
                     Port port = ports.get(0);
@@ -165,12 +165,12 @@ public class KubernetesControl extends BaseBrokerControl {
             String typeName = type == BrokerDestinationOverviewImpl.Type.QUEUE ? "Queue" : "Topic";
             List<ObjectName> list = BrokerJmxUtils.getDestinations(client, root, typeName);
 
-            for (ObjectName objectName:list){
+            for (ObjectName objectName : list) {
                 String destinationName = objectName.getKeyProperty("destinationName");
-                if (destinationName.toLowerCase().contains("advisory") && !destinationName.contains(ActiveMQDestination.TEMP_DESTINATION_NAME_PREFIX)){
-                    String producerCount = BrokerJmxUtils.getAttribute(client,objectName,"ProducerCount").toString().trim();
-                    String consumerCount = BrokerJmxUtils.getAttribute(client,objectName,"ConsumerCount").toString().trim();
-                    String queueSize = BrokerJmxUtils.getAttribute(client,objectName,"QueueSize").toString().trim();
+                if (destinationName.toLowerCase().contains("advisory") && !destinationName.contains(ActiveMQDestination.TEMP_DESTINATION_NAME_PREFIX)) {
+                    String producerCount = BrokerJmxUtils.getAttribute(client, objectName, "ProducerCount").toString().trim();
+                    String consumerCount = BrokerJmxUtils.getAttribute(client, objectName, "ConsumerCount").toString().trim();
+                    String queueSize = BrokerJmxUtils.getAttribute(client, objectName, "QueueSize").toString().trim();
                     ActiveMQDestination destination = type == BrokerDestinationOverviewImpl.Type.QUEUE ? new ActiveMQQueue(destinationName) : new ActiveMQTopic(destinationName);
                     BrokerDestinationOverviewImpl brokerDestinationOverviewImpl = new BrokerDestinationOverviewImpl(destination);
                     brokerDestinationOverviewImpl.setNumberOfConsumers(Integer.parseInt(consumerCount));

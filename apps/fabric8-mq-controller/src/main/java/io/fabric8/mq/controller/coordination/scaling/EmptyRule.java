@@ -17,10 +17,11 @@ package io.fabric8.mq.controller.coordination.scaling;
 
 import org.easyrules.core.BasicRule;
 
-public class EmptyRule extends BasicRule{
-    EmptyRule(){
-        super("EmptyRule","fired to ensure scheduler to know we are finished",Integer.MAX_VALUE);
+public class EmptyRule extends BasicRule {
+    EmptyRule() {
+        super("EmptyRule", "fired to ensure scheduler to know we are finished", Integer.MAX_VALUE);
     }
+
     public boolean evaluateConditions() {
         return true;
     }

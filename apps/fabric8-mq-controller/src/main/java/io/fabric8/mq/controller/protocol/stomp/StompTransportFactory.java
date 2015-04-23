@@ -1,5 +1,4 @@
 /*
- *
  *  * Copyright 2005-2015 Red Hat, Inc.
  *  * Red Hat licenses this file to you under the Apache License, version
  *  * 2.0 (the "License"); you may not use this file except in compliance
@@ -13,29 +12,24 @@
  *
  */
 
-package io.fabric8.mq.controller.protocol.openwire;
+package io.fabric8.mq.controller.protocol.stomp;
 
 import io.fabric8.mq.controller.AsyncExecutors;
 import io.fabric8.mq.controller.protocol.ProtocolTransport;
 import io.fabric8.mq.controller.protocol.ProtocolTransportFactory;
-import org.apache.activemq.openwire.OpenWireFormat;
-import org.apache.activemq.openwire.OpenWireFormatFactory;
 import org.apache.activemq.transport.TransportFactory;
 import org.apache.activemq.transport.TransportServer;
-import org.apache.activemq.wireformat.WireFormatFactory;
 import org.vertx.java.core.Vertx;
 
 import java.io.IOException;
 import java.net.URI;
 
-public class OpenWireTransportFactory extends TransportFactory implements ProtocolTransportFactory {
-    protected WireFormatFactory wireFormatFactory = new OpenWireFormatFactory();
+public class StompTransportFactory extends TransportFactory implements ProtocolTransportFactory {
 
     public ProtocolTransport connect(Vertx vertx, AsyncExecutors asyncExecutors, String name) throws IOException {
-        OpenWireFormat wireFormat = (OpenWireFormat) wireFormatFactory.createWireFormat();
-        //OpenWireFormat wireFormat = new OpenWireFormat(1);
-        OpenWireTransport openWireTransport = new OpenWireTransport(vertx, asyncExecutors, name, wireFormat);
-        return openWireTransport;
+        StompWireFormat wireFormat = new StompWireFormat();
+        StompTransport transport = new StompTransport(vertx, asyncExecutors, name, wireFormat);
+        return transport;
     }
 
     @Override

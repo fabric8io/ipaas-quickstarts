@@ -20,10 +20,10 @@ import io.fabric8.mq.controller.coordination.brokers.BrokerModel;
 public class DefaultScaleDownRule extends BaseScalingRule implements ScaleDownJmxRule {
 
     private int scaleDownThreshold = 50;
-    public DefaultScaleDownRule(ScalingEngine scalingEngine,int priority){
-       super(scalingEngine,"ScaleDownRule","scale down brokers if total load below threshold",priority);
-    }
 
+    public DefaultScaleDownRule(ScalingEngine scalingEngine, int priority) {
+        super(scalingEngine, "ScaleDownRule", "scale down brokers if total load below threshold", priority);
+    }
 
     @Override
     public boolean evaluateConditions() {

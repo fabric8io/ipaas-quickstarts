@@ -141,14 +141,14 @@ public class BrokerControlTestImpl extends BaseBrokerControl {
                     Destination destination = entry.getValue();
                     if (destination != null) {
                         String name = activeMQDestination.getPhysicalName();
-                            if (!name.contains("Advisory") && !name.contains(ActiveMQDestination.TEMP_DESTINATION_NAME_PREFIX)) {
+                        if (!name.contains("Advisory") && !name.contains(ActiveMQDestination.TEMP_DESTINATION_NAME_PREFIX)) {
 
-                                BrokerDestinationOverviewImpl brokerDestinationOverviewImpl = new BrokerDestinationOverviewImpl(activeMQDestination);
-                                brokerDestinationOverviewImpl.setNumberOfConsumers(destination.getConsumers().size());
-                                brokerDestinationOverviewImpl.setNumberOfProducers((int) destination.getDestinationStatistics().getProducers().getCount());
-                                brokerDestinationOverviewImpl.setQueueDepth((int) destination.getDestinationStatistics().getMessages().getCount());
-                                brokerOverview.addDestinationStatistics(brokerDestinationOverviewImpl);
-                            }
+                            BrokerDestinationOverviewImpl brokerDestinationOverviewImpl = new BrokerDestinationOverviewImpl(activeMQDestination);
+                            brokerDestinationOverviewImpl.setNumberOfConsumers(destination.getConsumers().size());
+                            brokerDestinationOverviewImpl.setNumberOfProducers((int) destination.getDestinationStatistics().getProducers().getCount());
+                            brokerDestinationOverviewImpl.setQueueDepth((int) destination.getDestinationStatistics().getMessages().getCount());
+                            brokerOverview.addDestinationStatistics(brokerDestinationOverviewImpl);
+                        }
                     }
 
                 }
