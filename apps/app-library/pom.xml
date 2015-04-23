@@ -100,10 +100,6 @@
       <artifactId>kubernetes-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-template</artifactId>
-    </dependency>
-    <dependency>
       <groupId>io.hawt</groupId>
       <artifactId>hawtio-aether</artifactId>
       <version>${hawtio.version}</version>
