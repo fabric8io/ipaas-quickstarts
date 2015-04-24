@@ -86,6 +86,7 @@
         <module>kibana</module>
         <module>kiwi-irc</module>
         <module>lets-chat</module>
+        <module>nexus</module>
         <module>orion</module>
         <module>registry</module>
         <module>sonarqube</module>
