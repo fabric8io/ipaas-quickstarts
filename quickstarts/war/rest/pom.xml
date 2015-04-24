@@ -45,8 +45,8 @@
     <tomcat-plugin.version>2.2</tomcat-plugin.version>
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
-    <fabric8.version>2.0.47</fabric8.version>
-    <jube.version>2.0.47</jube.version>
+    <fabric8.version>2.0.48</fabric8.version>
+    <jube.version>2.0.48</jube.version>
     <docker.maven.plugin.version>0.11.3</docker.maven.plugin.version>
     <camel.version>2.15.1</camel.version>
     <cxf.version>3.0.4</cxf.version>
@@ -134,7 +134,7 @@
 
     <dependency>
       <groupId>io.fabric8</groupId>
-      <artifactId>fabric-cxf</artifactId>
+      <artifactId>fabric8-cxf</artifactId>
       <exclusions>
         <exclusion>
           <groupId>org.apache.geronimo.specs</groupId>

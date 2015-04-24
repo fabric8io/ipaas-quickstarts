@@ -30,7 +30,7 @@
 
       <bundle>mvn:io.fabric8.mq/camel-amq/${fabric8.version}</bundle>
       <bundle>mvn:io.fabric8.mq/mq-client/${fabric8.version}</bundle>
-      <bundle>mvn:io.fabric8/fabric-utils/${fabric8.version}</bundle>
+      <bundle>mvn:io.fabric8/fabric8-utils/${fabric8.version}</bundle>
       <bundle>mvn:org.apache.activemq/activemq-camel/${activemq.version}</bundle>
       <bundle>mvn:org.apache.activemq/activemq-osgi/${activemq.version}</bundle>
 

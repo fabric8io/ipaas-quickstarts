@@ -2,7 +2,7 @@
 
     <resources>
         <resource-root path="kubernetes-api-${fabric8.version}.jar"/>
-        <resource-root path="fabric-utils-${fabric8.version}.jar"/>
+        <resource-root path="fabric8-utils-${fabric8.version}.jar"/>
         <!-- Should use a dependency module instead -->
         <resource-root path="cxf-core-${cxf.version}.jar"/>
         <resource-root path="cxf-rt-wsdl-${cxf.version}.jar"/>

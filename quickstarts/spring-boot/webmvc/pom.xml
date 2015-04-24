@@ -41,8 +41,8 @@
     <integrationTestPattern>**/*KubernetesTest.java</integrationTestPattern>
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
-    <fabric8.version>2.0.47</fabric8.version>
-    <jube.version>2.0.47</jube.version>
+    <fabric8.version>2.0.48</fabric8.version>
+    <jube.version>2.0.48</jube.version>
     <docker.maven.plugin.version>0.11.3</docker.maven.plugin.version>
 
     <spring-boot-plugin.version>1.2.3.RELEASE</spring-boot-plugin.version>
@@ -262,6 +262,17 @@
                 <phase>verify</phase>
               </execution>
             </executions>
+
+            &lt;!&ndash; TODO it'd be nice for the jube plugin to automatically download this dependency &ndash;&gt;
+            <dependencies>
+              <dependency>
+                <groupId>io.fabric8.jube.images.fabric8</groupId>
+                <artifactId>java</artifactId>
+                <version>${jube.version}</version>
+                <classifier>image</classifier>
+                <type>zip</type>
+              </dependency>
+            </dependencies>
           </plugin>
         </plugins>
       </build>

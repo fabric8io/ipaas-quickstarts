@@ -3,7 +3,7 @@
         <dependencySet>
             <includes>
                 <include>io.fabric8:kubernetes-api</include>
-                <include>io.fabric8:fabric-utils</include>
+                <include>io.fabric8:fabric8-utils</include>
                 <include>org.apache.cxf:*</include>
                 <include>org.apache.neethi:*</include>
                 <include>org.yaml:*</include>
