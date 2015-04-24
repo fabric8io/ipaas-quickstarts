@@ -269,17 +269,6 @@
                 <phase>package</phase>
               </execution>
             </executions>
-
-            <!-- TODO it'd be nice for the jube plugin to automatically download this dependency -->
-            <dependencies>
-              <dependency>
-                <groupId>io.fabric8.jube.images.fabric8</groupId>
-                <artifactId>karaf-2.4</artifactId>
-                <version>${jube.version}</version>
-                <classifier>image</classifier>
-                <type>zip</type>
-              </dependency>
-            </dependencies>
             <configuration>
               <exportDir>/</exportDir>
               <assemblyDescriptor>${project.build.directory}/fabric8/assembly.xml</assemblyDescriptor>

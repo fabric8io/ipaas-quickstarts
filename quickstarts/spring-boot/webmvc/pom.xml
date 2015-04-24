@@ -262,17 +262,6 @@
                 <phase>verify</phase>
               </execution>
             </executions>
-
-            &lt;!&ndash; TODO it'd be nice for the jube plugin to automatically download this dependency &ndash;&gt;
-            <dependencies>
-              <dependency>
-                <groupId>io.fabric8.jube.images.fabric8</groupId>
-                <artifactId>java</artifactId>
-                <version>${jube.version}</version>
-                <classifier>image</classifier>
-                <type>zip</type>
-              </dependency>
-            </dependencies>
           </plugin>
         </plugins>
       </build>
