@@ -30,7 +30,7 @@
                             "version" : "v1beta1",
                             "id" : "jenkinsPod",
                             "containers" : [ {
-                                "image":"rawlingsj/fabric8-jenkins",
+                                "image":"fabric8/jenkins",
                                 "name":"jenkins-container",
                                 "ports":[
                                     {
