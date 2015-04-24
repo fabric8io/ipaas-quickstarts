@@ -255,7 +255,7 @@
       </plugin>
       <plugin>
         <groupId>io.fabric8</groupId>
-        <artifactId>fabric-cxf-plugins</artifactId>
+        <artifactId>fabric8-cxf-plugins</artifactId>
         <version>${fabric8.version}</version>
         <executions>
           <execution>
