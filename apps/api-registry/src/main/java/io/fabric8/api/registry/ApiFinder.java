@@ -21,10 +21,10 @@ import io.fabric8.api.registry.rules.CamelEndpointFinder;
 import io.fabric8.api.registry.rules.CxfEndpointFinder;
 import io.fabric8.kubernetes.api.Kubernetes;
 import io.fabric8.kubernetes.api.KubernetesHelper;
+import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.PodState;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.Pod;
-import io.fabric8.kubernetes.api.model.Port;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.jolokia.JolokiaClients;
 import io.fabric8.swagger.model.ApiDeclaration;
@@ -342,8 +342,8 @@ public class ApiFinder {
     public static String getHttpUrl(Pod pod, Container container, J4pClient jolokia) {
         // lets find the HTTP port
         if (container != null) {
-            List<Port> ports = container.getPorts();
-            for (Port port : ports) {
+            List<ContainerPort> ports = container.getPorts();
+            for (ContainerPort port : ports) {
                 Integer containerPort = port.getContainerPort();
                 if (containerPort != null) {
                     String name = port.getName();
