@@ -51,7 +51,7 @@
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <cxf.version>3.0.4</cxf.version>
     <jube.version>2.0.47</jube.version>
-    <docker.maven.plugin.version>0.11.2</docker.maven.plugin.version>
+    <docker.maven.plugin.version>0.11.3</docker.maven.plugin.version>
     <org.eclipse.jetty.version>9.1.5.v20140505</org.eclipse.jetty.version>
     
     <http.port>9092</http.port>
