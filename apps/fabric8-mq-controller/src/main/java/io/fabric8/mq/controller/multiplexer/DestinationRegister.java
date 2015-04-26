@@ -15,8 +15,8 @@
 
 package io.fabric8.mq.controller.multiplexer;
 
-import io.fabric8.mq.controller.model.DestinationStatistics;
 import io.fabric8.mq.controller.model.DestinationStatisticsImpl;
+import io.fabric8.mq.controller.model.DestinationStatisticsMBean;
 import io.fabric8.mq.controller.model.Model;
 import org.apache.activemq.command.ActiveMQDestination;
 
@@ -69,10 +69,10 @@ public class DestinationRegister {
         }
     }
 
-    public List<DestinationStatistics> getDestinations() {
-        List<DestinationStatistics> list = new ArrayList<>();
+    public List<DestinationStatisticsMBean> getDestinations() {
+        List<DestinationStatisticsMBean> list = new ArrayList<>();
         for (DestinationStatisticsReference destinationStatisticsReference : map.values()) {
-            DestinationStatistics destinationStatistics = destinationStatisticsReference.get();
+            DestinationStatisticsMBean destinationStatistics = destinationStatisticsReference.get();
             list.add(destinationStatistics);
         }
         return list;
@@ -153,7 +153,7 @@ public class DestinationRegister {
             this.count = new AtomicInteger(1);
         }
 
-        DestinationStatistics register() {
+        DestinationStatisticsMBean register() {
             count.incrementAndGet();
             return destinationStatistics;
         }
@@ -163,10 +163,7 @@ public class DestinationRegister {
         }
 
         boolean unregister() {
-            if (count.decrementAndGet() <= 0) {
-                return true;
-            }
-            return false;
+            return count.decrementAndGet() <= 0;
         }
     }
 }

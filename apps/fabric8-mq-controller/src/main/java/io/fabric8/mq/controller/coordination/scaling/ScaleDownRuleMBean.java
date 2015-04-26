@@ -13,16 +13,11 @@
  *
  */
 
-package io.fabric8.mq.controller.model;
+package io.fabric8.mq.controller.coordination.scaling;
 
-import org.apache.activemq.Service;
+public interface ScaleDownRuleMBean extends ScalingRuleMBean {
 
-import javax.management.MXBean;
+    int getScaleDownLoadThreshold();
 
-@MXBean
-public interface DestinationStatistics extends Service {
-
-    String getName();
-
-    String getActiveMQDestination();
+    void setScaleDownLoadThreshold(int load);
 }

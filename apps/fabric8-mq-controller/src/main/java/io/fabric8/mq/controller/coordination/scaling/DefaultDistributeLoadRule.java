@@ -25,6 +25,7 @@ public class DefaultDistributeLoadRule extends BaseScalingRule {
 
     @Override
     public boolean evaluateConditions() {
+        called();
         boolean result = false;
         final BrokerModel leastLoaded = model.getLeastLoadedBroker();
         final BrokerModel mostLoaded = model.getMostLoadedBroker();
@@ -42,6 +43,7 @@ public class DefaultDistributeLoadRule extends BaseScalingRule {
 
     @Override
     public void performActions() throws Exception {
+        executed();
         scalingEngine.fireDistributeLoad();
     }
 

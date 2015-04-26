@@ -15,15 +15,29 @@
 
 package io.fabric8.mq.controller.model;
 
-import javax.management.MXBean;
+public interface BrokerMBean {
 
-@MXBean
-public interface BrokerDestinationOverview extends Comparable<BrokerDestinationOverview> {
-    String getName();
+    String getBrokerId();
 
-    int getNumberOfConsumers();
+    String getBrokerName();
 
-    int getNumberOfProducers();
+    String getPodId();
 
-    int getQueueDepth();
+    int getTotalConnections();
+
+    int getLoad();
+
+    int getTotalDestinations();
+
+    int getTotalActiveDestinations();
+
+    int getTotalActiveQueues();
+
+    int getTotalActiveTopics();
+
+    int getTotalQueueDepth();
+
+    int getTotalConsumerCount();
+
+    int getTotalProducerCount();
 }

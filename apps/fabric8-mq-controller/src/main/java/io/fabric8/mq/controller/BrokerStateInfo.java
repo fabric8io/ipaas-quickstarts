@@ -21,13 +21,12 @@ import io.fabric8.mq.controller.model.Model;
 import org.apache.activemq.util.ServiceStopper;
 import org.apache.activemq.util.ServiceSupport;
 
-import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 
 /**
  * Holder of state for Brokers
  */
-@Default
+
 public class BrokerStateInfo extends ServiceSupport {
     @Inject
     protected BrokerControl brokerControl;
@@ -46,6 +45,10 @@ public class BrokerStateInfo extends ServiceSupport {
 
     public BrokerControl getBrokerControl() {
         return brokerControl;
+    }
+
+    public void setBrokerControl(BrokerControl brokerControl) {
+        this.brokerControl = brokerControl;
     }
 
     public MQControllerStatus getControllerStatus() {

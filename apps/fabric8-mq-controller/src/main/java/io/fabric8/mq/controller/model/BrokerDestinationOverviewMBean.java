@@ -15,22 +15,12 @@
 
 package io.fabric8.mq.controller.model;
 
-import javax.management.MXBean;
-import java.util.List;
-
-@MXBean
-public interface InboundConnection {
-
-    long getOutboundMessageCount();
-
-    long getInboundMessageCount();
-
+public interface BrokerDestinationOverviewMBean extends Comparable<BrokerDestinationOverviewMBean> {
     String getName();
 
-    String getUrl();
+    int getNumberOfConsumers();
 
-    String getProtocol();
+    int getNumberOfProducers();
 
-    List<DestinationStatisticsMBean> getDestinations();
+    int getQueueDepth();
 }
-

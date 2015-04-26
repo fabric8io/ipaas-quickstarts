@@ -14,12 +14,12 @@
  */
 package io.fabric8.mq.controller.coordination.brokers;
 
-import io.fabric8.mq.controller.model.BrokerDestinationOverview;
+import io.fabric8.mq.controller.model.BrokerDestinationOverviewMBean;
 import org.apache.activemq.command.ActiveMQDestination;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class BrokerDestinationOverviewImpl implements BrokerDestinationOverview {
+public class BrokerDestinationOverviewImpl implements BrokerDestinationOverviewMBean {
     private static final Logger LOG = LoggerFactory.getLogger(BrokerDestinationOverviewImpl.class);
     private final ActiveMQDestination destination;
     private int queueDepth;
@@ -73,7 +73,7 @@ public class BrokerDestinationOverviewImpl implements BrokerDestinationOverview 
     }
 
     @Override
-    public int compareTo(BrokerDestinationOverview other) {
+    public int compareTo(BrokerDestinationOverviewMBean other) {
         int result = other.getQueueDepth() - getQueueDepth();
         if (result == 0) {
             result = other.getNumberOfProducers() - getNumberOfProducers();
@@ -85,8 +85,7 @@ public class BrokerDestinationOverviewImpl implements BrokerDestinationOverview 
     }
 
     public String toString() {
-        String result = destination.getPhysicalName() + ":,depth=" + getQueueDepth() + ",producers=" + getNumberOfProducers() + ",consumers=" + getNumberOfConsumers();
-        return result;
+        return destination.getPhysicalName() + ":,depth=" + getQueueDepth() + ",producers=" + getNumberOfProducers() + ",consumers=" + getNumberOfConsumers();
     }
 
     public enum Type {QUEUE, TOPIC}

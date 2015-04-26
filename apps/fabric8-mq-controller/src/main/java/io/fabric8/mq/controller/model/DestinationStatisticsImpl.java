@@ -26,10 +26,10 @@ import org.apache.activemq.util.ServiceSupport;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DestinationStatisticsImpl extends ServiceSupport implements DestinationStatistics, MetricSet {
+public class DestinationStatisticsImpl extends ServiceSupport implements DestinationStatisticsMBean, MetricSet {
     private final ActiveMQDestination activeMQDestination;
     private final String name;
-    private final Map<String, Metric> map = new HashMap();
+    private final Map<String, Metric> map = new HashMap<>();
     private final Counter consumers = new Counter();
     private final Counter producers = new Counter();
     private final Meter inboundMessages = new Meter();
@@ -79,7 +79,7 @@ public class DestinationStatisticsImpl extends ServiceSupport implements Destina
     public String getActiveMQDestination() {
         if (activeMQDestination.isComposite()) {
             String name = activeMQDestination.toString();
-            name.replaceAll(",", "&");
+            name = name.replaceAll(",", "&");
             return name;
         }
         return activeMQDestination.toString();

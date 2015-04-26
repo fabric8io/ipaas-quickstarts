@@ -37,7 +37,6 @@ import org.jolokia.client.J4pClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.enterprise.inject.Default;
 import javax.management.ObjectName;
 import java.io.File;
 import java.net.URL;
@@ -46,7 +45,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-@Default
 public class KubernetesControl extends BaseBrokerControl {
     static final int DEFAULT_POLLING_TIME = 2000;
     private static final Logger LOG = LoggerFactory.getLogger(KubernetesControl.class);
@@ -127,7 +125,7 @@ public class KubernetesControl extends BaseBrokerControl {
                     Port port = ports.get(0);
                     String uriString = "tcp://" + port.getHostIP() + ":" + port.getHostPort();
                     brokerView.setUri(uriString);
-                    brokerModel = new BrokerModel(pod, brokerView);
+                    brokerModel = new BrokerModel(pod, brokerView, model);
                     brokerModel.start();
                     model.add(brokerModel);
                     //add transports
