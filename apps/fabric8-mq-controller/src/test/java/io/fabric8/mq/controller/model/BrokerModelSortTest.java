@@ -53,7 +53,7 @@ public class BrokerModelSortTest {
             brokerView.setBrokerId(name);
             brokerView.setBrokerName(name);
             brokerView.setBrokerOverview(brokerOverview);
-            BrokerModel brokerModel = new BrokerModel(null, brokerView);
+            BrokerModel brokerModel = new BrokerModel(null, brokerView, model);
             brokerModel.start();
             model.add(brokerModel);
 

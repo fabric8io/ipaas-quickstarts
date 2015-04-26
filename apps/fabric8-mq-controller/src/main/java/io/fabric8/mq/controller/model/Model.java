@@ -22,6 +22,7 @@ import io.fabric8.mq.controller.multiplexer.MultiplexerInput;
 import org.apache.activemq.Service;
 import org.apache.activemq.command.ActiveMQDestination;
 
+import javax.management.ObjectName;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -45,9 +46,9 @@ public interface Model extends Service {
 
     void remove(BrokerModel brokerModel);
 
-    void register(MultiplexerInput multiplexer, DestinationStatistics destinationStatistics);
+    void register(MultiplexerInput multiplexer, DestinationStatisticsMBean destinationStatistics);
 
-    void unregister(MultiplexerInput multiplexer, DestinationStatistics destinationStatistics);
+    void unregister(MultiplexerInput multiplexer, DestinationStatisticsMBean destinationStatistics);
 
     boolean areBrokerLimitsExceeded(BrokerModel brokerModel);
 
@@ -89,4 +90,9 @@ public interface Model extends Service {
     boolean copyDestinations(BrokerModel from, BrokerModel to);
 
     boolean copyDestinations(BrokerModel from, BrokerModel to, Collection<ActiveMQDestination> destinations);
+
+    void registerInJmx(ObjectName objectName, Object object) throws Exception;
+
+    void unregisterInJmx(Object object);
+
 }

@@ -25,6 +25,7 @@ public class DefaultScaleUpRule extends BaseScalingRule {
 
     @Override
     public boolean evaluateConditions() {
+        called();
         boolean result = false;
         for (BrokerModel brokerModel : model.getBrokers()) {
             if (model.areBrokerLimitsExceeded(brokerModel) || model.areDestinationLimitsExceeded(brokerModel)) {
@@ -37,6 +38,7 @@ public class DefaultScaleUpRule extends BaseScalingRule {
 
     @Override
     public void performActions() throws Exception {
+        executed();
         scalingEngine.fireScalingUp();
     }
 }

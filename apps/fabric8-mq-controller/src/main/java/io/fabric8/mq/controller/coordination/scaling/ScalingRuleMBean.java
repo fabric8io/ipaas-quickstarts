@@ -13,24 +13,12 @@
  *
  */
 
-package io.fabric8.mq.controller.model;
+package io.fabric8.mq.controller.coordination.scaling;
 
-import javax.management.MXBean;
-import java.util.List;
+public interface ScalingRuleMBean {
+    String getName();
 
-@MXBean
-public interface BrokerStatistics {
+    String getDescription();
 
-    String getBrokerId();
-
-    String getBrokerName();
-
-    String getPodId();
-
-    public int getTotalConnections();
-
-    public List<BrokerDestinationOverview> getQueues();
-
-    public List<BrokerDestinationOverview> getTopics();
-
+    int getPriority();
 }

@@ -94,8 +94,8 @@ public class DefaultModel extends ServiceSupport implements Model {
     public void add(BrokerModel brokerModel) {
         if (brokerModelMap.putIfAbsent(brokerModel.getBrokerId(), brokerModel) == null) {
             try {
-                String name = "broker." + brokerModel.getBrokerId();
-                ObjectName objectName = new ObjectName(DEFAULT_JMX_DOMAIN, "name", ObjectName.quote(name));
+                String name = getClass().getPackage().getName() + ".broker." + brokerModel.getBrokerId();
+                ObjectName objectName = new ObjectName(DEFAULT_JMX_DOMAIN, "name", name);
                 registerInJmx(objectName, brokerModel);
             } catch (Throwable e) {
                 LOG.error("Failed to register " + brokerModel, e);
@@ -115,7 +115,7 @@ public class DefaultModel extends ServiceSupport implements Model {
     }
 
     @Override
-    public void register(MultiplexerInput multiplexerInput, DestinationStatistics destinationStatistics) {
+    public void register(MultiplexerInput multiplexerInput, DestinationStatisticsMBean destinationStatistics) {
         try {
             ObjectName objectName = new ObjectName(DEFAULT_JMX_DOMAIN, "name", destinationStatistics.getName());
             registerInJmx(objectName, destinationStatistics);
@@ -126,7 +126,7 @@ public class DefaultModel extends ServiceSupport implements Model {
     }
 
     @Override
-    public void unregister(MultiplexerInput multiplexer, DestinationStatistics destinationStatistics) {
+    public void unregister(MultiplexerInput multiplexer, DestinationStatisticsMBean destinationStatistics) {
         try {
             destinationStatistics.stop();
             unregisterInJmx(destinationStatistics);
@@ -259,7 +259,7 @@ public class DefaultModel extends ServiceSupport implements Model {
         if (brokerModel != null) {
             BrokerOverview brokerOverview = brokerModel.getBrokerOverview();
             if (brokerOverview != null) {
-                for (BrokerDestinationOverview brokerDestinationOverview : brokerOverview.getQueueOverviews().values()) {
+                for (BrokerDestinationOverviewMBean brokerDestinationOverview : brokerOverview.getQueueOverviews().values()) {
                     if (brokerDestinationOverview.getQueueDepth() > brokerLimitsConfig.getMaxDestinationDepth()) {
                         return true;
                     }

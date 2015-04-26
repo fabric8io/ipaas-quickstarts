@@ -14,7 +14,7 @@
  */
 package io.fabric8.mq.controller.coordination.brokers;
 
-import io.fabric8.mq.controller.model.BrokerDestinationOverview;
+import io.fabric8.mq.controller.model.BrokerDestinationOverviewMBean;
 import org.apache.activemq.command.ActiveMQDestination;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,16 +26,16 @@ import java.util.concurrent.ConcurrentHashMap;
 public class BrokerOverview implements Comparable<BrokerOverview> {
     private static final Logger LOG = LoggerFactory.getLogger(BrokerOverview.class);
 
-    private final Map<ActiveMQDestination, BrokerDestinationOverview> queueOverviews = new ConcurrentHashMap<>();
-    private final Map<ActiveMQDestination, BrokerDestinationOverview> topicOverviews = new ConcurrentHashMap<>();
+    private final Map<ActiveMQDestination, BrokerDestinationOverviewMBean> queueOverviews = new ConcurrentHashMap<>();
+    private final Map<ActiveMQDestination, BrokerDestinationOverviewMBean> topicOverviews = new ConcurrentHashMap<>();
     private int totalConnections;
     private boolean blockedProducers;
 
-    public Map<ActiveMQDestination, BrokerDestinationOverview> getQueueOverviews() {
+    public Map<ActiveMQDestination, BrokerDestinationOverviewMBean> getQueueOverviews() {
         return queueOverviews;
     }
 
-    public Map<ActiveMQDestination, BrokerDestinationOverview> getTopicOverviews() {
+    public Map<ActiveMQDestination, BrokerDestinationOverviewMBean> getTopicOverviews() {
         return topicOverviews;
     }
 
@@ -63,9 +63,9 @@ public class BrokerOverview implements Comparable<BrokerOverview> {
         return getTotalActiveCount(topicOverviews.values());
     }
 
-    private int getTotalActiveCount(Collection<BrokerDestinationOverview> brokerDestinationOverviewImpls) {
+    private int getTotalActiveCount(Collection<BrokerDestinationOverviewMBean> brokerDestinationOverviewImpls) {
         int result = 0;
-        for (BrokerDestinationOverview brokerDestinationOverview : brokerDestinationOverviewImpls) {
+        for (BrokerDestinationOverviewMBean brokerDestinationOverview : brokerDestinationOverviewImpls) {
             if (brokerDestinationOverview.getQueueDepth() > 0 || brokerDestinationOverview.getNumberOfConsumers() > 0) {
                 result++;
             }
@@ -85,8 +85,8 @@ public class BrokerOverview implements Comparable<BrokerOverview> {
     public int compareTo(BrokerOverview other) {
         int result = other.getQueueOverviews().size() - getQueueOverviews().size();
         if (result == 0) {
-            for (Map.Entry<ActiveMQDestination, BrokerDestinationOverview> entry : getQueueOverviews().entrySet()) {
-                BrokerDestinationOverview brokerDestinationOverview = other.getQueueOverviews().get(entry.getKey());
+            for (Map.Entry<ActiveMQDestination, BrokerDestinationOverviewMBean> entry : getQueueOverviews().entrySet()) {
+                BrokerDestinationOverviewMBean brokerDestinationOverview = other.getQueueOverviews().get(entry.getKey());
                 if (brokerDestinationOverview != null) {
                     result = entry.getValue().compareTo(brokerDestinationOverview);
                     if (result == 0) {
@@ -100,7 +100,7 @@ public class BrokerOverview implements Comparable<BrokerOverview> {
 
     public int getTotalQueueDepth() {
         int result = 0;
-        for (BrokerDestinationOverview brokerDestinationOverview : getQueueOverviews().values()) {
+        for (BrokerDestinationOverviewMBean brokerDestinationOverview : getQueueOverviews().values()) {
             result += brokerDestinationOverview.getQueueDepth();
         }
         return result;
@@ -108,7 +108,7 @@ public class BrokerOverview implements Comparable<BrokerOverview> {
 
     public int getTotalConsumerCount() {
         int result = 0;
-        for (BrokerDestinationOverview brokerDestinationOverview : getQueueOverviews().values()) {
+        for (BrokerDestinationOverviewMBean brokerDestinationOverview : getQueueOverviews().values()) {
             result += brokerDestinationOverview.getNumberOfConsumers();
         }
         return result;
@@ -116,7 +116,7 @@ public class BrokerOverview implements Comparable<BrokerOverview> {
 
     public int getTotalProducerCount() {
         int result = 0;
-        for (BrokerDestinationOverview brokerDestinationOverview : getQueueOverviews().values()) {
+        for (BrokerDestinationOverviewMBean brokerDestinationOverview : getQueueOverviews().values()) {
             result += brokerDestinationOverview.getNumberOfProducers();
         }
         return result;
@@ -124,7 +124,7 @@ public class BrokerOverview implements Comparable<BrokerOverview> {
 
     public int getQueueDepth(ActiveMQDestination destination) {
         int result = 0;
-        BrokerDestinationOverview brokerDestinationOverview = queueOverviews.get(destination);
+        BrokerDestinationOverviewMBean brokerDestinationOverview = queueOverviews.get(destination);
         if (brokerDestinationOverview != null) {
             result = brokerDestinationOverview.getQueueDepth();
         }
@@ -133,7 +133,7 @@ public class BrokerOverview implements Comparable<BrokerOverview> {
 
     public int getNumberOfProducers(ActiveMQDestination destination) {
         int result = 0;
-        BrokerDestinationOverview brokerDestinationOverview = queueOverviews.get(destination);
+        BrokerDestinationOverviewMBean brokerDestinationOverview = queueOverviews.get(destination);
         if (brokerDestinationOverview != null) {
             result = brokerDestinationOverview.getNumberOfProducers();
         }
@@ -142,7 +142,7 @@ public class BrokerOverview implements Comparable<BrokerOverview> {
 
     public int getNumberOfConsumers(ActiveMQDestination destination) {
         int result = 0;
-        BrokerDestinationOverview brokerDestinationOverview = queueOverviews.get(destination);
+        BrokerDestinationOverviewMBean brokerDestinationOverview = queueOverviews.get(destination);
         if (brokerDestinationOverview != null) {
             result = brokerDestinationOverview.getNumberOfConsumers();
         }
@@ -164,7 +164,7 @@ public class BrokerOverview implements Comparable<BrokerOverview> {
             result += System.lineSeparator();
             result += "\tTopics=";
             String separator = "";
-            for (BrokerDestinationOverview brokerDestinationOverview : topicOverviews.values()) {
+            for (BrokerDestinationOverviewMBean brokerDestinationOverview : topicOverviews.values()) {
                 result += separator;
                 result += brokerDestinationOverview.toString();
                 separator += ",";
@@ -174,7 +174,7 @@ public class BrokerOverview implements Comparable<BrokerOverview> {
             result += System.lineSeparator();
             result += "\tQueues=";
             String separator = "";
-            for (BrokerDestinationOverview brokerDestinationOverview : queueOverviews.values()) {
+            for (BrokerDestinationOverviewMBean brokerDestinationOverview : queueOverviews.values()) {
                 result += separator;
                 result += brokerDestinationOverview.toString();
                 separator += ",";

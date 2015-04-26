@@ -13,13 +13,13 @@
  *
  */
 
-package io.fabric8.mq.controller.coordination.scaling;
+package io.fabric8.mq.controller.model;
 
-import org.easyrules.jmx.api.JMXRule;
+import org.apache.activemq.Service;
 
-public interface ScaleDownJmxRule extends JMXRule {
+public interface DestinationStatisticsMBean extends Service {
 
-    public int getScaleDownLoadThreshold();
+    String getName();
 
-    public void setScaleDownLoadThreshold(int load);
+    String getActiveMQDestination();
 }

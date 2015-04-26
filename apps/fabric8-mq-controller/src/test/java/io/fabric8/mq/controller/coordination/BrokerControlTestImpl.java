@@ -97,7 +97,7 @@ public class BrokerControlTestImpl extends BaseBrokerControl {
                 brokerView.setBrokerName(broker.getBrokerName());
                 brokerView.setBrokerId(brokerId);
                 brokerView.setUri(broker.getDefaultSocketURIString());
-                brokerModel = new BrokerModel(null, brokerView);
+                brokerModel = new BrokerModel(null, brokerView, model);
                 brokerModel.start();
                 model.add(brokerModel);
                 //add transports
