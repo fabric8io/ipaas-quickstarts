@@ -141,7 +141,6 @@ public class TestProtocolServer extends ServiceSupport {
         multiplexer.start();
 
         countDownLatch.await();
-        System.err.println("TestProtocolServer started");
     }
 
     private void doHandle(final SocketWrapper socket) {
