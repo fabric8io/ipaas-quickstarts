@@ -13,9 +13,9 @@
  *
  */
 
-package io.fabric8.mq.controller.model;
+package io.fabric8.mq.controller.coordination.brokers;
 
-public interface BrokerMBean {
+public interface BrokerModelMBean {
 
     String getBrokerId();
 

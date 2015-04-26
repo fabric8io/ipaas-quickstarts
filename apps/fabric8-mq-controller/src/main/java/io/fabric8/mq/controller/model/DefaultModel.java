@@ -17,6 +17,7 @@ package io.fabric8.mq.controller.model;
 
 import com.codahale.metrics.JmxReporter;
 import io.fabric8.mq.controller.AsyncExecutors;
+import io.fabric8.mq.controller.coordination.brokers.BrokerDestinationOverviewMBean;
 import io.fabric8.mq.controller.coordination.brokers.BrokerModel;
 import io.fabric8.mq.controller.coordination.brokers.BrokerOverview;
 import io.fabric8.mq.controller.multiplexer.Multiplexer;
@@ -235,8 +236,6 @@ public class DefaultModel extends ServiceSupport implements Model {
                 boolean connectionsExceeded = totalConnections > maxConnectionsPerBroker;
                 if (connectionsExceeded) {
                     LOG.info("Broker " + brokerName + " EXCEEDED connection limits(" + maxConnectionsPerBroker + ") with " + totalConnections + " connections");
-                } else {
-                    LOG.info("Broker " + brokerName + " within connection limits(" + maxConnectionsPerBroker + ") with " + totalConnections + " connections");
                 }
 
                 int totalDestinations = brokerOverview.getTotalActiveDestinations();
@@ -245,8 +244,6 @@ public class DefaultModel extends ServiceSupport implements Model {
 
                 if (destinationsExceeded) {
                     LOG.info("Broker " + brokerName + " EXCEEDED destination limits(" + maxDestinationsPerBroker + ") with " + totalDestinations + " active destinations");
-                } else {
-                    LOG.info("Broker " + brokerName + " within destination limits(" + maxDestinationsPerBroker + ") with " + totalDestinations + " active destinations");
                 }
                 return connectionsExceeded || destinationsExceeded;
             }
@@ -255,10 +252,47 @@ public class DefaultModel extends ServiceSupport implements Model {
     }
 
     @Override
+    public boolean areBrokerConnectionLimitsExceeded(BrokerModel brokerModel) {
+        boolean result = false;
+        if (brokerModel != null) {
+            BrokerOverview brokerOverview = brokerModel.getBrokerOverview();
+            if (brokerOverview != null) {
+                String brokerName = brokerModel.getBrokerId();
+                int totalConnections = brokerOverview.getTotalConnections();
+                int maxConnectionsPerBroker = brokerLimitsConfig.getMaxConnectionsPerBroker();
+                boolean connectionsExceeded = totalConnections > maxConnectionsPerBroker;
+                if (connectionsExceeded) {
+                    LOG.info("Broker " + brokerName + " EXCEEDED connection limits(" + maxConnectionsPerBroker + ") with " + totalConnections + " connections");
+                    result = true;
+                }
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public int spareConnections(BrokerModel brokerModel) {
+        int result = 0;
+        BrokerOverview brokerOverview = brokerModel.getBrokerOverview();
+        if (brokerOverview != null) {
+            result = brokerLimitsConfig.getMaxConnectionsPerBroker() - brokerOverview.getTotalConnections();
+        }
+        return result;
+    }
+
+    @Override
     public boolean areDestinationLimitsExceeded(BrokerModel brokerModel) {
         if (brokerModel != null) {
             BrokerOverview brokerOverview = brokerModel.getBrokerOverview();
             if (brokerOverview != null) {
+                int totalDestinations = brokerOverview.getTotalActiveDestinations();
+                int maxDestinationsPerBroker = brokerLimitsConfig.getMaxDestinationsPerBroker();
+                boolean destinationsExceeded = totalDestinations > maxDestinationsPerBroker;
+                String brokerName = brokerModel.getBrokerId();
+                if (destinationsExceeded) {
+                    LOG.info("Broker " + brokerName + " EXCEEDED destination limits(" + maxDestinationsPerBroker + ") with " + totalDestinations + " active destinations");
+                    return true;
+                }
                 for (BrokerDestinationOverviewMBean brokerDestinationOverview : brokerOverview.getQueueOverviews().values()) {
                     if (brokerDestinationOverview.getQueueDepth() > brokerLimitsConfig.getMaxDestinationDepth()) {
                         return true;
@@ -274,6 +308,16 @@ public class DefaultModel extends ServiceSupport implements Model {
             return false;
         }
         return false;
+    }
+
+    @Override
+    public int spareDestinations(BrokerModel brokerModel) {
+        int result = 0;
+        BrokerOverview brokerOverview = brokerModel.getBrokerOverview();
+        if (brokerOverview != null) {
+            result = brokerLimitsConfig.getMaxDestinationsPerBroker() - brokerOverview.getTotalActiveDestinations();
+        }
+        return result;
     }
 
     @Override
@@ -296,7 +340,7 @@ public class DefaultModel extends ServiceSupport implements Model {
 
     @Override
     public Set<BrokerModel> getBrokersForDestination(ActiveMQDestination destination) {
-        return destinationMap.get(destination);
+        return (Set<BrokerModel>)destinationMap.get(destination);
     }
 
     @Override

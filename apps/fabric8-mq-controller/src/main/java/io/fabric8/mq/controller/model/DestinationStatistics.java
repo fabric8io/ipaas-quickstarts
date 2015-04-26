@@ -26,7 +26,7 @@ import org.apache.activemq.util.ServiceSupport;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DestinationStatisticsImpl extends ServiceSupport implements DestinationStatisticsMBean, MetricSet {
+public class DestinationStatistics extends ServiceSupport implements DestinationStatisticsMBean, MetricSet {
     private final ActiveMQDestination activeMQDestination;
     private final String name;
     private final Map<String, Metric> map = new HashMap<>();
@@ -35,7 +35,7 @@ public class DestinationStatisticsImpl extends ServiceSupport implements Destina
     private final Meter inboundMessages = new Meter();
     private final Meter outboundMessages = new Meter();
 
-    public DestinationStatisticsImpl(String title, ActiveMQDestination activeMQDestination) {
+    public DestinationStatistics(String title, ActiveMQDestination activeMQDestination) {
         this.activeMQDestination = activeMQDestination;
         String str = title;
         str += "." + activeMQDestination.getDestinationTypeAsString() + "." + activeMQDestination.getPhysicalName();

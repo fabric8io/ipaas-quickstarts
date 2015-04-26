@@ -17,8 +17,6 @@ package io.fabric8.mq.controller.coordination.brokers;
 
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.mq.controller.MessageDistribution;
-import io.fabric8.mq.controller.model.BrokerDestinationOverviewMBean;
-import io.fabric8.mq.controller.model.BrokerMBean;
 import io.fabric8.mq.controller.model.Model;
 import org.apache.activemq.command.ActiveMQDestination;
 import org.apache.activemq.transport.Transport;
@@ -34,7 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class BrokerModel extends ServiceSupport implements BrokerMBean {
+public class BrokerModel extends ServiceSupport implements BrokerModelMBean {
     private static Logger LOG = LoggerFactory.getLogger(BrokerModel.class);
     private final Pod pod;
     private final BrokerView brokerView;
@@ -215,7 +213,7 @@ public class BrokerModel extends ServiceSupport implements BrokerMBean {
     }
 
     public Set<ActiveMQDestination> getActiveDestinations() {
-        Set result = new HashSet();
+        Set<ActiveMQDestination> result = new HashSet<>();
         BrokerOverview brokerOverview = getBrokerOverview();
         if (brokerOverview != null) {
             for (Map.Entry<ActiveMQDestination, BrokerDestinationOverviewMBean> entry : brokerOverview.getQueueOverviews().entrySet()) {

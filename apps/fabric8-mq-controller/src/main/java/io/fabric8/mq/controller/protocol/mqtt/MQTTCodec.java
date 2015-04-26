@@ -27,33 +27,6 @@ public class MQTTCodec {
     private byte header;
     private int contentLength = -1;
     private FrameParser currentParser;
-    private final FrameParser headerParser = new FrameParser() {
-
-        @Override
-        public void parse(DataByteArrayInputStream data, int readSize) throws IOException {
-            while (readSize-- > 0) {
-                byte b = data.readByte();
-                // skip repeating nulls
-                if (b == 0) {
-                    continue;
-                }
-
-                header = b;
-
-                currentParser = initializeVariableLengthParser();
-                if (readSize > 0) {
-                    currentParser.parse(data, readSize);
-                }
-                return;
-            }
-        }
-
-        @Override
-        public void reset() throws IOException {
-            header = -1;
-            contentLength = -1;
-        }
-    };
     private Buffer currentBuffer;
     private final FrameParser contentParser = new FrameParser() {
 
@@ -127,6 +100,33 @@ public class MQTTCodec {
             digit = 0;
             multiplier = 1;
             length = 0;
+        }
+    };
+    private final FrameParser headerParser = new FrameParser() {
+
+        @Override
+        public void parse(DataByteArrayInputStream data, int readSize) throws IOException {
+            while (readSize-- > 0) {
+                byte b = data.readByte();
+                // skip repeating nulls
+                if (b == 0) {
+                    continue;
+                }
+
+                header = b;
+
+                currentParser = initializeVariableLengthParser();
+                if (readSize > 0) {
+                    currentParser.parse(data, readSize);
+                }
+                return;
+            }
+        }
+
+        @Override
+        public void reset() throws IOException {
+            header = -1;
+            contentLength = -1;
         }
     };
 

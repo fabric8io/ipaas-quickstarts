@@ -25,7 +25,7 @@ import org.easyrules.core.BasicRule;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class BaseScalingRule extends BasicRule implements MetricSet {
+public abstract class ScalingRule extends BasicRule implements MetricSet, ScalingRuleMBean {
     protected final Model model;
     protected final ScalingEngine scalingEngine;
     private final String name;
@@ -35,7 +35,7 @@ public abstract class BaseScalingRule extends BasicRule implements MetricSet {
     private Meter executed;
     private Counter called;
 
-    public BaseScalingRule(ScalingEngine scalingEngine, String name, String description, int priority) {
+    public ScalingRule(ScalingEngine scalingEngine, String name, String description, int priority) {
         this.scalingEngine = scalingEngine;
         this.model = scalingEngine.getModel();
         this.name = name;

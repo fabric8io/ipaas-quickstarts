@@ -13,7 +13,7 @@
  *
  */
 
-package io.fabric8.mq.controller.model;
+package io.fabric8.mq.controller.coordination.brokers;
 
 public interface BrokerDestinationOverviewMBean extends Comparable<BrokerDestinationOverviewMBean> {
     String getName();

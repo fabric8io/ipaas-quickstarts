@@ -14,7 +14,6 @@
  */
 package io.fabric8.mq.controller.coordination.brokers;
 
-import io.fabric8.mq.controller.model.BrokerDestinationOverviewMBean;
 import org.apache.activemq.command.ActiveMQDestination;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -149,11 +148,11 @@ public class BrokerOverview implements Comparable<BrokerOverview> {
         return result;
     }
 
-    public void addDestinationStatistics(BrokerDestinationOverviewImpl brokerDestinationOverviewImpl) {
-        if (brokerDestinationOverviewImpl.getDestination().isQueue()) {
-            queueOverviews.put(brokerDestinationOverviewImpl.getDestination(), brokerDestinationOverviewImpl);
+    public void addDestinationStatistics(BrokerDestinationOverview brokerDestinationOverview) {
+        if (brokerDestinationOverview.getDestination().isQueue()) {
+            queueOverviews.put(brokerDestinationOverview.getDestination(), brokerDestinationOverview);
         } else {
-            topicOverviews.put(brokerDestinationOverviewImpl.getDestination(), brokerDestinationOverviewImpl);
+            topicOverviews.put(brokerDestinationOverview.getDestination(), brokerDestinationOverview);
         }
     }
 

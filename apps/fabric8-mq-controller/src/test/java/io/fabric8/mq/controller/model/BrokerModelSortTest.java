@@ -15,7 +15,7 @@
 
 package io.fabric8.mq.controller.model;
 
-import io.fabric8.mq.controller.coordination.brokers.BrokerDestinationOverviewImpl;
+import io.fabric8.mq.controller.coordination.brokers.BrokerDestinationOverview;
 import io.fabric8.mq.controller.coordination.brokers.BrokerModel;
 import io.fabric8.mq.controller.coordination.brokers.BrokerOverview;
 import io.fabric8.mq.controller.coordination.brokers.BrokerView;
@@ -44,11 +44,11 @@ public class BrokerModelSortTest {
             BrokerOverview brokerOverview = new BrokerOverview();
             //brokerOverview.setTotalConnections(10-i);
             ActiveMQDestination destination = ActiveMQDestination.createDestination("queue." + i, ActiveMQDestination.QUEUE_TYPE);
-            BrokerDestinationOverviewImpl brokerDestinationOverviewImpl = new BrokerDestinationOverviewImpl(destination);
+            BrokerDestinationOverview brokerDestinationOverview = new BrokerDestinationOverview(destination);
             //destinationOverview.setNumberOfConsumers(i);
             //destinationOverview.setNumberOfProducers(i);
-            brokerDestinationOverviewImpl.setQueueDepth(NUMBER - i);
-            brokerOverview.addDestinationStatistics(brokerDestinationOverviewImpl);
+            brokerDestinationOverview.setQueueDepth(NUMBER - i);
+            brokerOverview.addDestinationStatistics(brokerDestinationOverview);
             BrokerView brokerView = new BrokerView();
             brokerView.setBrokerId(name);
             brokerView.setBrokerName(name);

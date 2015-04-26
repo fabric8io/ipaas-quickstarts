@@ -52,6 +52,8 @@ public interface Model extends Service {
 
     boolean areBrokerLimitsExceeded(BrokerModel brokerModel);
 
+    boolean areBrokerConnectionLimitsExceeded(BrokerModel brokerModel);
+
     boolean areDestinationLimitsExceeded(BrokerModel brokerModel);
 
     BrokerModel getMostLoadedBroker();
@@ -78,9 +80,12 @@ public interface Model extends Service {
 
     void addBrokerForDestination(ActiveMQDestination destination, BrokerModel brokerModel);
 
+    int spareConnections(BrokerModel brokerModel);
+
+    int spareDestinations(BrokerModel brokerModel);
+
     /**
      * Allocates least loaded Broker
-     *
      * @param destination
      */
     BrokerModel addBrokerForDestination(ActiveMQDestination destination);

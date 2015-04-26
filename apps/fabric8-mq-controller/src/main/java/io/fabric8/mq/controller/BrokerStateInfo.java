@@ -79,7 +79,7 @@ public class BrokerStateInfo extends ServiceSupport {
         }
         model.start();
         brokerControl.start();
-        camelRouter.start();
         controllerStatus.setCamelRoutes(camelRouter.getCamelRoutes());
+        camelRouter.start();
     }
 }

@@ -75,11 +75,11 @@
             <groupId>org.apache.curator</groupId>
             <artifactId>curator-framework</artifactId>
         </dependency>
-        
+
         <dependency>
             <groupId>org.apache.curator</groupId>
             <artifactId>curator-recipes</artifactId>
-            </dependency>
+        </dependency>
         <dependency>
             <groupId>org.apache.activemq</groupId>
             <artifactId>activemq-stomp</artifactId>
@@ -108,7 +108,7 @@
             <groupId>org.apache.deltaspike.core</groupId>
             <artifactId>deltaspike-core-impl</artifactId>
         </dependency>
-        
+
         <dependency>
             <groupId>io.fabric8</groupId>
             <artifactId>gateway-core</artifactId>
@@ -176,13 +176,6 @@
             <artifactId>kubernetes-assertions</artifactId>
             <scope>test</scope>
         </dependency>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <scope>test</scope>
-        </dependency>
-
 
         <dependency>
             <groupId>junit</groupId>

@@ -58,7 +58,7 @@ public class MainTest {
     public void test() throws Exception {
         OpenWireClientPack openWirePack = new OpenWireClientPack();
         openWirePack.setPort(controller.getBoundPort());
-        openWirePack.setNumberOfDestinations(1);
+        openWirePack.setNumberOfDestinations(5);
         openWirePack.setNumberOfProducers(1);
         openWirePack.setNumberOfConsumers(2);
         openWirePack.setNumberOfMessagesPerDestination(1000);
