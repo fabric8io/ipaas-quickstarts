@@ -25,7 +25,7 @@ import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.jolokia.JolokiaClients;
 import io.fabric8.mq.controller.MessageDistribution;
-import io.fabric8.mq.controller.coordination.brokers.BrokerDestinationOverviewImpl;
+import io.fabric8.mq.controller.coordination.brokers.BrokerDestinationOverview;
 import io.fabric8.mq.controller.coordination.brokers.BrokerModel;
 import io.fabric8.mq.controller.coordination.brokers.BrokerOverview;
 import io.fabric8.mq.controller.coordination.brokers.BrokerView;
@@ -153,14 +153,14 @@ public class KubernetesControl extends BaseBrokerControl {
     }
 
     private BrokerOverview populateDestinations(J4pClient client, ObjectName root, BrokerOverview brokerOverview) throws Exception {
-        populateDestinations(client, root, BrokerDestinationOverviewImpl.Type.QUEUE, brokerOverview);
-        populateDestinations(client, root, BrokerDestinationOverviewImpl.Type.TOPIC, brokerOverview);
+        populateDestinations(client, root, BrokerDestinationOverview.Type.QUEUE, brokerOverview);
+        populateDestinations(client, root, BrokerDestinationOverview.Type.TOPIC, brokerOverview);
         return brokerOverview;
     }
 
-    private BrokerOverview populateDestinations(J4pClient client, ObjectName root, BrokerDestinationOverviewImpl.Type type, BrokerOverview brokerOverview) {
+    private BrokerOverview populateDestinations(J4pClient client, ObjectName root, BrokerDestinationOverview.Type type, BrokerOverview brokerOverview) {
         try {
-            String typeName = type == BrokerDestinationOverviewImpl.Type.QUEUE ? "Queue" : "Topic";
+            String typeName = type == BrokerDestinationOverview.Type.QUEUE ? "Queue" : "Topic";
             List<ObjectName> list = BrokerJmxUtils.getDestinations(client, root, typeName);
 
             for (ObjectName objectName : list) {
@@ -169,12 +169,12 @@ public class KubernetesControl extends BaseBrokerControl {
                     String producerCount = BrokerJmxUtils.getAttribute(client, objectName, "ProducerCount").toString().trim();
                     String consumerCount = BrokerJmxUtils.getAttribute(client, objectName, "ConsumerCount").toString().trim();
                     String queueSize = BrokerJmxUtils.getAttribute(client, objectName, "QueueSize").toString().trim();
-                    ActiveMQDestination destination = type == BrokerDestinationOverviewImpl.Type.QUEUE ? new ActiveMQQueue(destinationName) : new ActiveMQTopic(destinationName);
-                    BrokerDestinationOverviewImpl brokerDestinationOverviewImpl = new BrokerDestinationOverviewImpl(destination);
-                    brokerDestinationOverviewImpl.setNumberOfConsumers(Integer.parseInt(consumerCount));
-                    brokerDestinationOverviewImpl.setNumberOfProducers(Integer.parseInt(producerCount));
-                    brokerDestinationOverviewImpl.setQueueDepth(Integer.parseInt(queueSize));
-                    brokerOverview.addDestinationStatistics(brokerDestinationOverviewImpl);
+                    ActiveMQDestination destination = type == BrokerDestinationOverview.Type.QUEUE ? new ActiveMQQueue(destinationName) : new ActiveMQTopic(destinationName);
+                    BrokerDestinationOverview brokerDestinationOverview = new BrokerDestinationOverview(destination);
+                    brokerDestinationOverview.setNumberOfConsumers(Integer.parseInt(consumerCount));
+                    brokerDestinationOverview.setNumberOfProducers(Integer.parseInt(producerCount));
+                    brokerDestinationOverview.setQueueDepth(Integer.parseInt(queueSize));
+                    brokerOverview.addDestinationStatistics(brokerDestinationOverview);
                 }
             }
         } catch (Exception ex) {

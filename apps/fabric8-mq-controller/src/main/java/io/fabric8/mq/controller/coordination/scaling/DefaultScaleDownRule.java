@@ -17,7 +17,7 @@ package io.fabric8.mq.controller.coordination.scaling;
 
 import io.fabric8.mq.controller.coordination.brokers.BrokerModel;
 
-public class DefaultScaleDownRule extends BaseScalingRule implements ScaleDownRuleMBean {
+public class DefaultScaleDownRule extends ScalingRule implements ScaleDownRuleMBean {
 
     private int scaleDownThreshold = 50;
 

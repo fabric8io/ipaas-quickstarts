@@ -15,7 +15,7 @@
 
 package io.fabric8.mq.controller.multiplexer;
 
-import io.fabric8.mq.controller.model.DestinationStatisticsImpl;
+import io.fabric8.mq.controller.model.DestinationStatistics;
 import io.fabric8.mq.controller.model.DestinationStatisticsMBean;
 import io.fabric8.mq.controller.model.Model;
 import org.apache.activemq.command.ActiveMQDestination;
@@ -39,16 +39,16 @@ public class DestinationRegister {
         this.multiplexerInput = multiplexerInput;
     }
 
-    public DestinationStatisticsImpl registerConsumer(ActiveMQDestination destination) {
-        DestinationStatisticsImpl destinationStatistics = register(destination);
+    public DestinationStatistics registerConsumer(ActiveMQDestination destination) {
+        DestinationStatistics destinationStatistics = register(destination);
         if (destinationStatistics != null) {
             destinationStatistics.addConsumer();
         }
         return destinationStatistics;
     }
 
-    public DestinationStatisticsImpl registerProducer(ActiveMQDestination destination) {
-        DestinationStatisticsImpl destinationStatistics = register(destination);
+    public DestinationStatistics registerProducer(ActiveMQDestination destination) {
+        DestinationStatistics destinationStatistics = register(destination);
         if (destinationStatistics != null) {
             destinationStatistics.addProducer();
         }
@@ -56,14 +56,14 @@ public class DestinationRegister {
     }
 
     public void unregisterConsumer(ActiveMQDestination destination) {
-        DestinationStatisticsImpl destinationStatistics = unregister(destination);
+        DestinationStatistics destinationStatistics = unregister(destination);
         if (destinationStatistics != null) {
             destinationStatistics.removeConsumer();
         }
     }
 
     public void unregisterProducer(ActiveMQDestination destination) {
-        DestinationStatisticsImpl destinationStatistics = unregister(destination);
+        DestinationStatistics destinationStatistics = unregister(destination);
         if (destinationStatistics != null) {
             destinationStatistics.removeProducer();
         }
@@ -86,7 +86,7 @@ public class DestinationRegister {
         if (destination != null) {
             DestinationStatisticsReference destinationStatisticsReference = map.get(destination);
             if (destinationStatisticsReference != null) {
-                DestinationStatisticsImpl destinationStatistics = destinationStatisticsReference.get();
+                DestinationStatistics destinationStatistics = destinationStatisticsReference.get();
                 destinationStatistics.addInboundMessage();
             }
         }
@@ -96,20 +96,20 @@ public class DestinationRegister {
         if (destination != null) {
             DestinationStatisticsReference destinationStatisticsReference = map.get(destination);
             if (destinationStatisticsReference != null) {
-                DestinationStatisticsImpl destinationStatistics = destinationStatisticsReference.get();
+                DestinationStatistics destinationStatistics = destinationStatisticsReference.get();
                 destinationStatistics.addOutboundMessage();
             }
         }
     }
 
-    private DestinationStatisticsImpl register(ActiveMQDestination destination) {
-        DestinationStatisticsImpl destinationStatistics = null;
+    private DestinationStatistics register(ActiveMQDestination destination) {
+        DestinationStatistics destinationStatistics = null;
         if (destination != null) {
             lock.lock();
             try {
                 DestinationStatisticsReference destinationStatisticsReference = map.get(destination);
                 if (destinationStatisticsReference == null) {
-                    destinationStatistics = new DestinationStatisticsImpl(multiplexerInput.getName(), destination);
+                    destinationStatistics = new DestinationStatistics(multiplexerInput.getName(), destination);
                     destinationStatisticsReference = new DestinationStatisticsReference(destinationStatistics);
                     map.put(destination, destinationStatisticsReference);
                     model.register(multiplexerInput, destinationStatistics);
@@ -123,8 +123,8 @@ public class DestinationRegister {
         return destinationStatistics;
     }
 
-    private DestinationStatisticsImpl unregister(ActiveMQDestination destination) {
-        DestinationStatisticsImpl destinationStatisticsImpl = null;
+    private DestinationStatistics unregister(ActiveMQDestination destination) {
+        DestinationStatistics destinationStatisticsImpl = null;
         if (destination != null) {
             lock.lock();
             try {
@@ -145,10 +145,10 @@ public class DestinationRegister {
     }
 
     private class DestinationStatisticsReference {
-        private final DestinationStatisticsImpl destinationStatistics;
+        private final DestinationStatistics destinationStatistics;
         private final AtomicInteger count;
 
-        DestinationStatisticsReference(DestinationStatisticsImpl destinationStatistics) {
+        DestinationStatisticsReference(DestinationStatistics destinationStatistics) {
             this.destinationStatistics = destinationStatistics;
             this.count = new AtomicInteger(1);
         }
@@ -158,7 +158,7 @@ public class DestinationRegister {
             return destinationStatistics;
         }
 
-        DestinationStatisticsImpl get() {
+        DestinationStatistics get() {
             return destinationStatistics;
         }
 

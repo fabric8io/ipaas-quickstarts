@@ -14,20 +14,19 @@
  */
 package io.fabric8.mq.controller.coordination.brokers;
 
-import io.fabric8.mq.controller.model.BrokerDestinationOverviewMBean;
 import org.apache.activemq.command.ActiveMQDestination;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class BrokerDestinationOverviewImpl implements BrokerDestinationOverviewMBean {
-    private static final Logger LOG = LoggerFactory.getLogger(BrokerDestinationOverviewImpl.class);
+public class BrokerDestinationOverview implements BrokerDestinationOverviewMBean {
+    private static final Logger LOG = LoggerFactory.getLogger(BrokerDestinationOverview.class);
     private final ActiveMQDestination destination;
     private int queueDepth;
     private int numberOfProducers;
     private int numberOfConsumers;
     private int queueDepthRate;
 
-    public BrokerDestinationOverviewImpl(ActiveMQDestination destination) {
+    public BrokerDestinationOverview(ActiveMQDestination destination) {
         this.destination = destination;
     }
 

@@ -17,11 +17,10 @@ package io.fabric8.mq.controller.protocol.openwire;
 
 import io.fabric8.mq.controller.protocol.TestProtocolServer;
 import io.fabric8.mq.controller.util.WeldJUnitRunner;
-import org.junit.Assert;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -36,7 +35,6 @@ import javax.jms.Session;
 import javax.jms.TextMessage;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-
 
 @RunWith(WeldJUnitRunner.class)
 public class OpenWireTest {

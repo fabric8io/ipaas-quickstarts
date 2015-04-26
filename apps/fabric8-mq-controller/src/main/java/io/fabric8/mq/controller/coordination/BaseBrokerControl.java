@@ -76,7 +76,7 @@ public abstract class BaseBrokerControl extends ServiceSupport implements Broker
     private String brokerCoordinatorType;
 
     protected BaseBrokerControl() {
-        messageDistributionList = new CopyOnWriteArrayList();
+        messageDistributionList = new CopyOnWriteArrayList<>();
         scalingInProgress = new WorkInProgress();
         brokerModelChangedListeners = new CopyOnWriteArrayList<>();
     }
@@ -241,13 +241,15 @@ public abstract class BaseBrokerControl extends ServiceSupport implements Broker
                     leastLoaded.getWriteLock();
                     mostLoaded.getWriteLock();
 
-                    int maxToCopy = model.getBrokerLimitsConfig().getMaxDestinationsPerBroker() - leastLoaded.getActiveDestinationCount();
-
-                    if (maxToCopy > 0) {
-                        List<ActiveMQDestination> copyList = model.getSortedDestinations(mostLoaded, maxToCopy);
-                        //check to see we won't break limits
-                        if (!copyList.isEmpty()) {
-                            model.copyDestinations(mostLoaded, leastLoaded, copyList);
+                    int toCopy = mostLoaded.getActiveDestinationCount() - leastLoaded.getActiveDestinationCount();
+                    if (toCopy > 0) {
+                        toCopy = toCopy / 2;
+                        if (toCopy > 0) {
+                            List<ActiveMQDestination> copyList = model.getSortedDestinations(mostLoaded, toCopy);
+                            //check to see we won't break limits
+                            if (!copyList.isEmpty()) {
+                                model.copyDestinations(mostLoaded, leastLoaded, copyList);
+                            }
                         }
                     }
                 } finally {

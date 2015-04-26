@@ -17,7 +17,7 @@ package io.fabric8.mq.controller.coordination.scaling;
 
 import io.fabric8.mq.controller.coordination.brokers.BrokerModel;
 
-public class DefaultScaleUpRule extends BaseScalingRule {
+public class DefaultScaleUpRule extends ScalingRule {
 
     public DefaultScaleUpRule(ScalingEngine scalingEngine, int priority) {
         super(scalingEngine, "ScaleUpRule", "scale up brokers", priority);
@@ -28,9 +28,21 @@ public class DefaultScaleUpRule extends BaseScalingRule {
         called();
         boolean result = false;
         for (BrokerModel brokerModel : model.getBrokers()) {
-            if (model.areBrokerLimitsExceeded(brokerModel) || model.areDestinationLimitsExceeded(brokerModel)) {
-                result = true;
-                break;
+            if (model.areBrokerConnectionLimitsExceeded(brokerModel)) {
+                if (!isSpareConnectionsOnExistingBrokers(1)) {
+                    result = true;
+                    break;
+                }
+            }
+        }
+        if (!result) {
+            for (BrokerModel brokerModel : model.getBrokers()) {
+                if (model.areDestinationLimitsExceeded(brokerModel)) {
+                    if (!isSpareDestinationsOnExistingBrokers(1)) {
+                        result = true;
+                        break;
+                    }
+                }
             }
         }
         return result;
@@ -40,5 +52,21 @@ public class DefaultScaleUpRule extends BaseScalingRule {
     public void performActions() throws Exception {
         executed();
         scalingEngine.fireScalingUp();
+    }
+
+    private boolean isSpareDestinationsOnExistingBrokers(int number) {
+        int spareDestinations = 0;
+        for (BrokerModel brokerModel : model.getBrokers()) {
+            spareDestinations += model.spareDestinations(brokerModel);
+        }
+        return spareDestinations - number > 0;
+    }
+
+    private boolean isSpareConnectionsOnExistingBrokers(int number) {
+        int spareConnections = 0;
+        for (BrokerModel brokerModel : model.getBrokers()) {
+            spareConnections += model.spareConnections(brokerModel);
+        }
+        return spareConnections - number > 0;
     }
 }
