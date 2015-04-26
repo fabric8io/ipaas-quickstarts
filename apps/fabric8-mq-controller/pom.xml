@@ -100,11 +100,6 @@
         </dependency>
 
         <dependency>
-            <groupId>io.fabric8</groupId>
-            <artifactId>zookeeper-client</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.apache.deltaspike.core</groupId>
             <artifactId>deltaspike-core-api</artifactId>
         </dependency>

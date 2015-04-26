@@ -20,8 +20,8 @@ import io.fabric8.kubernetes.api.KubernetesClient;
 import io.fabric8.kubernetes.api.KubernetesFactory;
 import io.fabric8.kubernetes.api.KubernetesHelper;
 import io.fabric8.kubernetes.api.model.Container;
+import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.Pod;
-import io.fabric8.kubernetes.api.model.Port;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.jolokia.JolokiaClients;
 import io.fabric8.mq.controller.MessageDistribution;
@@ -117,12 +117,12 @@ public class KubernetesControl extends BaseBrokerControl {
                         throw new IllegalStateException("Expected one container for pod:" + pod.getId() + " found " + containers.size());
                     }
                     Container container = containers.get(0);
-                    List<Port> ports = container.getPorts();
+                    List<ContainerPort> ports = container.getPorts();
                     //get the first port
                     if (ports.isEmpty()) {
                         throw new IllegalStateException("Expected to find ports on container " + container.getName());
                     }
-                    Port port = ports.get(0);
+                    ContainerPort port = ports.get(0);
                     String uriString = "tcp://" + port.getHostIP() + ":" + port.getHostPort();
                     brokerView.setUri(uriString);
                     brokerModel = new BrokerModel(pod, brokerView, model);
