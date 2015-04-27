@@ -16,13 +16,12 @@
 package io.fabric8.mq.controller.model;
 
 import javax.management.MXBean;
-import java.util.List;
 
 @MXBean
 public interface Multiplex {
 
     String getName();
 
-    List<InboundConnection> getInboundConnections();
+    int getInboundCount();
 
 }

@@ -13,21 +13,14 @@
  *
  */
 
-package io.fabric8.mq.controller.util;
+package io.fabric8.mq.controller.coordination.brokers;
 
-import io.fabric8.mq.controller.model.Model;
-import org.junit.Assert;
-import org.junit.Test;
+public interface BrokerDestinationOverviewMBean extends Comparable<BrokerDestinationOverviewMBean> {
+    String getName();
 
-import javax.management.ObjectName;
+    int getNumberOfConsumers();
 
-public class UtilsTest {
+    int getNumberOfProducers();
 
-    @Test
-    public void testObjectName() throws Exception {
-        ObjectName objectName = Utils.getObjectName(Model.DEFAULT_JMX_DOMAIN, "type=broker",
-                                                       "brokerId=blag");
-        Assert.assertNotNull(objectName);
-
-    }
+    int getQueueDepth();
 }

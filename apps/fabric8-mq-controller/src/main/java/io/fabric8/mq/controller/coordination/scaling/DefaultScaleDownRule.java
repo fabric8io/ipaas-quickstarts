@@ -17,16 +17,17 @@ package io.fabric8.mq.controller.coordination.scaling;
 
 import io.fabric8.mq.controller.coordination.brokers.BrokerModel;
 
-public class DefaultScaleDownRule extends BaseScalingRule implements ScaleDownJmxRule {
+public class DefaultScaleDownRule extends ScalingRule implements ScaleDownRuleMBean {
 
     private int scaleDownThreshold = 50;
-    public DefaultScaleDownRule(ScalingEngine scalingEngine,int priority){
-       super(scalingEngine,"ScaleDownRule","scale down brokers if total load below threshold",priority);
-    }
 
+    public DefaultScaleDownRule(ScalingEngine scalingEngine, int priority) {
+        super(scalingEngine, "ScaleDownRule", "scale down brokers if total load below threshold", priority);
+    }
 
     @Override
     public boolean evaluateConditions() {
+        called();
         boolean result = false;
         if (model.getBrokerCount() > 1) {
             int load = 0;
@@ -42,6 +43,7 @@ public class DefaultScaleDownRule extends BaseScalingRule implements ScaleDownJm
 
     @Override
     public void performActions() throws Exception {
+        executed();
         scalingEngine.fireScalingDown();
     }
 

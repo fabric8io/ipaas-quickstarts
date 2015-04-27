@@ -17,7 +17,6 @@ package io.fabric8.mq.controller.multiplexer;
 import io.fabric8.mq.controller.AsyncExecutors;
 import io.fabric8.mq.controller.MessageDistribution;
 import io.fabric8.mq.controller.TransportChangedListener;
-import io.fabric8.mq.controller.model.InboundConnection;
 import io.fabric8.mq.controller.model.Model;
 import io.fabric8.mq.controller.model.Multiplex;
 import io.fabric8.mq.controller.util.TransportConnectionState;
@@ -104,7 +103,7 @@ public class Multiplexer extends ServiceSupport implements Multiplex, TransportC
             try {
                 LOG.error("Transport error: {} ", e.getMessage(), e);
                 stop();
-            } catch (Throwable ex) {
+            } catch (Throwable ignored) {
             }
         }
 
@@ -180,12 +179,8 @@ public class Multiplexer extends ServiceSupport implements Multiplex, TransportC
         }
     }
 
-    public List<InboundConnection> getInboundConnections() {
-        List<InboundConnection> list = new ArrayList<>();
-        for (InboundConnection inboundConnection : inputs.values()) {
-            list.add(inboundConnection);
-        }
-        return list;
+    public int getInboundCount() {
+        return inputs.size();
     }
 
     public void removeInput(Transport transport) {
@@ -348,7 +343,7 @@ public class Multiplexer extends ServiceSupport implements Multiplex, TransportC
                 messageDistribution.sendAll(new ShutdownInfo(), true);
             }
             serviceStopper.stop(messageDistribution);
-        } catch (Throwable e) {
+        } catch (Throwable ignored) {
         }
         model.remove(this);
     }

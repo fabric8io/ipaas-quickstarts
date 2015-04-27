@@ -16,7 +16,7 @@
 package io.fabric8.mq.controller.coordination;
 
 import io.fabric8.mq.controller.MessageDistribution;
-import io.fabric8.mq.controller.coordination.brokers.BrokerDestinationOverviewImpl;
+import io.fabric8.mq.controller.coordination.brokers.BrokerDestinationOverview;
 import io.fabric8.mq.controller.coordination.brokers.BrokerModel;
 import io.fabric8.mq.controller.coordination.brokers.BrokerOverview;
 import io.fabric8.mq.controller.coordination.brokers.BrokerView;
@@ -89,7 +89,6 @@ public class BrokerControlTestImpl extends BaseBrokerControl {
     }
 
     private void populateBrokerStatistics(BrokerService broker) {
-
         try {
             String brokerId = broker.getBroker().getBrokerId().toString();
             BrokerModel brokerModel = model.getBrokerById(brokerId);
@@ -98,7 +97,7 @@ public class BrokerControlTestImpl extends BaseBrokerControl {
                 brokerView.setBrokerName(broker.getBrokerName());
                 brokerView.setBrokerId(brokerId);
                 brokerView.setUri(broker.getDefaultSocketURIString());
-                brokerModel = new BrokerModel(null, brokerView);
+                brokerModel = new BrokerModel(null, brokerView, model);
                 brokerModel.start();
                 model.add(brokerModel);
                 //add transports
@@ -127,12 +126,12 @@ public class BrokerControlTestImpl extends BaseBrokerControl {
     }
 
     private BrokerOverview populateDestinations(BrokerService broker, BrokerOverview brokerOverview) throws Exception {
-        populateDestinations(broker, BrokerDestinationOverviewImpl.Type.QUEUE, brokerOverview);
-        populateDestinations(broker, BrokerDestinationOverviewImpl.Type.TOPIC, brokerOverview);
+        populateDestinations(broker, BrokerDestinationOverview.Type.QUEUE, brokerOverview);
+        populateDestinations(broker, BrokerDestinationOverview.Type.TOPIC, brokerOverview);
         return brokerOverview;
     }
 
-    private BrokerOverview populateDestinations(BrokerService broker, BrokerDestinationOverviewImpl.Type type, BrokerOverview brokerOverview) {
+    private BrokerOverview populateDestinations(BrokerService broker, BrokerDestinationOverview.Type type, BrokerOverview brokerOverview) {
 
         try {
             Map<ActiveMQDestination, Destination> map = broker.getRegionBroker().getDestinationMap();
@@ -142,15 +141,13 @@ public class BrokerControlTestImpl extends BaseBrokerControl {
                     Destination destination = entry.getValue();
                     if (destination != null) {
                         String name = activeMQDestination.getPhysicalName();
-                        if (type.equals(BrokerDestinationOverviewImpl.Type.QUEUE) && activeMQDestination.isQueue()) {
-                            if (!name.contains("Advisory") && !name.contains(ActiveMQDestination.TEMP_DESTINATION_NAME_PREFIX)) {
+                        if (!name.contains("Advisory") && !name.contains(ActiveMQDestination.TEMP_DESTINATION_NAME_PREFIX)) {
 
-                                BrokerDestinationOverviewImpl brokerDestinationOverviewImpl = new BrokerDestinationOverviewImpl(activeMQDestination);
-                                brokerDestinationOverviewImpl.setNumberOfConsumers(destination.getConsumers().size());
-                                brokerDestinationOverviewImpl.setNumberOfProducers((int) destination.getDestinationStatistics().getProducers().getCount());
-                                brokerDestinationOverviewImpl.setQueueDepth((int) destination.getDestinationStatistics().getMessages().getCount());
-                                brokerOverview.addDestinationStatistics(brokerDestinationOverviewImpl);
-                            }
+                            BrokerDestinationOverview brokerDestinationOverview = new BrokerDestinationOverview(activeMQDestination);
+                            brokerDestinationOverview.setNumberOfConsumers(destination.getConsumers().size());
+                            brokerDestinationOverview.setNumberOfProducers((int) destination.getDestinationStatistics().getProducers().getCount());
+                            brokerDestinationOverview.setQueueDepth((int) destination.getDestinationStatistics().getMessages().getCount());
+                            brokerOverview.addDestinationStatistics(brokerDestinationOverview);
                         }
                     }
 

@@ -16,6 +16,7 @@
 package io.fabric8.mq.controller.protocol.openwire;
 
 import io.fabric8.mq.controller.AsyncExecutors;
+import io.fabric8.mq.controller.protocol.InactivityMonitor;
 import io.fabric8.mq.controller.protocol.ProtocolTransport;
 import org.apache.activemq.AsyncCallback;
 import org.apache.activemq.command.Command;
@@ -54,7 +55,7 @@ public class OpenWireTransport extends TransportSupport implements ProtocolTrans
     private final OpenWireWriteStream writeStream;
     private final OpenWireReadStream readStream;
     private final Vertx vertx;
-    private final OpenWireInactivityMonitor inactivityMonitor;
+    private final InactivityMonitor inactivityMonitor;
     private final AtomicBoolean firstStart;
     private final CountDownLatch readyCountDownLatch;
     private final CountDownLatch wireInfoSentDownLatch;
@@ -73,7 +74,7 @@ public class OpenWireTransport extends TransportSupport implements ProtocolTrans
         readyCountDownLatch = new CountDownLatch(1);
         wireInfoSentDownLatch = new CountDownLatch(1);
         minimumVersion = 1;
-        inactivityMonitor = new OpenWireInactivityMonitor(asyncExecutors, this);
+        inactivityMonitor = new InactivityMonitor(asyncExecutors, this, true);
         try {
             if (wireFormat.getPreferedWireFormatInfo() != null) {
                 setNegotiateTimeout(wireFormat.getPreferedWireFormatInfo().getMaxInactivityDurationInitalDelay());
@@ -104,6 +105,7 @@ public class OpenWireTransport extends TransportSupport implements ProtocolTrans
     protected void doStart() throws Exception {
         writeStream.start();
         readStream.start();
+        inactivityMonitor.start();
         if (firstStart.compareAndSet(true, false)) {
             sendWireFormat();
         }

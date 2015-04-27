@@ -13,17 +13,12 @@
  *
  */
 
-package io.fabric8.mq.controller.model;
+package io.fabric8.mq.controller.coordination.scaling;
 
-import javax.management.MXBean;
-
-@MXBean
-public interface BrokerDestinationOverview extends Comparable<BrokerDestinationOverview> {
+public interface ScalingRuleMBean {
     String getName();
 
-    int getNumberOfConsumers();
+    String getDescription();
 
-    int getNumberOfProducers();
-
-    int getQueueDepth();
+    int getPriority();
 }

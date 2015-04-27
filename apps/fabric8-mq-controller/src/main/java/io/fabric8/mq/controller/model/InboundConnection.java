@@ -31,6 +31,6 @@ public interface InboundConnection {
 
     String getProtocol();
 
-    List<DestinationStatistics> getDestinations();
+    List<DestinationStatisticsMBean> getDestinations();
 }
 
