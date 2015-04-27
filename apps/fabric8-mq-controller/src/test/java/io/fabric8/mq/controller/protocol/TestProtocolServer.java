@@ -38,9 +38,11 @@ import org.vertx.java.core.streams.ReadStream;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 public class TestProtocolServer extends ServiceSupport {
     private static final transient Logger LOG = LoggerFactory.getLogger(TestProtocolServer.class);
+    private final int TIMEOUT = 30;
     private TestMessageDistribution testMessageDistribution = new TestMessageDistribution();
     private Vertx vertx = VertxFactory.newVertx();
     @Inject
@@ -140,7 +142,9 @@ public class TestProtocolServer extends ServiceSupport {
         multiplexer = new Multiplexer(model, "test", asyncExecutors, testMessageDistribution);
         multiplexer.start();
 
-        countDownLatch.await();
+        if (!countDownLatch.await(TIMEOUT, TimeUnit.SECONDS)){
+            throw new IllegalStateException("timed out waiting for bound port");
+        }
     }
 
     private void doHandle(final SocketWrapper socket) {

@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.TimeUnit;
 
 @ApplicationScoped
 @Default
@@ -385,12 +386,13 @@ public class DefaultModel extends ServiceSupport implements Model {
                     removeBrokerFromDestination(destination, from);
                 }
                 moveDestinationWorker.start();
-                moveDestinationWorker.aWait();
-                //update the sharding map
-                for (ActiveMQDestination destination : destinations) {
-                    addBrokerForDestination(destination, to);
+                if (moveDestinationWorker.aWait(10, TimeUnit.MINUTES)) {
+                    //update the sharding map
+                    for (ActiveMQDestination destination : destinations) {
+                        addBrokerForDestination(destination, to);
+                    }
+                    result = true;
                 }
-                result = true;
 
             } catch (Exception e) {
                 LOG.error("Failed in copy from " + from + " to " + to, e);

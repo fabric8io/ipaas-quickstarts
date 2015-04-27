@@ -31,13 +31,11 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.concurrent.CountDownLatch;
 
 public class TestMessageDistribution extends ServiceSupport implements MessageDistribution {
     private static Logger LOG = LoggerFactory.getLogger(TestMessageDistribution.class);
     private final InternalTransportListener internalTransportListener = new InternalTransportListener();
     private final BrokerService brokerService = new BrokerService();
-    private final CountDownLatch countDownLatch = new CountDownLatch(1);
     private Transport transport;
 
     public TestMessageDistribution() {
@@ -122,13 +120,6 @@ public class TestMessageDistribution extends ServiceSupport implements MessageDi
         }
     }
 
-    private void waitForBroker() {
-        try {
-            countDownLatch.await();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-    }
 
     public String getBrokerURI() {
         return brokerService.getDefaultSocketURIString();
