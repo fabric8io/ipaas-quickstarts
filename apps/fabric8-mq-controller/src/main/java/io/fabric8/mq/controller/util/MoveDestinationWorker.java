@@ -33,6 +33,7 @@ import javax.jms.Session;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 public class MoveDestinationWorker extends ServiceSupport {
     private static final transient Logger LOG = LoggerFactory.getLogger(MoveDestinationWorker.class);
@@ -94,14 +95,16 @@ public class MoveDestinationWorker extends ServiceSupport {
         return copyList;
     }
 
-    public void aWait() {
+    public boolean aWait(int time,TimeUnit timeUnit) {
+        boolean result = true;
         if (countDownLatch != null) {
             try {
-                countDownLatch.await();
+                result = countDownLatch.await(time,timeUnit);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
         }
+        return result;
     }
 
     @Override

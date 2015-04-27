@@ -41,6 +41,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 public class ShardedMessageDistribution extends ServiceSupport implements MessageDistribution, BrokerModelChangedListener {
     private static Logger LOG = LoggerFactory.getLogger(ShardedMessageDistribution.class);
@@ -202,7 +203,9 @@ public class ShardedMessageDistribution extends ServiceSupport implements Messag
 
     private void waitForBroker() {
         try {
-            countDownLatch.await();
+            if (!countDownLatch.await(1, TimeUnit.MINUTES)){
+                throw new IllegalStateException("Broker didn't start");
+            }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }

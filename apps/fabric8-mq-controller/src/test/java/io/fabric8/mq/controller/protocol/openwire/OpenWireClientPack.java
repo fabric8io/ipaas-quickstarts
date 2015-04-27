@@ -33,6 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 public class OpenWireClientPack extends BaseClientPack {
 
@@ -79,7 +80,9 @@ public class OpenWireClientPack extends BaseClientPack {
                             countDownLatch.countDown();
                         }
                     });
-                    countDownLatch.await();
+                    if (!countDownLatch.await(TIMEOUT, TimeUnit.MINUTES)){
+                        throw new IllegalStateException("Timed out waiting for message consumption to finish");
+                    }
                 } catch (Throwable e) {
                     e.printStackTrace();
                 }

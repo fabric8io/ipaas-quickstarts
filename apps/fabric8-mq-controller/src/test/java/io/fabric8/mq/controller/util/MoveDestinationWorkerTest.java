@@ -35,6 +35,7 @@ import javax.jms.Session;
 import javax.jms.TextMessage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @RunWith(WeldJUnitRunner.class)
 public class MoveDestinationWorkerTest {
@@ -116,7 +117,7 @@ public class MoveDestinationWorkerTest {
             moveDestinationWorker.addDestinationToCopy(destination);
         }
         moveDestinationWorker.start();
-        moveDestinationWorker.aWait();
+        moveDestinationWorker.aWait(1, TimeUnit.MINUTES);
         Assert.assertEquals(moveDestinationWorker.getCompletedList(), destinationList);
 
     }

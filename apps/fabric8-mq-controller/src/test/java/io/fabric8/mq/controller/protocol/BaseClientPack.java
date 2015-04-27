@@ -22,8 +22,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public abstract class BaseClientPack extends ServiceSupport {
+    protected final int TIMEOUT = 5;
     protected String host = "localhost";
     protected int port = 61616;
     protected int numberOfConsumers = 2;
@@ -146,8 +148,8 @@ public abstract class BaseClientPack extends ServiceSupport {
             System.err.println("Consumers at " + consumerProgress() + "% progress");
             Thread.sleep(1000);
         }
-        producerCountDownLatch.await();
-        consumerCountDownLatch.await();
+        producerCountDownLatch.await(5, TimeUnit.MINUTES);
+        consumerCountDownLatch.await(5,TimeUnit.MINUTES);
         System.err.println("Producers at " + producerProgress() + "% progress");
         System.err.println("Consumers at " + consumerProgress() + "% progress");
     }
