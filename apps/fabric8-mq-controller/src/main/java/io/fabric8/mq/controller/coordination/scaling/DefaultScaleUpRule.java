@@ -27,20 +27,22 @@ public class DefaultScaleUpRule extends ScalingRule {
     public boolean evaluateConditions() {
         called();
         boolean result = false;
-        for (BrokerModel brokerModel : model.getBrokers()) {
-            if (model.areBrokerConnectionLimitsExceeded(brokerModel)) {
-                if (!isSpareConnectionsOnExistingBrokers(1)) {
-                    result = true;
-                    break;
-                }
-            }
-        }
-        if (!result) {
+        if (!model.isMaximumNumberOfBrokersReached()) {
             for (BrokerModel brokerModel : model.getBrokers()) {
-                if (model.areDestinationLimitsExceeded(brokerModel)) {
-                    if (!isSpareDestinationsOnExistingBrokers(1)) {
+                if (model.areBrokerConnectionLimitsExceeded(brokerModel)) {
+                    if (!isSpareConnectionsOnExistingBrokers(1)) {
                         result = true;
                         break;
+                    }
+                }
+            }
+            if (!result) {
+                for (BrokerModel brokerModel : model.getBrokers()) {
+                    if (model.areDestinationLimitsExceeded(brokerModel)) {
+                        if (!isSpareDestinationsOnExistingBrokers(1)) {
+                            result = true;
+                            break;
+                        }
                     }
                 }
             }

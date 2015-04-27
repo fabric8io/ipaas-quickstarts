@@ -37,6 +37,11 @@ public class DefaultBrokerLimitsConfig implements BrokerLimitsConfig {
     @ConfigProperty(name = "MAX_CONSUMERS_PER_DESTINATION", defaultValue = "20")
     private int maxConsumersPerDestination = 20;
 
+    @Inject
+    @ConfigProperty(name = "MAX_NUMBER_OF_BROKERS", defaultValue = "20")
+    private int maxNumberOfBrokers = 20;
+
+
     public int getMaxConsumersPerDestination() {
         return maxConsumersPerDestination;
     }
@@ -75,5 +80,14 @@ public class DefaultBrokerLimitsConfig implements BrokerLimitsConfig {
 
     public void setMaxProducersPerDestination(int maxProducersPerDestination) {
         this.maxProducersPerDestination = maxProducersPerDestination;
+    }
+
+    @Override
+    public int getMaxNumberOfBrokers() {
+        return maxNumberOfBrokers;
+    }
+
+    public void setMaxNumberOfBrokers(int maxNumberOfBrokers) {
+        this.maxNumberOfBrokers = maxNumberOfBrokers;
     }
 }

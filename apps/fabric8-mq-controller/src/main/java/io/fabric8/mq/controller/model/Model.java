@@ -84,6 +84,8 @@ public interface Model extends Service {
 
     int spareDestinations(BrokerModel brokerModel);
 
+    boolean isMaximumNumberOfBrokersReached();
+
     /**
      * Allocates least loaded Broker
      * @param destination
