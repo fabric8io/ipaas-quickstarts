@@ -16,6 +16,7 @@
 package io.fabric8.mq.controller.protocol.mqtt;
 
 import io.fabric8.mq.controller.AsyncExecutors;
+import io.fabric8.mq.controller.protocol.InactivityMonitor;
 import io.fabric8.mq.controller.protocol.ProtocolTransport;
 import org.apache.activemq.command.Command;
 import org.apache.activemq.transport.TransportListener;
@@ -46,7 +47,7 @@ public class MQTTTransport extends TransportSupport implements ProtocolTransport
     private final MQTTWriteStream writeStream;
     private final MQTTReadStream readStream;
     private final MQTTProtocolConverter protocolConverter;
-    private final MQTTInactivityMonitor inactivityMonitor;
+    private final InactivityMonitor inactivityMonitor;
     private Handler<Throwable> exceptionHandler;
     private long connectAttemptTimeout;
     private Handler<Void> stopHandler;
@@ -54,13 +55,13 @@ public class MQTTTransport extends TransportSupport implements ProtocolTransport
     protected MQTTTransport(Vertx vertx, AsyncExecutors asyncExecutors, String name, MQTTWireFormat wireFormat) {
         this.name = name;
         this.vertx = vertx;
-        this.inactivityMonitor = new MQTTInactivityMonitor(asyncExecutors, this);
+        this.inactivityMonitor = new InactivityMonitor(asyncExecutors, this, false);
         writeStream = new MQTTWriteStream(this, wireFormat);
         readStream = new MQTTReadStream(this, wireFormat);
         protocolConverter = new MQTTProtocolConverter(this);
     }
 
-    public MQTTInactivityMonitor getInactivityMonitor() {
+    public InactivityMonitor getInactivityMonitor() {
         return inactivityMonitor;
     }
 
@@ -81,7 +82,7 @@ public class MQTTTransport extends TransportSupport implements ProtocolTransport
 
     @Override
     protected void doStart() throws Exception {
-        inactivityMonitor.startConnectChecker(getConnectAttemptTimeout());
+        inactivityMonitor.startConnectCheck(getConnectAttemptTimeout());
         writeStream.start();
         readStream.start();
     }

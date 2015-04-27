@@ -13,12 +13,31 @@
  *
  */
 
-package io.fabric8.mq.controller.coordination.scaling;
+package io.fabric8.mq.controller.coordination.brokers;
 
-import org.easyrules.jmx.api.JMXRule;
+public interface BrokerModelMBean {
 
-public interface ScaleDownJmxRule extends JMXRule {
+    String getBrokerId();
 
-    public int getScaleDownLoadThreshold();
-    public void setScaleDownLoadThreshold(int load);
+    String getBrokerName();
+
+    String getPodId();
+
+    int getTotalConnections();
+
+    int getLoad();
+
+    int getTotalDestinations();
+
+    int getTotalActiveDestinations();
+
+    int getTotalActiveQueues();
+
+    int getTotalActiveTopics();
+
+    int getTotalQueueDepth();
+
+    int getTotalConsumerCount();
+
+    int getTotalProducerCount();
 }

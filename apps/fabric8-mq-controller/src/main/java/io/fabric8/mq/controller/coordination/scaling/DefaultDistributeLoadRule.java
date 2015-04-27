@@ -17,32 +17,35 @@ package io.fabric8.mq.controller.coordination.scaling;
 
 import io.fabric8.mq.controller.coordination.brokers.BrokerModel;
 
+public class DefaultDistributeLoadRule extends ScalingRule {
 
-public class DefaultDistributeLoadRule extends BaseScalingRule {
-
-    public DefaultDistributeLoadRule(ScalingEngine scalingEngine, int prioroity){
-       super(scalingEngine, "DistributeLoadRule", "Should we distribute load", prioroity);
+    public DefaultDistributeLoadRule(ScalingEngine scalingEngine, int prioroity) {
+        super(scalingEngine, "DistributeLoadRule", "Should we distribute load", prioroity);
     }
 
     @Override
     public boolean evaluateConditions() {
+        called();
         boolean result = false;
         final BrokerModel leastLoaded = model.getLeastLoadedBroker();
         final BrokerModel mostLoaded = model.getMostLoadedBroker();
 
         if ((model.areBrokerLimitsExceeded(mostLoaded) || model.areDestinationLimitsExceeded(mostLoaded)) &&
                 (!model.areBrokerLimitsExceeded(leastLoaded) && !model.areDestinationLimitsExceeded(leastLoaded))) {
-            int maxToCopy = model.getBrokerLimitsConfig().getMaxDestinationsPerBroker() - leastLoaded.getActiveDestinationCount();
-            if (maxToCopy > 0){
-                result = true;
+            int toCopy = mostLoaded.getActiveDestinationCount() - leastLoaded.getActiveDestinationCount();
+            if (toCopy > 0) {
+                toCopy = toCopy / 2;
+                if (toCopy > 0) {
+                    result = true;
+                }
             }
         }
-
         return result;
     }
 
     @Override
     public void performActions() throws Exception {
+        executed();
         scalingEngine.fireDistributeLoad();
     }
 

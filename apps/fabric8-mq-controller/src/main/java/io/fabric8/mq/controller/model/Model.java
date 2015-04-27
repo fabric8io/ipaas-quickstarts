@@ -22,6 +22,7 @@ import io.fabric8.mq.controller.multiplexer.MultiplexerInput;
 import org.apache.activemq.Service;
 import org.apache.activemq.command.ActiveMQDestination;
 
+import javax.management.ObjectName;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -45,11 +46,13 @@ public interface Model extends Service {
 
     void remove(BrokerModel brokerModel);
 
-    void register(MultiplexerInput multiplexer, DestinationStatistics destinationStatistics);
+    void register(MultiplexerInput multiplexer, DestinationStatisticsMBean destinationStatistics);
 
-    void unregister(MultiplexerInput multiplexer, DestinationStatistics destinationStatistics);
+    void unregister(MultiplexerInput multiplexer, DestinationStatisticsMBean destinationStatistics);
 
     boolean areBrokerLimitsExceeded(BrokerModel brokerModel);
+
+    boolean areBrokerConnectionLimitsExceeded(BrokerModel brokerModel);
 
     boolean areDestinationLimitsExceeded(BrokerModel brokerModel);
 
@@ -72,4 +75,31 @@ public interface Model extends Service {
     Set<ActiveMQDestination> getActiveDestinations(BrokerModel brokerModel);
 
     int getBrokerCount();
+
+    Set<BrokerModel> getBrokersForDestination(ActiveMQDestination destination);
+
+    void addBrokerForDestination(ActiveMQDestination destination, BrokerModel brokerModel);
+
+    int spareConnections(BrokerModel brokerModel);
+
+    int spareDestinations(BrokerModel brokerModel);
+
+    boolean isMaximumNumberOfBrokersReached();
+
+    /**
+     * Allocates least loaded Broker
+     * @param destination
+     */
+    BrokerModel addBrokerForDestination(ActiveMQDestination destination);
+
+    void removeBrokerFromDestination(ActiveMQDestination destination, BrokerModel brokerModel);
+
+    boolean copyDestinations(BrokerModel from, BrokerModel to);
+
+    boolean copyDestinations(BrokerModel from, BrokerModel to, Collection<ActiveMQDestination> destinations);
+
+    void registerInJmx(ObjectName objectName, Object object) throws Exception;
+
+    void unregisterInJmx(Object object);
+
 }

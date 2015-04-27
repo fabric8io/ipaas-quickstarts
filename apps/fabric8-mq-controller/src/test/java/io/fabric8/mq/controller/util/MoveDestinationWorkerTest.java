@@ -18,6 +18,7 @@ package io.fabric8.mq.controller.util;
 import io.fabric8.mq.controller.AsyncExecutors;
 import io.fabric8.mq.controller.coordination.brokers.BrokerModel;
 import io.fabric8.mq.controller.coordination.brokers.BrokerView;
+import io.fabric8.mq.controller.model.Model;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.broker.BrokerService;
 import org.apache.activemq.command.ActiveMQDestination;
@@ -25,21 +26,28 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import javax.inject.Inject;
 import javax.jms.Connection;
 import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+@RunWith(WeldJUnitRunner.class)
 public class MoveDestinationWorkerTest {
     private final String URI1 = "tcp://localhost:61616";
     private final String URI2 = "tcp://localhost:61617";
     BrokerService brokerService1;
     BrokerService brokerService2;
     private List<ActiveMQDestination> destinationList = new ArrayList<>();
+    @Inject
     private AsyncExecutors asyncExecutors;
+    @Inject
+    private Model model;
 
     @Before
     public void setUp() throws Exception {
@@ -70,8 +78,8 @@ public class MoveDestinationWorkerTest {
             }
         }
         connection.close();
-        asyncExecutors = new AsyncExecutors();
         asyncExecutors.start();
+        model.start();
 
     }
 
@@ -87,18 +95,21 @@ public class MoveDestinationWorkerTest {
         if (asyncExecutors != null) {
             asyncExecutors.stop();
         }
+        if (model != null) {
+            model.stop();
+        }
     }
 
     @Test
     public void doTest() throws Exception {
         BrokerView brokerView1 = new BrokerView();
         brokerView1.setUri(brokerService1.getDefaultSocketURIString());
-        BrokerModel brokerModel1 = new BrokerModel(null, brokerView1);
+        BrokerModel brokerModel1 = new BrokerModel(null, brokerView1, model);
         brokerModel1.start();
 
         BrokerView brokerView2 = new BrokerView();
         brokerView2.setUri(brokerService2.getDefaultSocketURIString());
-        BrokerModel brokerModel2 = new BrokerModel(null, brokerView2);
+        BrokerModel brokerModel2 = new BrokerModel(null, brokerView2, model);
         brokerModel2.start();
 
         MoveDestinationWorker moveDestinationWorker = new MoveDestinationWorker(asyncExecutors, brokerModel1, brokerModel2);
@@ -106,7 +117,7 @@ public class MoveDestinationWorkerTest {
             moveDestinationWorker.addDestinationToCopy(destination);
         }
         moveDestinationWorker.start();
-        moveDestinationWorker.aWait();
+        moveDestinationWorker.aWait(1, TimeUnit.MINUTES);
         Assert.assertEquals(moveDestinationWorker.getCompletedList(), destinationList);
 
     }

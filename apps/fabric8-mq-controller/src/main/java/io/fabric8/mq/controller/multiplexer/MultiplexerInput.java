@@ -16,7 +16,7 @@
 package io.fabric8.mq.controller.multiplexer;
 
 import io.fabric8.mq.controller.AsyncExecutors;
-import io.fabric8.mq.controller.model.DestinationStatistics;
+import io.fabric8.mq.controller.model.DestinationStatisticsMBean;
 import io.fabric8.mq.controller.model.InboundConnection;
 import io.fabric8.mq.controller.model.Model;
 import io.fabric8.mq.controller.util.LRUCache;
@@ -683,7 +683,7 @@ public class MultiplexerInput extends TransportSupport implements CommandVisitor
     }
 
     @Override
-    public List<DestinationStatistics> getDestinations() {
+    public List<DestinationStatisticsMBean> getDestinations() {
         return destinationRegister.getDestinations();
     }
 }

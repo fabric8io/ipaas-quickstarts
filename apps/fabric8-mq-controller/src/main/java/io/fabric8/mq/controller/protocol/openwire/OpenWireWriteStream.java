@@ -95,19 +95,21 @@ class OpenWireWriteStream extends ServiceSupport implements WriteStream<OpenWire
                 readBuffer.appendBuffer(event);
             }
             try {
-
-                while (readBuffer != null && readStart < readBuffer.length()) {
+                while (readBuffer != null && ((readStart+4) < readBuffer.length())) {
                     int packetLength = readBuffer.getInt(readStart);
                     //add the length back in - cause OpenWire expects it
                     packetLength += 4;
-                    if ((readStart + packetLength) <= readBuffer.length()) {
+                    int len = readStart + packetLength;
+                    if (len <= readBuffer.length()) {
                         //do the read
 
                         Buffer buffer = readBuffer.getBuffer(readStart, (readStart + packetLength));
                         dataIn.restart(buffer.getBytes());
                         Object object = wireFormat.unmarshal(dataIn);
                         transport.doConsume(object);
-                        readStart += packetLength;
+                        readStart = len;
+                    } else {
+                        break;
                     }
                     /*
                      * GC: messages can come in distinct clumps - we might be able to throw away the buffer

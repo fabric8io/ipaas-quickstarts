@@ -15,22 +15,11 @@
 
 package io.fabric8.mq.controller.model;
 
-import javax.management.MXBean;
-import java.util.List;
+import org.apache.activemq.Service;
 
-@MXBean
-public interface BrokerStatistics {
+public interface DestinationStatisticsMBean extends Service {
 
-    String getBrokerId();
+    String getName();
 
-    String getBrokerName();
-
-    String getPodId();
-
-    public int getTotalConnections();
-
-    public List<BrokerDestinationOverview> getQueues();
-
-    public List<BrokerDestinationOverview> getTopics();
-
+    String getActiveMQDestination();
 }

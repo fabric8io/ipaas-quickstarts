@@ -27,4 +27,6 @@ public interface BrokerLimitsConfig {
 
     int getMaxProducersPerDestination();
 
+    int getMaxNumberOfBrokers();
+
 }

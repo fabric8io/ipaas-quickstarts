@@ -19,14 +19,19 @@ import io.fabric8.mq.controller.model.Model;
 import org.apache.activemq.util.ServiceStopper;
 import org.apache.activemq.util.ServiceSupport;
 import org.apache.deltaspike.core.api.config.ConfigProperty;
-import org.easyrules.jmx.DefaultJMXRulesEngine;
-import org.easyrules.jmx.api.JMXRulesEngine;
+import org.easyrules.api.Rule;
+import org.easyrules.api.RulesEngine;
+import org.easyrules.core.AbstractRulesEngine;
+import org.easyrules.core.DefaultRulesEngine;
 
 import javax.inject.Inject;
+import javax.management.ObjectName;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class ScalingEngine extends ServiceSupport{
+public class ScalingEngine extends ServiceSupport {
 
     @Inject
     @ConfigProperty(name = "SCALE_UP_RULE_PRIORITY", defaultValue = "1")
@@ -38,18 +43,18 @@ public class ScalingEngine extends ServiceSupport{
     @ConfigProperty(name = "DISTRIBUTE_LOAD_RULE_PRIORITY", defaultValue = "3")
     private int distributeLoadRulePriority;
     private List<ScalingEventListener> eventListenerList = new CopyOnWriteArrayList<>();
-    private JMXRulesEngine rulesEngine = new DefaultJMXRulesEngine(true);
+    private RulesEngine rulesEngine = new DefaultRulesEngine(true);
 
     @Inject
     private Model model;
 
-    public Model getModel(){
+    public Model getModel() {
         return model;
     }
-    public void process(){
+
+    public void process() {
         rulesEngine.fireRules();
     }
-
 
     public int getDistributeLoadRulePriority() {
         return distributeLoadRulePriority;
@@ -67,7 +72,6 @@ public class ScalingEngine extends ServiceSupport{
         this.scaleDownRulePriority = scaleDownRulePriority;
     }
 
-
     public int getScaleUpRulePriority() {
         return scaleUpRulePriority;
     }
@@ -76,32 +80,28 @@ public class ScalingEngine extends ServiceSupport{
         this.scaleUpRulePriority = scaleUpRulePriority;
     }
 
-
-    public void add(ScalingEventListener scalingEventListener){
+    public void add(ScalingEventListener scalingEventListener) {
         eventListenerList.add(scalingEventListener);
     }
 
-    public void remove(ScalingEventListener scalingEventListener){
+    public void remove(ScalingEventListener scalingEventListener) {
         eventListenerList.remove(scalingEventListener);
     }
 
-    protected void fireScalingUp(){
-        System.err.println("Fire Scalue up");
-        for (ScalingEventListener scalingEventListener:eventListenerList){
+    protected void fireScalingUp() {
+        for (ScalingEventListener scalingEventListener : eventListenerList) {
             scalingEventListener.scaleUp();
         }
     }
 
-    protected void fireScalingDown(){
-        System.err.println("Fire Scalue down");
-        for (ScalingEventListener scalingEventListener:eventListenerList){
+    protected void fireScalingDown() {
+        for (ScalingEventListener scalingEventListener : eventListenerList) {
             scalingEventListener.scaleDown();
         }
     }
 
-    protected void fireDistributeLoad(){
-        System.err.println("Fire distribute load");
-        for (ScalingEventListener scalingEventListener:eventListenerList){
+    protected void fireDistributeLoad() {
+        for (ScalingEventListener scalingEventListener : eventListenerList) {
             scalingEventListener.distributeLoad();
         }
     }
@@ -114,8 +114,25 @@ public class ScalingEngine extends ServiceSupport{
 
     @Override
     protected void doStart() throws Exception {
-        rulesEngine.registerJMXRule(new DefaultDistributeLoadRule(this,getDistributeLoadRulePriority()));
-        rulesEngine.registerJMXRule(new DefaultScaleUpRule(this,getScaleUpRulePriority()));
-        rulesEngine.registerJMXRule(new DefaultScaleDownRule(this,getScaleDownRulePriority()));
+        Logger logger = Logger.getLogger(DefaultRulesEngine.class.getName());
+        logger.setLevel(Level.WARNING);
+        logger = Logger.getLogger(AbstractRulesEngine.class.getName());
+        logger.setLevel(Level.WARNING);
+
+        String nameStr = getClass().getPackage().getName() + ".rule.";
+        Rule rule = new DefaultDistributeLoadRule(this, getDistributeLoadRulePriority());
+        ObjectName objectName = new ObjectName(Model.DEFAULT_JMX_DOMAIN, "name", nameStr + rule.getName());
+        model.registerInJmx(objectName, rule);
+        rulesEngine.registerRule(rule);
+
+        rule = new DefaultScaleUpRule(this, getScaleUpRulePriority());
+        objectName = new ObjectName(Model.DEFAULT_JMX_DOMAIN, "name", nameStr + rule.getName());
+        model.registerInJmx(objectName, rule);
+        rulesEngine.registerRule(rule);
+
+        rule = new DefaultScaleDownRule(this, getScaleDownRulePriority());
+        objectName = new ObjectName(Model.DEFAULT_JMX_DOMAIN, "name", nameStr + rule.getName());
+        model.registerInJmx(objectName, rule);
+        rulesEngine.registerRule(rule);
     }
 }

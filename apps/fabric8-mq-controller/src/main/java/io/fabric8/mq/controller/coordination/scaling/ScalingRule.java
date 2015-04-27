@@ -15,24 +15,39 @@
 
 package io.fabric8.mq.controller.coordination.scaling;
 
+import com.codahale.metrics.Counter;
+import com.codahale.metrics.Meter;
+import com.codahale.metrics.Metric;
+import com.codahale.metrics.MetricSet;
 import io.fabric8.mq.controller.model.Model;
 import org.easyrules.core.BasicRule;
-import org.easyrules.jmx.api.JMXRule;
 
-public abstract class BaseScalingRule extends BasicRule implements JMXRule {
+import java.util.HashMap;
+import java.util.Map;
+
+public abstract class ScalingRule extends BasicRule implements MetricSet, ScalingRuleMBean {
     protected final Model model;
     protected final ScalingEngine scalingEngine;
     private final String name;
     private int priority;
     private String description;
-    public BaseScalingRule(ScalingEngine scalingEngine, String name, String description, int priority){
+    private Map<String, Metric> metricMap = new HashMap<>();
+    private Meter executed;
+    private Counter called;
+
+    public ScalingRule(ScalingEngine scalingEngine, String name, String description, int priority) {
         this.scalingEngine = scalingEngine;
         this.model = scalingEngine.getModel();
-        this.name=name;
-        this.description=description;
-        this.priority=priority;
+        this.name = name;
+        this.description = description;
+        this.priority = priority;
+        String str = getClass().getPackage().getName() + ".rule." + name;
+        executed = new Meter();
+        called = new Counter();
+        metricMap.put(str + ".executed", executed);
+        metricMap.put(str + ".called", called);
+        Model.METRIC_REGISTRY.registerAll(this);
     }
-
 
     public String getDescription() {
         return description;
@@ -52,6 +67,18 @@ public abstract class BaseScalingRule extends BasicRule implements JMXRule {
 
     public String getName() {
         return name;
+    }
+
+    public Map<String, Metric> getMetrics() {
+        return metricMap;
+    }
+
+    protected void called() {
+        called.inc();
+    }
+
+    protected void executed() {
+        executed.mark();
     }
 
 }

@@ -17,8 +17,7 @@ package io.fabric8.mq.controller.coordination.brokers;
 
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.mq.controller.MessageDistribution;
-import io.fabric8.mq.controller.model.BrokerDestinationOverview;
-import io.fabric8.mq.controller.model.BrokerStatistics;
+import io.fabric8.mq.controller.model.Model;
 import org.apache.activemq.command.ActiveMQDestination;
 import org.apache.activemq.transport.Transport;
 import org.apache.activemq.util.ServiceStopper;
@@ -33,14 +32,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class BrokerModel extends ServiceSupport implements BrokerStatistics {
+public class BrokerModel extends ServiceSupport implements BrokerModelMBean {
     private static Logger LOG = LoggerFactory.getLogger(BrokerModel.class);
     private final Pod pod;
     private final BrokerView brokerView;
+    private final Model model;
 
-    public BrokerModel(Pod pod, BrokerView brokerView) {
+    public BrokerModel(Pod pod, BrokerView brokerView, Model model) {
         this.pod = pod;
         this.brokerView = brokerView;
+        this.model = model;
     }
 
     public Pod getPod() {
@@ -78,21 +79,94 @@ public class BrokerModel extends ServiceSupport implements BrokerStatistics {
     }
 
     @Override
-    public List<BrokerDestinationOverview> getQueues() {
-        List<BrokerDestinationOverview> result = Collections.EMPTY_LIST;
+    public int getLoad() {
+        return model.getLoad(this);
+    }
+
+    @Override
+    public int getTotalDestinations() {
+        int result = 0;
         BrokerOverview brokerOverview = getBrokerOverview();
         if (brokerOverview != null) {
-            result = new ArrayList(brokerOverview.getQueueOverviews().values());
+            result = brokerOverview.getTotalDestinations();
         }
         return result;
     }
 
     @Override
-    public List<BrokerDestinationOverview> getTopics() {
-        List<BrokerDestinationOverview> result = Collections.EMPTY_LIST;
+    public int getTotalActiveDestinations() {
+        int result = 0;
         BrokerOverview brokerOverview = getBrokerOverview();
         if (brokerOverview != null) {
-            result = new ArrayList(brokerOverview.getTopicOverviews().values());
+            result = brokerOverview.getTotalActiveDestinations();
+        }
+        return result;
+    }
+
+    @Override
+    public int getTotalActiveQueues() {
+        int result = 0;
+        BrokerOverview brokerOverview = getBrokerOverview();
+        if (brokerOverview != null) {
+            result = brokerOverview.getTotalActiveQueues();
+        }
+        return result;
+    }
+
+    @Override
+    public int getTotalActiveTopics() {
+        int result = 0;
+        BrokerOverview brokerOverview = getBrokerOverview();
+        if (brokerOverview != null) {
+            result = brokerOverview.getTotalActiveTopics();
+        }
+        return result;
+    }
+
+    @Override
+    public int getTotalQueueDepth() {
+        int result = 0;
+        BrokerOverview brokerOverview = getBrokerOverview();
+        if (brokerOverview != null) {
+            result = brokerOverview.getTotalQueueDepth();
+        }
+        return result;
+    }
+
+    @Override
+    public int getTotalConsumerCount() {
+        int result = 0;
+        BrokerOverview brokerOverview = getBrokerOverview();
+        if (brokerOverview != null) {
+            result = brokerOverview.getTotalConsumerCount();
+        }
+        return result;
+    }
+
+    @Override
+    public int getTotalProducerCount() {
+        int result = 0;
+        BrokerOverview brokerOverview = getBrokerOverview();
+        if (brokerOverview != null) {
+            result = brokerOverview.getTotalProducerCount();
+        }
+        return result;
+    }
+
+    public List<BrokerDestinationOverviewMBean> getQueues() {
+        List<BrokerDestinationOverviewMBean> result = Collections.EMPTY_LIST;
+        BrokerOverview brokerOverview = getBrokerOverview();
+        if (brokerOverview != null) {
+            result = new ArrayList<>(brokerOverview.getQueueOverviews().values());
+        }
+        return result;
+    }
+
+    public List<BrokerDestinationOverviewMBean> getTopics() {
+        List<BrokerDestinationOverviewMBean> result = Collections.EMPTY_LIST;
+        BrokerOverview brokerOverview = getBrokerOverview();
+        if (brokerOverview != null) {
+            result = new ArrayList<>(brokerOverview.getTopicOverviews().values());
         }
         return result;
     }
@@ -139,10 +213,10 @@ public class BrokerModel extends ServiceSupport implements BrokerStatistics {
     }
 
     public Set<ActiveMQDestination> getActiveDestinations() {
-        Set result = new HashSet();
+        Set<ActiveMQDestination> result = new HashSet<>();
         BrokerOverview brokerOverview = getBrokerOverview();
         if (brokerOverview != null) {
-            for (Map.Entry<ActiveMQDestination, BrokerDestinationOverview> entry : brokerOverview.getQueueOverviews().entrySet()) {
+            for (Map.Entry<ActiveMQDestination, BrokerDestinationOverviewMBean> entry : brokerOverview.getQueueOverviews().entrySet()) {
 
                 if (entry.getValue().getQueueDepth() > 0 || entry.getValue().getNumberOfProducers() > 0) {
                     result.add(entry.getKey());
@@ -190,8 +264,7 @@ public class BrokerModel extends ServiceSupport implements BrokerStatistics {
 
     @Override
     public String toString() {
-        String str = "BrokerModel:" + brokerView.getBrokerName() + "[" + brokerView.getBrokerId() + "(" + getUri() + ")" + "]";
-        return str;
+        return "BrokerModel:" + brokerView.getBrokerName() + "[" + brokerView.getBrokerId() + "(" + getUri() + ")" + "]";
     }
 
     @Override

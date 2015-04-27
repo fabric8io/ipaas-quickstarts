@@ -15,22 +15,20 @@
 
 package io.fabric8.mq.controller.util;
 
+import org.jolokia.client.J4pClient;
+import org.jolokia.client.request.J4pReadRequest;
+import org.jolokia.client.request.J4pResponse;
+import org.json.simple.JSONObject;
+
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class Utils {
-
-    /**
-     * @param root
-     * @param names - should be of the form name=foo,type=blah etc
-     * @return
-     */
-    public static ObjectName getObjectName(ObjectName root, String... names) throws MalformedObjectNameException {
-        return getObjectName(root.toString(), names);
-    }
+public class BrokerJmxUtils {
 
     /**
      * @param names - should be of the form name=foo,type=blah etc
@@ -44,7 +42,6 @@ public class Utils {
                 string += ",";
             }
         }
-        System.err.println("UTIL getObjectName " + domain + " : " + string);
         String name = getOrderedProperties(getProperties(string));
         ObjectName objectName = new ObjectName(domain + ":" + name);
         return objectName;
@@ -70,5 +67,36 @@ public class Utils {
             separator = ",";
         }
         return result;
+    }
+
+    public static ObjectName getRoot(J4pClient client) throws Exception {
+        String type = "org.apache.activemq:*,type=Broker";
+        String attribute = "BrokerName";
+        ObjectName objectName = new ObjectName(type);
+        J4pResponse<J4pReadRequest> response = client.execute(new J4pReadRequest(objectName, attribute));
+
+        JSONObject jsonObject = response.getValue();
+        JSONObject nameObject = (JSONObject) jsonObject.values().iterator().next();
+        String name = nameObject.values().iterator().next().toString();
+        ObjectName result = new ObjectName("org.apache.activemq:type=Broker,brokerName=" + name);
+        return result;
+    }
+
+    public static List<ObjectName> getDestinations(J4pClient client, ObjectName root, String type) throws Exception {
+        List<ObjectName> list = new ArrayList<>();
+        String objectNameStr = root.toString() + ",destinationType=" + type + ",destinationName=*";
+        J4pResponse<J4pReadRequest> response = client.execute(new J4pReadRequest(new ObjectName(objectNameStr), "Name"));
+        JSONObject value = response.getValue();
+        for (Object key : value.keySet()) {
+            ObjectName objectName = new ObjectName(key.toString());
+            list.add(objectName);
+        }
+
+        return list;
+    }
+
+    public static Object getAttribute(J4pClient client, ObjectName objectName, String attribute) throws Exception {
+        J4pResponse<J4pReadRequest> result = client.execute(new J4pReadRequest(objectName, attribute));
+        return result.getValue();
     }
 }

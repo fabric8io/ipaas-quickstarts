@@ -31,10 +31,10 @@ import java.net.URI;
 public class OpenWireTransportFactory extends TransportFactory implements ProtocolTransportFactory {
     protected WireFormatFactory wireFormatFactory = new OpenWireFormatFactory();
 
-    public ProtocolTransport connect(Vertx vertx,AsyncExecutors asyncExecutors, String name) throws IOException {
+    public ProtocolTransport connect(Vertx vertx, AsyncExecutors asyncExecutors, String name) throws IOException {
         OpenWireFormat wireFormat = (OpenWireFormat) wireFormatFactory.createWireFormat();
         //OpenWireFormat wireFormat = new OpenWireFormat(1);
-        OpenWireTransport openWireTransport = new OpenWireTransport(vertx,asyncExecutors, name, wireFormat);
+        OpenWireTransport openWireTransport = new OpenWireTransport(vertx, asyncExecutors, name, wireFormat);
         return openWireTransport;
     }
 

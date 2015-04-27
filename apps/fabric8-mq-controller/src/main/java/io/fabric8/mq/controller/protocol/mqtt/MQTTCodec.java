@@ -157,7 +157,7 @@ public class MQTTCodec {
 
     private void processCommand() throws IOException {
 
-        Buffer frameContents = null;
+        Buffer frameContents;
         if (currentBuffer == scratch) {
             frameContents = scratch.deepCopy();
         } else {

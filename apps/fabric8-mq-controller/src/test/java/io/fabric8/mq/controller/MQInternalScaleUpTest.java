@@ -38,10 +38,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 @RunWith(WeldJUnitRunner.class)
 public class MQInternalScaleUpTest implements BrokerModelChangedListener {
-
+    private final int TIME_OUT_SECONDS = 30;
     private int numberOfDestinations = 5;
     private int numberOfMessages = 10;
     private String destinationName = "test.scaling";
@@ -87,7 +88,9 @@ public class MQInternalScaleUpTest implements BrokerModelChangedListener {
         }
         testConnection.close();
 
-        countUpLatch.await();
+        if (!countUpLatch.await(TIME_OUT_SECONDS, TimeUnit.SECONDS)){
+            throw new IllegalStateException("Timed out");
+        }
         //we now have 3 Brokers - wait a bit to ensure steady state
         Thread.sleep(5000);
         //we should have 3 brokers
@@ -100,7 +103,7 @@ public class MQInternalScaleUpTest implements BrokerModelChangedListener {
         }
 
         //drain all the destinations
-        final CountDownLatch count = new CountDownLatch(destinations.size() * numberOfMessages);
+        final CountDownLatch messageCounterLatch = new CountDownLatch(destinations.size() * numberOfMessages);
         testConnection = testController.createTestConnection("foo");
         for (ActiveMQDestination destination : destinations) {
             Session session = testConnection.createSession(false, Session.AUTO_ACKNOWLEDGE);
@@ -108,13 +111,17 @@ public class MQInternalScaleUpTest implements BrokerModelChangedListener {
             consumer.setMessageListener(new MessageListener() {
                 @Override
                 public void onMessage(Message message) {
-                    count.countDown();
+                    messageCounterLatch.countDown();
                 }
             });
         }
-        count.await();
+        if (!messageCounterLatch.await(TIME_OUT_SECONDS, TimeUnit.SECONDS)){
+            throw new IllegalStateException("Timed out");
+        }
         testConnection.close();
-        countDownLatch.await();
+        if (!countDownLatch.await(TIME_OUT_SECONDS, TimeUnit.SECONDS)){
+            throw new IllegalStateException("Timed out");
+        }
         Assert.assertEquals(1, testController.getBrokerModels().size());
 
     }

@@ -31,16 +31,12 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.concurrent.CountDownLatch;
 
-
-public class TestMessageDistribution extends ServiceSupport implements MessageDistribution{
+public class TestMessageDistribution extends ServiceSupport implements MessageDistribution {
     private static Logger LOG = LoggerFactory.getLogger(TestMessageDistribution.class);
     private final InternalTransportListener internalTransportListener = new InternalTransportListener();
     private final BrokerService brokerService = new BrokerService();
-    private final CountDownLatch countDownLatch = new CountDownLatch(1);
     private Transport transport;
-
 
     public TestMessageDistribution() {
     }
@@ -102,7 +98,6 @@ public class TestMessageDistribution extends ServiceSupport implements MessageDi
         return 1;
     }
 
-
     @Override
     protected void doStart() throws Exception {
         brokerService.setBrokerId("test");
@@ -117,23 +112,20 @@ public class TestMessageDistribution extends ServiceSupport implements MessageDi
     }
 
     protected void doStop(ServiceStopper serviceStopper) throws Exception {
-        if (transport != null){
+        if (transport != null) {
             transport.stop();
         }
-        if (brokerService != null){
+        if (brokerService != null) {
             brokerService.stop();
         }
     }
 
-    private void waitForBroker() {
-        try {
-            countDownLatch.await();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
+
+    public String getBrokerURI() {
+        return brokerService.getDefaultSocketURIString();
     }
 
-    public  Transport createTransport(String uri) throws Exception{
+    public Transport createTransport(String uri) throws Exception {
         URI location = new URI("failover:(" + uri + "?wireFormat.cacheEnabled=false)?maxReconnectAttempts=0");
         TransportFactory factory = TransportFactory.findTransportFactory(location);
         final Transport transport = factory.doConnect(location);

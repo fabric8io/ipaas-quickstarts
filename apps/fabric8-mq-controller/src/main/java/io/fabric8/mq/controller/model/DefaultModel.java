@@ -16,12 +16,16 @@
 package io.fabric8.mq.controller.model;
 
 import com.codahale.metrics.JmxReporter;
+import io.fabric8.mq.controller.AsyncExecutors;
+import io.fabric8.mq.controller.coordination.brokers.BrokerDestinationOverviewMBean;
 import io.fabric8.mq.controller.coordination.brokers.BrokerModel;
 import io.fabric8.mq.controller.coordination.brokers.BrokerOverview;
 import io.fabric8.mq.controller.multiplexer.Multiplexer;
 import io.fabric8.mq.controller.multiplexer.MultiplexerInput;
+import io.fabric8.mq.controller.util.MoveDestinationWorker;
 import io.fabric8.utils.JMXUtils;
 import org.apache.activemq.command.ActiveMQDestination;
+import org.apache.activemq.filter.DestinationMap;
 import org.apache.activemq.util.ServiceStopper;
 import org.apache.activemq.util.ServiceSupport;
 import org.slf4j.Logger;
@@ -39,6 +43,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.TimeUnit;
 
 @ApplicationScoped
 @Default
@@ -46,8 +51,11 @@ public class DefaultModel extends ServiceSupport implements Model {
     private static Logger LOG = LoggerFactory.getLogger(DefaultModel.class);
     private final ConcurrentMap<Object, ObjectName> objectNameMap = new ConcurrentHashMap<>();
     private final ConcurrentMap<String, BrokerModel> brokerModelMap = new ConcurrentHashMap<>();
+    private final DestinationMap destinationMap = new DestinationMap();
     @Inject
     BrokerLimitsConfig brokerLimitsConfig;
+    @Inject
+    AsyncExecutors asyncExecutors;
     private JmxReporter jmxReporter = JmxReporter.forRegistry(METRIC_REGISTRY).inDomain(DEFAULT_JMX_DOMAIN).build();
 
     public BrokerLimitsConfig getBrokerLimitsConfig() {
@@ -88,8 +96,8 @@ public class DefaultModel extends ServiceSupport implements Model {
     public void add(BrokerModel brokerModel) {
         if (brokerModelMap.putIfAbsent(brokerModel.getBrokerId(), brokerModel) == null) {
             try {
-                String name = "broker." + brokerModel.getBrokerId();
-                ObjectName objectName = new ObjectName(DEFAULT_JMX_DOMAIN, "name", ObjectName.quote(name));
+                String name = getClass().getPackage().getName() + ".broker." + brokerModel.getBrokerId();
+                ObjectName objectName = new ObjectName(DEFAULT_JMX_DOMAIN, "name", name);
                 registerInJmx(objectName, brokerModel);
             } catch (Throwable e) {
                 LOG.error("Failed to register " + brokerModel, e);
@@ -109,7 +117,7 @@ public class DefaultModel extends ServiceSupport implements Model {
     }
 
     @Override
-    public void register(MultiplexerInput multiplexerInput, DestinationStatistics destinationStatistics) {
+    public void register(MultiplexerInput multiplexerInput, DestinationStatisticsMBean destinationStatistics) {
         try {
             ObjectName objectName = new ObjectName(DEFAULT_JMX_DOMAIN, "name", destinationStatistics.getName());
             registerInJmx(objectName, destinationStatistics);
@@ -120,7 +128,7 @@ public class DefaultModel extends ServiceSupport implements Model {
     }
 
     @Override
-    public void unregister(MultiplexerInput multiplexer, DestinationStatistics destinationStatistics) {
+    public void unregister(MultiplexerInput multiplexer, DestinationStatisticsMBean destinationStatistics) {
         try {
             destinationStatistics.stop();
             unregisterInJmx(destinationStatistics);
@@ -229,8 +237,6 @@ public class DefaultModel extends ServiceSupport implements Model {
                 boolean connectionsExceeded = totalConnections > maxConnectionsPerBroker;
                 if (connectionsExceeded) {
                     LOG.info("Broker " + brokerName + " EXCEEDED connection limits(" + maxConnectionsPerBroker + ") with " + totalConnections + " connections");
-                } else {
-                    LOG.info("Broker " + brokerName + " within connection limits(" + maxConnectionsPerBroker + ") with " + totalConnections + " connections");
                 }
 
                 int totalDestinations = brokerOverview.getTotalActiveDestinations();
@@ -239,8 +245,6 @@ public class DefaultModel extends ServiceSupport implements Model {
 
                 if (destinationsExceeded) {
                     LOG.info("Broker " + brokerName + " EXCEEDED destination limits(" + maxDestinationsPerBroker + ") with " + totalDestinations + " active destinations");
-                } else {
-                    LOG.info("Broker " + brokerName + " within destination limits(" + maxDestinationsPerBroker + ") with " + totalDestinations + " active destinations");
                 }
                 return connectionsExceeded || destinationsExceeded;
             }
@@ -249,11 +253,48 @@ public class DefaultModel extends ServiceSupport implements Model {
     }
 
     @Override
+    public boolean areBrokerConnectionLimitsExceeded(BrokerModel brokerModel) {
+        boolean result = false;
+        if (brokerModel != null) {
+            BrokerOverview brokerOverview = brokerModel.getBrokerOverview();
+            if (brokerOverview != null) {
+                String brokerName = brokerModel.getBrokerId();
+                int totalConnections = brokerOverview.getTotalConnections();
+                int maxConnectionsPerBroker = brokerLimitsConfig.getMaxConnectionsPerBroker();
+                boolean connectionsExceeded = totalConnections > maxConnectionsPerBroker;
+                if (connectionsExceeded) {
+                    LOG.info("Broker " + brokerName + " EXCEEDED connection limits(" + maxConnectionsPerBroker + ") with " + totalConnections + " connections");
+                    result = true;
+                }
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public int spareConnections(BrokerModel brokerModel) {
+        int result = 0;
+        BrokerOverview brokerOverview = brokerModel.getBrokerOverview();
+        if (brokerOverview != null) {
+            result = brokerLimitsConfig.getMaxConnectionsPerBroker() - brokerOverview.getTotalConnections();
+        }
+        return result;
+    }
+
+    @Override
     public boolean areDestinationLimitsExceeded(BrokerModel brokerModel) {
         if (brokerModel != null) {
             BrokerOverview brokerOverview = brokerModel.getBrokerOverview();
             if (brokerOverview != null) {
-                for (BrokerDestinationOverview brokerDestinationOverview : brokerOverview.getQueueOverviews().values()) {
+                int totalDestinations = brokerOverview.getTotalActiveDestinations();
+                int maxDestinationsPerBroker = brokerLimitsConfig.getMaxDestinationsPerBroker();
+                boolean destinationsExceeded = totalDestinations > maxDestinationsPerBroker;
+                String brokerName = brokerModel.getBrokerId();
+                if (destinationsExceeded) {
+                    LOG.info("Broker " + brokerName + " EXCEEDED destination limits(" + maxDestinationsPerBroker + ") with " + totalDestinations + " active destinations");
+                    return true;
+                }
+                for (BrokerDestinationOverviewMBean brokerDestinationOverview : brokerOverview.getQueueOverviews().values()) {
                     if (brokerDestinationOverview.getQueueDepth() > brokerLimitsConfig.getMaxDestinationDepth()) {
                         return true;
                     }
@@ -268,6 +309,21 @@ public class DefaultModel extends ServiceSupport implements Model {
             return false;
         }
         return false;
+    }
+
+    @Override
+    public int spareDestinations(BrokerModel brokerModel) {
+        int result = 0;
+        BrokerOverview brokerOverview = brokerModel.getBrokerOverview();
+        if (brokerOverview != null) {
+            result = brokerLimitsConfig.getMaxDestinationsPerBroker() - brokerOverview.getTotalActiveDestinations();
+        }
+        return result;
+    }
+
+    @Override
+    public boolean isMaximumNumberOfBrokersReached(){
+        return getBrokerCount() >= brokerLimitsConfig.getMaxNumberOfBrokers();
     }
 
     @Override
@@ -289,8 +345,68 @@ public class DefaultModel extends ServiceSupport implements Model {
     }
 
     @Override
+    public Set<BrokerModel> getBrokersForDestination(ActiveMQDestination destination) {
+        return (Set<BrokerModel>)destinationMap.get(destination);
+    }
+
+    @Override
+    public void addBrokerForDestination(ActiveMQDestination destination, BrokerModel brokerModel) {
+        destinationMap.put(destination, brokerModel);
+    }
+
+    @Override
+    public BrokerModel addBrokerForDestination(ActiveMQDestination destination) {
+        BrokerModel brokerModel = getLeastLoadedBroker();
+        if (brokerModel != null) {
+            destinationMap.put(destination, brokerModel);
+        }
+        return brokerModel;
+    }
+
+    @Override
+    public void removeBrokerFromDestination(ActiveMQDestination destination, BrokerModel brokerModel) {
+        destinationMap.remove(destination, brokerModel);
+    }
+
+    @Override
+    public boolean copyDestinations(BrokerModel from, BrokerModel to) {
+        List<ActiveMQDestination> list = new ArrayList<>(from.getActiveDestinations());
+        return copyDestinations(from, to, list);
+    }
+
+    @Override
+    public boolean copyDestinations(BrokerModel from, BrokerModel to, Collection<ActiveMQDestination> destinations) {
+        boolean result = false;
+        if (!destinations.isEmpty()) {
+            try {
+                //move the queues
+                MoveDestinationWorker moveDestinationWorker = new MoveDestinationWorker(asyncExecutors, from, to);
+                for (ActiveMQDestination destination : destinations) {
+                    moveDestinationWorker.addDestinationToCopy(destination);
+                    removeBrokerFromDestination(destination, from);
+                }
+                moveDestinationWorker.start();
+                if (moveDestinationWorker.aWait(10, TimeUnit.MINUTES)) {
+                    //update the sharding map
+                    for (ActiveMQDestination destination : destinations) {
+                        addBrokerForDestination(destination, to);
+                    }
+                    result = true;
+                }
+
+            } catch (Exception e) {
+                LOG.error("Failed in copy from " + from + " to " + to, e);
+            }
+        } else {
+            result = true;
+        }
+        return result;
+    }
+
+    @Override
     protected void doStart() throws Exception {
         jmxReporter.start();
+        asyncExecutors.start();
     }
 
     @Override
@@ -309,8 +425,6 @@ public class DefaultModel extends ServiceSupport implements Model {
             JMXUtils.unregisterMBean(objectName);
         }
     }
-
-
 
     private class BrokerComparable implements Comparator<BrokerModel> {
 

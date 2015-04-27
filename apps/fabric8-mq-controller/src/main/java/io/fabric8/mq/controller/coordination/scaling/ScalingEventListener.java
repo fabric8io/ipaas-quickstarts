@@ -15,9 +15,10 @@
 
 package io.fabric8.mq.controller.coordination.scaling;
 
-
 public interface ScalingEventListener {
     void scaleDown();
+
     void scaleUp();
+
     void distributeLoad();
 }
