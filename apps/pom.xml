@@ -57,9 +57,7 @@
         <module>api-registry</module>
         <module>app-library</module>
         <module>brackets</module>
-        <!-- TODO lets disable until there's a valid base docker image
         <module>apiman</module>
-        -->
         <module>cadvisor</module>
         <module>cdelivery</module>
         <module>console</module>
