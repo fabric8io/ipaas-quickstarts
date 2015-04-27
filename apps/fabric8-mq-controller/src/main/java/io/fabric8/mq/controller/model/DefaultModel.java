@@ -321,6 +321,11 @@ public class DefaultModel extends ServiceSupport implements Model {
     }
 
     @Override
+    public boolean isMaximumNumberOfBrokersReached(){
+        return getBrokerCount() >= brokerLimitsConfig.getMaxNumberOfBrokers();
+    }
+
+    @Override
     public int getLoad(BrokerModel brokerModel) {
         int load = 0;
         if (brokerModel != null) {
