@@ -48,10 +48,6 @@
     <txn.recovery.port>4712</txn.recovery.port>
     <txn.status.manager.port>4713</txn.status.manager.port>
 
-    <!-- TODO no such docker image - what should it be?? -->
-    <!-- the Jube image is wildfly/default, we should rename it to jboss/wildfly to be consistent with the docker image 
-    <docker.from>wildfly/default</docker.from>
-    -->
     <docker.from>jboss/wildfly</docker.from>
     <docker.registryPrefix>${env.DOCKER_REGISTRY}/</docker.registryPrefix>
     <docker.image>${docker.registryPrefix}fabric8/${project.artifactId}:${project.version}</docker.image>
