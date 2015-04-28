@@ -72,7 +72,7 @@ public class AsyncExecutors extends ServiceSupport {
                                              new SynchronousQueue<Runnable>(), new ThreadFactory() {
             @Override
             public Thread newThread(Runnable r) {
-                Thread t = new Thread(r, "AsyncExecutor" + executorThreadCount.getAndDecrement());
+                Thread t = new Thread(r, "AsyncExecutor" + executorThreadCount.getAndIncrement());
                 t.setDaemon(true);
                 return t;
             }

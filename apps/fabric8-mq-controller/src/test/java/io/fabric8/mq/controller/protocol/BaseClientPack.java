@@ -14,14 +14,13 @@
 
 package io.fabric8.mq.controller.protocol;
 
+import io.fabric8.mq.controller.AsyncExecutors;
 import org.apache.activemq.util.ServiceStopper;
 import org.apache.activemq.util.ServiceSupport;
+import org.vertx.java.core.impl.ConcurrentHashSet;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Set;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public abstract class BaseClientPack extends ServiceSupport {
@@ -38,9 +37,9 @@ public abstract class BaseClientPack extends ServiceSupport {
     protected boolean connectionPerClient = true;
     private CountDownLatch producerCountDownLatch;
     private CountDownLatch consumerCountDownLatch;
-    private ExecutorService executorService;
-    private Map<String, Runnable> producersMap = new ConcurrentHashMap<>();
-    private Map<String, Runnable> consumerMap = new ConcurrentHashMap<>();
+    private AsyncExecutors asyncExecutors;
+    private Set<Runnable> producersSet = new ConcurrentHashSet<>();
+    private Set<Runnable> consumerSet = new ConcurrentHashSet<>();
 
     public int getPort() {
         return port;
@@ -143,11 +142,15 @@ public abstract class BaseClientPack extends ServiceSupport {
     }
 
     public void doTheTest() throws Exception {
-        while (consumerCountDownLatch.getCount() != 0) {
-            System.err.println("Producers at " + producerProgress() + "% progress");
-            System.err.println("Consumers at " + consumerProgress() + "% progress");
-            Thread.sleep(1000);
-        }
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                System.err.println("Producers at " + producerProgress() + "% progress");
+                System.err.println("Consumers at " + consumerProgress() + "% progress");
+            }
+        };
+        asyncExecutors.scheduleAtFixedRate(runnable,1000,1000);
+
         producerCountDownLatch.await(5, TimeUnit.MINUTES);
         consumerCountDownLatch.await(5,TimeUnit.MINUTES);
         System.err.println("Producers at " + producerProgress() + "% progress");
@@ -156,7 +159,8 @@ public abstract class BaseClientPack extends ServiceSupport {
 
     @Override
     protected void doStart() throws Exception {
-        executorService = Executors.newCachedThreadPool();
+        asyncExecutors = new AsyncExecutors();
+        asyncExecutors.start();
         int totalMessages = getNumberOfMessagesPerDestination() * getNumberOfDestinations();
         producerCountDownLatch = new CountDownLatch(totalMessages);
         consumerCountDownLatch = new CountDownLatch(totalMessages);
@@ -164,27 +168,27 @@ public abstract class BaseClientPack extends ServiceSupport {
         for (int i = 0; i < getNumberOfDestinations(); i++) {
             String destinationName = getDestinationBaseName() + "." + i;
             int messagesPerProducer = getNumberOfMessagesPerDestination() / getNumberOfProducers();
-            if (getNumberOfProducers() > 0) {
+            for (int j = 0; j < getNumberOfProducers(); j++){
                 Runnable runnable = createProducers(destinationName, producerCountDownLatch, messagesPerProducer);
-                producersMap.put(destinationName, runnable);
+                producersSet.add(runnable);
             }
-            if (getNumberOfConsumers() > 0) {
+            for (int j = 0; j< getNumberOfConsumers(); j++){
                 Runnable runnable = createConsumers(destinationName, consumerCountDownLatch);
-                consumerMap.put(destinationName, runnable);
+                consumerSet.add(runnable);
             }
         }
-        for (Runnable runnable : consumerMap.values()) {
-            executorService.execute(runnable);
+        for (Runnable runnable : consumerSet) {
+            asyncExecutors.execute(runnable);
         }
-        for (Runnable runnable : producersMap.values()) {
-            executorService.execute(runnable);
+        for (Runnable runnable : producersSet) {
+            asyncExecutors.execute(runnable);
         }
     }
 
     @Override
     protected void doStop(ServiceStopper serviceStopper) throws Exception {
-        if (executorService != null) {
-            executorService.shutdownNow();
+        if (asyncExecutors != null) {
+            asyncExecutors.stop();
         }
     }
 
