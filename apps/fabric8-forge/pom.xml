@@ -65,6 +65,29 @@
     </dependency>
 
 
+    <!-- trying to fix up CD builds -->
+    <dependency>
+      <groupId>io.fabric8.forge</groupId>
+      <artifactId>camel</artifactId>
+      <version>${fabric8.version}</version>
+      <classifier>forge-addon</classifier>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8.forge</groupId>
+      <artifactId>openshift</artifactId>
+      <version>${fabric8.version}</version>
+      <classifier>forge-addon</classifier>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.forge.addon</groupId>
+      <artifactId>git</artifactId>
+      <version>${jboss.forge.version}</version>
+      <classifier>forge-addon</classifier>
+      <scope>provided</scope>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -80,26 +103,6 @@
         <groupId>org.jboss.forge.furnace</groupId>
         <artifactId>furnace-maven-plugin</artifactId>
         <version>${furnace.version}</version>
-        <dependencies>
-          <dependency>
-            <groupId>io.fabric8.forge</groupId>
-            <artifactId>camel</artifactId>
-            <version>${fabric8.version}</version>
-            <classifier>forge-addon</classifier>
-          </dependency>
-          <dependency>
-            <groupId>io.fabric8.forge</groupId>
-            <artifactId>openshift</artifactId>
-            <version>${fabric8.version}</version>
-            <classifier>forge-addon</classifier>
-          </dependency>
-          <dependency>
-            <groupId>org.jboss.forge.addon</groupId>
-            <artifactId>git</artifactId>
-            <version>${jboss.forge.version}</version>
-            <classifier>forge-addon</classifier>
-          </dependency>
-        </dependencies>
         <executions>
           <execution>
             <id>deploy-addons</id>
