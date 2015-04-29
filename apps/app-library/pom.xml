@@ -44,7 +44,7 @@
 
     <!-- the version of the BOM, defining all the dependency versions -->
     <fabric8.version>2.0.48</fabric8.version>
-    <hawtio.version>1.4.44</hawtio.version>
+    <hawtio.version>1.4.50</hawtio.version>
     <jgit.version>3.4.1.201406201815-r</jgit.version>
 
     <fabric8.release.version>2.0.47</fabric8.release.version>
