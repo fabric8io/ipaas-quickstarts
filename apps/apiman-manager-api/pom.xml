@@ -34,7 +34,7 @@
     <docker.registryPrefix>${env.DOCKER_REGISTRY}/</docker.registryPrefix>
     <docker.image>${docker.registryPrefix}fabric8/${project.artifactId}:${project.version}</docker.image>
     <docker.assemblyDescriptorRef>artifact-with-dependencies</docker.assemblyDescriptorRef>
-    <docker.env.MAIN>io.apiman.manager.api.war.micro.Starter</docker.env.MAIN>
+    <docker.env.MAIN>io.fabric8.apiman.Starter</docker.env.MAIN>
     <docker.port.container.http>${http.port}</docker.port.container.http>
     <docker.port.host.http>${http.port}</docker.port.host.http>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
