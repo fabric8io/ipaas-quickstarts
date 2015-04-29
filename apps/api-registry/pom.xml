@@ -43,6 +43,7 @@
 
     <!-- the version of the BOM, defining all the dependency versions -->
     <fabric8.version>2.0.48</fabric8.version>
+    <cxf.version>3.0.4</cxf.version>
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <org.eclipse.jetty.version>9.1.5.v20140505</org.eclipse.jetty.version>
@@ -293,7 +294,7 @@
       <plugin>
         <groupId>org.apache.cxf</groupId>
         <artifactId>cxf-java2wadl-plugin</artifactId>
-        <version>3.0.0</version>
+        <version>${cxf.version}</version>
         <executions>
           <execution>
             <id>process-classes</id>
