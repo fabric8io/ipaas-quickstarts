@@ -46,6 +46,7 @@
     <fabric8.version>2.0.48</fabric8.version>
     <hawtio.version>1.4.50</hawtio.version>
     <jgit.version>3.4.1.201406201815-r</jgit.version>
+    <cxf.version>3.0.4</cxf.version>
 
     <fabric8.release.version>2.0.47</fabric8.release.version>
 
@@ -307,7 +308,7 @@
       <plugin>
         <groupId>org.apache.cxf</groupId>
         <artifactId>cxf-java2wadl-plugin</artifactId>
-        <version>3.0.0</version>
+        <version>${cxf.version}</version>
         <executions>
           <execution>
             <id>process-classes</id>

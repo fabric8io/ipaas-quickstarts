@@ -277,7 +277,7 @@
       <plugin>
         <groupId>org.apache.cxf</groupId>
         <artifactId>cxf-java2wadl-plugin</artifactId>
-        <version>3.0.0</version>
+        <version>${cxf.version}</version>
         <executions>
           <execution>
             <id>process-classes</id>
