@@ -47,7 +47,7 @@
     <hawtio.version>1.4.44</hawtio.version>
     <jgit.version>3.4.1.201406201815-r</jgit.version>
 
-    <fabric8.release.version>2.0.26</fabric8.release.version>
+    <fabric8.release.version>2.0.47</fabric8.release.version>
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <org.eclipse.jetty.version>9.1.5.v20140505</org.eclipse.jetty.version>
