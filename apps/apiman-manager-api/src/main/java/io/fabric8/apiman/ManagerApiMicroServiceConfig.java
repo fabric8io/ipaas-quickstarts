@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.apiman.manager.api.war.micro;
+package io.fabric8.apiman;
 
 import io.fabric8.utils.Systems;
 
