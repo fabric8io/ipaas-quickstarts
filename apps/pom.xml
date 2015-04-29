@@ -58,7 +58,6 @@
         <module>app-library</module>
         <module>brackets</module>
         <module>apiman-manager-api</module>
-        <module>micro</module>
         <module>cadvisor</module>
         <module>cdelivery</module>
         <module>console</module>
