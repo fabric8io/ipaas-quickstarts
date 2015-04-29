@@ -46,6 +46,9 @@
 
     <fabric8.label.component>nexus</fabric8.label.component>
     <fabric8.label.provider>fabric8</fabric8.label.provider>
+
+    <fabric8.volume.nexus-storage.emptyDir></fabric8.volume.nexus-storage.emptyDir>
+    <fabric8.volume.nexus-storage.mountPath>/sonatype-work/storage</fabric8.volume.nexus-storage.mountPath>
   </properties>
 
     <build>

@@ -48,6 +48,14 @@
 
         <fabric8.volume.docker-socket.hostPath>/var/run/docker.sock</fabric8.volume.docker-socket.hostPath>
         <fabric8.volume.docker-socket.mountPath>/var/run/docker.sock</fabric8.volume.docker-socket.mountPath>
+
+        <fabric8.volume.jenkins-workspace.emptyDir></fabric8.volume.jenkins-workspace.emptyDir>
+        <fabric8.volume.jenkins-workspace.mountPath>/var/jenkins_home/workspace</fabric8.volume.jenkins-workspace.mountPath>
+
+<!--
+        <fabric8.volume.jenkins-jobs.emptyDir></fabric8.volume.jenkins-jobs.emptyDir>
+        <fabric8.volume.jenkins-jobs.mountPath>/var/jenkins_home/jobs</fabric8.volume.jenkins-jobs.mountPath>
+-->
     </properties>
 
     <build>
