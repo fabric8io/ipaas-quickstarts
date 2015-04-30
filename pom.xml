@@ -109,7 +109,6 @@
         <module>archetypes-catalog</module>
         <module>archetypes</module>
         <module>apps</module>
-        <module>app-groups</module>
         <module>quickstarts</module>
     </modules>
 
@@ -350,6 +349,12 @@
             <modules>
               <module>archetype-itests</module>
             </modules>
+        </profile>
+        <profile>
+          <id>canary</id>
+          <modules>
+            <module>app-groups</module>
+          </modules>
         </profile>
     </profiles>
 
