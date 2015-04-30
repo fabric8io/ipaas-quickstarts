@@ -1,5 +1,5 @@
 {
-  "apiVersion": "v1beta1",
+  "apiVersion": "v1beta2",
   "kind": "Service",
   "id": "gogs-ssh-service",
   "containerPort": 22,

@@ -1,12 +1,12 @@
 {
   "id": "infinispan-config",
   "kind": "Config",
-  "apiVersion": "v1beta1",
+  "apiVersion": "v1beta2",
   "name": "infinispan-config",
   "description": "Creates an infinispan pod & service",
   "items": [
     {
-      "apiVersion": "v1beta1",
+      "apiVersion": "v1beta2",
       "kind": "ReplicationController",
       "id": "infinispan-controller",
       "desiredState": {
@@ -17,7 +17,7 @@
         "podTemplate": {
           "desiredState": {
             "manifest": {
-              "version": "v1beta1",
+              "version": "v1beta2",
               "id": "is",
               "name": "infinispan-container",
               "containers": [
@@ -60,7 +60,7 @@
       }
     },
     {
-      "apiVersion": "v1beta1",
+      "apiVersion": "v1beta2",
       "kind": "Service",
       "id": "infinispan-rest",
       "containerPort": "infinispan-rest-port",
@@ -70,7 +70,7 @@
       }
     },
     {
-      "apiVersion": "v1beta1",
+      "apiVersion": "v1beta2",
       "kind": "Service",
       "id": "infinispan-remote",
       "containerPort": "infinispan-remote-port",
@@ -80,7 +80,7 @@
       }
     },
     {
-      "apiVersion": "v1beta1",
+      "apiVersion": "v1beta2",
       "kind": "Service",
       "id": "infinispan-memcached",
       "containerPort": "infinispan-memcached-port",
@@ -90,7 +90,7 @@
       }
     },
     {
-      "apiVersion": "v1beta1",
+      "apiVersion": "v1beta2",
       "kind": "Service",
       "id": "infinispan-hotrod",
       "containerPort": "infinispan-hotrod-port",

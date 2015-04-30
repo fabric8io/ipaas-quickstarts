@@ -1,7 +1,7 @@
 {
   "id": "fabric8Greeter-config",
   "kind": "Config",
-  "apiVersion": "v1beta1",
+  "apiVersion": "v1beta2",
   "name": "fabric8Greeter-config",
   "description": "Configuration for fabric8Greeter",
   "items": [
@@ -9,7 +9,7 @@
     {
       "id": "fabric8Greeter",
       "kind": "ReplicationController",
-      "apiVersion": "v1beta1",
+      "apiVersion": "v1beta2",
       "desiredState": {
         "replicas": 3,
         "replicaSelector": {
@@ -19,7 +19,7 @@
         "podTemplate": {
           "desiredState": {
             "manifest": {
-              "version": "v1beta1",
+              "version": "v1beta2",
               "id": "fabric8GreeterPod",
               "containers": [
                 {

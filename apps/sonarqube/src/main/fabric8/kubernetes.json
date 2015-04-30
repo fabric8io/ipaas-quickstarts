@@ -1,12 +1,12 @@
 {
     "id": "sonarqube-config",
     "kind": "Config",
-    "apiVersion": "v1beta1",
+    "apiVersion": "v1beta2",
     "name": "sonarqube-config",
     "description": "Creates a sonarqube Server",
     "items": [
         {
-            "apiVersion" : "v1beta1",
+            "apiVersion" : "v1beta2",
             "id":"sonarqube-service",
             "kind":"Service",
             "port":8080,
@@ -18,7 +18,7 @@
         {
             "kind" : "ReplicationController",
             "id" : "sonarqube-controller",
-            "apiVersion" : "v1beta1",
+            "apiVersion" : "v1beta2",
             "desiredState" : {
                 "replicas" : 1,
                 "replicaSelector" : {
@@ -27,7 +27,7 @@
                 "podTemplate" : {
                     "desiredState" : {
                         "manifest" : {
-                            "version" : "v1beta1",
+                            "version" : "v1beta2",
                             "id" : "sonarqubePod",
                             "containers" : [
                               {
