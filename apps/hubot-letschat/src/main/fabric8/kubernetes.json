@@ -1,7 +1,7 @@
 {
     "id": "hubot-letschat-template",
     "kind": "Template",
-    "apiVersion": "v1beta1",
+    "apiVersion": "v1beta2",
     "metadata": {
         "name": "hubot-letschat-template",
         "annotations": {
@@ -36,7 +36,7 @@
       ],
     "items": [
         {
-            "apiVersion" : "v1beta1",
+            "apiVersion" : "v1beta2",
             "id":"hubot-web-hook",
             "kind":"Service",
             "port":8080,
@@ -48,7 +48,7 @@
         {
             "kind" : "ReplicationController",
             "id" : "hubot-letschat",
-            "apiVersion" : "v1beta1",
+            "apiVersion" : "v1beta2",
             "desiredState" : {
                 "replicas" : 1,
                 "replicaSelector" : {
@@ -57,7 +57,7 @@
                 "podTemplate" : {
                     "desiredState" : {
                         "manifest" : {
-                            "version" : "v1beta1",
+                            "version" : "v1beta2",
                             "id" : "hubot-letschat-pod",
                             "containers" : [ 
                             {

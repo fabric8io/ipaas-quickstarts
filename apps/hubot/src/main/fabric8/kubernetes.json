@@ -1,12 +1,12 @@
 {
     "id": "hubot-config",
     "kind": "Config",
-    "apiVersion": "v1beta1",
+    "apiVersion": "v1beta2",
     "name": "hubot-config",
     "description": "Creates a hubot chat bot",
     "items": [
         {
-            "apiVersion" : "v1beta1",
+            "apiVersion" : "v1beta2",
             "id":"hubot",
             "kind":"Service",
             "port":6667,
@@ -20,13 +20,13 @@
             "metadata": {
                 "name": "hubot-web-hook-route"
             },
-            "apiVersion": "v1beta1",
+            "apiVersion": "v1beta2",
             "kind": "Route",
             "host": "hubot-web-hook.local",
             "serviceName": "hubot-web-hook"
         },
         {
-            "apiVersion" : "v1beta1",
+            "apiVersion" : "v1beta2",
             "id":"hubot-web-hook",
             "kind":"Service",
             "port":8080,
@@ -38,7 +38,7 @@
         {
             "kind" : "ReplicationController",
             "id" : "hubot",
-            "apiVersion" : "v1beta1",
+            "apiVersion" : "v1beta2",
             "desiredState" : {
                 "replicas" : 1,
                 "replicaSelector" : {
@@ -47,7 +47,7 @@
                 "podTemplate" : {
                     "desiredState" : {
                         "manifest" : {
-                            "version" : "v1beta1",
+                            "version" : "v1beta2",
                             "id" : "hubotPod",
                             "containers" : [ {
                                 "image":"fabric8/hubot",

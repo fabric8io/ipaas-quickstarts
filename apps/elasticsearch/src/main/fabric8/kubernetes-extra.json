@@ -1,6 +1,6 @@
 {
   "id": "elasticsearch-cluster",
-  "apiVersion": "v1beta1",
+  "apiVersion": "v1beta2",
   "kind": "Service",
   "portalIP": "None",
   "port": 9200,

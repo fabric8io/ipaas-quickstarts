@@ -1,12 +1,12 @@
 {
     "id": "fabric8-zookeeper-config",
     "kind": "Config",
-    "apiVersion": "v1beta1",
+    "apiVersion": "v1beta2",
     "name": "fabric8-zookeeper-config",
     "description": "Creates a ZooKeeper Server",
     "items": [
         {
-            "apiVersion": "v1beta1",
+            "apiVersion": "v1beta2",
             "creationTimestamp": null,
             "id": "zk-client",
             "kind": "Service",
@@ -17,7 +17,7 @@
             }
         },
         {
-            "apiVersion": "v1beta1",
+            "apiVersion": "v1beta2",
             "creationTimestamp": null,
             "id": "zk-peer-1",
             "kind": "Service",
@@ -29,7 +29,7 @@
             }
         },
         {
-            "apiVersion": "v1beta1",
+            "apiVersion": "v1beta2",
             "creationTimestamp": null,
             "id": "zk-peer-2",
             "kind": "Service",
@@ -41,7 +41,7 @@
             }
         },
         {
-            "apiVersion": "v1beta1",
+            "apiVersion": "v1beta2",
             "creationTimestamp": null,
             "id": "zk-peer-3",
             "kind": "Service",
@@ -54,7 +54,7 @@
         },
 
         {
-            "apiVersion": "v1beta1",
+            "apiVersion": "v1beta2",
             "creationTimestamp": null,
             "id": "zk-election-1",
             "kind": "Service",
@@ -66,7 +66,7 @@
             }
         },
         {
-            "apiVersion": "v1beta1",
+            "apiVersion": "v1beta2",
             "creationTimestamp": null,
             "id": "zk-election-2",
             "kind": "Service",
@@ -78,7 +78,7 @@
             }
         },
         {
-            "apiVersion": "v1beta1",
+            "apiVersion": "v1beta2",
             "creationTimestamp": null,
             "id": "zk-election-3",
             "kind": "Service",
@@ -95,7 +95,7 @@
             "labels": {
                 "name": "zookeeper-controller"
             },
-            "apiVersion": "v1beta1",
+            "apiVersion": "v1beta2",
             "creationTimestamp": null,
             "desiredState": {
                 "podTemplate": {
@@ -143,7 +143,7 @@
                                 }
                             ],
                             "id": "zookeeper-pod-1",
-                            "version": "v1beta1",
+                            "version": "v1beta2",
                             "volumes":[{
                                 "name": "data",
                                 "source": {"hostDir":{"path": "/volumes/zookeeper/1/data"}}
@@ -176,7 +176,7 @@
             "labels": {
                 "name": "zookeeper-controller"
             },
-            "apiVersion": "v1beta1",
+            "apiVersion": "v1beta2",
             "creationTimestamp": null,
             "desiredState": {
                 "podTemplate": {
@@ -224,7 +224,7 @@
                                 }
                             ],
                             "id": "zookeeper-pod-2",
-                            "version": "v1beta1",
+                            "version": "v1beta2",
                             "volumes":[{
                                 "name": "data",
                                 "source": {"hostDir":{"path": "/volumes/zookeeper/2/data"}}
@@ -256,7 +256,7 @@
             "labels": {
                 "name": "zookeeper-controller"
             },
-            "apiVersion": "v1beta1",
+            "apiVersion": "v1beta2",
             "creationTimestamp": null,
             "desiredState": {
                 "podTemplate": {
@@ -304,7 +304,7 @@
                                 }
                             ],
                             "id": "zookeeper-pod-3",
-                            "version": "v1beta1",
+                            "version": "v1beta2",
                             "volumes":[{
                                 "name": "data",
                                 "source": {"hostDir":{"path": "/volumes/zookeeper/3/data"}}

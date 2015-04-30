@@ -1,12 +1,12 @@
 {
     "id": "letschat-config",
     "kind": "Config",
-    "apiVersion": "v1beta1",
+    "apiVersion": "v1beta2",
     "name": "letschat-config",
     "description": "Creates a letschat",
     "items": [
         {
-            "apiVersion" : "v1beta1",
+            "apiVersion" : "v1beta2",
             "id":"letschat",
             "kind":"Service",
             "port":80,
@@ -18,7 +18,7 @@
         {
             "kind" : "ReplicationController",
             "id" : "letschat",
-            "apiVersion" : "v1beta1",
+            "apiVersion" : "v1beta2",
             "desiredState" : {
                 "replicas" : 1,
                 "replicaSelector" : {
@@ -27,7 +27,7 @@
                 "podTemplate" : {
                     "desiredState" : {
                         "manifest" : {
-                            "version" : "v1beta1",
+                            "version" : "v1beta2",
                             "id" : "letschatPod",
                             "containers" : [
                             {
