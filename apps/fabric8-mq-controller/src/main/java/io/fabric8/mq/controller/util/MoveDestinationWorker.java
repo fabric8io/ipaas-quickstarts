@@ -95,11 +95,11 @@ public class MoveDestinationWorker extends ServiceSupport {
         return copyList;
     }
 
-    public boolean aWait(int time,TimeUnit timeUnit) {
+    public boolean aWait(int time, TimeUnit timeUnit) {
         boolean result = true;
         if (countDownLatch != null) {
             try {
-                result = countDownLatch.await(time,timeUnit);
+                result = countDownLatch.await(time, timeUnit);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
@@ -164,6 +164,7 @@ public class MoveDestinationWorker extends ServiceSupport {
             try {
                 stop();
             } catch (Exception e) {
+                LOG.debug("Error stopping ", e);
             }
         }
         LOG.info("Finished copying destinations from " + fromBroker.getBrokerId() + " to " + toBroker.getBrokerId());

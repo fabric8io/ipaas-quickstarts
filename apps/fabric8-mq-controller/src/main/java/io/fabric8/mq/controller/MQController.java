@@ -14,26 +14,25 @@
  */
 package io.fabric8.mq.controller;
 
-import io.fabric8.gateway.SocketWrapper;
-import io.fabric8.gateway.handlers.detecting.FutureHandler;
-import io.fabric8.gateway.handlers.detecting.Protocol;
-import io.fabric8.gateway.handlers.detecting.protocol.amqp.AmqpProtocol;
-import io.fabric8.gateway.handlers.detecting.protocol.mqtt.MqttProtocol;
-import io.fabric8.gateway.handlers.detecting.protocol.openwire.OpenwireProtocol;
-import io.fabric8.gateway.handlers.detecting.protocol.ssl.SslConfig;
-import io.fabric8.gateway.handlers.detecting.protocol.ssl.SslSocketWrapper;
-import io.fabric8.gateway.handlers.detecting.protocol.stomp.StompProtocol;
-import io.fabric8.gateway.handlers.loadbalancer.ConnectionParameters;
 import io.fabric8.mq.controller.camel.DefaultMessageRouter;
 import io.fabric8.mq.controller.model.Model;
 import io.fabric8.mq.controller.multiplexer.MultiplexerController;
+import io.fabric8.mq.controller.protocol.FutureHandler;
+import io.fabric8.mq.controller.protocol.ProtocolDetector;
 import io.fabric8.mq.controller.protocol.ProtocolTransport;
 import io.fabric8.mq.controller.protocol.ProtocolTransportFactory;
 import io.fabric8.mq.controller.protocol.mqtt.MQTTTransportFactory;
+import io.fabric8.mq.controller.protocol.mqtt.MqttProtocol;
 import io.fabric8.mq.controller.protocol.openwire.OpenWireTransportFactory;
+import io.fabric8.mq.controller.protocol.openwire.OpenwireProtocol;
+import io.fabric8.mq.controller.protocol.ssl.SslConfig;
+import io.fabric8.mq.controller.protocol.ssl.SslSocketWrapper;
+import io.fabric8.mq.controller.protocol.stomp.StompProtocol;
 import io.fabric8.mq.controller.protocol.stomp.StompTransportFactory;
 import io.fabric8.mq.controller.util.ConnectedSocketInfo;
+import io.fabric8.mq.controller.util.ConnectionParameters;
 import io.fabric8.mq.controller.util.ProtocolMapping;
+import io.fabric8.mq.controller.util.SocketWrapper;
 import io.fabric8.utils.JMXUtils;
 import io.fabric8.utils.ShutdownTracker;
 import org.apache.activemq.transport.Transport;
@@ -80,7 +79,7 @@ public class MQController extends BrokerStateInfo implements Handler<Transport> 
     private final ShutdownTracker shutdownTacker;
     SSLContext sslContext;
     SslSocketWrapper.ClientAuth clientAuth = SslSocketWrapper.ClientAuth.WANT;
-    private List<Protocol> protocols;
+    private List<ProtocolDetector> protocolDetectors;
     private int maxProtocolIdentificationLength;
     private SslConfig sslConfig;
     private ObjectName controllerObjectName;
@@ -93,7 +92,7 @@ public class MQController extends BrokerStateInfo implements Handler<Transport> 
         multiplexerControllers = new CopyOnWriteArrayList<>();
         socketsConnecting = new HashSet<>();
         socketsConnected = new HashSet<>();
-        protocols = new CopyOnWriteArrayList<>();
+        protocolDetectors = new CopyOnWriteArrayList<>();
         shutdownTacker = new ShutdownTracker();
     }
 
@@ -116,13 +115,12 @@ public class MQController extends BrokerStateInfo implements Handler<Transport> 
         super.doStart();
 
         //getLoad protocols
-        protocols.add(new MqttProtocol());
-        protocols.add(new OpenwireProtocol());
-        protocols.add(new StompProtocol());
-        protocols.add(new AmqpProtocol());
+        protocolDetectors.add(new MqttProtocol());
+        protocolDetectors.add(new OpenwireProtocol());
+        protocolDetectors.add(new StompProtocol());
 
-        for (Protocol protocol : protocols) {
-            maxProtocolIdentificationLength = Math.max(protocol.getMaxIdentificationLength(), maxProtocolIdentificationLength);
+        for (ProtocolDetector protocolDetector : protocolDetectors) {
+            maxProtocolIdentificationLength = Math.max(protocolDetector.getMaxIdentificationLength(), maxProtocolIdentificationLength);
         }
         final String hostName = getControllerStatus().getControllerHost();
         int port = getControllerStatus().getControllerPort();
@@ -192,6 +190,7 @@ public class MQController extends BrokerStateInfo implements Handler<Transport> 
                 handleShutdown(socket);
             }
         } catch (Throwable e) {
+            LOG.debug("Caught an error in close", e);
         }
     }
 
@@ -204,9 +203,9 @@ public class MQController extends BrokerStateInfo implements Handler<Transport> 
     }
 
     public Collection<String> getProtocolNames() {
-        ArrayList<String> rc = new ArrayList<String>(protocols.size());
-        for (Protocol protocol : protocols) {
-            rc.add(protocol.getProtocolName());
+        ArrayList<String> rc = new ArrayList<>(protocolDetectors.size());
+        for (ProtocolDetector protocolDetector : protocolDetectors) {
+            rc.add(protocolDetector.getProtocolName());
         }
         return rc;
     }
@@ -246,9 +245,9 @@ public class MQController extends BrokerStateInfo implements Handler<Transport> 
             @Override
             public void handle(Buffer event) {
                 received.appendBuffer(event);
-                for (final Protocol protocol : protocols) {
-                    if (protocol.matches(received)) {
-                        if ("ssl".equals(protocol.getProtocolName())) {
+                for (final ProtocolDetector protocolDetector : protocolDetectors) {
+                    if (protocolDetector.matches(received)) {
+                        if ("ssl".equals(protocolDetector.getProtocolName())) {
 
                             LOG.info(String.format("SSL Connection from '%s'", socket.remoteAddress()));
                             String disabledCypherSuites = null;
@@ -279,14 +278,14 @@ public class MQController extends BrokerStateInfo implements Handler<Transport> 
                             return;
 
                         } else {
-                            protocol.snoopConnectionParameters(socket, received, new Handler<ConnectionParameters>() {
+                            protocolDetector.snoopConnectionParameters(socket, received, new Handler<ConnectionParameters>() {
                                 @Override
                                 public void handle(ConnectionParameters connectionParameters) {
                                     // this will install a new dataHandler on the socket.
                                     if (connectionParameters.protocol == null)
-                                        connectionParameters.protocol = protocol.getProtocolName();
+                                        connectionParameters.protocol = protocolDetector.getProtocolName();
                                     if (connectionParameters.protocolSchemes == null)
-                                        connectionParameters.protocolSchemes = protocol.getProtocolSchemes();
+                                        connectionParameters.protocolSchemes = protocolDetector.getProtocolSchemes();
                                     route(socket, connectionParameters, received);
                                 }
                             });
@@ -413,6 +412,7 @@ public class MQController extends BrokerStateInfo implements Handler<Transport> 
                 handle(connectedInfo.getTo());
                 connectedInfo.close();
             } catch (Throwable e) {
+                LOG.debug("Caught an error in handleShutdown", e);
             } finally {
                 shutdownTacker.release();
             }

@@ -41,7 +41,6 @@ public class DefaultBrokerLimitsConfig implements BrokerLimitsConfig {
     @ConfigProperty(name = "MAX_NUMBER_OF_BROKERS", defaultValue = "20")
     private int maxNumberOfBrokers = 20;
 
-
     public int getMaxConsumersPerDestination() {
         return maxConsumersPerDestination;
     }

@@ -244,7 +244,7 @@ public class OpenWireTransport extends TransportSupport implements ProtocolTrans
         }
 
         try {
-            wireInfoSentDownLatch.await(5,TimeUnit.MINUTES);
+            wireInfoSentDownLatch.await(5, TimeUnit.MINUTES);
 
             if (LOG.isDebugEnabled()) {
                 LOG.debug(this + " before negotiation: " + openWireFormat);

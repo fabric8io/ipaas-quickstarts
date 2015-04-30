@@ -88,7 +88,7 @@ public class MQInternalScaleUpTest implements BrokerModelChangedListener {
         }
         testConnection.close();
 
-        if (!countUpLatch.await(TIME_OUT_SECONDS, TimeUnit.SECONDS)){
+        if (!countUpLatch.await(TIME_OUT_SECONDS, TimeUnit.SECONDS)) {
             throw new IllegalStateException("Timed out");
         }
         //we now have 3 Brokers - wait a bit to ensure steady state
@@ -115,11 +115,11 @@ public class MQInternalScaleUpTest implements BrokerModelChangedListener {
                 }
             });
         }
-        if (!messageCounterLatch.await(TIME_OUT_SECONDS, TimeUnit.SECONDS)){
+        if (!messageCounterLatch.await(TIME_OUT_SECONDS, TimeUnit.SECONDS)) {
             throw new IllegalStateException("Timed out");
         }
         testConnection.close();
-        if (!countDownLatch.await(TIME_OUT_SECONDS, TimeUnit.SECONDS)){
+        if (!countDownLatch.await(TIME_OUT_SECONDS, TimeUnit.SECONDS)) {
             throw new IllegalStateException("Timed out");
         }
         Assert.assertEquals(1, testController.getBrokerModels().size());

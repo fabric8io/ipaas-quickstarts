@@ -186,24 +186,23 @@ public class ShardedMessageDistribution extends ServiceSupport implements Messag
         brokerControl.removeBrokerModelChangedListener(this);
         brokerControl.removeMessageDistribution(this);
         IOException stopped = new IOException("stopped");
-        ArrayList<MultiCallback> requests = null;
+        ArrayList<MultiCallback> requests;
         synchronized (requestMap) {
             requests = new ArrayList<>(requestMap.keySet());
             requestMap.clear();
 
         }
-        if (requests != null) {
-            for (MultiCallback multiCallback : requests) {
-                FutureResponse futureResponse = new FutureResponse(multiCallback.getCallback());
-                futureResponse.set(new ExceptionResponse(stopped));
-                multiCallback.onCompletion(futureResponse);
-            }
+        for (MultiCallback multiCallback : requests) {
+            FutureResponse futureResponse = new FutureResponse(multiCallback.getCallback());
+            futureResponse.set(new ExceptionResponse(stopped));
+            multiCallback.onCompletion(futureResponse);
         }
+
     }
 
     private void waitForBroker() {
         try {
-            if (!countDownLatch.await(1, TimeUnit.MINUTES)){
+            if (!countDownLatch.await(1, TimeUnit.MINUTES)) {
                 throw new IllegalStateException("Broker didn't start");
             }
         } catch (InterruptedException e) {

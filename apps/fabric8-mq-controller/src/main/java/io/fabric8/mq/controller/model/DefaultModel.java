@@ -322,7 +322,7 @@ public class DefaultModel extends ServiceSupport implements Model {
     }
 
     @Override
-    public boolean isMaximumNumberOfBrokersReached(){
+    public boolean isMaximumNumberOfBrokersReached() {
         return getBrokerCount() >= brokerLimitsConfig.getMaxNumberOfBrokers();
     }
 
@@ -346,7 +346,7 @@ public class DefaultModel extends ServiceSupport implements Model {
 
     @Override
     public Set<BrokerModel> getBrokersForDestination(ActiveMQDestination destination) {
-        return (Set<BrokerModel>)destinationMap.get(destination);
+        return (Set<BrokerModel>) destinationMap.get(destination);
     }
 
     @Override

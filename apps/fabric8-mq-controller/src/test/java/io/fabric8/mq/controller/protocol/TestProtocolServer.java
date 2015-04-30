@@ -15,11 +15,10 @@
 
 package io.fabric8.mq.controller.protocol;
 
-import io.fabric8.gateway.SocketWrapper;
-import io.fabric8.gateway.handlers.detecting.FutureHandler;
 import io.fabric8.mq.controller.AsyncExecutors;
 import io.fabric8.mq.controller.model.Model;
 import io.fabric8.mq.controller.multiplexer.Multiplexer;
+import io.fabric8.mq.controller.util.SocketWrapper;
 import org.apache.activemq.transport.Transport;
 import org.apache.activemq.util.ServiceStopper;
 import org.apache.activemq.util.ServiceSupport;
@@ -142,7 +141,7 @@ public class TestProtocolServer extends ServiceSupport {
         multiplexer = new Multiplexer(model, "test", asyncExecutors, testMessageDistribution);
         multiplexer.start();
 
-        if (!countDownLatch.await(TIMEOUT, TimeUnit.SECONDS)){
+        if (!countDownLatch.await(TIMEOUT, TimeUnit.SECONDS)) {
             throw new IllegalStateException("timed out waiting for bound port");
         }
     }

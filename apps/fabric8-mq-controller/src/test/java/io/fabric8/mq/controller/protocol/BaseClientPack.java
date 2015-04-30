@@ -149,10 +149,10 @@ public abstract class BaseClientPack extends ServiceSupport {
                 System.err.println("Consumers at " + consumerProgress() + "% progress");
             }
         };
-        asyncExecutors.scheduleAtFixedRate(runnable,1000,1000);
+        asyncExecutors.scheduleAtFixedRate(runnable, 1000, 1000);
 
         producerCountDownLatch.await(5, TimeUnit.MINUTES);
-        consumerCountDownLatch.await(5,TimeUnit.MINUTES);
+        consumerCountDownLatch.await(5, TimeUnit.MINUTES);
         System.err.println("Producers at " + producerProgress() + "% progress");
         System.err.println("Consumers at " + consumerProgress() + "% progress");
     }
@@ -168,11 +168,11 @@ public abstract class BaseClientPack extends ServiceSupport {
         for (int i = 0; i < getNumberOfDestinations(); i++) {
             String destinationName = getDestinationBaseName() + "." + i;
             int messagesPerProducer = getNumberOfMessagesPerDestination() / getNumberOfProducers();
-            for (int j = 0; j < getNumberOfProducers(); j++){
+            for (int j = 0; j < getNumberOfProducers(); j++) {
                 Runnable runnable = createProducers(destinationName, producerCountDownLatch, messagesPerProducer);
                 producersSet.add(runnable);
             }
-            for (int j = 0; j< getNumberOfConsumers(); j++){
+            for (int j = 0; j < getNumberOfConsumers(); j++) {
                 Runnable runnable = createConsumers(destinationName, consumerCountDownLatch);
                 consumerSet.add(runnable);
             }
