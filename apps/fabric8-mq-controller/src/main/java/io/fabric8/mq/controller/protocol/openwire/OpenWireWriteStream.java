@@ -95,7 +95,7 @@ class OpenWireWriteStream extends ServiceSupport implements WriteStream<OpenWire
                 readBuffer.appendBuffer(event);
             }
             try {
-                while (readBuffer != null && ((readStart+4) < readBuffer.length())) {
+                while (readBuffer != null && ((readStart + 4) < readBuffer.length())) {
                     int packetLength = readBuffer.getInt(readStart);
                     //add the length back in - cause OpenWire expects it
                     packetLength += 4;

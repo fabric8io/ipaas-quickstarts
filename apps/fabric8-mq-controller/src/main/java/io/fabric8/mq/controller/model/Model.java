@@ -86,10 +86,6 @@ public interface Model extends Service {
 
     boolean isMaximumNumberOfBrokersReached();
 
-    /**
-     * Allocates least loaded Broker
-     * @param destination
-     */
     BrokerModel addBrokerForDestination(ActiveMQDestination destination);
 
     void removeBrokerFromDestination(ActiveMQDestination destination, BrokerModel brokerModel);

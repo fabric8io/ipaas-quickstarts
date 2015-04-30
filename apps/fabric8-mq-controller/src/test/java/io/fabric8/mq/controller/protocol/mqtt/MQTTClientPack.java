@@ -80,7 +80,7 @@ public class MQTTClientPack extends BaseClientPack {
                             countDownLatch.countDown();
                         }
                     }
-                    if (!countDownLatch.await(TIMEOUT, TimeUnit.MINUTES)){
+                    if (!countDownLatch.await(TIMEOUT, TimeUnit.MINUTES)) {
                         throw new IllegalStateException("Timed out waiting for message consumption to finish");
                     }
                 } catch (Throwable e) {

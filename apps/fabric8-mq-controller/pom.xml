@@ -109,9 +109,15 @@
             <artifactId>deltaspike-core-impl</artifactId>
         </dependency>
 
+        <!--
         <dependency>
             <groupId>io.fabric8</groupId>
             <artifactId>gateway-core</artifactId>
+        </dependency>
+        -->
+        <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>fabric8-vertx</artifactId>
         </dependency>
 
 

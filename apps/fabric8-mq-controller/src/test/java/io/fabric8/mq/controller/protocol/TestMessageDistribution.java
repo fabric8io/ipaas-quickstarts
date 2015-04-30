@@ -120,7 +120,6 @@ public class TestMessageDistribution extends ServiceSupport implements MessageDi
         }
     }
 
-
     public String getBrokerURI() {
         return brokerService.getDefaultSocketURIString();
     }

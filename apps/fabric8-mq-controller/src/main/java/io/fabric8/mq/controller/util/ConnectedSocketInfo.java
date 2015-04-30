@@ -15,8 +15,6 @@
 
 package io.fabric8.mq.controller.util;
 
-import io.fabric8.gateway.SocketWrapper;
-import io.fabric8.gateway.handlers.loadbalancer.ConnectionParameters;
 import io.fabric8.mq.controller.protocol.ProtocolTransport;
 import org.vertx.java.core.streams.Pump;
 
