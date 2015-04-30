@@ -17,6 +17,8 @@ package io.fabric8.mq.controller.protocol.openwire;
 
 import io.fabric8.mq.controller.protocol.TestProtocolServer;
 import io.fabric8.mq.controller.util.WeldJUnitRunner;
+import io.fabric8.utils.Asserts;
+import io.fabric8.utils.Block;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.junit.After;
 import org.junit.Assert;
@@ -85,6 +87,12 @@ public class OpenWireTest {
             producer.send(message);
         }
         countDownLatch.await((long) (numberOfMessages * 100), TimeUnit.MILLISECONDS);
-        Assert.assertTrue(countDownLatch.getCount() == 0);
+        Asserts.assertWaitFor(10 * 60 * 1000, new Block() {
+            @Override
+            public void invoke() throws Exception {
+                Assert.assertTrue(countDownLatch.getCount() == 0);
+            }
+        });
     }
 }
+
