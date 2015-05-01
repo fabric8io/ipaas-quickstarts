@@ -37,6 +37,7 @@
   <modules>
     <module>base</module>
     <module>cdelivery</module>
+    <module>ipaas</module>
     <module>logging</module>
     <module>kitchen-sink</module>
     <module>management</module>

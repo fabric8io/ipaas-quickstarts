@@ -57,17 +57,13 @@
       <classifier>kubernetes</classifier>
       <type>json</type>
     </dependency>
-
-
-    <!-- iPaaS -->
     <dependency>
-      <groupId>io.fabric8.jube.images.fabric8</groupId>
-      <artifactId>api-registry</artifactId>
+      <groupId>io.fabric8.apps</groupId>
+      <artifactId>ipaas</artifactId>
       <version>${project.version}</version>
       <classifier>kubernetes</classifier>
       <type>json</type>
     </dependency>
-
   </dependencies>
 
   <build>

@@ -26,10 +26,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>io.fabric8.apps</groupId>
-  <artifactId>base</artifactId>
+  <artifactId>ipaas</artifactId>
   <packaging>pom</packaging>
 
-  <name>Fabric8 :: Apps Groups :: Base</name>
+  <name>Fabric8 :: Apps Groups :: iPaaS</name>
 
   <properties>
     <fabric8.combineDependencies>true</fabric8.combineDependencies>
@@ -37,19 +37,38 @@
 
   <dependencies>
     <dependency>
-      <groupId>io.fabric8.jube.images.fabric8</groupId>
-      <artifactId>console</artifactId>
+      <groupId>io.fabric8.apps</groupId>
+      <artifactId>base</artifactId>
       <version>${project.version}</version>
       <classifier>kubernetes</classifier>
       <type>json</type>
     </dependency>
     <dependency>
-      <groupId>io.fabric8.jube.images.fabric8</groupId>
-      <artifactId>app-library</artifactId>
+      <groupId>io.fabric8.apps</groupId>
+      <artifactId>cdelivery</artifactId>
       <version>${project.version}</version>
       <classifier>kubernetes</classifier>
       <type>json</type>
     </dependency>
+
+
+    <!-- iPaaS -->
+    <dependency>
+      <groupId>io.fabric8.jube.images.fabric8</groupId>
+      <artifactId>fabric8-forge</artifactId>
+      <version>${project.version}</version>
+      <classifier>kubernetes</classifier>
+      <type>json</type>
+    </dependency>
+
+    <dependency>
+      <groupId>io.fabric8.jube.images.fabric8</groupId>
+      <artifactId>api-registry</artifactId>
+      <version>${project.version}</version>
+      <classifier>kubernetes</classifier>
+      <type>json</type>
+    </dependency>
+
   </dependencies>
 
   <build>
