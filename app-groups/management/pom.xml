@@ -26,10 +26,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>io.fabric8.apps</groupId>
-  <artifactId>kitchen-sink</artifactId>
+  <artifactId>management</artifactId>
   <packaging>pom</packaging>
 
-  <name>Fabric8 :: Apps Groups :: Kitchen Sink</name>
+  <name>Fabric8 :: Apps Groups :: Management</name>
 
   <properties>
     <fabric8.combineDependencies>true</fabric8.combineDependencies>
@@ -45,29 +45,18 @@
     </dependency>
     <dependency>
       <groupId>io.fabric8.apps</groupId>
-      <artifactId>management</artifactId>
+      <artifactId>logging</artifactId>
       <version>${project.version}</version>
       <classifier>kubernetes</classifier>
       <type>json</type>
     </dependency>
     <dependency>
       <groupId>io.fabric8.apps</groupId>
-      <artifactId>cdelivery</artifactId>
+      <artifactId>metrics</artifactId>
       <version>${project.version}</version>
       <classifier>kubernetes</classifier>
       <type>json</type>
     </dependency>
-
-
-    <!-- iPaaS -->
-    <dependency>
-      <groupId>io.fabric8.jube.images.fabric8</groupId>
-      <artifactId>api-registry</artifactId>
-      <version>${project.version}</version>
-      <classifier>kubernetes</classifier>
-      <type>json</type>
-    </dependency>
-
   </dependencies>
 
   <build>

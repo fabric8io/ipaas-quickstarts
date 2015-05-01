@@ -5,7 +5,7 @@
     "metadata": {
         "name": "hubot-letschat-template",
         "annotations": {
-            "description": "Adds hubot to Lets Chat",
+            "description": "Adds hubot to Lets Chat"
         }
     },
       "parameters": [ 

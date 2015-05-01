@@ -36,6 +36,10 @@
 
   <modules>
     <module>base</module>
+    <module>cdelivery</module>
+    <module>logging</module>
     <module>kitchen-sink</module>
+    <module>management</module>
+    <module>metrics</module>
   </modules>
 </project>

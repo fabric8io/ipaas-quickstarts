@@ -26,10 +26,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>io.fabric8.apps</groupId>
-  <artifactId>kitchen-sink</artifactId>
+  <artifactId>logging</artifactId>
   <packaging>pom</packaging>
 
-  <name>Fabric8 :: Apps Groups :: Kitchen Sink</name>
+  <name>Fabric8 :: Apps Groups :: Management :: Loggging</name>
 
   <properties>
     <fabric8.combineDependencies>true</fabric8.combineDependencies>
@@ -43,31 +43,21 @@
       <classifier>kubernetes</classifier>
       <type>json</type>
     </dependency>
-    <dependency>
-      <groupId>io.fabric8.apps</groupId>
-      <artifactId>management</artifactId>
-      <version>${project.version}</version>
-      <classifier>kubernetes</classifier>
-      <type>json</type>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8.apps</groupId>
-      <artifactId>cdelivery</artifactId>
-      <version>${project.version}</version>
-      <classifier>kubernetes</classifier>
-      <type>json</type>
-    </dependency>
 
-
-    <!-- iPaaS -->
     <dependency>
       <groupId>io.fabric8.jube.images.fabric8</groupId>
-      <artifactId>api-registry</artifactId>
+      <artifactId>elasticsearch</artifactId>
       <version>${project.version}</version>
       <classifier>kubernetes</classifier>
       <type>json</type>
     </dependency>
-
+    <dependency>
+      <groupId>io.fabric8.jube.images.fabric8</groupId>
+      <artifactId>kibana</artifactId>
+      <version>${project.version}</version>
+      <classifier>kubernetes</classifier>
+      <type>json</type>
+    </dependency>
   </dependencies>
 
   <build>

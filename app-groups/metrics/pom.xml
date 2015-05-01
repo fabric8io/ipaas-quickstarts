@@ -26,10 +26,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>io.fabric8.apps</groupId>
-  <artifactId>kitchen-sink</artifactId>
+  <artifactId>metrics</artifactId>
   <packaging>pom</packaging>
 
-  <name>Fabric8 :: Apps Groups :: Kitchen Sink</name>
+  <name>Fabric8 :: Apps Groups :: Management :: Metrics</name>
 
   <properties>
     <fabric8.combineDependencies>true</fabric8.combineDependencies>
@@ -43,30 +43,32 @@
       <classifier>kubernetes</classifier>
       <type>json</type>
     </dependency>
-    <dependency>
-      <groupId>io.fabric8.apps</groupId>
-      <artifactId>management</artifactId>
-      <version>${project.version}</version>
-      <classifier>kubernetes</classifier>
-      <type>json</type>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8.apps</groupId>
-      <artifactId>cdelivery</artifactId>
-      <version>${project.version}</version>
-      <classifier>kubernetes</classifier>
-      <type>json</type>
-    </dependency>
 
-
-    <!-- iPaaS -->
     <dependency>
       <groupId>io.fabric8.jube.images.fabric8</groupId>
-      <artifactId>api-registry</artifactId>
+      <artifactId>influxdb</artifactId>
       <version>${project.version}</version>
       <classifier>kubernetes</classifier>
       <type>json</type>
     </dependency>
+    <dependency>
+      <groupId>io.fabric8.jube.images.fabric8</groupId>
+      <artifactId>grafana</artifactId>
+      <version>${project.version}</version>
+      <classifier>kubernetes</classifier>
+      <type>json</type>
+    </dependency>
+<!--
+    TODO
+
+    <dependency>
+      <groupId>io.fabric8.jube.images.fabric8</groupId>
+      <artifactId>heapster</artifactId>
+      <version>${project.version}</version>
+      <classifier>kubernetes</classifier>
+      <type>json</type>
+    </dependency>
+-->
 
   </dependencies>
 
