@@ -2,6 +2,12 @@ package io.fabric8.apiman;
 
 import static org.junit.Assert.*;
 
+import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.client.Client;
+import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.index.Index;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class ManagerApiConfigTest {
@@ -10,7 +16,7 @@ public class ManagerApiConfigTest {
 	public void testClustername() {
 		ManagerApiMicroServiceConfig config = new ManagerApiMicroServiceConfig();
 		config.postConstruct();
-		assertEquals("ELASTICSEARCH", config.getESClusterName());
+		assertEquals("elasticsearch", config.getESClusterName());
 	}
 	
 	@Test
@@ -22,6 +28,19 @@ public class ManagerApiConfigTest {
 		// I guess due to the port of the ELASTICSEARCH_SERVICE_PORT
 		//assertEquals(9300, esPort);
 		assertTrue("Should have an ES port", esPort > 0);
+	}
+	
+	@Test @Ignore
+	public void testES() {
+		try {
+			 Client client = new TransportClient()
+	         .addTransportAddress(new InetSocketTransportAddress("172.30.17.218", 9300));
+			 IndexResponse response = client.prepareIndex("twitter", "tweet", "1").setSource("{ }").execute().actionGet();
+	         System.out.println("RESPONSE=" + response);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	
 	}
 
 }
