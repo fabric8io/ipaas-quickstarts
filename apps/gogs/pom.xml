@@ -38,7 +38,7 @@
     <docker.port.container.ssh>22</docker.port.container.ssh>
     <docker.port.container.jolokia />
 
-    <domain>fabric8.local</domain>
+    <domain>os1.fabric8.io</domain>
     <fabric8.env.GOGS_SERVER__DOMAIN>gogs.${domain}</fabric8.env.GOGS_SERVER__DOMAIN>
     <fabric8.env.GOGS_SERVER__ROOT_URL>http://gogs.${domain}</fabric8.env.GOGS_SERVER__ROOT_URL>
     <fabric8.env.GOGS_SERVER__PROTOCOL>http</fabric8.env.GOGS_SERVER__PROTOCOL>
