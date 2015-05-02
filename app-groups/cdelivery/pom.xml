@@ -96,6 +96,10 @@
       <classifier>kubernetes</classifier>
       <type>json</type>
     </dependency>
+    <!--
+            TODO uncomment when this issue is resolved:
+            https://github.com/fabric8io/origin-schema-generator/issues/26
+
     <dependency>
       <groupId>io.fabric8.jube.images.fabric8</groupId>
       <artifactId>hubot-letschat</artifactId>
@@ -103,6 +107,7 @@
       <classifier>kubernetes</classifier>
       <type>json</type>
     </dependency>
+    -->
     <dependency>
       <groupId>io.fabric8.jube.images.fabric8</groupId>
       <artifactId>lets-chat</artifactId>
