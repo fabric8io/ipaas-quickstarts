@@ -9,8 +9,12 @@
             "id": "http-gateway-apiman",
             "apiVersion": "v1beta2",
             "kind": "Service",
-            "containerPort": ${apiman.port},
-            "port": "8999",
+            "ports": [
+                {
+                    "containerPort": ${apiman.port},
+                    "port" : "8999"
+                }
+            ],
             "selector": {
             "provider": "fabric8",
             "component": "HttpGateway",
