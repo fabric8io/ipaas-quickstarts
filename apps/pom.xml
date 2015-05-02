@@ -74,7 +74,12 @@
         <module>grafana</module>
         <module>heapster</module>
         <module>hubot</module>
+<!--
+        TODO uncomment when this issue is resolved:
+        https://github.com/fabric8io/origin-schema-generator/issues/26
+
         <module>hubot-letschat</module>
+-->
         <module>hubot-notifier</module>
         <module>infinispan-server</module>
         <module>influxdb</module>
