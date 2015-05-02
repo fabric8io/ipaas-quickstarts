@@ -92,4 +92,13 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <profiles>
+        <profile>
+            <id>fabric8-cd</id>
+            <properties>
+                <fabric8.env.SEED_GIT_URL>https://github.com/fabric8io/jenkins-pipeline-dsl.git</fabric8.env.SEED_GIT_URL>
+            </properties>
+        </profile>
+    </profiles>
 </project>
