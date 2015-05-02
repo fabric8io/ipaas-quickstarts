@@ -1,6 +1,6 @@
 {
     "id": "sonarqube-config",
-    "kind": "Config",
+    "kind": "List",
     "apiVersion": "v1beta2",
     "name": "sonarqube-config",
     "description": "Creates a sonarqube Server",

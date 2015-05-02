@@ -1,6 +1,6 @@
 {
     "id": "fabric8-zookeeper-config",
-    "kind": "Config",
+    "kind": "List",
     "apiVersion": "v1beta2",
     "name": "fabric8-zookeeper-config",
     "description": "Creates a ZooKeeper Server",

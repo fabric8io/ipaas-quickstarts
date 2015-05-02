@@ -1,6 +1,6 @@
 {
     "id": "letschat-config",
-    "kind": "Config",
+    "kind": "List",
     "apiVersion": "v1beta2",
     "name": "letschat-config",
     "description": "Creates a letschat",

@@ -1,6 +1,6 @@
 {
     "id": "hubot-config",
-    "kind": "Config",
+    "kind": "List",
     "apiVersion": "v1beta2",
     "name": "hubot-config",
     "description": "Creates a hubot chat bot",

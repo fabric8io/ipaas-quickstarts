@@ -1,6 +1,6 @@
 {
   "id": "infinispan-config",
-  "kind": "Config",
+  "kind": "List",
   "apiVersion": "v1beta2",
   "name": "infinispan-config",
   "description": "Creates an infinispan pod & service",

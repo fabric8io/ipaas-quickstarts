@@ -1,6 +1,6 @@
 {
     "id": "gerrit-config",
-    "kind": "Config",
+    "kind": "List",
     "apiVersion": "v1beta2",
     "name": "gerrit-config",
     "description": "Creates a Gerrit Server",

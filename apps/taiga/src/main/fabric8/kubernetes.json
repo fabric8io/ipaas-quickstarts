@@ -1,6 +1,6 @@
 {
     "id": "taiga-config",
-    "kind": "Config",
+    "kind": "List",
     "apiVersion": "v1beta2",
     "name": "taiga-config",
     "description": "Creates a taiga",
