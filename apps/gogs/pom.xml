@@ -39,13 +39,13 @@
     <docker.port.container.jolokia />
 
     <domain>os1.fabric8.io</domain>
-    <fabric8.env.GOGS_SERVER__DOMAIN>gogs.${domain}</fabric8.env.GOGS_SERVER__DOMAIN>
-    <fabric8.env.GOGS_SERVER__ROOT_URL>http://gogs.${domain}</fabric8.env.GOGS_SERVER__ROOT_URL>
+    <fabric8.env.GOGS_SERVER__DOMAIN>gogs.\${DOMAIN}</fabric8.env.GOGS_SERVER__DOMAIN>
+    <fabric8.env.GOGS_SERVER__ROOT_URL>http://gogs.\${DOMAIN}</fabric8.env.GOGS_SERVER__ROOT_URL>
     <fabric8.env.GOGS_SERVER__PROTOCOL>http</fabric8.env.GOGS_SERVER__PROTOCOL>
 <!--
     TODO re-enable when we have certs so that STI builds and Eclipse Orion can clone the repo from https://
 
-    <fabric8.env.GOGS_SERVER__ROOT_URL>https://gogs.${domain}</fabric8.env.GOGS_SERVER__ROOT_URL>
+    <fabric8.env.GOGS_SERVER__ROOT_URL>https://gogs.\${DOMAIN}</fabric8.env.GOGS_SERVER__ROOT_URL>
     <fabric8.env.GOGS_SERVER__PROTOCOL>https</fabric8.env.GOGS_SERVER__PROTOCOL>
     <fabric8.service.port>443</fabric8.service.port>
 -->
@@ -60,6 +60,9 @@
 
     <fabric8.label.component>gogs</fabric8.label.component>
     <fabric8.label.provider>fabric8</fabric8.label.provider>
+
+    <fabric8.parameter.DOMAIN.value>os1.fabric8.io</fabric8.parameter.DOMAIN.value>
+    <fabric8.parameter.DOMAIN.description>The domain name to append to the service name to access gogs repositories</fabric8.parameter.DOMAIN.description>
   </properties>
 
     <build>

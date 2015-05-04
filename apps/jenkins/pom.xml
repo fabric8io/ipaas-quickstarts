@@ -56,6 +56,9 @@
         <fabric8.volume.jenkins-jobs.emptyDir></fabric8.volume.jenkins-jobs.emptyDir>
         <fabric8.volume.jenkins-jobs.mountPath>/var/jenkins_home/jobs</fabric8.volume.jenkins-jobs.mountPath>
 -->
+
+        <fabric8.parameter.SEED_GIT_URL.value>https://github.com/fabric8io/default-jenkins-dsl.git</fabric8.parameter.SEED_GIT_URL.value>
+        <fabric8.parameter.SEED_GIT_URL.description>The git URL of the seed build used to generate builds</fabric8.parameter.SEED_GIT_URL.description>
     </properties>
 
     <build>
@@ -97,7 +100,7 @@
         <profile>
             <id>fabric8-cd</id>
             <properties>
-                <fabric8.env.SEED_GIT_URL>https://github.com/fabric8io/jenkins-pipeline-dsl.git</fabric8.env.SEED_GIT_URL>
+                <fabric8.parameter.SEED_GIT_URL.value>https://github.com/fabric8io/jenkins-pipeline-dsl.git</fabric8.parameter.SEED_GIT_URL.value>
             </properties>
         </profile>
     </profiles>
