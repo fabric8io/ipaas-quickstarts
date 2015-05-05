@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.api.Kubernetes;
 import io.fabric8.kubernetes.api.KubernetesHelper;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.Container;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodStatus;
 import io.fabric8.kubernetes.api.model.Service;
@@ -47,6 +48,7 @@ import javax.inject.Inject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -243,7 +245,7 @@ public class ApiFinder {
         String containerName = null;
         String objectName = null;
         String serviceId = getName(service);
-        Map<String, String> labels = service.getLabels();
+        Map<String, String> labels = KubernetesHelper.getLabels(service.getMetadata());
         String state = "STARTED";
 
         int port = 0;

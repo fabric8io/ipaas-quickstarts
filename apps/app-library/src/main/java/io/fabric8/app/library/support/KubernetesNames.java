@@ -17,7 +17,6 @@
  */
 package io.fabric8.app.library.support;
 
-import io.fabric8.kubernetes.api.Config;
 import io.fabric8.kubernetes.api.KubernetesHelper;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.Service;
@@ -60,9 +59,8 @@ public class KubernetesNames {
             addNames((ReplicationController) dto);
         } else if (dto instanceof Service) {
             addNames((Service) dto);
-        } else if (dto instanceof Config) {
-            Config config = (Config) dto;
-            List<Object> entities = KubernetesHelper.getEntities(config);
+        } else {
+            List<Object> entities = KubernetesHelper.toItemList(dto);
             for (Object entity : entities) {
                 addNamesFromDTO(entity);
             }

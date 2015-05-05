@@ -1,5 +1,7 @@
 {
-    "id": "sonarqube-config",
+    "metadata": {
+      "id": "sonarqube-config",
+    },
     "kind": "List",
     "apiVersion": "v1beta2",
     "name": "sonarqube-config",

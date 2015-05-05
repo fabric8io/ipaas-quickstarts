@@ -43,7 +43,7 @@
     <skipTests>false</skipTests>
 
     <!-- the version of the BOM, defining all the dependency versions -->
-    <fabric8.version>2.0.48</fabric8.version>
+    <fabric8.version>2.2-SNAPSHOT</fabric8.version>
     <hawtio.version>1.4.50</hawtio.version>
     <jgit.version>3.4.1.201406201815-r</jgit.version>
     <cxf.version>3.0.4</cxf.version>
@@ -67,6 +67,11 @@
     <fabric8.env.IMPORT_APP_URLS>${docker.env.IMPORT_APP_URLS}</fabric8.env.IMPORT_APP_URLS>
     <fabric8.service.name>app-library</fabric8.service.name>
     <fabric8.service.port>80</fabric8.service.port>
+
+    <fabric8.service.port.jolokia>8778</fabric8.service.port.jolokia>
+    <fabric8.service.containerPort.jolokia>8778</fabric8.service.containerPort.jolokia>
+
+
     <fabric8.service.containerPort>${http.port}</fabric8.service.containerPort>
     <fabric8.replicationController.name>app-library-controller</fabric8.replicationController.name>
     <fabric8.label.component>AppLibrary</fabric8.label.component>

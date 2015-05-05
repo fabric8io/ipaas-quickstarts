@@ -41,7 +41,7 @@
         <fabric8.service.port>80</fabric8.service.port>
         <fabric8.service.name>${project.artifactId}</fabric8.service.name>
         <fabric8.service.containerPort>${docker.port.container.http}</fabric8.service.containerPort>
-        <fabric8.imagePullPolicy>PullIfNotPresent</fabric8.imagePullPolicy>
+        <!-- TODO <fabric8.imagePullPolicy>PullIfNotPresent</fabric8.imagePullPolicy> -->
 
         <fabric8.env.SEED_GIT_URL>\${SEED_GIT_URL}</fabric8.env.SEED_GIT_URL>
 

@@ -15,6 +15,7 @@
  */
 package io.fabric8.api.registry;
 
+import io.fabric8.kubernetes.api.KubernetesHelper;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.Pod;
 
@@ -68,7 +69,7 @@ public class ApiDTO {
     }
 
     public ApiDTO(Pod pod, Container container, String serviceId, String objectName, String path, String url, int port, String state, String jolokiaUrl, String swaggerPath, String swaggerUrl, String wadlPath, String wadlUrl, String wsdlPath, String wsdlUrl) {
-        this(getName(pod), serviceId, pod.getLabels(), container.getName(), objectName, path, url, port, state, jolokiaUrl, swaggerPath, swaggerUrl, wadlPath, wadlUrl, wsdlPath, wsdlUrl);
+        this(getName(pod), serviceId, KubernetesHelper.getLabels(pod.getMetadata()), container.getName(), objectName, path, url, port, state, jolokiaUrl, swaggerPath, swaggerUrl, wadlPath, wadlUrl, wsdlPath, wsdlUrl);
     }
 
     @Override

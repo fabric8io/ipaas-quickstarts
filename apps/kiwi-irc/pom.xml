@@ -41,7 +41,7 @@
     <fabric8.service.name>kiwiirc</fabric8.service.name>
     <fabric8.service.port>80</fabric8.service.port>
     <fabric8.service.containerPort>7778</fabric8.service.containerPort>
-    <fabric8.imagePullPolicy>PullIfNotPresent</fabric8.imagePullPolicy>
+    <!-- TODO <fabric8.imagePullPolicy>PullIfNotPresent</fabric8.imagePullPolicy> -->
 
     <fabric8.label.component>kiwiirc</fabric8.label.component>
     <fabric8.label.provider>fabric8</fabric8.label.provider>

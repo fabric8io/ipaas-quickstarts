@@ -1,10 +1,20 @@
 {
-  "id": "elasticsearch-cluster",
-  "apiVersion": "v1beta2",
   "kind": "Service",
+  "apiVersion": "v1beta3",
+  "metadata": {
+    "name": "elasticsearch-cluster"
+  },
   "portalIP": "None",
-  "port": 9200,
-  "containerPort" : 9200,
+  "spec": {
+    "ports": [
+      {
+        "name": "",
+        "protocol": "TCP",
+        "port": 9300,
+        "targetPort": 9300
+      }
+    ]
+  },
   "selector": {
     "component": "elasticsearch",
     "provider": "fabric8"

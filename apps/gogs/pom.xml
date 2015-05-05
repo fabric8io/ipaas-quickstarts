@@ -56,7 +56,11 @@
     <fabric8.replicationController.name>gogs-controller</fabric8.replicationController.name>
     <fabric8.service.name>gogs-http-service</fabric8.service.name>
     <fabric8.service.containerPort>3000</fabric8.service.containerPort>
-    <fabric8.imagePullPolicy>PullIfNotPresent</fabric8.imagePullPolicy>
+    <!-- TODO <fabric8.imagePullPolicy>PullIfNotPresent</fabric8.imagePullPolicy> -->
+
+    <fabric8.service.port.ssh>22</fabric8.service.port.ssh>
+    <fabric8.service.containerPort.ssh>22</fabric8.service.containerPort.ssh>
+
 
     <fabric8.label.component>gogs</fabric8.label.component>
     <fabric8.label.provider>fabric8</fabric8.label.provider>
