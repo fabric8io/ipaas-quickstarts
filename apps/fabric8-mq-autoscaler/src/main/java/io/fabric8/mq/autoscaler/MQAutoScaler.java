@@ -576,8 +576,8 @@ public class MQAutoScaler implements MQAutoScalerMBean {
             ControllerDesiredState desiredState = replicationController.getDesiredState();
             desiredState.setReplicas(number);
             replicationController.setDesiredState(desiredState);
-            kubernetes.updateReplicationController(replicationController.getId(), replicationController);
-            LOG.info("Updated required replicas for " + replicationController.getId() + " to " + number);
+            kubernetes.updateReplicationController(getName(replicationController), replicationController);
+            LOG.info("Updated required replicas for " + getName(replicationController) + " to " + number);
         }
         //sleep, for changes to take effect
         Thread.sleep(2000);

@@ -26,6 +26,7 @@ import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static io.fabric8.kubernetes.api.KubernetesHelper.getName;
 import static io.fabric8.kubernetes.assertions.Assertions.assertThat;
 
 @RunWith(Arquillian.class)
@@ -42,7 +43,7 @@ public class JenkinsKubernetesTest {
       	assertThat(client).replicationControllers().haveAtLeast(1, new Condition<ReplicationController>() {
 	        @Override
 	        public boolean matches(ReplicationController replicationController) {
-	            return replicationController.getId().startsWith("jenkins");
+	            return getName(replicationController).startsWith("jenkins");
 	        }
       	});
         assertThat(client).pods().runningStatus().filterNamespace(session.getNamespace()).hasSize(1);

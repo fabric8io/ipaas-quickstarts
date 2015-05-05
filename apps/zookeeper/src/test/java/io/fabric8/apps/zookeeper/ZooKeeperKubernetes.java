@@ -26,6 +26,7 @@ import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static io.fabric8.kubernetes.api.KubernetesHelper.getName;
 import static io.fabric8.kubernetes.assertions.Assertions.assertThat;
 
 @RunWith(Arquillian.class)
@@ -42,21 +43,21 @@ public class ZooKeeperKubernetes {
         assertThat(client).replicationControllers().haveAtLeast(3, new Condition<ReplicationController>() {
             @Override
             public boolean matches(ReplicationController replicationController) {
-                return replicationController.getId().startsWith("zookeeper-controller");
+                return getName(replicationController).startsWith("zookeeper-controller");
             }
         });
 
         assertThat(client).services().haveAtLeast(3, new Condition<Service>() {
             @Override
             public boolean matches(Service serviceSchema) {
-                return serviceSchema.getId().startsWith("zk-peer");
+                return getName(serviceSchema).startsWith("zk-peer");
             }
         });
 
         assertThat(client).services().haveAtLeast(3, new Condition<Service>() {
             @Override
             public boolean matches(Service serviceSchema) {
-                return serviceSchema.getId().startsWith("zk-election");
+                return getName(serviceSchema).startsWith("zk-election");
             }
         });
 

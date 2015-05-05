@@ -21,6 +21,8 @@ import io.fabric8.kubernetes.api.KubernetesClient;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceList;
+import io.fabric8.kubernetes.api.model.ServicePort;
+import io.fabric8.kubernetes.api.model.ServiceSpec;
 import io.fabric8.utils.Asserts;
 import io.fabric8.utils.Block;
 import org.apache.http.client.fluent.Request;
@@ -40,8 +42,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.io.IOException;
+import java.util.List;
 
+import static io.fabric8.kubernetes.api.KubernetesHelper.getName;
 import static io.fabric8.kubernetes.assertions.Assertions.assertThat;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(Arquillian.class)
 public class InfinispanServerKubernetesTest {
@@ -60,35 +65,35 @@ public class InfinispanServerKubernetesTest {
         assertThat(client).replicationControllers().haveAtLeast(1, new Condition<ReplicationController>() {
             @Override
             public boolean matches(ReplicationController replicationController) {
-                return replicationController.getId().startsWith("infinispan-controller");
+                return getName(replicationController).startsWith("infinispan-controller");
             }
         });
 
         assertThat(client).services().haveAtLeast(1, new Condition<Service>() {
             @Override
             public boolean matches(Service serviceSchema) {
-                return serviceSchema.getId().startsWith("infinispan-rest");
+                return getName(serviceSchema).startsWith("infinispan-rest");
             }
         });
 
         assertThat(client).services().haveAtLeast(1, new Condition<Service>() {
             @Override
             public boolean matches(Service serviceSchema) {
-                return serviceSchema.getId().startsWith("infinispan-remote");
+                return getName(serviceSchema).startsWith("infinispan-remote");
             }
         });
 
         assertThat(client).services().haveAtLeast(1, new Condition<Service>() {
             @Override
             public boolean matches(Service serviceSchema) {
-                return serviceSchema.getId().startsWith("infinispan-memcached");
+                return getName(serviceSchema).startsWith("infinispan-memcached");
             }
         });
 
         assertThat(client).services().haveAtLeast(1, new Condition<Service>() {
             @Override
             public boolean matches(Service serviceSchema) {
-                return serviceSchema.getId().startsWith("infinispan-hotrod");
+                return getName(serviceSchema).startsWith("infinispan-hotrod");
             }
         });
 
@@ -98,9 +103,14 @@ public class InfinispanServerKubernetesTest {
     public void testRestEndpoint() throws Exception {
         final String key = "key";
         final String expectedValue = "value1";
-        final Service restService = getRequiredService("infinispan-rest");
 
-        final String serverURL = "http://" + restService.getPortalIP() + ":" + restService.getPort() + "/rest/default";
+        final ServiceSpec restService = getRequiredServiceSpec("infinispan-rest");
+
+        List<ServicePort> ports = restService.getPorts();
+        assertTrue("Should have at least one port for service " + restService, ports.size() > 0);
+        ServicePort firstServicePort = ports.get(0);
+
+        final String serverURL = "http://" + restService.getPortalIP() + ":" + firstServicePort.getPort() + "/rest/default";
         //TODO: We need to find a more elegant/robust way to know when the service is actually ready.
         Asserts.assertWaitFor(2 * 60 * 1000, new Block() {
             @Override
@@ -129,7 +139,7 @@ public class InfinispanServerKubernetesTest {
                 for (Address address : channel.getView().getMembers()) {
                     System.out.println(address);
                 }
-                Assert.assertTrue(channel.getView().getMembers().size() > 3);
+                assertTrue(channel.getView().getMembers().size() > 3);
             }
         });
     }
@@ -140,11 +150,14 @@ public class InfinispanServerKubernetesTest {
      * @param id    The id.
      * @return
      */
-    private Service getRequiredService(String id) {
+    private ServiceSpec getRequiredServiceSpec(String id) {
         Preconditions.checkNotNullOrEmpty(id);
         for (Service s : serviceList.getItems()) {
-            if (id.equals(s.getId())) {
-                return s;
+            if (id.equals(getName(s))) {
+                ServiceSpec spec = s.getSpec();
+                if (spec != null) {
+                    return spec;
+                }
             }
         }
         throw new IllegalStateException("Service with id:"+id+" doesn't exists.");
