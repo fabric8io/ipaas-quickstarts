@@ -48,6 +48,9 @@
         <fabric8.label.component>jenkins</fabric8.label.component>
         <fabric8.label.provider>fabric8</fabric8.label.provider>
 
+        <!-- to access docker socket lets run in priviledged mode -->
+        <fabric8.containerPrivileged>true</fabric8.containerPrivileged>
+
         <fabric8.volume.docker-socket.hostPath>/var/run/docker.sock</fabric8.volume.docker-socket.hostPath>
         <fabric8.volume.docker-socket.mountPath>/var/run/docker.sock</fabric8.volume.docker-socket.mountPath>
 
@@ -61,6 +64,11 @@
 
         <fabric8.parameter.SEED_GIT_URL.value>https://github.com/fabric8io/default-jenkins-dsl.git</fabric8.parameter.SEED_GIT_URL.value>
         <fabric8.parameter.SEED_GIT_URL.description>The git URL of the seed build used to generate builds</fabric8.parameter.SEED_GIT_URL.description>
+
+        <!-- liveness probe -->
+        <fabric8.livenessProbe.httpGet.path>/v1/_ping</fabric8.livenessProbe.httpGet.path>
+        <fabric8.livenessProbe.httpGet.port>2375</fabric8.livenessProbe.httpGet.port>
+        <fabric8.livenessProbe.initialDelaySeconds>30</fabric8.livenessProbe.initialDelaySeconds>
     </properties>
 
     <build>
