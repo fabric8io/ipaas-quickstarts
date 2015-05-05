@@ -48,7 +48,7 @@
     <fabric8.version>2.0.48</fabric8.version>
     <jube.version>2.0.48</jube.version>
     <docker.maven.plugin.version>0.11.3</docker.maven.plugin.version>
-    <camel.version>2.15.1</camel.version>
+    <camel.version>2.15.2</camel.version>
     <cxf.version>3.0.4</cxf.version>
 
     <docker.from>fabric8/tomcat-8.0</docker.from>
