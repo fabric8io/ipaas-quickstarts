@@ -7,7 +7,7 @@
     "items": [
         {
             "apiVersion" : "v1beta2",
-            "id":"sonarqube-service",
+            "id":"sonarqube",
             "kind":"Service",
             "port":8080,
             "containerPort":9000,
