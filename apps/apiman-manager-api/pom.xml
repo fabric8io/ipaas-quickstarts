@@ -7,8 +7,8 @@
     <version>2.2-SNAPSHOT</version>
   </parent>
   <artifactId>apiman-manager-api</artifactId>
-  <name>ApiMan Manager REST API</name>
-  <description>ApiMan deployed on Jetty</description>
+  <name>Apiman Manager REST API</name>
+  <description>Apiman deployed on Jetty</description>
 
 
   <properties>
@@ -18,7 +18,7 @@
     <maven.compiler.source>1.7</maven.compiler.source>
     <version.maven-surefire-plugin>2.15</version.maven-surefire-plugin>
     <version.maven-bundle-plugin>2.3.7</version.maven-bundle-plugin>
-    <apiman.version>1.1.1.Final</apiman.version>
+    <apiman.version>1.1.2.Final</apiman.version>
     <jetty.version>8.1.14.v20131031</jetty.version>
     <resteasy.version>3.0.8.Final</resteasy.version>
     <commons-dbcp.version>1.4</commons-dbcp.version>
