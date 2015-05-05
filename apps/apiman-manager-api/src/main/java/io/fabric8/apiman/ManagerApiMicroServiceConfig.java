@@ -15,6 +15,8 @@
  */
 package io.fabric8.apiman;
 
+import io.apiman.manager.api.core.logging.ApimanLogger;
+import io.apiman.manager.api.core.logging.IApimanLogger;
 import io.fabric8.utils.Systems;
 
 import java.io.File;
@@ -27,11 +29,10 @@ import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.SystemConfiguration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Configuration for the API Manager back-end micro service.
@@ -52,32 +53,35 @@ public class ManagerApiMicroServiceConfig {
 
     public static final String DEFAULT_ES_CLUSTER_NAME = "apiman"; //$NON-NLS-1$
 
-    private static final Logger LOG = LoggerFactory.getLogger(ManagerApiMicroServiceConfig.class);
     private Configuration config;
-    
+
+    @Inject
+    @ApimanLogger(ManagerApiMicroService.class)
+    private IApimanLogger log;
+
     /**
      * Constructor.
      */
     public ManagerApiMicroServiceConfig() {
     }
-    
+
     @PostConstruct
     protected void postConstruct() {
-        
+
     	String host = null;
 		try {
 			InetAddress initAddress = InetAddress.getByName("ELASTICSEARCH");
 			host = initAddress.getCanonicalHostName();
 		} catch (UnknownHostException e) {
-			LOG.info("Could not resolve DNS for ELASTICSEARCH, trying ENV settings next.");
+		    log.error("Could not resolve DNS for ELASTICSEARCH, trying ENV settings next.", e);
 		}
     	String hostAndPort = Systems.getServiceHostAndPort("ELASTICSEARCH", "localhost", "9300");
     	String[] hp = hostAndPort.split(":");
     	if (host == null) {
-    		LOG.info("ELASTICSEARCH host:port is set to " + hostAndPort + " using ENV settings.");
+    	    log.debug("ELASTICSEARCH host:port is set to " + hostAndPort + " using ENV settings.");
     		host = hp[0];
     	}
-    	System.out.println("CONNECTING TO 'elasticsearch' on " + host + ":" + hp[1]);
+    	log.debug("CONNECTING TO 'elasticsearch' on " + host + ":" + hp[1]);
         config = new SystemConfiguration();
         config.setProperty(APIMAN_MANAGER_STORAGE_ES_HOST, host);
         config.setProperty(APIMAN_MANAGER_STORAGE_ES_PORT, hp[1]);
@@ -102,35 +106,35 @@ public class ManagerApiMicroServiceConfig {
         }
         return rval;
     }
-    
+
     /**
      * @return the configured storage type
      */
     public String getStorageType() {
         return config.getString(APIMAN_MANAGER_STORAGE_TYPE, "es"); //$NON-NLS-1$
     }
-    
+
     /**
      * @return the elasticsearch host
      */
     public String getESHost() {
         return config.getString(APIMAN_MANAGER_STORAGE_ES_HOST, "localhost"); //$NON-NLS-1$
     }
-    
+
     /**
      * @return the elasticsearch port
      */
     public int getESPort() {
         return config.getInt(APIMAN_MANAGER_STORAGE_ES_PORT, 9300);
     }
-    
+
     /**
      * @return the elasticsearch cluster name
      */
     public String getESClusterName() {
         return config.getString(APIMAN_MANAGER_STORAGE_ES_CLUSTER_NAME, DEFAULT_ES_CLUSTER_NAME);
     }
-    
+
     /**
      * @return true if the elasticsearch index should be initialized if not found
      */
@@ -149,5 +153,5 @@ public class ManagerApiMicroServiceConfig {
         File pluginsDir = new File(pluginDirPath);
         return pluginsDir;
     }
-    
+
 }
