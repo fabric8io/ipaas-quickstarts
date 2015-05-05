@@ -33,7 +33,36 @@
     </description>
 
     <properties>
-        <fabric8.generateJson>false</fabric8.generateJson>
+        <docker.image>fabric8/hubot-letschat</docker.image>
+
+        <fabric8.service.port>8080</fabric8.service.port>
+
+        <docker.port.container.http>8080</docker.port.container.http>
+        <docker.port.container.jolokia />
+
+        <fabric8.label.component>hubot-letschat</fabric8.label.component>
+        <fabric8.label.provider>fabric8</fabric8.label.provider>
+
+        <fabric8.env.LETSCHAT_HOST>\${LETSCHAT_HOST}</fabric8.env.LETSCHAT_HOST>
+        <fabric8.env.LETSCHAT_PORT>\${LETSCHAT_PORT}</fabric8.env.LETSCHAT_PORT>
+        <fabric8.env.LETSCHAT_TOKEN>\${LETSCHAT_TOKEN}</fabric8.env.LETSCHAT_TOKEN>
+        <fabric8.env.LETSCHAT_ROOMS>\${LETSCHAT_ROOMS}</fabric8.env.LETSCHAT_ROOMS>
+        <fabric8.env.LETSCHAT_HUBOT_SCRIPTS>\${SEED_GIT_URL}</fabric8.env.LETSCHAT_HUBOT_SCRIPTS>
+
+        <fabric8.parameter.LETSCHAT_HOST.value>\${LETSCHAT_SERVICE_HOST}</fabric8.parameter.LETSCHAT_HOST.value>
+        <fabric8.parameter.LETSCHAT_HOST.description>Lets Chat service host</fabric8.parameter.LETSCHAT_HOST.description>
+
+        <fabric8.parameter.LETSCHAT_PORT.value>\${LETSCHAT_SERVICE_PORT}</fabric8.parameter.LETSCHAT_PORT.value>
+        <fabric8.parameter.LETSCHAT_PORT.description>Lets Chat service port</fabric8.parameter.LETSCHAT_PORT.description>
+
+        <fabric8.parameter.LETSCHAT_TOKEN.description>Token generated in Lets Chat for the fabric8 user</fabric8.parameter.LETSCHAT_TOKEN.description>
+
+        <fabric8.parameter.LETSCHAT_ROOMS.value>#fabric8_default</fabric8.parameter.LETSCHAT_ROOMS.value>
+        <fabric8.parameter.LETSCHAT_ROOMS.description>Comma delimited list of rooms for hubot to join</fabric8.parameter.LETSCHAT_ROOMS.description>
+
+        <fabric8.parameter.LETSCHAT_HUBOT_SCRIPTS.value>https://github.com/fabric8io/fabric8-hubot-scripts.git</fabric8.parameter.LETSCHAT_HUBOT_SCRIPTS.value>
+        <fabric8.parameter.LETSCHAT_HUBOT_SCRIPTS.description>Coffeescripts for hubot</fabric8.parameter.LETSCHAT_HUBOT_SCRIPTS.description>
+
     </properties>
 
     <build>
