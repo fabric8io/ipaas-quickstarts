@@ -39,7 +39,7 @@ public class AppLibraryKubernetesTest {
     @Test
     public void testApiRegistry() throws Exception {
         assertThat(client).replicationController("app-library-controller").isNotNull();
-        assertThat(client).service("app-library").hasPort(9494);
+        assertThat(client).hasServicePort("app-library", 9494);
 
         assertThat(client).pods()
                 .runningStatus()

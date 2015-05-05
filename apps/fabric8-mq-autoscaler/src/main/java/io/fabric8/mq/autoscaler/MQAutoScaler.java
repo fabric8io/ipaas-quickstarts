@@ -36,6 +36,8 @@ import javax.management.ObjectName;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static io.fabric8.kubernetes.api.KubernetesHelper.getName;
+
 public class MQAutoScaler implements MQAutoScalerMBean {
     private static final Logger LOG = LoggerFactory.getLogger(MQAutoScaler.class);
     private final String DEFAULT_DOMAIN = "io.fabric8";
@@ -416,7 +418,7 @@ public class MQAutoScaler implements MQAutoScalerMBean {
             String host = KubernetesHelper.getHost(pod);
             List<Container> containers = KubernetesHelper.getContainers(pod);
             for (Container container : containers) {
-                LOG.info("Checking pod " + pod.getId() + " container: " + container.getName() + " image: " + container.getImage());
+                LOG.info("Checking pod " + getName(pod) + " container: " + container.getName() + " image: " + container.getImage());
                 J4pClient client = clients.clientForContainer(host, container, pod);
                 BrokerVitalSigns brokerVitalSigns = getBrokerVitalSigns(client);
                 if (brokerVitalSigns != null) {
@@ -533,7 +535,7 @@ public class MQAutoScaler implements MQAutoScalerMBean {
         if (!replicationControllerSchemaMap.isEmpty()) {
             ReplicationController replicationControllerSchema = replicationControllerSchemaMap.values().iterator().next();
             if (replicationControllerSchema != null) {
-                return replicationControllerSchema.getCurrentState().getReplicas();
+                return replicationControllerSchema.getStatus().getReplicas();
             }
         }
         //got here so do a dump
@@ -552,11 +554,11 @@ public class MQAutoScaler implements MQAutoScalerMBean {
         if (!replicationControllerSchemaMap.isEmpty()) {
             ReplicationController replicationController = replicationControllerSchemaMap.values().iterator().next();
             if (replicationController != null) {
-                ReplicationControllerState desiredState = replicationController.getDesiredState();
-                desiredState.setReplicas(number);
-                replicationController.setDesiredState(desiredState);
+                ReplicationControllerSpec spec = replicationController.getSpec();
+                spec.setReplicas(number);
+                replicationController.setSpec(spec);
                 try {
-                    kubernetes.updateReplicationController(replicationController.getId(), replicationController);
+                    kubernetes.updateReplicationController(getName(replicationController), replicationController);
                     result = true;
                     LOG.info("Set DesiredState for " + selector + " to " + number + " pods");
                 } catch (Exception e) {

@@ -39,8 +39,9 @@ public class JbpmDesignerKubernetesTest {
 
     @Test
     public void testInfluxDB() throws Exception {
-        assertThat(client).replicationController("jbpm-designer-controller").isNotNull();
-        assertThat(client).service("jbpm-designer").hasPort(80);
+        String serviceName = "jbpm-designer";
+        assertThat(client).replicationController(serviceName + "-controller").isNotNull();
+        assertThat(client).hasServicePort(serviceName, 80);
 
         assertThat(client).pods()
                 .runningStatus()

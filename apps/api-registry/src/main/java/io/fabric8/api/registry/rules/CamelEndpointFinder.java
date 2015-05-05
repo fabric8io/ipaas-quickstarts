@@ -50,6 +50,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static io.fabric8.api.registry.ApiFinder.getHttpUrl;
+import static io.fabric8.kubernetes.api.KubernetesHelper.getName;
 import static io.fabric8.utils.URLUtils.urlPathJoin;
 
 
@@ -128,8 +129,9 @@ public class CamelEndpointFinder extends EndpointFinderSupport {
                 if (apiDeclaration.getSwaggerVersion() == null) {
                     apiDeclaration.setSwaggerVersion(ApiDeclaration.SwaggerVersion._1_2);
                 }
-                String podId = pod.getId();
-                String containerId = pod.getId();
+                String podId = getName(pod);
+                // TODO this is not the container id...
+                String containerId = getName(pod);
                 PodAndContainerId key = new PodAndContainerId(podId, containerId);
 
                 snapshot.putPodAndContainerSwagger(key, apiDeclaration);

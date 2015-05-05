@@ -41,7 +41,7 @@ public class CDeliveryKubernetesTest {
         String serviceName = "cdelivery";
         String replicationControllerName = serviceName + "-controller";
         assertThat(client).replicationController(replicationControllerName).isNotNull();
-        assertThat(client).service(serviceName).hasPort(9595);
+        assertThat(client).hasServicePort(serviceName, 9595);
 
         assertThat(client).pods()
                 .runningStatus()

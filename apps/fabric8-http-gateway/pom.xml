@@ -48,6 +48,9 @@
     <fabric8.service.name>http-gateway</fabric8.service.name>
     <fabric8.service.port>9000</fabric8.service.port>
     <fabric8.service.containerPort>${http.port}</fabric8.service.containerPort>
+
+    <fabric8.service.port.apiman>8999</fabric8.service.port.apiman>
+    <fabric8.service.containerPort.apiman>${apiman.port}</fabric8.service.containerPort.apiman>
   </properties>
 
   <dependencies>

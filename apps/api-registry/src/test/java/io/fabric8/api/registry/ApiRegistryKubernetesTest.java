@@ -39,7 +39,7 @@ public class ApiRegistryKubernetesTest {
     @Test
     public void testApiRegistry() throws Exception {
         assertThat(client).replicationController("api-registry-controller").isNotNull();
-        assertThat(client).service("api-registry").hasPort(9393);
+        assertThat(client).hasServicePort("api-registry", 9393);
 
         assertThat(client).pods()
                 .runningStatus()

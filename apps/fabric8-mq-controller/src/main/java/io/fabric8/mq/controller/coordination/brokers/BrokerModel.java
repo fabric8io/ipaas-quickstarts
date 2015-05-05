@@ -32,6 +32,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static io.fabric8.kubernetes.api.KubernetesHelper.getName;
+
 public class BrokerModel extends ServiceSupport implements BrokerModelMBean {
     private static Logger LOG = LoggerFactory.getLogger(BrokerModel.class);
     private final Pod pod;
@@ -63,7 +65,7 @@ public class BrokerModel extends ServiceSupport implements BrokerModelMBean {
         String result = "";
         Pod pod = getPod();
         if (pod != null) {
-            result = pod.getId();
+            result = getName(pod);
         }
         return result;
     }

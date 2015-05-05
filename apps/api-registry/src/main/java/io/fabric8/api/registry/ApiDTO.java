@@ -21,6 +21,8 @@ import io.fabric8.kubernetes.api.model.Pod;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Map;
 
+import static io.fabric8.kubernetes.api.KubernetesHelper.getName;
+
 /**
  * Represents an API endpoint within a container
  */
@@ -66,7 +68,7 @@ public class ApiDTO {
     }
 
     public ApiDTO(Pod pod, Container container, String serviceId, String objectName, String path, String url, int port, String state, String jolokiaUrl, String swaggerPath, String swaggerUrl, String wadlPath, String wadlUrl, String wsdlPath, String wsdlUrl) {
-        this(pod.getId(), serviceId, pod.getLabels(), container.getName(), objectName, path, url, port, state, jolokiaUrl, swaggerPath, swaggerUrl, wadlPath, wadlUrl, wsdlPath, wsdlUrl);
+        this(getName(pod), serviceId, pod.getLabels(), container.getName(), objectName, path, url, port, state, jolokiaUrl, swaggerPath, swaggerUrl, wadlPath, wadlUrl, wsdlPath, wsdlUrl);
     }
 
     @Override

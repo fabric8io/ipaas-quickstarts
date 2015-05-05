@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.ReplicationController;
+import io.fabric8.kubernetes.api.model.ReplicationControllerStatus;
 import io.fabric8.kubernetes.jolokia.JolokiaClients;
 import io.fabric8.mq.controller.MessageDistribution;
 import io.fabric8.mq.controller.coordination.brokers.BrokerDestinationOverview;
@@ -44,6 +45,8 @@ import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+
+import static io.fabric8.kubernetes.api.KubernetesHelper.getName;
 
 public class KubernetesControl extends BaseBrokerControl {
     static final int DEFAULT_POLLING_TIME = 2000;
@@ -74,13 +77,13 @@ public class KubernetesControl extends BaseBrokerControl {
 
                 for (Container container : containers) {
                     try {
-                        LOG.info("Checking pod " + pod.getId() + " container: " + container.getName() + " image: " + container.getImage());
+                        LOG.info("Checking pod " + getName(pod) + " container: " + container.getName() + " image: " + container.getImage());
                         J4pClient client = clients.clientForContainer(host, container, pod);
 
                         populateBrokerStatistics(pod, client);
 
                     } catch (Throwable e) {
-                        LOG.error("Failed to get broker statistics for pod:  " + pod.getId());
+                        LOG.error("Failed to get broker statistics for pod:  " + getName(pod));
                     }
                 }
             }
@@ -114,7 +117,7 @@ public class KubernetesControl extends BaseBrokerControl {
                     List<Container> containers = KubernetesHelper.getContainers(pod);
                     //will only be one container
                     if (containers.size() != 1) {
-                        throw new IllegalStateException("Expected one container for pod:" + pod.getId() + " found " + containers.size());
+                        throw new IllegalStateException("Expected one container for pod:" + getName(pod) + " found " + containers.size());
                     }
                     Container container = containers.get(0);
                     List<ContainerPort> ports = container.getPorts();
@@ -190,9 +193,16 @@ public class KubernetesControl extends BaseBrokerControl {
             try {
                 String id = getOrCreateBrokerReplicationControllerId();
                 ReplicationController replicationController = kubernetes.getReplicationController(id);
-                int currentDesiredNumber = replicationController.getDesiredState().getReplicas();
+                ReplicationControllerStatus status = replicationController.getStatus();
+                int currentDesiredNumber = 0;
+                if (status != null) {
+                    currentDesiredNumber = status.getReplicas();
+                } else {
+                    status = new ReplicationControllerStatus();
+                    replicationController.setStatus(status);
+                }
                 if (desiredNumber == (currentDesiredNumber + 1)) {
-                    replicationController.getDesiredState().setReplicas(desiredNumber);
+                    replicationController.getStatus().setReplicas(desiredNumber);
                     kubernetes.updateReplicationController(id, replicationController);
                     LOG.error("Updated Broker Replication Controller desired state from " + currentDesiredNumber + " to " + desiredNumber);
                 }
@@ -208,9 +218,9 @@ public class KubernetesControl extends BaseBrokerControl {
             try {
                 String id = getOrCreateBrokerReplicationControllerId();
                 ReplicationController replicationController = kubernetes.getReplicationController(id);
-                int currentDesiredNumber = replicationController.getDesiredState().getReplicas();
+                int currentDesiredNumber = replicationController.getStatus().getReplicas();
                 if (desiredNumber == (currentDesiredNumber - 1)) {
-                    replicationController.getDesiredState().setReplicas(desiredNumber);
+                    replicationController.getStatus().setReplicas(desiredNumber);
                     model.remove(brokerModel);
                     //Todo update when Kubernetes allows you to target exact pod to discard from replication controller
                     kubernetes.deletePod(brokerModel.getPod());
@@ -239,14 +249,14 @@ public class KubernetesControl extends BaseBrokerControl {
 
                 if (url != null) {
                     ReplicationController replicationController = mapper.reader(ReplicationController.class).readValue(url);
-                    replicationControllerId = replicationController.getId();
+                    replicationControllerId = getName(replicationController);
                     ReplicationController running = kubernetes.getReplicationController(replicationControllerId);
                     if (running == null) {
                         kubernetes.createReplicationController(replicationController);
                         LOG.info("Created ReplicationController " + replicationControllerId);
                     } else {
-                        LOG.info("Found ReplicationController " + running.getId());
-                        replicationControllerId = running.getId();
+                        replicationControllerId = getName(running);
+                        LOG.info("Found ReplicationController " + replicationControllerId);
                     }
 
                 } else {

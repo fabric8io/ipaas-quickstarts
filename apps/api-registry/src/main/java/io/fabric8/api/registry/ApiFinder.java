@@ -22,9 +22,9 @@ import io.fabric8.api.registry.rules.CxfEndpointFinder;
 import io.fabric8.kubernetes.api.Kubernetes;
 import io.fabric8.kubernetes.api.KubernetesHelper;
 import io.fabric8.kubernetes.api.model.ContainerPort;
-import io.fabric8.kubernetes.api.model.PodState;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.api.model.PodStatus;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.jolokia.JolokiaClients;
 import io.fabric8.swagger.model.ApiDeclaration;
@@ -56,6 +56,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static io.fabric8.kubernetes.api.KubernetesHelper.getName;
 import static io.fabric8.utils.URLUtils.urlPathJoin;
 
 /**
@@ -211,7 +212,7 @@ public class ApiFinder {
             for (Map.Entry<String, Service> entry : entries) {
                 String key = entry.getKey();
                 Service service = entry.getValue();
-                String id = service.getId();
+                String id = getName(service);
                 String url = KubernetesHelper.getServiceURL(service);
                 if (Strings.isNotBlank(url)) {
                     // lets check if we've not got this service already
@@ -241,7 +242,7 @@ public class ApiFinder {
         String podId = null;
         String containerName = null;
         String objectName = null;
-        String serviceId = service.getId();
+        String serviceId = getName(service);
         Map<String, String> labels = service.getLabels();
         String state = "STARTED";
 
@@ -356,7 +357,7 @@ public class ApiFinder {
                     String protocolName = containerPort == 443 || Objects.equals("https", name) ? "https" : "http";
 
                     if (httpPortNumber || (httpName && containerPort.intValue() > 0)) {
-                        PodState currentState = pod.getCurrentState();
+                        PodStatus currentState = pod.getStatus();
                         if (currentState != null) {
                             String podIP = currentState.getPodIP();
                             if (Strings.isNotBlank(podIP)) {
@@ -364,7 +365,7 @@ public class ApiFinder {
                             }
 
                             // lets try use the host port and host name on jube
-                            String host = currentState.getHost();
+                            String host = currentState.getHostIP();
                             Integer hostPort = port.getHostPort();
                             if (Strings.isNotBlank(host) && hostPort != null) {
                                 return protocolName + "://" + host + ":" + hostPort;

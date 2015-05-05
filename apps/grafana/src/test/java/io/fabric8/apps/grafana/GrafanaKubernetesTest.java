@@ -40,7 +40,8 @@ public class GrafanaKubernetesTest {
     @Test
     public void testGrafana() throws Exception {
         assertThat(client).replicationController("grafana-rc").isNotNull();
-        assertThat(client).service("grafana-service").hasPort(80);
+        String serviceName = "grafana-service";
+        assertThat(client).hasServicePort(serviceName, 80);
 
         assertThat(client).pods()
                 .runningStatus()

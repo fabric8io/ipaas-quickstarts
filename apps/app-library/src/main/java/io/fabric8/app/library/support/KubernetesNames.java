@@ -70,11 +70,11 @@ public class KubernetesNames {
     }
 
     public void addNames(ReplicationController dto) {
-        addNameToList(KubernetesHelper.getId(dto), replicationControllerNames);
+        addNameToList(KubernetesHelper.getName(dto), replicationControllerNames);
     }
 
     public void addNames(Service dto) {
-        addNameToList(KubernetesHelper.getId(dto), serviceNames);
+        addNameToList(KubernetesHelper.getName(dto), serviceNames);
     }
 
     /**

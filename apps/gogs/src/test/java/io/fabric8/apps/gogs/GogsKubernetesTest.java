@@ -40,8 +40,8 @@ public class GogsKubernetesTest {
     @Test
     public void testGogs() throws Exception {
         assertThat(client).replicationController("gogs-rc").isNotNull();
-        assertThat(client).service("gogs-http-service").hasPort(3000);
-        assertThat(client).service("gogs-ssh-service").hasPort(22);
+        assertThat(client).hasServicePort("gogs-http-service", 3000);
+        assertThat(client).hasServicePort("gogs-ssh-service", 22);
 
         assertThat(client).pods()
                 .runningStatus()
