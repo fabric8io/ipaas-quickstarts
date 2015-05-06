@@ -112,6 +112,7 @@
       <repository>
     			<id>oss-sonatype-snapshots</id>
     			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+          <name>OSS Sonatype Nexus Snapshots</name>
     			<releases>
     				<enabled>false</enabled>
     			</releases>
@@ -120,8 +121,21 @@
     			</snapshots>
     		</repository>
     </repositories>
+    <pluginRepositories>
+      <pluginRepository>
+        <id>oss-sonatype-snapshots</id>
+        <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        <name>OSS Sonatype Nexus Snapshots</name>
+        <releases>
+          <enabled>false</enabled>
+        </releases>
+        <snapshots>
+          <enabled>true</enabled>
+        </snapshots>
+      </pluginRepository>
+    </pluginRepositories>
 
-    <modules>
+  <modules>
         <module>archetypes-catalog</module>
         <module>archetypes</module>
         <module>apps</module>
