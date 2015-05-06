@@ -1,113 +1,107 @@
 {
-    "id": "hubot-config",
-    "kind": "List",
-    "apiVersion": "v1beta2",
-    "name": "hubot-config",
-    "description": "Creates a hubot chat bot",
-    "items": [
-        {
-            "apiVersion" : "v1beta2",
-            "id":"hubot",
-            "kind":"Service",
-            "port":6667,
-            "containerPort":6667,
-            "selector":{
-                "name":"hubot"
-            }
-        },
-        {
-            "id": "hubot-web-hook-route",
-            "metadata": {
-                "name": "hubot-web-hook-route"
-            },
-            "apiVersion": "v1beta2",
-            "kind": "Route",
-            "host": "hubot-web-hook.local",
-            "serviceName": "hubot-web-hook"
-        },
-        {
-            "apiVersion" : "v1beta2",
-            "id":"hubot-web-hook",
-            "kind":"Service",
-            "port":8080,
-            "containerPort":8080,
-            "selector":{
-                "name":"hubot"
-            }
-        },
-        {
-            "kind" : "ReplicationController",
-            "id" : "hubot",
-            "apiVersion" : "v1beta2",
-            "desiredState" : {
-                "replicas" : 1,
-                "replicaSelector" : {
-                    "name" : "hubot"
-                },
-                "podTemplate" : {
-                    "desiredState" : {
-                        "manifest" : {
-                            "version" : "v1beta2",
-                            "id" : "hubotPod",
-                            "containers" : [ {
-                                "image":"fabric8/hubot",
-                                "name":"hubot-container",
-                                "ports":[
-                                    {
-                                        "containerPort":6667,
-                                        "protocol":"TCP"
-                                    },
-                                    {
-                                        "containerPort":8080,
-                                        "protocol":"TCP"
-                                    }
-                                    ],
-                                "env": [
-                                    {
-                                        "name": "HUBOT_IRC_SERVER",
-                                        "value": "localhost"
-                                    },
-                                    {
-                                        "name": "HUBOT_IRC_ROOMS",
-                                        "value": "#fabric8-bot"
-                                    },
-                                    {
-                                        "name": "HUBOT_IRC_NICK",
-                                        "value": "fabric8"
-                                    },
-                                    {
-                                        "name": "HUBOT_IRC_DEBUG",
-                                        "value": "true"
-                                    },
-                                    {
-                                        "name": "KUBERNETES_TRUST_CERT",
-                                        "value": "true"
-                                    },
-                                    {
-                                        "name": "HUBOT_SCRIPTS_URI",
-                                        "value": "https://github.com/fabric8io/fabric8-hubot-scripts.git"
-                                    }
-                                ]
-                            }, 
-                            {
-                                "image":"redis",
-                                "name":"hubot-redis-container"
-                            },
-                            {
-                                "image":"lonli078/go-irc-server",
-                                "name":"irc-container"
-                            }
-                            ]
-                        }
-                    },
-                    "labels" : {
-                        "name" : "hubot"
-                    }
-                }
-            },
-            "labels" : {
-                "name" : "hubot"
-            }
+  "kind": "List",
+  "apiVersion": "v1beta3",
+  "description": "Creates a hubot chat bot",
+  "items": [
+    {
+      "apiVersion": "v1beta3",
+      "kind": "Service",
+      "metadata": {
+        "name": "hubot"
+      },
+      "spec": {
+        "ports": [
+          {
+            "name": "irc",
+            "port": 6667,
+            "targetPort": 6667
+          },
+          {
+            "name": "http",
+            "port": 8080,
+            "targetPort": 8080
+          }
+        ],
+        "selector": {
+          "name": "hubot"
         }
-    ]
+      }
+    },
+    {
+      "kind": "ReplicationController",
+      "apiVersion": "v1beta3",
+      "metadata": {
+        "name": "hubot",
+        "labels": {
+          "name": "hubot"
+        }
+      },
+      "spec": {
+        "replicas": 1,
+        "selector": {
+          "name": "hubot"
+        },
+        "template": {
+          "metadata": {
+            "name": "hubotPod",
+            "labels": {
+              "name": "hubot"
+            }
+          },
+          "spec": {
+            "containers": [
+              {
+                "image": "fabric8/hubot",
+                "name": "hubot-container",
+                "ports": [
+                  {
+                    "containerPort": 6667,
+                    "protocol": "TCP"
+                  },
+                  {
+                    "containerPort": 8080,
+                    "protocol": "TCP"
+                  }
+                ],
+                "env": [
+                  {
+                    "name": "HUBOT_IRC_SERVER",
+                    "value": "localhost"
+                  },
+                  {
+                    "name": "HUBOT_IRC_ROOMS",
+                    "value": "#fabric8-bot"
+                  },
+                  {
+                    "name": "HUBOT_IRC_NICK",
+                    "value": "fabric8"
+                  },
+                  {
+                    "name": "HUBOT_IRC_DEBUG",
+                    "value": "true"
+                  },
+                  {
+                    "name": "KUBERNETES_TRUST_CERT",
+                    "value": "true"
+                  },
+                  {
+                    "name": "HUBOT_SCRIPTS_URI",
+                    "value": "https://github.com/fabric8io/fabric8-hubot-scripts.git"
+                  }
+                ]
+              },
+              {
+                "image": "redis",
+                "name": "hubot-redis-container"
+              },
+              {
+                "image": "lonli078/go-irc-server",
+                "name": "irc-container"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
 }

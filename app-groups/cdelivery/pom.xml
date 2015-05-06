@@ -73,9 +73,6 @@
       <classifier>kubernetes</classifier>
       <type>json</type>
     </dependency>
-<!--
-    TODO enable when ported to generated kubernetes.json
-
     <dependency>
       <groupId>io.fabric8.jube.images.fabric8</groupId>
       <artifactId>sonarqube</artifactId>
@@ -83,12 +80,8 @@
       <classifier>kubernetes</classifier>
       <type>json</type>
     </dependency>
--->
 
     <!-- CD social -->
-<!--
-    TODO enable when ported to generated kubernetes.json
-
     <dependency>
       <groupId>io.fabric8.jube.images.fabric8</groupId>
       <artifactId>hubot</artifactId>
@@ -96,7 +89,6 @@
       <classifier>kubernetes</classifier>
       <type>json</type>
     </dependency>
--->
     <dependency>
       <groupId>io.fabric8.jube.images.fabric8</groupId>
       <artifactId>hubot-notifier</artifactId>
@@ -111,9 +103,6 @@
       <classifier>kubernetes</classifier>
       <type>json</type>
     </dependency>
-<!--
-    TODO enable when ported to generated kubernetes.json
-
     <dependency>
       <groupId>io.fabric8.jube.images.fabric8</groupId>
       <artifactId>lets-chat</artifactId>
@@ -128,9 +117,6 @@
       <classifier>kubernetes</classifier>
       <type>json</type>
     </dependency>
--->
-<!--
-    TODO enable when figured out why duplicate orion services?
     <dependency>
       <groupId>io.fabric8.jube.images.fabric8</groupId>
       <artifactId>orion</artifactId>
@@ -138,7 +124,6 @@
       <classifier>kubernetes</classifier>
       <type>json</type>
     </dependency>
--->
 
 
     <!-- jbpm CD stuff -->

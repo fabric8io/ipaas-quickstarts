@@ -1,158 +1,166 @@
 {
-    "id": "taiga-config",
-    "kind": "List",
-    "apiVersion": "v1beta2",
-    "name": "taiga-config",
-    "description": "Creates a taiga",
-    "items": [
-        {
-            "apiVersion" : "v1beta2",
-            "id":"taiga",
-            "kind":"Service",
-            "port":8080,
-            "containerPort":80,
-            "selector":{
-                "name":"taiga"
-            }
-        },
-        {
-            "kind" : "ReplicationController",
-            "id" : "taiga",
-            "apiVersion" : "v1beta2",
-            "desiredState" : {
-                "replicas" : 1,
-                "replicaSelector" : {
-                    "name" : "taiga"
-                },
-                "podTemplate" : {
-                    "desiredState" : {
-                        "manifest" : {
-                            "version" : "v1beta2",
-                            "id" : "taigaPod",
-                            "containers" : [ 
-                            {
-                                "image":"postgres",
-                                "name":"taiga-postgres",
-                                "env":[
-                                    {
-                                        "name":"POSTGRES_PASSWORD",
-                                        "value":"password"
-                                    },
-                                    {
-                                        "name":"POSTGRES_USER",
-                                        "value":"taiga"
-                                    }
-                                    ],
-                                "volumeMounts": [
-                                  {
-                                    "name": "taiga-data",
-                                    "mountPath": "/var/lib/postgresql/data/"
-                                  }
-                                ]
-                            },
-                            {
-                                "image":"rawlingsj/taiga-back:test",
-                                "name":"taiga-backend",
-                                "ports":[
-                                    {
-                                        "containerPort":8000,
-                                        "protocol":"TCP"
-                                    }
-                                    ],
-                                "env":[
-                                    {
-                                        "name":"SECRET_KEY",
-                                        "value":"xyz"
-                                    },
-                                    {
-                                        "name":"POSTGRES_PORT_5432_TCP_ADDR",
-                                        "value":"127.0.0.1"
-                                    },
-                                    {
-                                        "name":"POSTGRES_ENV_POSTGRES_USER",
-                                        "value":"taiga"
-                                    },
-                                    {
-                                        "name":"POSTGRES_ENV_POSTGRES_PASSWORD",
-                                        "value":"password"
-                                    }
-                                    ],
-                                "volumeMounts": [
-                                  {
-                                    "name": "taiga-data",
-                                    "mountPath": "/var/lib/postgresql/data"
-                                  },
-                                  {
-                                    "name": "taiga-static",
-                                    "mountPath": "/usr/local/taiga/static"
-                                  },
-                                  {
-                                    "name": "taiga-media",
-                                    "mountPath": "/usr/local/taiga/media"
-                                  }
-                                ]
-                            }, 
-                            {
-                                "image":"rawlingsj/taiga-front-dist:test",
-                                "name":"taiga-nginx",
-                                "ports":[
-                                    {
-                                        "containerPort":80,
-                                        "protocol":"TCP"
-                                    }
-                                    ],
-                                "env":[
-                                    {
-                                        "name":"TAIGABACK_PORT_8000_TCP_ADDR",
-                                        "value":"127.0.0.1"
-                                    }
-                                    ],
-                                "volumeMounts": [
-                                  {
-                                    "name": "taiga-data",
-                                    "mountPath": "/var/lib/postgresql/data"
-                                  },
-                                  {
-                                    "name": "taiga-static",
-                                    "mountPath": "/usr/local/taiga/static"
-                                  },
-                                  {
-                                    "name": "taiga-media",
-                                    "mountPath": "/usr/local/taiga/media"
-                                  }
-                                ]
-                            }
-                            ],
-                            "volumes": [
-                              {
-                                "name": "taiga-media",
-                                "source": {
-                                  "emptyDir": {}
-                                }
-                              },
-                              {
-                                "name": "taiga-static",
-                                "source": {
-                                  "emptyDir": {}
-                                }
-                              },
-                              {
-                                "name": "taiga-data",
-                                "source": {
-                                  "emptyDir": {}
-                                }
-                              }
-                            ]
-                        }
-                    },
-                    "labels" : {
-                        "name" : "taiga"
-                    }
-                }
-            },
-            "labels" : {
-                "name" : "taiga"
-            }
+  "kind": "List",
+  "apiVersion": "v1beta3",
+  "name": "taiga-config",
+  "description": "Creates a taiga",
+  "items": [
+    {
+      "apiVersion": "v1beta3",
+      "kind": "Service",
+      "metadata": {
+        "name": "taiga"
+      },
+      "spec": {
+        "ports": [
+          {
+            "port": 8080,
+            "targetPort": 80
+          }
+        ],
+        "selector": {
+          "name": "taiga"
         }
-    ]
+      }
+    },
+    {
+      "apiVersion": "v1beta3",
+      "kind": "ReplicationController",
+      "metadata": {
+        "name": "taiga",
+        "labels": {
+          "name": "taiga"
+        }
+      },
+      "spec": {
+        "replicas": 1,
+        "selector": {
+          "name": "taiga"
+        },
+        "template": {
+          "metadata": {
+            "name": "taigaPod",
+            "labels": {
+              "name": "taiga"
+            }
+          },
+          "spec": {
+            "containers": [
+              {
+                "image": "postgres",
+                "name": "taiga-postgres",
+                "env": [
+                  {
+                    "name": "POSTGRES_PASSWORD",
+                    "value": "password"
+                  },
+                  {
+                    "name": "POSTGRES_USER",
+                    "value": "taiga"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "taiga-data",
+                    "mountPath": "/var/lib/postgresql/data/"
+                  }
+                ]
+              },
+              {
+                "image": "rawlingsj/taiga-back:test",
+                "name": "taiga-backend",
+                "ports": [
+                  {
+                    "containerPort": 8000,
+                    "protocol": "TCP"
+                  }
+                ],
+                "env": [
+                  {
+                    "name": "SECRET_KEY",
+                    "value": "xyz"
+                  },
+                  {
+                    "name": "POSTGRES_PORT_5432_TCP_ADDR",
+                    "value": "127.0.0.1"
+                  },
+                  {
+                    "name": "POSTGRES_ENV_POSTGRES_USER",
+                    "value": "taiga"
+                  },
+                  {
+                    "name": "POSTGRES_ENV_POSTGRES_PASSWORD",
+                    "value": "password"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "taiga-data",
+                    "mountPath": "/var/lib/postgresql/data"
+                  },
+                  {
+                    "name": "taiga-static",
+                    "mountPath": "/usr/local/taiga/static"
+                  },
+                  {
+                    "name": "taiga-media",
+                    "mountPath": "/usr/local/taiga/media"
+                  }
+                ]
+              },
+              {
+                "image": "rawlingsj/taiga-front-dist:test",
+                "name": "taiga-nginx",
+                "ports": [
+                  {
+                    "containerPort": 80,
+                    "protocol": "TCP"
+                  }
+                ],
+                "env": [
+                  {
+                    "name": "TAIGABACK_PORT_8000_TCP_ADDR",
+                    "value": "127.0.0.1"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "taiga-data",
+                    "mountPath": "/var/lib/postgresql/data"
+                  },
+                  {
+                    "name": "taiga-static",
+                    "mountPath": "/usr/local/taiga/static"
+                  },
+                  {
+                    "name": "taiga-media",
+                    "mountPath": "/usr/local/taiga/media"
+                  }
+                ]
+              }
+            ],
+            "volumes": [
+              {
+                "name": "taiga-media",
+                "source": {
+                  "emptyDir": {}
+                }
+              },
+              {
+                "name": "taiga-static",
+                "source": {
+                  "emptyDir": {}
+                }
+              },
+              {
+                "name": "taiga-data",
+                "source": {
+                  "emptyDir": {}
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
 }
