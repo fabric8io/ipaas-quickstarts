@@ -55,7 +55,7 @@
 
     <fabric8.replicationController.name>gogs-controller</fabric8.replicationController.name>
     <fabric8.service.containerPort>3000</fabric8.service.containerPort>
-    <!-- TODO <fabric8.imagePullPolicy>PullIfNotPresent</fabric8.imagePullPolicy> -->
+    <fabric8.imagePullPolicy>IfNotPresent</fabric8.imagePullPolicy>
 
     <!--
     TODO disable the ssh port as OpenShift routes are broken currently for services with 2 ports

@@ -42,7 +42,7 @@
     <fabric8.service.port>80</fabric8.service.port>
     <fabric8.service.name>${project.artifactId}</fabric8.service.name>
     <fabric8.service.containerPort>${docker.port.container.http}</fabric8.service.containerPort>
-    <!-- TODO <fabric8.imagePullPolicy>PullIfNotPresent</fabric8.imagePullPolicy> -->
+    <fabric8.imagePullPolicy>IfNotPresent</fabric8.imagePullPolicy>
 
     <fabric8.label.component>nexus</fabric8.label.component>
     <fabric8.label.provider>fabric8</fabric8.label.provider>

@@ -47,7 +47,7 @@
     <fabric8.service.name>influxdb-service</fabric8.service.name>
     <fabric8.service.port>8086</fabric8.service.port>
     <fabric8.service.containerPort>8086</fabric8.service.containerPort>
-    <!-- TODO <fabric8.imagePullPolicy>PullIfNotPresent</fabric8.imagePullPolicy> -->
+    <fabric8.imagePullPolicy>IfNotPresent</fabric8.imagePullPolicy>
 
     <fabric8.label.component>influxdb</fabric8.label.component>
     <fabric8.label.provider>fabric8</fabric8.label.provider>
