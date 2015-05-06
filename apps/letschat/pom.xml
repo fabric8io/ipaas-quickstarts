@@ -25,7 +25,7 @@
         <version>2.2-SNAPSHOT</version>
     </parent>
 
-    <artifactId>lets-chat</artifactId>
+    <artifactId>letschat</artifactId>
 
     <name>Lets Chat</name>
     <description>

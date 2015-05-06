@@ -87,7 +87,7 @@
         <module>keycloak</module>
         <module>kibana</module>
         <module>kiwi-irc</module>
-        <module>lets-chat</module>
+        <module>letschat</module>
         <module>nexus</module>
         <module>orion</module>
         <module>registry</module>
