@@ -108,6 +108,19 @@
       </snapshotRepository>
     </distributionManagement>
 
+    <repositories>
+      <repository>
+    			<id>oss-sonatype-snapshots</id>
+    			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+    			<releases>
+    				<enabled>false</enabled>
+    			</releases>
+    			<snapshots>
+    				<enabled>true</enabled>
+    			</snapshots>
+    		</repository>
+    </repositories>
+
     <modules>
         <module>archetypes-catalog</module>
         <module>archetypes</module>
