@@ -43,6 +43,18 @@
     <fabric8.container.name>fabric8-container</fabric8.container.name>
     <fabric8.label.component>console</fabric8.label.component>
     <fabric8.label.provider>fabric8</fabric8.label.provider>
+
+    <fabric8.extra.json>${basedir}/src/main/fabric8/kubernetes-extra.json</fabric8.extra.json>
+    <fabric8.env.OAUTH_CLIENT_ID>fabric8</fabric8.env.OAUTH_CLIENT_ID>
+    <fabric8.env.OAUTH_AUTHORIZE_URI>https://\${DOMAIN}:8443/oauth/authorize</fabric8.env.OAUTH_AUTHORIZE_URI>
+
+    <fabric8.volume.openshift-cert-secrets.secret>openshift-cert-secrets</fabric8.volume.openshift-cert-secrets.secret>
+    <fabric8.volume.openshift-cert-secrets.mountPath>/etc/secret-volume</fabric8.volume.openshift-cert-secrets.mountPath>
+    <fabric8.volume.openshift-cert-secrets.readOnly>true</fabric8.volume.openshift-cert-secrets.readOnly>
+
+
+    <fabric8.parameter.DOMAIN.value>os1.fabric8.io</fabric8.parameter.DOMAIN.value>
+    <fabric8.parameter.DOMAIN.description>The domain name to append to the service name to access gogs repositories</fabric8.parameter.DOMAIN.description>
   </properties>
 
 

@@ -1,0 +1,15 @@
+{
+  "kind": "OAuthClient",
+  "apiVersion": "v1beta3",
+  "metadata": {
+    "name": "fabric8"
+  },
+  "redirectURIs": [
+    "http://localhost:9090",
+    "http://localhost:2772",
+    "http://localhost:9000",
+    "http://localhost:3000",
+    "http://fabric8.${DOMAIN}",
+    "https://fabric8.${DOMAIN}"
+  ]
+}
