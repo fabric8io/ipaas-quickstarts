@@ -26,7 +26,7 @@
       "apiVersion": "v1beta3",
       "kind": "ReplicationController",
       "metadata": {
-        "name": "taiga",
+        "name": "taiga-controller",
         "labels": {
           "name": "taiga"
         }
