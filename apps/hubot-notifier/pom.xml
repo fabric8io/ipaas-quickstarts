@@ -50,6 +50,8 @@
 
     <fabric8.env.KUBERNETES_TRUST_CERT>true</fabric8.env.KUBERNETES_TRUST_CERT>
     <fabric8.env.SKIP_TLS_VERIFY>true</fabric8.env.SKIP_TLS_VERIFY>
+    <fabric8.env.KUBERNETES_CLIENT_CERTIFICATE_FILE>/etc/secret-volume/admin-cert</fabric8.env.KUBERNETES_CLIENT_CERTIFICATE_FILE>
+    <fabric8.env.KUBERNETES_CLIENT_KEY_FILE>/etc/secret-volume/admin-key</fabric8.env.KUBERNETES_CLIENT_KEY_FILE>
 
     <!-- TODO until secrets work we must default to a namespace for polling builds -->
     <fabric8.env.BUILD_NAMESPACE>default</fabric8.env.BUILD_NAMESPACE>
@@ -57,6 +59,11 @@
     <fabric8.replicationController.name>${project.artifactId}-controler</fabric8.replicationController.name>
     <fabric8.label.component>hubotNotifier</fabric8.label.component>
     <fabric8.label.provider>fabric8</fabric8.label.provider>
+
+    <!-- add certs -->
+    <fabric8.volume.openshift-cert-secrets.secret>openshift-cert-secrets</fabric8.volume.openshift-cert-secrets.secret>
+    <fabric8.volume.openshift-cert-secrets.mountPath>/etc/secret-volume</fabric8.volume.openshift-cert-secrets.mountPath>
+    <fabric8.volume.openshift-cert-secrets.readOnly>true</fabric8.volume.openshift-cert-secrets.readOnly>
   </properties>
 
   <dependencyManagement>
