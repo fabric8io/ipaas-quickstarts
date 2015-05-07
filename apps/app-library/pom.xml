@@ -56,8 +56,8 @@
     <http.port>8080</http.port>
 
     <docker.from>fabric8/java</docker.from>
-    <docker.registryPrefix>${env.DOCKER_REGISTRY}/</docker.registryPrefix>
-    <docker.image>${docker.registryPrefix}fabric8/${project.artifactId}:${project.version}</docker.image>
+
+    <docker.image>fabric8/${project.artifactId}:${project.version}</docker.image>
     <docker.assemblyDescriptorRef>artifact-with-dependencies</docker.assemblyDescriptorRef>
     <docker.env.MAIN>io.fabric8.app.library.Main</docker.env.MAIN>
     <docker.env.IMPORT_APP_URLS>mvn:io.fabric8.quickstarts/fabric8-quickstarts-parent/${fabric8.release.version}/zip/app,mvn:io.fabric8.jube.images.fabric8/apps/${fabric8.release.version}/zip/app</docker.env.IMPORT_APP_URLS>

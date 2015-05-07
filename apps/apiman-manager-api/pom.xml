@@ -31,8 +31,8 @@
     <http.port>7070</http.port>
     
     <docker.from>fabric8/java</docker.from>
-    <docker.registryPrefix>${env.DOCKER_REGISTRY}/</docker.registryPrefix>
-    <docker.image>${docker.registryPrefix}fabric8/${project.artifactId}:${project.version}</docker.image>
+
+    <docker.image>fabric8/${project.artifactId}:${project.version}</docker.image>
     <docker.assemblyDescriptorRef>artifact-with-dependencies</docker.assemblyDescriptorRef>
     <docker.env.MAIN>io.fabric8.apiman.Starter</docker.env.MAIN>
     <docker.port.container.http>${http.port}</docker.port.container.http>
@@ -354,7 +354,6 @@
     <profile>
       <id>docker-public</id>
       <properties>
-        <docker.registryPrefix />
       </properties>
     </profile>
   </profiles>

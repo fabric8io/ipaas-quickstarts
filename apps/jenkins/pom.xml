@@ -68,9 +68,13 @@
         <fabric8.parameter.SEED_GIT_URL.description>The git URL of the seed build used to generate builds</fabric8.parameter.SEED_GIT_URL.description>
 
         <!-- liveness probe -->
+<!--
+        TODO lets disable for now...
+
         <fabric8.livenessProbe.httpGet.path>/v1/_ping</fabric8.livenessProbe.httpGet.path>
         <fabric8.livenessProbe.httpGet.port>2375</fabric8.livenessProbe.httpGet.port>
         <fabric8.livenessProbe.initialDelaySeconds>30</fabric8.livenessProbe.initialDelaySeconds>
+-->
 
         <!-- add certs -->
         <fabric8.volume.openshift-cert-secrets.secret>openshift-cert-secrets</fabric8.volume.openshift-cert-secrets.secret>

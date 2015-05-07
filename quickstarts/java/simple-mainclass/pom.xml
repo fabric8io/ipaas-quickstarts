@@ -47,8 +47,8 @@
     <docker.maven.plugin.version>0.11.3</docker.maven.plugin.version>
 
     <docker.from>fabric8/java</docker.from>
-    <docker.registryPrefix>${env.DOCKER_REGISTRY}/</docker.registryPrefix>
-    <docker.image>${docker.registryPrefix}fabric8/${project.artifactId}:${project.version}</docker.image>
+
+    <docker.image>fabric8/${project.artifactId}:${project.version}</docker.image>
     <docker.assemblyDescriptorRef>artifact-with-dependencies</docker.assemblyDescriptorRef>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
     <docker.env.MAIN>io.fabric8.quickstarts.java.simple.Main</docker.env.MAIN>
