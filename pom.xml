@@ -134,6 +134,15 @@
     </modules>
 
     <build>
+      <pluginManagement>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.5</version>
+          </plugin>
+        </plugins>
+      </pluginManagement>
       <plugins>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -173,15 +182,6 @@
           <version>2.5</version>
           <configuration>
             <releaseProfiles>docker-push,docker-public</releaseProfiles>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-gpg-plugin</artifactId>
-          <version>1.5</version>
-          <configuration>
-            <passphrase>${gpg.passphrase}</passphrase>
-            <useAgent>true</useAgent>
           </configuration>
         </plugin>
         <plugin>
@@ -286,6 +286,15 @@
             <id>release</id>
             <build>
                 <plugins>
+                  <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <configuration>
+                      <passphrase>${gpg.passphrase}</passphrase>
+                      <useAgent>true</useAgent>
+                    </configuration>
+                  </plugin>
+
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-enforcer-plugin</artifactId>
