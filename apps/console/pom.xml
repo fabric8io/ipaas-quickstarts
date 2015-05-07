@@ -33,7 +33,7 @@
   </description>
 
   <properties>
-    <docker.image>fabric8/hawtio-kubernetes</docker.image>
+    <docker.image>fabric8/fabric8-console</docker.image>
     <docker.port.container.http>9090</docker.port.container.http>
 
     <fabric8.replicationController.name>fabric8-controller</fabric8.replicationController.name>
