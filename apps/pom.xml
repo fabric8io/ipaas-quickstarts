@@ -33,6 +33,8 @@
     <properties>
         <activemq.container.port>6162</activemq.container.port>
         <activemq.service.port>6163</activemq.service.port>
+        <amqbroker.container.port>7162</amqbroker.container.port>
+        <amqbroker.service.port>7163</amqbroker.service.port>
 
         <docker.from>fabric8/java</docker.from>
         <docker.registryPrefix>${env.DOCKER_REGISTRY}/</docker.registryPrefix>
@@ -54,6 +56,7 @@
     </dependencyManagement>
 
     <modules>
+	    <module>amq-broker</module>
         <module>api-registry</module>
         <module>app-library</module>
         <module>brackets</module>
