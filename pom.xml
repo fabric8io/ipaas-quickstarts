@@ -130,11 +130,7 @@
       </pluginRepository>
     </pluginRepositories>
 
-  <modules>
-        <module>archetypes-catalog</module>
-        <module>archetypes</module>
-        <module>apps</module>
-        <module>quickstarts</module>
+    <modules>
     </modules>
 
     <build>
@@ -372,6 +368,27 @@
           <id>canary</id>
           <modules>
             <module>app-groups</module>
+          </modules>
+        </profile>
+        <profile>
+          <id>apps</id>
+          <activation>
+            <activeByDefault>true</activeByDefault>
+          </activation>
+          <modules>
+            <module>apps</module>
+            <module>app-groups</module>
+          </modules>
+        </profile>
+        <profile>
+          <id>quickstarts</id>
+          <activation>
+            <activeByDefault>true</activeByDefault>
+          </activation>
+          <modules>
+            <module>archetypes-catalog</module>
+            <module>archetypes</module>
+            <module>quickstarts</module>
           </modules>
         </profile>
     </profiles>
