@@ -44,6 +44,8 @@
         <fabric8.imagePullPolicy>IfNotPresent</fabric8.imagePullPolicy>
 
         <fabric8.env.SEED_GIT_URL>\${SEED_GIT_URL}</fabric8.env.SEED_GIT_URL>
+        <fabric8.env.KUBERNETES_CLIENT_CERTIFICATE_FILE>/etc/secret-volume/admin-cert</fabric8.env.KUBERNETES_CLIENT_CERTIFICATE_FILE>
+        <fabric8.env.KUBERNETES_CLIENT_KEY_FILE>/etc/secret-volume/admin-key</fabric8.env.KUBERNETES_CLIENT_KEY_FILE>
 
         <fabric8.label.component>jenkins</fabric8.label.component>
         <fabric8.label.provider>fabric8</fabric8.label.provider>
@@ -69,6 +71,11 @@
         <fabric8.livenessProbe.httpGet.path>/v1/_ping</fabric8.livenessProbe.httpGet.path>
         <fabric8.livenessProbe.httpGet.port>2375</fabric8.livenessProbe.httpGet.port>
         <fabric8.livenessProbe.initialDelaySeconds>30</fabric8.livenessProbe.initialDelaySeconds>
+
+        <!-- add certs -->
+        <fabric8.volume.openshift-cert-secrets.secret>openshift-cert-secrets</fabric8.volume.openshift-cert-secrets.secret>
+        <fabric8.volume.openshift-cert-secrets.mountPath>/etc/secret-volume</fabric8.volume.openshift-cert-secrets.mountPath>
+        <fabric8.volume.openshift-cert-secrets.readOnly>true</fabric8.volume.openshift-cert-secrets.readOnly>
     </properties>
 
     <build>
