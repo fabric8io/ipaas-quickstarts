@@ -105,7 +105,7 @@
     </dependency>
     <dependency>
       <groupId>io.fabric8.jube.images.fabric8</groupId>
-      <artifactId>lets-chat</artifactId>
+      <artifactId>letschat</artifactId>
       <version>${project.version}</version>
       <classifier>kubernetes</classifier>
       <type>json</type>
