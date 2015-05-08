@@ -26,10 +26,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>io.fabric8.apps</groupId>
-  <artifactId>cdelivery</artifactId>
+  <artifactId>cdelivery-core</artifactId>
   <packaging>pom</packaging>
 
-  <name>Fabric8 :: Apps Groups :: Continuous Delivery</name>
+  <name>Fabric8 :: Apps Groups :: Continuous Delivery :: Core</name>
+  <description>Creates the core parts of Continuous Delivery; gogs, jenkins, nexus, sonaqube</description>
 
   <properties>
     <fabric8.combineDependencies>true</fabric8.combineDependencies>
@@ -37,75 +38,60 @@
 
   <dependencies>
     <dependency>
-      <groupId>io.fabric8.apps</groupId>
-      <artifactId>cdelivery-core</artifactId>
-      <version>${project.version}</version>
-      <classifier>kubernetes</classifier>
-      <type>json</type>
-    </dependency>
-
-    <!-- CD social -->
-    <dependency>
       <groupId>io.fabric8.jube.images.fabric8</groupId>
-      <artifactId>hubot</artifactId>
+      <artifactId>console</artifactId>
       <version>${project.version}</version>
       <classifier>kubernetes</classifier>
       <type>json</type>
     </dependency>
-    <dependency>
-      <groupId>io.fabric8.jube.images.fabric8</groupId>
-      <artifactId>hubot-notifier</artifactId>
-      <version>${project.version}</version>
-      <classifier>kubernetes</classifier>
-      <type>json</type>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8.jube.images.fabric8</groupId>
-      <artifactId>hubot-letschat</artifactId>
-      <version>${project.version}</version>
-      <classifier>kubernetes</classifier>
-      <type>json</type>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8.jube.images.fabric8</groupId>
-      <artifactId>letschat</artifactId>
-      <version>${project.version}</version>
-      <classifier>kubernetes</classifier>
-      <type>json</type>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8.jube.images.fabric8</groupId>
-      <artifactId>taiga</artifactId>
-      <version>${project.version}</version>
-      <classifier>kubernetes</classifier>
-      <type>json</type>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8.jube.images.fabric8</groupId>
-      <artifactId>orion</artifactId>
-      <version>${project.version}</version>
-      <classifier>kubernetes</classifier>
-      <type>json</type>
-    </dependency>
-
-
-    <!-- jbpm CD stuff -->
 <!--
+    TODO for now lets just include the console
+
     <dependency>
-      <groupId>io.fabric8.jube.images.fabric8</groupId>
-      <artifactId>cdelivery</artifactId>
-      <version>${project.version}</version>
-      <classifier>kubernetes</classifier>
-      <type>json</type>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8.jube.images.fabric8</groupId>
-      <artifactId>jbpm-designer</artifactId>
+      <groupId>io.fabric8.apps</groupId>
+      <artifactId>base</artifactId>
       <version>${project.version}</version>
       <classifier>kubernetes</classifier>
       <type>json</type>
     </dependency>
 -->
+    <dependency>
+      <groupId>io.fabric8.apps</groupId>
+      <artifactId>logging</artifactId>
+      <version>${project.version}</version>
+      <classifier>kubernetes</classifier>
+      <type>json</type>
+    </dependency>
+
+    <!-- CD building stuff -->
+    <dependency>
+      <groupId>io.fabric8.jube.images.fabric8</groupId>
+      <artifactId>gogs</artifactId>
+      <version>${project.version}</version>
+      <classifier>kubernetes</classifier>
+      <type>json</type>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8.jube.images.fabric8</groupId>
+      <artifactId>nexus</artifactId>
+      <version>${project.version}</version>
+      <classifier>kubernetes</classifier>
+      <type>json</type>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8.jube.images.fabric8</groupId>
+      <artifactId>jenkins</artifactId>
+      <version>${project.version}</version>
+      <classifier>kubernetes</classifier>
+      <type>json</type>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8.jube.images.fabric8</groupId>
+      <artifactId>sonarqube</artifactId>
+      <version>${project.version}</version>
+      <classifier>kubernetes</classifier>
+      <type>json</type>
+    </dependency>
   </dependencies>
 
   <build>
