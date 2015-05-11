@@ -17,10 +17,13 @@ package io.fabric8.apiman;
 
 import io.apiman.common.servlet.AuthenticationFilter;
 import io.apiman.common.servlet.DisableCachingFilter;
+import io.apiman.manager.api.core.logging.ApimanLogger;
+import io.apiman.manager.api.core.logging.IApimanLogger;
 import io.apiman.manager.api.security.impl.DefaultSecurityContextFilter;
 
 import java.util.EnumSet;
 
+import javax.inject.Inject;
 import javax.servlet.DispatcherType;
 
 import org.eclipse.jetty.security.ConstraintSecurityHandler;
@@ -50,12 +53,18 @@ public class ManagerApiMicroService {
 
     private Server server;
 
+    @Inject
+    @ApimanLogger(ManagerApiMicroService.class)
+    private IApimanLogger log;
+
     /**
      * Constructor.
      */
+
     public ManagerApiMicroService() {
     }
-    
+
+
     /**
      * Start/run the server.
      * @throws Exception when any exception occurs
@@ -68,14 +77,14 @@ public class ManagerApiMicroService {
 
         // Create the server.
         int serverPort = serverPort();
-        System.out.println("**** Starting Server (" + getClass().getSimpleName() + ") on port: " + serverPort);
+        log.info("**** Starting Server (" + getClass().getSimpleName() + ") on port: " + serverPort);
         server = new Server(serverPort);
         server.setHandler(handlers);
         server.start();
         long endTime = System.currentTimeMillis();
-        System.out.println("******* Started in " + (endTime - startTime) + "ms");
+        log.info("******* Started in " + (endTime - startTime) + "ms");
     }
-    
+
     /**
      * Stop the server.
      * @throws Exception when any exception occurs
@@ -144,7 +153,7 @@ public class ManagerApiMicroService {
 
         return csh;
     }
-    
+
     /**
      * @throws InterruptedException when interrupted
      */

@@ -20,13 +20,18 @@ import io.apiman.manager.api.core.IIdmStorage;
 import io.apiman.manager.api.core.IStorage;
 import io.apiman.manager.api.core.IStorageQuery;
 import io.apiman.manager.api.core.UuidApiKeyGenerator;
+import io.apiman.manager.api.core.logging.ApimanLogger;
+import io.apiman.manager.api.core.logging.IApimanLogger;
+import io.apiman.manager.api.core.logging.JsonLoggerImpl;
 import io.apiman.manager.api.es.EsStorage;
 import io.apiman.manager.api.jpa.JpaStorage;
 import io.apiman.manager.api.jpa.roles.JpaIdmStorage;
+import io.apiman.manager.api.war.WarApiManagerConfig;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.New;
 import javax.enterprise.inject.Produces;
+import javax.enterprise.inject.spi.InjectionPoint;
 
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.ImmutableSettings;
@@ -39,9 +44,16 @@ import org.elasticsearch.common.transport.InetSocketTransportAddress;
  */
 @ApplicationScoped
 public class ManagerApiMicroServiceCdiFactory {
-    
+
     private static TransportClient sESClient;
     private static EsStorage sESStorage;
+
+    @Produces @ApimanLogger
+    public static IApimanLogger provideLogger(WarApiManagerConfig config, InjectionPoint injectionPoint) {
+        ApimanLogger logger = injectionPoint.getAnnotated().getAnnotation(ApimanLogger.class);
+        Class<?> requestorKlazz = logger.value();
+        return new JsonLoggerImpl().createLogger(requestorKlazz);
+    }
 
     @Produces @ApplicationScoped
     public static IStorage provideStorage(ManagerApiMicroServiceConfig config, @New JpaStorage jpaStorage, @New EsStorage esStorage) {
@@ -92,7 +104,7 @@ public class ManagerApiMicroServiceCdiFactory {
     }
 
     /**
-     * @param config 
+     * @param config
      * @return create a new test ES transport client
      */
     private static TransportClient createTransportClient(ManagerApiMicroServiceConfig config) {
