@@ -153,5 +153,4 @@ public class ManagerApiMicroServiceConfig {
         File pluginsDir = new File(pluginDirPath);
         return pluginsDir;
     }
-
 }
