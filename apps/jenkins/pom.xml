@@ -43,10 +43,6 @@
         <fabric8.service.containerPort>${docker.port.container.http}</fabric8.service.containerPort>
         <fabric8.imagePullPolicy>IfNotPresent</fabric8.imagePullPolicy>
 
-        <fabric8.env.SEED_GIT_URL>\${SEED_GIT_URL}</fabric8.env.SEED_GIT_URL>
-        <fabric8.env.KUBERNETES_CLIENT_CERTIFICATE_FILE>/etc/secret-volume/admin-cert</fabric8.env.KUBERNETES_CLIENT_CERTIFICATE_FILE>
-        <fabric8.env.KUBERNETES_CLIENT_KEY_FILE>/etc/secret-volume/admin-key</fabric8.env.KUBERNETES_CLIENT_KEY_FILE>
-
         <fabric8.label.component>jenkins</fabric8.label.component>
         <fabric8.label.provider>fabric8</fabric8.label.provider>
 
