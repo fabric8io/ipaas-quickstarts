@@ -1,0 +1,12 @@
+{
+  "kind": "OAuthClient",
+  "apiVersion": "v1beta3",
+  "metadata": {
+    "name": "gogs"
+  },
+  "redirectURIs": [
+    "http://localhost:3000",
+    "http://gogs.${DOMAIN}",
+    "https://gogs.${DOMAIN}"
+  ]
+}
