@@ -39,8 +39,8 @@
     <docker.port.container.jolokia />
 
     <domain>os1.fabric8.io</domain>
-    <fabric8.env.GOGS_SERVER__DOMAIN>gogs.\${DOMAIN}</fabric8.env.GOGS_SERVER__DOMAIN>
-    <fabric8.env.GOGS_SERVER__ROOT_URL>http://gogs.\${DOMAIN}</fabric8.env.GOGS_SERVER__ROOT_URL>
+    <fabric8.env.GOGS_SERVER__DOMAIN>\${GOGS_SERVER_DOMAIN}</fabric8.env.GOGS_SERVER__DOMAIN>
+    <fabric8.env.GOGS_SERVER__ROOT_URL>\${GOGS_SERVER_PROTOCOL}\${GOGS_SERVER_DOMAIN}</fabric8.env.GOGS_SERVER__ROOT_URL>
     <fabric8.env.GOGS_SERVER__PROTOCOL>http</fabric8.env.GOGS_SERVER__PROTOCOL>
 <!--
     TODO re-enable when we have certs so that STI builds and Eclipse Orion can clone the repo from https://
@@ -78,6 +78,12 @@
 
     <fabric8.parameter.DOMAIN.value>os1.fabric8.io</fabric8.parameter.DOMAIN.value>
     <fabric8.parameter.DOMAIN.description>The domain name to append to the service name to access gogs repositories</fabric8.parameter.DOMAIN.description>
+
+    <fabric8.parameter.GOGS_SERVER_DOMAIN.value>gogs.os1.fabric8.io</fabric8.parameter.GOGS_SERVER_DOMAIN.value>
+    <fabric8.parameter.GOGS_SERVER_DOMAIN.description>The gogs server name</fabric8.parameter.GOGS_SERVER_DOMAIN.description>
+
+    <fabric8.parameter.GOGS_SERVER_PROTOCOL.value>http://</fabric8.parameter.GOGS_SERVER_PROTOCOL.value>
+    <fabric8.parameter.GOGS_SERVER_PROTOCOL.description>The protocol for gogs to use; either http or https</fabric8.parameter.GOGS_SERVER_PROTOCOL.description>
   </properties>
 
     <build>
