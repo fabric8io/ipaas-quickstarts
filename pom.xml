@@ -79,6 +79,9 @@
         <docker.source.dir>${basedir}/src/main/docker</docker.source.dir>
 
         <arquillian.version>1.1.5.Final</arquillian.version>
+        <docker.assembly.exportBaseDir>false</docker.assembly.exportBaseDir>
+        <!-- TODO this can be removed once we upgrade the docker maven plugin -->
+        <docker.assembly.exportBase>false</docker.assembly.exportBase>
         <docker.maven.plugin.version>0.11.3</docker.maven.plugin.version>
         <docker.registryPrefix></docker.registryPrefix>
         <exec-maven-plugin.version>1.2.1</exec-maven-plugin.version>
