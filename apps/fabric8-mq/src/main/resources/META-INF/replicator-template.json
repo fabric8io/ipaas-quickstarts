@@ -1,0 +1,51 @@
+{
+  "apiVersion" : "v1beta3",
+  "kind" : "ReplicationController",
+  "metadata" : {
+    "annotations" : { },
+    "labels" : {
+      "component" : "amq-broker",
+      "provider" : "amqbroker",
+      "group" : "amqbroker"
+    },
+    "name" : "amq-broker-controller"
+  },
+  "spec" : {
+    "replicas" : 1,
+    "selector" : {
+      "component" : "amq-broker",
+      "provider" : "amqbroker",
+      "group" : "amqbroker"
+    },
+    "template" : {
+      "metadata" : {
+        "annotations" : { },
+        "labels" : {
+          "component" : "amq-broker",
+          "provider" : "amqbroker",
+          "group" : "amqbroker"
+        }
+      },
+      "spec" : {
+        "containers" : [ {
+          "args" : [ ],
+          "command" : [ ],
+          "env" : [ ],
+          "image" : "fabric8/amq-broker:2.2-SNAPSHOT",
+          "imagePullPolicy" : "Always",
+          "name" : "amq-broker-container",
+          "ports" : [ {
+            "containerPort" : 6162,
+            "name" : "amq"
+          }, {
+            "containerPort" : 8778,
+            "name" : "jolokia"
+          } ],
+          "volumeMounts" : [ ]
+        } ],
+        "nodeSelector" : { },
+        "volumes" : [ ]
+      }
+    }
+  }
+}
