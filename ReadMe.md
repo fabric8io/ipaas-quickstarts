@@ -8,13 +8,20 @@ This project contains the following [fabric8](http://fabric8.io/) parts:
 
 ### Building
 
+The build requires Maven version 3.2.5 or later.
+
+#### apps and quickstarts profiles
+
+If you wish to only build the apps or the quickstarts you can use profiles
+
+    mvn install -Papps
+    mvn install -Pquickstarts
+    
+If you omit the profiles then it builds everything.    
+
+#### Docker and/or Jube profiles 
+
 This build is designed so that it can be used with docker images and/or jube images. So by default jube images are created unless you specify other profiles. Docker only runs on certain platforms so we've disabled the docker build by default less enabled via a maven profile.
-
-#### Prerequisites
-
-To build the quickstarts requires Maven version 3.2.5 or later.
-
-#### Maven Profiles
 
 The following maven profiles can be used to enable/disable parts of the build. Note that **jube** is enabled by default until you specify other profiles:
 
