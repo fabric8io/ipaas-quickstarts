@@ -21,8 +21,7 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        MQKubernetes.class,
-        MQCdiKubernetes.class
+        MQKubernetes.class
 })
 public class MQKubernetesTestSuite {
 }
