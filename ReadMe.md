@@ -1,14 +1,18 @@
 ## Fabric8 Quickstarts
 
-This project contains the quickstarts for the [fabric8 project](http://fabric8.io/).
+This project contains the following [fabric8](http://fabric8.io/) parts:  
 
-### Prerequisites
-
-To build the quickstarts requires Maven version 3.2.1 or later.
+* [Apps](apps) the individual apps for fabric8. Each one creates a single kuberntes app.
+* [App Groups](app-groups) the app bundles for the [Fabric8 Apps](http://fabric8.io/guide/fabric8Apps.html)
+* [Quickstarts](quickstarts) for developing Java apps on the [iPaaS](http://fabric8.io/guide/ipaas.html) 
 
 ### Building
 
 This build is designed so that it can be used with docker images and/or jube images. So by default jube images are created unless you specify other profiles. Docker only runs on certain platforms so we've disabled the docker build by default less enabled via a maven profile.
+
+#### Prerequisites
+
+To build the quickstarts requires Maven version 3.2.5 or later.
 
 #### Maven Profiles
 
