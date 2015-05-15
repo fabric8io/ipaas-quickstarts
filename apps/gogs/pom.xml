@@ -39,25 +39,6 @@
     <docker.port.container.jolokia />
 
     <domain>os1.fabric8.io</domain>
-    <fabric8.env.GOGS_SERVER__DOMAIN>\${GOGS_SERVER_DOMAIN}</fabric8.env.GOGS_SERVER__DOMAIN>
-    <fabric8.env.GOGS_SERVER__ROOT_URL>\${GOGS_SERVER_PROTOCOL}\${GOGS_SERVER_DOMAIN}</fabric8.env.GOGS_SERVER__ROOT_URL>
-    <fabric8.env.GOGS_SERVER__PROTOCOL>http</fabric8.env.GOGS_SERVER__PROTOCOL>
-<!--
-    TODO re-enable when we have certs so that STI builds and Eclipse Orion can clone the repo from https://
-
-    <fabric8.env.GOGS_SERVER__ROOT_URL>https://gogs.\${DOMAIN}</fabric8.env.GOGS_SERVER__ROOT_URL>
-    <fabric8.env.GOGS_SERVER__PROTOCOL>https</fabric8.env.GOGS_SERVER__PROTOCOL>
-    <fabric8.service.port>443</fabric8.service.port>
--->
-    <fabric8.env.GOGS_WEBHOOK__SKIP_TLS_VERIFY>true</fabric8.env.GOGS_WEBHOOK__SKIP_TLS_VERIFY>
-    <fabric8.env.GOGS_WEBHOOK__TASK_INTERVAL>true</fabric8.env.GOGS_WEBHOOK__TASK_INTERVAL>
-    <fabric8.env.GOGS_OAUTH__ENABLED>true</fabric8.env.GOGS_OAUTH__ENABLED>
-    <fabric8.env.GOGS_OAUTH_TWITTER__ENABLED>false</fabric8.env.GOGS_OAUTH_TWITTER__ENABLED>
-    <fabric8.env.GOGS_OAUTH_OPENSHIFT__ENABLED>true</fabric8.env.GOGS_OAUTH_OPENSHIFT__ENABLED>
-    <fabric8.env.GOGS_OAUTH_OPENSHIFT__CLIENT_ID>gogs</fabric8.env.GOGS_OAUTH_OPENSHIFT__CLIENT_ID>
-    <fabric8.env.GOGS_OAUTH_OPENSHIFT__SCOPES>https://\${DOMAIN}:8443/console/user</fabric8.env.GOGS_OAUTH_OPENSHIFT__SCOPES>
-    <fabric8.env.GOGS_OAUTH_OPENSHIFT__AUTH_URL>https://\${DOMAIN}:8443/oauth/authorize</fabric8.env.GOGS_OAUTH_OPENSHIFT__AUTH_URL>
-    <fabric8.env.GOGS_OAUTH_OPENSHIFT__TOKEN_URL>https://\${DOMAIN}:8443/oauth/token</fabric8.env.GOGS_OAUTH_OPENSHIFT__TOKEN_URL>
     <fabric8.service.port>80</fabric8.service.port>
 
     <fabric8.replicationController.name>gogs-controller</fabric8.replicationController.name>
@@ -82,7 +63,7 @@
     <fabric8.parameter.GOGS_SERVER_DOMAIN.value>gogs.os1.fabric8.io</fabric8.parameter.GOGS_SERVER_DOMAIN.value>
     <fabric8.parameter.GOGS_SERVER_DOMAIN.description>The gogs server name</fabric8.parameter.GOGS_SERVER_DOMAIN.description>
 
-    <fabric8.parameter.GOGS_SERVER_PROTOCOL.value>http://</fabric8.parameter.GOGS_SERVER_PROTOCOL.value>
+    <fabric8.parameter.GOGS_SERVER_PROTOCOL.value>http</fabric8.parameter.GOGS_SERVER_PROTOCOL.value>
     <fabric8.parameter.GOGS_SERVER_PROTOCOL.description>The protocol for gogs to use; either http or https</fabric8.parameter.GOGS_SERVER_PROTOCOL.description>
   </properties>
 
