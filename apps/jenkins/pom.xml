@@ -22,7 +22,7 @@
     <parent>
         <groupId>io.fabric8.jube.images.fabric8</groupId>
         <artifactId>apps</artifactId>
-        <version>2.2-SNAPSHOT</version>
+        <version>2.1.1</version>
     </parent>
 
     <artifactId>jenkins</artifactId>
@@ -52,7 +52,7 @@
         <fabric8.volume.docker-socket.hostPath>/var/run/docker.sock</fabric8.volume.docker-socket.hostPath>
         <fabric8.volume.docker-socket.mountPath>/var/run/docker.sock</fabric8.volume.docker-socket.mountPath>
 
-        <fabric8.volume.jenkins-workspace.emptyDir></fabric8.volume.jenkins-workspace.emptyDir>
+        <fabric8.volume.jenkins-workspace.emptyDir />
         <fabric8.volume.jenkins-workspace.mountPath>/var/jenkins_home/workspace</fabric8.volume.jenkins-workspace.mountPath>
 
 <!--
