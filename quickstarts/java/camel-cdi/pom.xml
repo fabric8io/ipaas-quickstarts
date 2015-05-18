@@ -50,7 +50,7 @@
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <camel.version>2.15.2</camel.version>
     <jube.version>2.0.48</jube.version>
-    <docker.maven.plugin.version>0.11.3</docker.maven.plugin.version>
+    <docker.maven.plugin.version>0.11.5-M1</docker.maven.plugin.version>
 
     <docker.from>fabric8/java</docker.from>
 

@@ -42,7 +42,7 @@
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <fabric8.version>2.1.1</fabric8.version>
     <jube.version>2.0.48</jube.version>
-    <docker.maven.plugin.version>0.11.3</docker.maven.plugin.version>
+    <docker.maven.plugin.version>0.11.5-M1</docker.maven.plugin.version>
     <cxf.version>3.0.4</cxf.version>
     <camel.version>2.15.2</camel.version>
     <karaf.version>2.4.0</karaf.version>
