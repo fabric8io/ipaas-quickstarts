@@ -68,8 +68,13 @@
     <fabric8.service.name>app-library</fabric8.service.name>
     <fabric8.service.port>80</fabric8.service.port>
 
+<!--
+    TODO kubernetes doesn't yet really support services with > 1 port; e.g. /api/v1beta3/proxy/services doesn't let you specify a port number
+    ditto the OpenShift router doesn't work so lets use a separate service!
+
     <fabric8.service.port.jolokia>8778</fabric8.service.port.jolokia>
     <fabric8.service.containerPort.jolokia>8778</fabric8.service.containerPort.jolokia>
+-->
 
 
     <fabric8.service.containerPort>${http.port}</fabric8.service.containerPort>
@@ -105,6 +110,10 @@
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-generator</artifactId>
     </dependency>
     <dependency>
       <groupId>io.hawt</groupId>
