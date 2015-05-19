@@ -56,11 +56,11 @@
     </dependencyManagement>
 
     <modules>
-	    <module>amq-broker</module>
+        <module>amq-broker</module>
         <module>api-registry</module>
+        <module>apiman</module>
         <module>app-library</module>
         <module>brackets</module>
-        <module>apiman-manager-api</module>
         <module>cadvisor</module>
         <module>cdelivery</module>
         <module>console</module>

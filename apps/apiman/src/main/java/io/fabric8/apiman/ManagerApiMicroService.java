@@ -104,7 +104,7 @@ public class ManagerApiMicroService {
          * ************* */
         ServletContextHandler apiManServer = new ServletContextHandler(ServletContextHandler.SESSIONS);
         apiManServer.setSecurityHandler(createSecurityHandler());
-        apiManServer.setContextPath("/apiman-manager-api");
+        apiManServer.setContextPath("/apiman");
         apiManServer.addEventListener(new Listener());
         apiManServer.addEventListener(new BeanManagerResourceBindingListener());
         apiManServer.addEventListener(new ResteasyBootstrap());

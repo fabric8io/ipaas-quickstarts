@@ -37,10 +37,6 @@ import javax.enterprise.inject.New;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
 
-import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.settings.ImmutableSettings;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
-
 /**
  * Attempt to create producer methods for CDI beans.
  *
@@ -117,7 +113,7 @@ public class ManagerApiMicroServiceCdiFactory {
      * @return create a new test ES jest client
      */
     private static JestClient createJestClient(ManagerApiMicroServiceConfig config) {
-    	String connectionUrl = "http://" + config.getESHost() + ":" + config.getESPort();
+    	String connectionUrl = config.getESProtocol() + "://" + config.getESHost() + ":" + config.getESPort();
         JestClientFactory factory = new JestClientFactory();
         factory.setHttpClientConfig(new HttpClientConfig
                .Builder(connectionUrl)
@@ -126,17 +122,6 @@ public class ManagerApiMicroServiceCdiFactory {
                .build());
         return factory.getObject();
     }
-    /**
-     * @param config
-     * @return create a new test ES transport client
-     */
-    private static TransportClient createTransportClient(ManagerApiMicroServiceConfig config) {
-        TransportClient client = new TransportClient(ImmutableSettings.settingsBuilder()
-                .put("cluster.name", config.getESClusterName()).build()); //$NON-NLS-1$
-        client.addTransportAddress(new InetSocketTransportAddress(config.getESHost(), config.getESPort()));
-        return client;
-    }
-
     /**
      * Initializes the ES storage (if required).
      * @param config

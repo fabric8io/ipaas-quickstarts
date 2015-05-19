@@ -45,6 +45,7 @@ public class ManagerApiMicroServiceConfig {
     public static final String APIMAN_MANAGER_STORAGE_TYPE = "apiman-manager.storage.type"; //$NON-NLS-1$
     public static final String APIMAN_MANAGER_STORAGE_ES_HOST = "apiman-manager.storage.es.host"; //$NON-NLS-1$
     public static final String APIMAN_MANAGER_STORAGE_ES_PORT = "apiman-manager.storage.es.port"; //$NON-NLS-1$
+    public static final String APIMAN_MANAGER_STORAGE_ES_PROTOCOL = "apiman-manager.storage.es.protocol"; //$NON-NLS-1$
     public static final String APIMAN_MANAGER_STORAGE_ES_CLUSTER_NAME = "apiman-manager.storage.es.cluster-name"; //$NON-NLS-1$
     public static final String APIMAN_MANAGER_STORAGE_ES_INITIALIZE = "apiman-manager.storage.es.initialize"; //$NON-NLS-1$
 
@@ -81,11 +82,13 @@ public class ManagerApiMicroServiceConfig {
     	    log.info("ELASTICSEARCH host:port is set to " + hostAndPort + " using ENV settings.");
     		host = hp[0];
     	}
-    	System.out.println("*** Connecting to Elastic at service " + host + ":" + hp[1]);
-    	log.debug("CONNECTING TO 'elasticsearch' on " + host + ":" + hp[1]);
+    	String protocol = Systems.getEnvVarOrSystemProperty("ELASTICSEARCH_PROTOCOL", "http");
+    	System.out.println("*** Connecting to Elastic at service " + protocol + "://" + host + ":" + hp[1]);
+    	log.debug("CONNECTING TO 'elasticsearch' on " + protocol + "://" + host + ":" + hp[1]);
         config = new SystemConfiguration();
         config.setProperty(APIMAN_MANAGER_STORAGE_ES_HOST, host);
         config.setProperty(APIMAN_MANAGER_STORAGE_ES_PORT, hp[1]);
+        config.setProperty(APIMAN_MANAGER_STORAGE_ES_PROTOCOL, protocol);
         config.setProperty(APIMAN_MANAGER_STORAGE_ES_CLUSTER_NAME, "elasticsearch");
     }
 
@@ -126,7 +129,14 @@ public class ManagerApiMicroServiceConfig {
      * @return the elasticsearch port
      */
     public int getESPort() {
-        return config.getInt(APIMAN_MANAGER_STORAGE_ES_PORT, 9300);
+        return config.getInt(APIMAN_MANAGER_STORAGE_ES_PORT, 9200);
+    }
+    
+    /**
+     * @return the elasticsearch protocol
+     */
+    public String getESProtocol() {
+        return config.getString(APIMAN_MANAGER_STORAGE_ES_PROTOCOL, "http"); //$NON-NLS-1$
     }
 
     /**
