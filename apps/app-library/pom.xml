@@ -43,12 +43,12 @@
     <skipTests>false</skipTests>
 
     <!-- the version of the BOM, defining all the dependency versions -->
-    <fabric8.version>2.1.1</fabric8.version>
+    <fabric8.version>2.1.2</fabric8.version>
     <hawtio.version>1.4.50</hawtio.version>
     <jgit.version>3.4.1.201406201815-r</jgit.version>
     <cxf.version>3.0.4</cxf.version>
 
-    <fabric8.release.version>2.0.47</fabric8.release.version>
+    <fabric8.release.version>2.1.1</fabric8.release.version>
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <org.eclipse.jetty.version>9.1.5.v20140505</org.eclipse.jetty.version>
@@ -68,13 +68,19 @@
     <fabric8.service.name>app-library</fabric8.service.name>
     <fabric8.service.port>80</fabric8.service.port>
 
+<!--
+    TODO kubernetes doesn't yet really support services with > 1 port; e.g. /api/v1beta3/proxy/services doesn't let you specify a port number
+    ditto the OpenShift router doesn't work so lets use a separate service!
+
     <fabric8.service.port.jolokia>8778</fabric8.service.port.jolokia>
     <fabric8.service.containerPort.jolokia>8778</fabric8.service.containerPort.jolokia>
+-->
 
 
     <fabric8.service.containerPort>${http.port}</fabric8.service.containerPort>
     <fabric8.replicationController.name>app-library-controller</fabric8.replicationController.name>
     <fabric8.label.component>AppLibrary</fabric8.label.component>
+    <fabric8.label.provider>fabric8</fabric8.label.provider>
     <fabric8.label.provider>fabric8</fabric8.label.provider>
   </properties>
 
@@ -104,6 +110,10 @@
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-generator</artifactId>
     </dependency>
     <dependency>
       <groupId>io.hawt</groupId>

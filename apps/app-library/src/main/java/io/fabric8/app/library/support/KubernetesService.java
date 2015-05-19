@@ -152,18 +152,26 @@ public class KubernetesService extends MBeanSupport implements KubernetesService
         return facade.readFile(branch, "/", new Function<File, Response>() {
             @Override
             public Response apply(File rootFolder) {
-                String head = facade.getHEAD();
-                EntityTag etag = new EntityTag(head);
-                Response.ResponseBuilder builder = request.evaluatePreconditions(etag);
+                try {
+                    String head = facade.getHEAD();
+                    EntityTag etag = new EntityTag(head);
+                    Response.ResponseBuilder builder = request.evaluatePreconditions(etag);
 
-                // only query the data if its changed
-                if (builder == null) {
-                    List<AppDTO> answer = new ArrayList<AppDTO>();
-                    doAddApps(rootFolder, rootFolder, answer);
-                    builder = Response.ok(answer);
-                    builder.tag(etag);
+                    // only query the data if its changed
+                    if (builder == null) {
+                        List<AppDTO> answer = new ArrayList<AppDTO>();
+                        doAddApps(rootFolder, rootFolder, answer);
+                        builder = Response.ok(answer);
+                        builder.tag(etag);
+                    }
+                    return builder.build();
+                } catch (Throwable e) {
+                    LOG.warn("Failed to find apps for branch " + branch + ". " + e, e);
+                    System.err.println("Failed to find apps for branch " + branch + ". " + e);
+                    e.printStackTrace();
+                    throw e;
+                    //return Response.serverError().entity(e).build();
                 }
-                return builder.build();
             }
         });
     }
@@ -248,7 +256,9 @@ public class KubernetesService extends MBeanSupport implements KubernetesService
                 File[] files = fileOrDirectory.listFiles();
                 if (files != null) {
                     for (File file : files) {
-                        doAddApps(rootFolder, file, apps);
+                        if (!file.equals(fileOrDirectory)) {
+                            doAddApps(rootFolder, file, apps);
+                        }
                     }
                 }
             }
