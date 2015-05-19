@@ -25,6 +25,8 @@ import java.util.EnumSet;
 
 import javax.servlet.DispatcherType;
 
+import org.eclipse.jetty.rewrite.handler.RedirectPatternRule;
+import org.eclipse.jetty.rewrite.handler.RewriteHandler;
 import org.eclipse.jetty.security.ConstraintSecurityHandler;
 import org.eclipse.jetty.security.HashLoginService;
 import org.eclipse.jetty.security.SecurityHandler;
@@ -99,7 +101,7 @@ public class ManagerApiMicroService {
      * @throws Exception
      */
     protected void addModulesToJetty(ContextHandlerCollection handlers) throws Exception {
-        /* *************
+    	/* *************
          * Manager API
          * ************* */
         ServletContextHandler apiManServer = new ServletContextHandler(ServletContextHandler.SESSIONS);
@@ -122,6 +124,21 @@ public class ManagerApiMicroService {
         apiManServer.setInitParameter("resteasy.servlet.mapping.prefix", "");
 
         handlers.addHandler(apiManServer);
+        
+        /* *************
+         * Redirect / to the Manager API status page
+         * ************* */
+    	System.out.println("Setting up a redirect from the root to the system status page");
+    	ServletContextHandler rootContextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
+    	rootContextHandler.setContextPath("/");
+    	RewriteHandler rewrite = new RewriteHandler();
+    	rewrite.setHandler(rootContextHandler);
+    	RedirectPatternRule rootRule = new RedirectPatternRule();
+    	rootRule.setPattern("/");
+    	rootRule.setLocation("/apiman/system/status");
+    	rootRule.setTerminating(true);
+    	rewrite.addRule(rootRule);
+    	handlers.addHandler(rootContextHandler);
     }
 
     /**

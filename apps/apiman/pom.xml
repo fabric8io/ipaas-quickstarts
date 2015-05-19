@@ -6,7 +6,7 @@
     <version>2.2-SNAPSHOT</version>
   </parent>
   <artifactId>apiman</artifactId>
-  <name>Apiman Manager REST API</name>
+  <name>Apiman Manager</name>
   <description>Apiman deployed on Jetty</description>
 
 
@@ -92,6 +92,11 @@
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-util</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-rewrite</artifactId>
+      <version>${jetty.version}</version>
     </dependency>
 
     <!-- Weld -->
