@@ -55,8 +55,17 @@
     <fabric8.parameter.DOMAIN.description>The domain name to append to the service name to access gogs repositories</fabric8.parameter.DOMAIN.description>
   </properties>
 
-
     <dependencies>
+        <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>kubernetes-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>kubernetes-generator</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.jboss.arquillian.junit</groupId>
             <artifactId>arquillian-junit-container</artifactId>
