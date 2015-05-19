@@ -19,13 +19,10 @@ import io.apiman.common.servlet.ApimanCorsFilter;
 import io.apiman.common.servlet.AuthenticationFilter;
 import io.apiman.common.servlet.DisableCachingFilter;
 import io.apiman.common.servlet.LocaleFilter;
-import io.apiman.manager.api.core.logging.ApimanLogger;
-import io.apiman.manager.api.core.logging.IApimanLogger;
 import io.apiman.manager.api.security.impl.DefaultSecurityContextFilter;
 
 import java.util.EnumSet;
 
-import javax.inject.Inject;
 import javax.servlet.DispatcherType;
 
 import org.eclipse.jetty.security.ConstraintSecurityHandler;
@@ -53,10 +50,6 @@ public class ManagerApiMicroService {
 
     private Server server;
 
-    @Inject
-    @ApimanLogger(ManagerApiMicroService.class)
-    private IApimanLogger log;
-
     /**
      * Constructor.
      */
@@ -74,15 +67,15 @@ public class ManagerApiMicroService {
 
         ContextHandlerCollection handlers = new ContextHandlerCollection();
         addModulesToJetty(handlers);
-
+        
         // Create the server.
         int serverPort = serverPort();
-        log.info("**** Starting Server (" + getClass().getSimpleName() + ") on port: " + serverPort);
+        System.out.println("**** Starting Server (" + getClass().getSimpleName() + ") on port: " + serverPort);
         server = new Server(serverPort);
         server.setHandler(handlers);
         server.start();
         long endTime = System.currentTimeMillis();
-        log.info("******* Started in " + (endTime - startTime) + "ms");
+        System.out.println("******* Started in " + (endTime - startTime) + "ms");
     }
 
     /**
@@ -111,7 +104,7 @@ public class ManagerApiMicroService {
          * ************* */
         ServletContextHandler apiManServer = new ServletContextHandler(ServletContextHandler.SESSIONS);
         apiManServer.setSecurityHandler(createSecurityHandler());
-        apiManServer.setContextPath("/apiman");
+        apiManServer.setContextPath("/apiman-manager-api");
         apiManServer.addEventListener(new Listener());
         apiManServer.addEventListener(new BeanManagerResourceBindingListener());
         apiManServer.addEventListener(new ResteasyBootstrap());

@@ -75,12 +75,13 @@ public class ManagerApiMicroServiceConfig {
 		} catch (UnknownHostException e) {
 		    log.error("Could not resolve DNS for ELASTICSEARCH, trying ENV settings next.", e);
 		}
-    	String hostAndPort = Systems.getServiceHostAndPort("ELASTICSEARCH", "localhost", "9300");
+    	String hostAndPort = Systems.getServiceHostAndPort("ELASTICSEARCH", "localhost", "9200");
     	String[] hp = hostAndPort.split(":");
     	if (host == null) {
-    	    log.debug("ELASTICSEARCH host:port is set to " + hostAndPort + " using ENV settings.");
+    	    log.info("ELASTICSEARCH host:port is set to " + hostAndPort + " using ENV settings.");
     		host = hp[0];
     	}
+    	System.out.println("*** Connecting to Elastic at service " + host + ":" + hp[1]);
     	log.debug("CONNECTING TO 'elasticsearch' on " + host + ":" + hp[1]);
         config = new SystemConfiguration();
         config.setProperty(APIMAN_MANAGER_STORAGE_ES_HOST, host);

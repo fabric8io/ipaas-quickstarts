@@ -26,7 +26,11 @@ import io.apiman.manager.api.core.logging.JsonLoggerImpl;
 import io.apiman.manager.api.es.EsStorage;
 import io.apiman.manager.api.jpa.JpaStorage;
 import io.apiman.manager.api.jpa.roles.JpaIdmStorage;
-import io.apiman.manager.api.war.WarApiManagerConfig;
+import io.apiman.manager.api.security.ISecurityContext;
+import io.apiman.manager.api.security.impl.DefaultSecurityContext;
+import io.searchbox.client.JestClient;
+import io.searchbox.client.JestClientFactory;
+import io.searchbox.client.config.HttpClientConfig;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.New;
@@ -45,11 +49,11 @@ import org.elasticsearch.common.transport.InetSocketTransportAddress;
 @ApplicationScoped
 public class ManagerApiMicroServiceCdiFactory {
 
-    private static TransportClient sESClient;
+    private static JestClient sESClient;
     private static EsStorage sESStorage;
 
     @Produces @ApimanLogger
-    public static IApimanLogger provideLogger(WarApiManagerConfig config, InjectionPoint injectionPoint) {
+    public static IApimanLogger provideLogger(ManagerApiMicroServiceConfig config, InjectionPoint injectionPoint) {
         ApimanLogger logger = injectionPoint.getAnnotated().getAnnotation(ApimanLogger.class);
         Class<?> requestorKlazz = logger.value();
         return new JsonLoggerImpl().createLogger(requestorKlazz);
@@ -76,6 +80,11 @@ public class ManagerApiMicroServiceCdiFactory {
             throw new RuntimeException("Unknown storage type: " + config.getStorageType()); //$NON-NLS-1$
         }
     }
+    
+    @Produces @ApplicationScoped
+    public static ISecurityContext provideSecurityContext(@New DefaultSecurityContext defaultSC) {
+        return defaultSC;
+    }
 
     @Produces @ApplicationScoped
     public static IApiKeyGenerator provideApiKeyGenerator(@New UuidApiKeyGenerator uuidApiKeyGen) {
@@ -94,15 +103,29 @@ public class ManagerApiMicroServiceCdiFactory {
     }
 
     @Produces @ApplicationScoped
-    public static TransportClient provideTransportClient(ManagerApiMicroServiceConfig config) {
+    public static JestClient provideTransportClient(ManagerApiMicroServiceConfig config) {
         if ("es".equals(config.getStorageType())) { //$NON-NLS-1$
             if (sESClient == null) {
-                sESClient = createTransportClient(config);
+                sESClient = createJestClient(config);
             }
         }
         return sESClient;
     }
 
+    /**
+     * @param config
+     * @return create a new test ES jest client
+     */
+    private static JestClient createJestClient(ManagerApiMicroServiceConfig config) {
+    	String connectionUrl = "http://" + config.getESHost() + ":" + config.getESPort();
+        JestClientFactory factory = new JestClientFactory();
+        factory.setHttpClientConfig(new HttpClientConfig
+               .Builder(connectionUrl)
+
+               .multiThreaded(true)
+               .build());
+        return factory.getObject();
+    }
     /**
      * @param config
      * @return create a new test ES transport client
