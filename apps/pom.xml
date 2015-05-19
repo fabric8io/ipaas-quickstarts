@@ -106,7 +106,7 @@
                 <executions>
                     <execution>
                         <id>json</id>
-                        <phase>test-compile</phase>
+                        <phase>generate-resources</phase>
                         <goals>
                             <goal>json</goal>
                         </goals>
