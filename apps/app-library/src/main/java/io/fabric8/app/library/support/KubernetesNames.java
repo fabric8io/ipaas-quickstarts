@@ -62,23 +62,27 @@ public class KubernetesNames {
         } else {
             List<Object> entities = KubernetesHelper.toItemList(dto);
             for (Object entity : entities) {
-                addNamesFromDTO(entity);
+                if (entity != dto) {
+                    addNamesFromDTO(entity);
+                }
             }
         }
     }
 
     public void addNames(ReplicationController dto) {
-        addNameToList(KubernetesHelper.getName(dto), replicationControllerNames);
+        String name = KubernetesHelper.getName(dto);
+        addNameValueToList(name, replicationControllerNames);
     }
 
     public void addNames(Service dto) {
-        addNameToList(KubernetesHelper.getName(dto), serviceNames);
+        String name = KubernetesHelper.getName(dto);
+        addNameValueToList(name, serviceNames);
     }
 
     /**
      * Adds the name to the given list if its not blank or null and not already in the list
      */
-    protected void addNameToList(String name, List<String> list) {
+    protected void addNameValueToList(String name, List<String> list) {
         if (list != null && Strings.isNotBlank(name) && !list.contains(name)) {
             list.add(name);
         }

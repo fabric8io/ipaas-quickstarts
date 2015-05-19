@@ -96,7 +96,13 @@ public class AppLibraryService {
     @GET
     @Path("apps")
     public Response podApis(@QueryParam("branch") String branch, @Context Request request) throws Exception {
-        return kubernetesService.findAppsWithETags(branch, request);
+        LOG.info("Finding the apps for branch: " + branch);
+        try {
+            return kubernetesService.findAppsWithETags(branch, request);
+        } catch (Throwable e) {
+            LOG.warn("Failed to find apps for branch " + branch + ". " + e, e);
+            throw e;
+        }
     }
 
     @Context
