@@ -1,102 +1,138 @@
 {
-  "id": "infinispan-config",
   "kind": "List",
-  "apiVersion": "v1beta2",
-  "name": "infinispan-config",
-  "description": "Creates an infinispan pod & service",
+  "apiVersion": "v1beta3",
   "items": [
     {
-      "apiVersion": "v1beta2",
       "kind": "ReplicationController",
-      "id": "infinispan-controller",
-      "desiredState": {
+      "apiVersion": "v1beta3",
+      "metadata": {
+        "name": "infinispan-controller",
+        "labels": {
+          "cluster": "infinispan",
+          "component": "infinispan"
+        }
+      },
+      "spec": {
         "replicas": 3,
-        "replicaSelector": {
+        "selector": {
           "component": "infinispan"
         },
-        "podTemplate": {
-          "desiredState": {
-            "manifest": {
-              "version": "v1beta2",
-              "id": "is",
-              "name": "infinispan-container",
-              "containers": [
-                {
-                  "name": "infinispan",
-                  "image": "${docker.image}",
-                  "imagePullPolicy": "PullIfNotPresent",
-                  "ports": [
-                    {
-                      "name": "jgroups-tcp-port",
-                      "containerPort": 7600,
-                      "protocol": "TCP"
-                    },
-                    {
-                      "name": "infinispan-rest-port",
-                      "containerPort": 8080
-                    },
-                    {
-                      "name": "infinispan-remote-port",
-                      "containerPort": 9990
-                    },
-                    {
-                      "name": "infinispan-memcached-port",
-                      "containerPort": 11211
-                    },
-                    {
-                      "name": "infinispan-hotrod-port",
-                      "containerPort": 11222
-                    }
-                  ]
-                }
-              ]
+        "template": {
+          "metadata": {
+            "labels": {
+              "cluster": "infinispan",
+              "component": "infinispan"
             }
           },
-          "labels": {
-            "component": "infinispan",
-            "cluster": "infinispan"
+          "spec": {
+            "containers": [
+              {
+                "name": "infinispan",
+                "image": "${docker.image}",
+                "ports": [
+                  {
+                    "name": "jgroups-tcp-port",
+                    "containerPort": 7600,
+                    "protocol": "TCP"
+                  },
+                  {
+                    "name": "infinispan-rest-port",
+                    "containerPort": 8080,
+                    "protocol": "TCP"
+                  },
+                  {
+                    "name": "infinispan-remote-port",
+                    "containerPort": 9990,
+                    "protocol": "TCP"
+                  },
+                  {
+                    "name": "infinispan-memcached-port",
+                    "containerPort": 11211,
+                    "protocol": "TCP"
+                  },
+                  {
+                    "name": "infinispan-hotrod-port",
+                    "containerPort": 11222,
+                    "protocol": "TCP"
+                  }
+                ],
+                "imagePullPolicy": "IfNotPresent"
+              }
+            ]
           }
         }
       }
     },
     {
-      "apiVersion": "v1beta2",
       "kind": "Service",
-      "id": "infinispan-rest",
-      "containerPort": "infinispan-rest-port",
-      "port": 8080,
-      "selector": {
-        "component": "infinispan"
+      "apiVersion": "v1beta3",
+      "metadata": {
+        "name": "infinispan-rest"
+      },
+      "spec": {
+        "ports": [
+          {
+            "port": 8080,
+            "targetPort": "infinispan-rest-port"
+          }
+        ],
+        "selector": {
+          "component": "infinispan"
+        }
       }
     },
     {
-      "apiVersion": "v1beta2",
       "kind": "Service",
-      "id": "infinispan-remote",
-      "containerPort": "infinispan-remote-port",
-      "port": 9990,
-      "selector": {
-        "component": "infinispan"
+      "apiVersion": "v1beta3",
+      "metadata": {
+        "name": "infinispan-remote"
+      },
+      "spec": {
+        "ports": [
+          {
+            "port": 9990,
+            "targetPort": "infinispan-remote-port"
+          }
+        ],
+        "selector": {
+          "component": "infinispan"
+        }
       }
     },
     {
-      "apiVersion": "v1beta2",
       "kind": "Service",
-      "id": "infinispan-memcached",
-      "containerPort": "infinispan-memcached-port",
-      "port": 11211,
-      "selector": {
-        "component": "infinispan"
+      "apiVersion": "v1beta3",
+      "metadata": {
+        "name": "infinispan-memcached"
+      },
+      "spec": {
+        "ports": [
+          {
+            "port": 11211,
+            "targetPort": "infinispan-memcached-port"
+          }
+        ],
+        "selector": {
+          "component": "infinispan"
+        }
       }
     },
     {
-      "apiVersion": "v1beta2",
       "kind": "Service",
-      "id": "infinispan-hotrod",
-      "containerPort": "infinispan-hotrod-port",
-      "port": 11222,
-      "selector": {
-        "component": "infinispan"
+      "apiVersion": "v1beta3",
+      "metadata": {
+        "name": "infinispan-hotrod"
+      },
+      "spec": {
+        "ports": [
+          {
+            "port": 11222,
+            "targetPort": "infinispan-hotrod-port"
+          }
+        ],
+        "selector": {
+          "component": "infinispan"
+        }
       }
     }
   ]

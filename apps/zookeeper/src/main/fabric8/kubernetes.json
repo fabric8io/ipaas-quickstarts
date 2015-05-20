@@ -1,333 +1,405 @@
 {
-    "id": "fabric8-zookeeper-config",
-    "kind": "List",
-    "apiVersion": "v1beta2",
-    "name": "fabric8-zookeeper-config",
-    "description": "Creates a ZooKeeper Server",
-    "items": [
-        {
-            "apiVersion": "v1beta2",
-            "creationTimestamp": null,
-            "id": "zk-client",
-            "kind": "Service",
+  "id": "fabric8-zookeeper-config",
+  "kind": "List",
+  "apiVersion": "v1beta3",
+  "name": "fabric8-zookeeper-config",
+  "description": "Creates a ZooKeeper Server",
+  "items": [
+    {
+      "kind": "Service",
+      "apiVersion": "v1beta3",
+      "metadata": {
+        "name": "zk-client"
+      },
+      "spec": {
+        "ports": [
+          {
+            "protocol": "TCP",
             "port": 2181,
-            "containerPort": "zookeeper-client-port",
-            "selector": {
-                "name": "zookeeper-pod"
-            }
-        },
-        {
-            "apiVersion": "v1beta2",
-            "creationTimestamp": null,
-            "id": "zk-peer-1",
-            "kind": "Service",
-            "port": 2888,
-            "containerPort": "zookeeper-peer-port",
-            "selector": {
-                "name": "zookeeper-pod",
-                "server": "1"
-            }
-        },
-        {
-            "apiVersion": "v1beta2",
-            "creationTimestamp": null,
-            "id": "zk-peer-2",
-            "kind": "Service",
-            "port": 2889,
-            "containerPort": "zookeeper-peer-port",
-            "selector": {
-                "name": "zookeeper-pod",
-                "server": "2"
-            }
-        },
-        {
-            "apiVersion": "v1beta2",
-            "creationTimestamp": null,
-            "id": "zk-peer-3",
-            "kind": "Service",
-            "port": 2890,
-            "containerPort": "zookeeper-peer-port",
-            "selector": {
-                "name": "zookeeper-pod",
-                "server": "3"
-            }
-        },
-
-        {
-            "apiVersion": "v1beta2",
-            "creationTimestamp": null,
-            "id": "zk-election-1",
-            "kind": "Service",
-            "port": 3888,
-            "containerPort": "zookeeper-election-port",
-            "selector": {
-                "name": "zookeeper-pod",
-                "server": "1"
-            }
-        },
-        {
-            "apiVersion": "v1beta2",
-            "creationTimestamp": null,
-            "id": "zk-election-2",
-            "kind": "Service",
-            "port": 3889,
-            "containerPort": "zookeeper-election-port",
-            "selector": {
-                "name": "zookeeper-pod",
-                "server": "2"
-            }
-        },
-        {
-            "apiVersion": "v1beta2",
-            "creationTimestamp": null,
-            "id": "zk-election-3",
-            "kind": "Service",
-            "port": 3890,
-            "containerPort": "zookeeper-election-port",
-            "selector": {
-                "name": "zookeeper-pod",
-                "server": "3"
-            }
-        },
-        {
-            "id": "zookeeper-controller-1",
-            "kind": "ReplicationController",
-            "labels": {
-                "name": "zookeeper-controller"
-            },
-            "apiVersion": "v1beta2",
-            "creationTimestamp": null,
-            "desiredState": {
-                "podTemplate": {
-                    "desiredState": {
-                        "manifest": {
-                            "containers": [
-                                {
-                                    "image": "fabric8/zookeeper",
-                                    "name": "zookeeper-server-1",
-                                    "volumeMounts": [{
-                                        "name": "data",
-                                        "mountPath": "/opt/zookeeper/data"
-                                    },
-                                        {
-                                            "name": "log",
-                                            "mountPath": "/opt/zookeeper/log"
-                                    }],
-                                    "env": [
-                                        {
-                                            "name": "ZK_SERVER_ID",
-                                            "value": "1"
-                                        },
-                                        {
-                                            "name": "USE_BRIDGE",
-                                            "value": "true"
-                                        }
-                                    ],
-                                    "ports": [
-                                        {
-                                            "name": "zookeeper-client-port",
-                                            "containerPort": 2181,
-                                            "protocol": "TCP"
-                                        },
-                                        {
-                                            "name": "zookeeper-peer-port",
-                                            "containerPort": 2888,
-                                            "protocol": "TCP"
-                                        },
-                                        {
-                                            "name": "zookeeper-election-port",
-                                            "containerPort": 3888,
-                                            "protocol": "TCP"
-                                        }
-                                    ]
-                                }
-                            ],
-                            "id": "zookeeper-pod-1",
-                            "version": "v1beta2",
-                            "volumes":[{
-                                "name": "data",
-                                "source": {"hostDir":{"path": "/volumes/zookeeper/1/data"}}
-                                },
-                                {
-                                    "name": "log",
-                                    "source": {"hostDir":{"path": "/volumes/zookeeper/1/log"}}
-                                }
-                            ]
-                        },
-                        "restartpolicy": "Always"
-                    },
-                    "labels": {
-                        "name": "zookeeper-pod",
-                        "server":  "1"
-                    }
-                },
-                "replicaSelector": {
-                    "name": "zookeeper-pod",
-                    "server": "1"
-                },
-                "replicas": 1
-            }
-        },
-
-
-        {
-            "id": "zookeeper-controller-2",
-            "kind": "ReplicationController",
-            "labels": {
-                "name": "zookeeper-controller"
-            },
-            "apiVersion": "v1beta2",
-            "creationTimestamp": null,
-            "desiredState": {
-                "podTemplate": {
-                    "desiredState": {
-                        "manifest": {
-                            "containers": [
-                                {
-                                    "image": "fabric8/zookeeper",
-                                    "name": "zookeeper-server-2",
-                                    "volumeMounts": [{
-                                        "name": "data",
-                                        "mountPath": "/opt/zookeeper/data"
-                                    },
-                                        {
-                                            "name": "log",
-                                            "mountPath": "/opt/zookeeper/log"
-                                    }],
-                                    "env": [
-                                        {
-                                            "name": "ZK_SERVER_ID",
-                                            "value": "2"
-                                        },
-                                        {
-                                            "name": "USE_BRIDGE",
-                                            "value": "true"
-                                        }
-                                    ],
-                                    "ports": [
-                                        {
-                                            "name": "zookeeper-client-port",
-                                            "containerPort": 2181,
-                                            "protocol": "TCP"
-                                        },
-                                        {
-                                            "name": "zookeeper-peer-port",
-                                            "containerPort": 2888,
-                                            "protocol": "TCP"
-                                        },
-                                        {
-                                            "name": "zookeeper-election-port",
-                                            "containerPort": 3888,
-                                            "protocol": "TCP"
-                                        }
-                                    ]
-                                }
-                            ],
-                            "id": "zookeeper-pod-2",
-                            "version": "v1beta2",
-                            "volumes":[{
-                                "name": "data",
-                                "source": {"hostDir":{"path": "/volumes/zookeeper/2/data"}}
-                            },
-                                {
-                                    "name": "log",
-                                    "source": {"hostDir":{"path": "/volumes/zookeeper/2/log"}}
-                                }
-                            ]
-                        },
-                        "restartpolicy": "Always"
-                    },
-                    "labels": {
-                        "name": "zookeeper-pod",
-                        "server": "2"
-                    }
-                },
-                "replicaSelector": {
-                    "name": "zookeeper-pod",
-                    "server": "2"
-                },
-                "replicas": 1
-            }
-        },
-
-        {
-            "id": "zookeeper-controller-3",
-            "kind": "ReplicationController",
-            "labels": {
-                "name": "zookeeper-controller"
-            },
-            "apiVersion": "v1beta2",
-            "creationTimestamp": null,
-            "desiredState": {
-                "podTemplate": {
-                    "desiredState": {
-                        "manifest": {
-                            "containers": [
-                                {
-                                    "image": "fabric8/zookeeper",
-                                    "name": "zookeeper-server-3",
-                                    "volumeMounts": [{
-                                        "name": "data",
-                                        "mountPath": "/opt/zookeeper/data"
-                                    },
-                                    {
-                                        "name": "log",
-                                        "mountPath": "/opt/zookeeper/log"
-                                    }],
-                                    "env": [
-                                        {
-                                            "name": "ZK_SERVER_ID",
-                                            "value": "3"
-                                        },
-                                        {
-                                            "name": "USE_BRIDGE",
-                                            "value": "true"
-                                        }
-                                    ],
-                                    "ports": [
-                                        {
-                                            "name": "zookeeper-client-port",
-                                            "containerPort": 2181,
-                                            "protocol": "TCP"
-                                        },
-                                        {
-                                            "name": "zookeeper-peer-port",
-                                            "containerPort": 2888,
-                                            "protocol": "TCP"
-                                        },
-                                        {
-                                            "name": "zookeeper-election-port",
-                                            "containerPort": 3888,
-                                            "protocol": "TCP"
-                                        }
-                                    ]
-                                }
-                            ],
-                            "id": "zookeeper-pod-3",
-                            "version": "v1beta2",
-                            "volumes":[{
-                                "name": "data",
-                                "source": {"hostDir":{"path": "/volumes/zookeeper/3/data"}}
-                            },
-                                {
-                                    "name": "log",
-                                    "source": {"hostDir":{"path": "/volumes/zookeeper/3/log"}}
-                                }
-                            ]
-                        },
-                        "restartpolicy": "Always"
-                    },
-                    "labels": {
-                        "name": "zookeeper-pod",
-                        "server": "3"
-                    }
-                },
-                "replicaSelector": {
-                    "name": "zookeeper-pod",
-                    "server": "3"
-                },
-                "replicas": 1
-            }
+            "targetPort": "zookeeper-client-port"
+          }
+        ],
+        "selector": {
+          "name": "zookeeper-pod"
         }
-    ]
+      }
+    },
+    {
+      "kind": "Service",
+      "apiVersion": "v1beta3",
+      "metadata": {
+        "name": "zk-peer-1"
+      },
+      "spec": {
+        "ports": [
+          {
+            "protocol": "TCP",
+            "port": 2888,
+            "targetPort": "zookeeper-peer-port"
+          }
+        ],
+        "selector": {
+          "name": "zookeeper-pod",
+          "server": "1"
+        }
+      }
+    },
+    {
+      "kind": "Service",
+      "apiVersion": "v1beta3",
+      "metadata": {
+        "name": "zk-peer-2"
+      },
+      "spec": {
+        "ports": [
+          {
+            "protocol": "TCP",
+            "port": 2889,
+            "targetPort": "zookeeper-peer-port"
+          }
+        ],
+        "selector": {
+          "name": "zookeeper-pod",
+          "server": "2"
+        }
+      }
+    },
+    {
+      "kind": "Service",
+      "apiVersion": "v1beta3",
+      "metadata": {
+        "name": "zk-peer-3"
+      },
+      "spec": {
+        "ports": [
+          {
+            "protocol": "TCP",
+            "port": 2890,
+            "targetPort": "zookeeper-peer-port"
+          }
+        ],
+        "selector": {
+          "name": "zookeeper-pod",
+          "server": "3"
+        }
+      }
+    },
+    {
+      "kind": "Service",
+      "apiVersion": "v1beta3",
+      "metadata": {
+        "name": "zk-election-1"
+      },
+      "spec": {
+        "ports": [
+          {
+            "protocol": "TCP",
+            "port": 3888,
+            "targetPort": "zookeeper-election-port"
+          }
+        ],
+        "selector": {
+          "name": "zookeeper-pod",
+          "server": "1"
+        }
+      }
+    },
+    {
+      "kind": "Service",
+      "apiVersion": "v1beta3",
+      "metadata": {
+        "name": "zk-election-2"
+      },
+      "spec": {
+        "ports": [
+          {
+            "protocol": "TCP",
+            "port": 3889,
+            "targetPort": "zookeeper-election-port"
+          }
+        ],
+        "selector": {
+          "name": "zookeeper-pod",
+          "server": "2"
+        }
+      }
+    },
+    {
+      "kind": "Service",
+      "apiVersion": "v1beta3",
+      "metadata": {
+        "name": "zk-election-3"
+      },
+      "spec": {
+        "ports": [
+          {
+            "protocol": "TCP",
+            "port": 3890,
+            "targetPort": "zookeeper-election-port"
+          }
+        ],
+        "selector": {
+          "name": "zookeeper-pod",
+          "server": "3"
+        }
+      }
+    },
+    {
+      "kind": "ReplicationController",
+      "apiVersion": "v1beta3",
+      "metadata": {
+        "name": "zookeeper-controller-1",
+        "labels": {
+          "name": "zookeeper-controller"
+        }
+      },
+      "spec": {
+        "replicas": 1,
+        "selector": {
+          "name": "zookeeper-pod",
+          "server": "1"
+        },
+        "template": {
+          "metadata": {
+            "labels": {
+              "name": "zookeeper-pod",
+              "server": "1"
+            }
+          },
+          "spec": {
+            "volumes": [
+              {
+                "name": "data",
+                "hostPath": {
+                  "path": "/volumes/zookeeper/1/data"
+                }
+              },
+              {
+                "name": "log",
+                "hostPath": {
+                  "path": "/volumes/zookeeper/1/log"
+                }
+              }
+            ],
+            "containers": [
+              {
+                "name": "zookeeper-server-1",
+                "image": "fabric8/zookeeper",
+                "ports": [
+                  {
+                    "name": "zookeeper-client-port",
+                    "containerPort": 2181,
+                    "protocol": "TCP"
+                  },
+                  {
+                    "name": "zookeeper-peer-port",
+                    "containerPort": 2888,
+                    "protocol": "TCP"
+                  },
+                  {
+                    "name": "zookeeper-election-port",
+                    "containerPort": 3888,
+                    "protocol": "TCP"
+                  }
+                ],
+                "env": [
+                  {
+                    "name": "ZK_SERVER_ID",
+                    "value": "1"
+                  },
+                  {
+                    "name": "USE_BRIDGE",
+                    "value": "true"
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "data",
+                    "mountPath": "/opt/zookeeper/data"
+                  },
+                  {
+                    "name": "log",
+                    "mountPath": "/opt/zookeeper/log"
+                  }
+                ],
+                "imagePullPolicy": "IfNotPresent"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "kind": "ReplicationController",
+      "apiVersion": "v1beta3",
+      "metadata": {
+        "name": "zookeeper-controller-2",
+        "labels": {
+          "name": "zookeeper-controller"
+        }
+      },
+      "spec": {
+        "replicas": 1,
+        "selector": {
+          "name": "zookeeper-pod",
+          "server": "2"
+        },
+        "template": {
+          "metadata": {
+            "labels": {
+              "name": "zookeeper-pod",
+              "server": "2"
+            }
+          },
+          "spec": {
+            "volumes": [
+              {
+                "name": "data",
+                "hostPath": {
+                  "path": "/volumes/zookeeper/2/data"
+                }
+              },
+              {
+                "name": "log",
+                "hostPath": {
+                  "path": "/volumes/zookeeper/2/log"
+                }
+              }
+            ],
+            "containers": [
+              {
+                "name": "zookeeper-server-2",
+                "image": "fabric8/zookeeper",
+                "ports": [
+                  {
+                    "name": "zookeeper-client-port",
+                    "containerPort": 2181,
+                    "protocol": "TCP"
+                  },
+                  {
+                    "name": "zookeeper-peer-port",
+                    "containerPort": 2888,
+                    "protocol": "TCP"
+                  },
+                  {
+                    "name": "zookeeper-election-port",
+                    "containerPort": 3888,
+                    "protocol": "TCP"
+                  }
+                ],
+                "env": [
+                  {
+                    "name": "ZK_SERVER_ID",
+                    "value": "2"
+                  },
+                  {
+                    "name": "USE_BRIDGE",
+                    "value": "true"
+                  }
+                ],
+                "resources": {},
+                "volumeMounts": [
+                  {
+                    "name": "data",
+                    "mountPath": "/opt/zookeeper/data"
+                  },
+                  {
+                    "name": "log",
+                    "mountPath": "/opt/zookeeper/log"
+                  }
+                ],
+                "imagePullPolicy": "IfNotPresent"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "kind": "ReplicationController",
+      "apiVersion": "v1beta3",
+      "metadata": {
+        "name": "zookeeper-controller-3",
+        "labels": {
+          "name": "zookeeper-controller"
+        }
+      },
+      "spec": {
+        "replicas": 1,
+        "selector": {
+          "name": "zookeeper-pod",
+          "server": "3"
+        },
+        "template": {
+          "metadata": {
+            "labels": {
+              "name": "zookeeper-pod",
+              "server": "3"
+            }
+          },
+          "spec": {
+            "volumes": [
+              {
+                "name": "data",
+                "hostPath": {
+                  "path": "/volumes/zookeeper/3/data"
+                }
+              },
+              {
+                "name": "log",
+                "hostPath": {
+                  "path": "/volumes/zookeeper/3/log"
+                }
+              }
+            ],
+            "containers": [
+              {
+                "name": "zookeeper-server-3",
+                "image": "fabric8/zookeeper",
+                "ports": [
+                  {
+                    "name": "zookeeper-client-port",
+                    "containerPort": 2181,
+                    "protocol": "TCP"
+                  },
+                  {
+                    "name": "zookeeper-peer-port",
+                    "containerPort": 2888,
+                    "protocol": "TCP"
+                  },
+                  {
+                    "name": "zookeeper-election-port",
+                    "containerPort": 3888,
+                    "protocol": "TCP"
+                  }
+                ],
+                "env": [
+                  {
+                    "name": "ZK_SERVER_ID",
+                    "value": "3"
+                  },
+                  {
+                    "name": "USE_BRIDGE",
+                    "value": "true"
+                  }
+                ],
+                "resources": {},
+                "volumeMounts": [
+                  {
+                    "name": "data",
+                    "mountPath": "/opt/zookeeper/data"
+                  },
+                  {
+                    "name": "log",
+                    "mountPath": "/opt/zookeeper/log"
+                  }
+                ],
+                "imagePullPolicy": "IfNotPresent"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
 }

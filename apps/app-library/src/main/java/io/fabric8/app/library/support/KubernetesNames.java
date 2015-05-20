@@ -18,6 +18,7 @@
 package io.fabric8.app.library.support;
 
 import io.fabric8.kubernetes.api.KubernetesHelper;
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.utils.Strings;
@@ -60,7 +61,7 @@ public class KubernetesNames {
         } else if (dto instanceof Service) {
             addNames((Service) dto);
         } else {
-            List<?> entities = KubernetesHelper.toItemList(dto);
+            List<HasMetadata> entities = KubernetesHelper.toItemList(dto);
             for (Object entity : entities) {
                 addNamesFromDTO(entity);
             }

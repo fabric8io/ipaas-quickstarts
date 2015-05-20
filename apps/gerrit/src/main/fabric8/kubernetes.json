@@ -1,67 +1,84 @@
 {
-    "id": "gerrit-config",
-    "kind": "List",
-    "apiVersion": "v1beta2",
-    "name": "gerrit-config",
-    "description": "Creates a Gerrit Server",
-    "items": [
-        {
-            "apiVersion" : "v1beta2",
-            "id":"gerrit-service",
-            "kind":"Service",
-            "port":80,
-            "containerPort":8080,
-            "selector":{
-                "name":"gerrit"
-            }
-        },
-        {
-            "apiVersion" : "v1beta2",
-            "id":"gerrit-daemon-service",
-            "kind":"Service",
-            "port":29418,
-            "containerPort":29418,
-            "selector":{
-                "name":"gerrit"
-            }
-        },
-        {
-            "kind" : "ReplicationController",
-            "id" : "gerrit",
-            "apiVersion" : "v1beta2",
-            "desiredState" : {
-                "replicas" : 1,
-                "replicaSelector" : {
-                    "name" : "gerrit"
-                },
-                "podTemplate" : {
-                    "desiredState" : {
-                        "manifest" : {
-                            "version" : "v1beta2",
-                            "id" : "gerritPod",
-                            "containers" : [ {
-                                "image":"edgester/gerrit",
-                                "name":"gerrit-container",
-                                "ports":[
-                                    {
-                                        "containerPort":8080,
-                                        "protocol":"TCP"
-                                    },
-                                    {
-                                        "containerPort":29418,
-                                        "protocol":"TCP"
-                                    }]
-                            } ]
-                        }
-                    },
-                    "labels" : {
-                        "name" : "gerrit"
-                    }
-                }
-            },
-            "labels" : {
-                "name" : "gerrit"
-            }
+  "kind": "List",
+  "apiVersion": "v1beta3",
+  "items": [
+    {
+      "kind": "Service",
+      "apiVersion": "v1beta3",
+      "metadata": {
+        "name": "gerrit-service"
+      },
+      "spec": {
+        "ports": [
+          {
+            "port": 80,
+            "targetPort": 8080
+          }
+        ],
+        "selector": {
+          "name": "gerrit"
         }
-    ]
+      }
+    },
+    {
+      "kind": "Service",
+      "apiVersion": "v1beta3",
+      "metadata": {
+        "name": "gerrit-daemon-service"
+      },
+      "spec": {
+        "ports": [
+          {
+            "port": 29418,
+            "targetPort": 29418
+          }
+        ],
+        "selector": {
+          "name": "gerrit"
+        }
+      }
+    },
+    {
+      "kind": "ReplicationController",
+      "apiVersion": "v1beta3",
+      "metadata": {
+        "name": "gerrit",
+        "labels": {
+          "name": "gerrit"
+        }
+      },
+      "spec": {
+        "replicas": 1,
+        "selector": {
+          "name": "gerrit"
+        },
+        "template": {
+          "metadata": {
+            "labels": {
+              "name": "gerrit"
+            }
+          },
+          "spec": {
+            "containers": [
+              {
+                "name": "gerrit-container",
+                "image": "edgester/gerrit",
+                "ports": [
+                  {
+                    "containerPort": 8080,
+                    "protocol": "TCP"
+                  },
+                  {
+                    "containerPort": 29418,
+                    "protocol": "TCP"
+                  }
+                ],
+                "imagePullPolicy": "IfNotPresent"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
 }
