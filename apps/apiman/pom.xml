@@ -241,19 +241,6 @@
     <finalName>${project.artifactId}</finalName>
 
     <plugins>
-     <plugin>
-        <groupId>io.fabric8</groupId>
-        <artifactId>fabric8-maven-plugin</artifactId>
-        <version>${fabric8.version}</version>
-        <executions>
-          <execution>
-            <id>json</id>
-            <goals>
-              <goal>json</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
       <plugin>
         <groupId>org.jolokia</groupId>
         <artifactId>docker-maven-plugin</artifactId>
