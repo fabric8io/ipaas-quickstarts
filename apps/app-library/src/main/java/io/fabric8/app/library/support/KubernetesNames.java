@@ -60,7 +60,7 @@ public class KubernetesNames {
         } else if (dto instanceof Service) {
             addNames((Service) dto);
         } else {
-            List<Object> entities = KubernetesHelper.toItemList(dto);
+            List<?> entities = KubernetesHelper.toItemList(dto);
             for (Object entity : entities) {
                 addNamesFromDTO(entity);
             }
