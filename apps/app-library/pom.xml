@@ -66,11 +66,11 @@
 
     <fabric8.env.IMPORT_APP_URLS>${docker.env.IMPORT_APP_URLS}</fabric8.env.IMPORT_APP_URLS>
     <fabric8.service.name>app-library</fabric8.service.name>
-    <fabric8.service.port>80</fabric8.service.port>
+    <fabric8.service.port.http>80</fabric8.service.port.http>
+    <fabric8.service.containerPort.http>${http.port}</fabric8.service.containerPort.http>
 
     <fabric8.service.port.jolokia>8778</fabric8.service.port.jolokia>
     <fabric8.service.containerPort.jolokia>8778</fabric8.service.containerPort.jolokia>
-
 
     <fabric8.service.containerPort>${http.port}</fabric8.service.containerPort>
     <fabric8.replicationController.name>app-library-controller</fabric8.replicationController.name>
