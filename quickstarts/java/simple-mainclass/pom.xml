@@ -104,8 +104,16 @@
         <executions>
           <execution>
             <id>json</id>
+            <phase>generate-resources</phase>
             <goals>
               <goal>json</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>attach</id>
+            <phase>package</phase>
+            <goals>
+              <goal>attach</goal>
             </goals>
           </execution>
         </executions>

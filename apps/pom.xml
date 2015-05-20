@@ -115,6 +115,7 @@
                         <id>zip</id>
                         <phase>package</phase>
                         <goals>
+                            <goal>attach</goal>
                             <goal>zip</goal>
                         </goals>
                     </execution>
