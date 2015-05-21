@@ -35,6 +35,7 @@
   <properties>
     <docker.image>fabric8/fabric8-console</docker.image>
     <docker.port.container.http>9090</docker.port.container.http>
+    <docker.port.container.jolokia/>
 
     <fabric8.replicationController.name>fabric8-controller</fabric8.replicationController.name>
     <fabric8.service.name>fabric8</fabric8.service.name>
@@ -45,7 +46,6 @@
     <fabric8.label.provider>fabric8</fabric8.label.provider>
 
     <fabric8.extra.json>${basedir}/src/main/fabric8/kubernetes-extra.json</fabric8.extra.json>
-
 
     <fabric8.parameter.DOMAIN.value>fabric8.vagrant.local</fabric8.parameter.DOMAIN.value>
     <fabric8.parameter.DOMAIN.description>The domain name to append to the service name to access gogs repositories</fabric8.parameter.DOMAIN.description>
