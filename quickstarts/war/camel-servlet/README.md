@@ -8,7 +8,7 @@ The Camel route is illustrated in the figure below. The
 `servlet:hello` endpoint is listening for HTTP requests, and being
 routed using the Content Based Router.  
 
-![Camel Servlet diagram](https://raw.githubusercontent.com/fabric8io/quickstarts/master/quickstarts/war/camel-servlet/images/camel-servlet-diagram.jpg)
+![Camel Servlet diagram](images/camel-servlet-diagram.jpg)
 
 The request is being routed whether or not there is a HTTP query
 parameter with the name `name`. This is best illustrated as in the
@@ -18,7 +18,7 @@ explains to the user, to add the parameter. In the send attempt we
 provide `?name=fabric` in the HTTP url, and Camel responses with a
 greeting message. 
 
-![Camel Servlet try](https://raw.githubusercontent.com/fabric8io/quickstarts/master/quickstarts/war/camel-servlet/images/camel-servlet-try-quickstart.jpg)
+![Camel Servlet try](images/camel-servlet-try-quickstart.jpg)
 
 
 ### Building this example
@@ -147,7 +147,7 @@ it, make sure the `$DOCKER_REGISTRY`, `$KUBERNETES_SERVER` and
 explicit authentication simply add user and password as two arguments
 to this script. 
 
-```
+```bash
  # clean, install, docker:build, docker:push, fabric8:apply 
  # where for the push the user "admin" is used with password "admin"
  build-and-apply.sh admin admin
