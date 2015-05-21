@@ -1,57 +1,69 @@
 {
-  "apiVersion": "v1beta2",
+  "apiVersion": "v1beta3",
   "kind": "List",
   "id": "kibana-config",
   "items": [
     {
-      "apiVersion": "v1beta2",
+      "apiVersion": "v1beta3",
       "kind": "ReplicationController",
-      "id": "kibana-controller",
-      "desiredState": {
+      "metadata": {
+        "name": "kibana-controller",
+        "labels": {
+          "component": "kibana-viewer"
+        }
+      },
+      "spec": {
         "replicas": 1,
-        "replicaSelector": {
+        "selector": {
           "component": "kibana-viewer"
         },
-        "podTemplate": {
-          "desiredState": {
-            "manifest": {
-              "version": "v1beta2",
-              "id": "kibana-server",
-              "containers": [
-                {
-                  "name": "kibana-image",
-                  "image": "jimmidyson/kibana4:latest",
-                  "imagePullPolicy": "PullIfNotPresent",
-                  "ports": [
-                    {
-                      "name": "kibana-port",
-                      "containerPort": 5601
-                    }
-                  ],
-                  "env": [
-                    {
-                      "name": "ELASTICSEARCH_SERVICE_NAME",
-                      "value": "ELASTICSEARCH"
-                    }
-                  ]
-                }
-              ]
+        "template": {
+          "metadata": {
+            "name": "kibanaPod",
+            "labels": {
+              "component": "kibana-viewer"
             }
           },
-          "labels": {
-            "component": "kibana-viewer"
+          "spec": {
+            "containers": [
+              {
+                "name": "kibana-image",
+                "image": "jimmidyson/kibana4:latest",
+                "imagePullPolicy": "IfNotPresent",
+                "ports": [
+                  {
+                    "name": "kibana-port",
+                    "containerPort": 5601
+                  }
+                ],
+                "env": [
+                  {
+                    "name": "ELASTICSEARCH_SERVICE_NAME",
+                    "value": "ELASTICSEARCH"
+                  }
+                ]
+              }
+            ]
           }
         }
       }
     },
     {
-      "apiVersion": "v1beta2",
+      "apiVersion": "v1beta3",
       "kind": "Service",
-      "id": "kibana-service",
-      "containerPort": "kibana-port",
-      "port": 80,
-      "selector": {
-        "component": "kibana-viewer"
+      "metadata": {
+        "name": "kibana-service"
+      },
+      "spec": {
+        "ports": [
+          {
+            "port": 80,
+            "targetPort": "kibana-port"
+          }
+        ],
+        "selector": {
+          "component": "kibana-viewer"
+        }
       }
     }
   ]
