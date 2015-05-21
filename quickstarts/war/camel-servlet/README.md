@@ -21,11 +21,11 @@ greeting message.
 ![Camel Servlet try](images/camel-servlet-try-quickstart.jpg)
 
 
-### Building this example
+# Building this example
 
 Building and running this quickstart consists of three steps:
 
-### Building
+## Building
 
 First you compile and package the WAR as usual with 
 
@@ -41,7 +41,7 @@ This copies the WAR into you local Maven repository
 (`~/.m2/repository`). This will not only build the war file, but also
 already creates the JSON descriptor for a Kubernetes deployment. 
    
-### Create and push Docker image
+## Create and push Docker image
 
 Next you need to create a Docker image. This is done with help of the
 [docker-maven-plugin](https://github.com/rhuss/docker-maven-plugin/blob/master/doc/manual.md). For
@@ -73,7 +73,7 @@ in the docker-maven-plugin manual for details.
      -Ddocker.password=admin
 ```
 
-### Create and apply Kubernetes configuration
+## Create and apply Kubernetes configuration
 
 The final step is to apply and send the Kubernetes descriptor to the
 Kubernetes installation. You will need to set the variable
@@ -124,7 +124,7 @@ Now you can access the example with the URL
 Kubernetes domain is `vagrant.local` and this host can be resolved to
 the IP of the Kubernetes master).
 
-### How to try this example
+## How to try this example
 
 To use the application be sure to have deployed the quickstart in
 fabric8 as described above. You probably have to wait a bit until the
