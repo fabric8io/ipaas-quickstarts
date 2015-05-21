@@ -282,7 +282,7 @@
         <profile>
           <id>jube-snapshot</id>
           <properties>
-            <jube.version>2.0-SNAPSHOT</jube.version>
+            <jube.version>2.2-SNAPSHOT</jube.version>
           </properties>
         </profile>
 
