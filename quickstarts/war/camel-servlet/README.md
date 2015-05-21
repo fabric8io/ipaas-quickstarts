@@ -41,11 +41,11 @@ This copies the WAR into you local Maven repository
 (`~/.m2/repository`). This will not only build the war file, but also
 already creates the JSON descriptor for a Kubernetes deployment. 
    
-## Create and push Docker image
+### Create and push Docker image
 
 Next you need to create a Docker image. This is done with help of the
 [docker-maven-plugin](https://github.com/rhuss/docker-maven-plugin/blob/master/doc/manual.md). For
-this to work, the environment variable `DOCKER_HOST` must be set or,
+this to work, the environment variable `DOCKER\_HOST` must be set or,
 alternatively, given on the command line with the option `docker.host`
 (e.g. `-Ddocker.host=tcp://docker.host:2375`)
 
@@ -73,13 +73,13 @@ in the docker-maven-plugin manual for details.
      -Ddocker.password=admin
 ```
 
-## Create and apply Kubernetes configuration
+### Create and apply Kubernetes configuration
 
 The final step is to apply and send the Kubernetes descriptor to the
 Kubernetes installation. You will need to set the variable
-`KUBERNETES_MASTER` to the URL how to reach Kubernetes
+`KUBERNETES\_MASTER` to the URL how to reach Kubernetes
 (e.g. `https://172.28.128.4:8443`). You can also select the Kubernetes
-namespace with the environment variable `KUBERNETES_NAMESPACE` (Note
+namespace with the environment variable `KUBERNETESi\_NAMESPACE` (Note
 for OpenShift V3 users: You should use the namespace `default` for the
 moment, but this will be fixed in a future release of the
 fabric8-maven-plugin)
@@ -124,7 +124,7 @@ Now you can access the example with the URL
 Kubernetes domain is `vagrant.local` and this host can be resolved to
 the IP of the Kubernetes master).
 
-## How to try this example
+### How to try this example
 
 To use the application be sure to have deployed the quickstart in
 fabric8 as described above. You probably have to wait a bit until the
@@ -138,17 +138,3 @@ use this.
 
 Follow the instruction from here to test this super-simple example.
 
-## Supporting scripts
-
-In order to make things easier, a script `build-and-apply.sh` is
-provided which will combine all steps from above. Before you can use
-it, make sure the `$DOCKER_REGISTRY`, `$KUBERNETES_SERVER` and
-`$KUBERNETES_NAMESPACE` are set up properly. If you registry requires
-explicit authentication simply add user and password as two arguments
-to this script. 
-
-```bash
- # clean, install, docker:build, docker:push, fabric8:apply 
- # where for the push the user "admin" is used with password "admin"
- build-and-apply.sh admin admin
-```
