@@ -47,7 +47,7 @@
     <fabric8.extra.json>${basedir}/src/main/fabric8/kubernetes-extra.json</fabric8.extra.json>
 
 
-    <fabric8.parameter.DOMAIN.value>os1.fabric8.io</fabric8.parameter.DOMAIN.value>
+    <fabric8.parameter.DOMAIN.value>fabric8.vagrant.local</fabric8.parameter.DOMAIN.value>
     <fabric8.parameter.DOMAIN.description>The domain name to append to the service name to access gogs repositories</fabric8.parameter.DOMAIN.description>
   </properties>
 

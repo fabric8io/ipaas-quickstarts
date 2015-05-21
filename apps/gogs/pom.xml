@@ -57,10 +57,10 @@
     <fabric8.label.component>gogs</fabric8.label.component>
     <fabric8.label.provider>fabric8</fabric8.label.provider>
 
-    <fabric8.parameter.DOMAIN.value>os1.fabric8.io</fabric8.parameter.DOMAIN.value>
+    <fabric8.parameter.DOMAIN.value>fabric8.vagrant.local</fabric8.parameter.DOMAIN.value>
     <fabric8.parameter.DOMAIN.description>The domain name to append to the service name to access gogs repositories</fabric8.parameter.DOMAIN.description>
 
-    <fabric8.parameter.GOGS_SERVER_DOMAIN.value>gogs.os1.fabric8.io</fabric8.parameter.GOGS_SERVER_DOMAIN.value>
+    <fabric8.parameter.GOGS_SERVER_DOMAIN.value>gogs.fabric8.vagrant.local</fabric8.parameter.GOGS_SERVER_DOMAIN.value>
     <fabric8.parameter.GOGS_SERVER_DOMAIN.description>The gogs server name</fabric8.parameter.GOGS_SERVER_DOMAIN.description>
 
     <fabric8.parameter.GOGS_SERVER_PROTOCOL.value>http</fabric8.parameter.GOGS_SERVER_PROTOCOL.value>
