@@ -17,7 +17,6 @@
 package io.fabric8.apps.console;
 
 import io.fabric8.kubernetes.generator.annotation.KubernetesModelProcessor;
-import io.fabric8.openshift.api.model.OAuthClientBuilder;
 import io.fabric8.openshift.api.model.template.TemplateBuilder;
 
 import java.util.Arrays;
@@ -26,7 +25,7 @@ import java.util.Arrays;
 public class ConsoleModelProcessor {
 
     public void onList(TemplateBuilder builder) {
-        builder.addToObjects(new OAuthClientBuilder()
+        builder.addNewOAuthClientObject()
                 .withNewMetadata()
                 .withName("fabric8")
                 .and()
@@ -36,7 +35,7 @@ public class ConsoleModelProcessor {
                         "http://localhost:9000",
                         "http://fabric8.${DOMAIN}",
                         "https://fabric8.${DOMAIN}"
-                )).build())
+                )).and()
                 .build();
     }
 }

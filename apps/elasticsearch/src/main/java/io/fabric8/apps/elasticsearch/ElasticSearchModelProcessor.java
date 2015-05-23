@@ -28,7 +28,7 @@ import java.util.Arrays;
 public class ElasticSearchModelProcessor {
 
     public void onList(KubernetesListBuilder builder) {
-        builder.addNewService()
+        builder.addNewServiceItem()
                 .withNewMetadata()
                     .withName("elasticsearch-cluster")
                     .endMetadata()

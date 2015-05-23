@@ -26,15 +26,15 @@ import java.util.Arrays;
 public class GogsModelProcessor {
 
     public void onList(TemplateBuilder builder) {
-        builder.addToObjects(new OAuthClientBuilder()
+        builder.addNewOAuthClientObject()
                 .withNewMetadata()
                 .withName("gogs")
                 .and()
                 .withRedirectURIs(Arrays.asList(
                         "http://localhost:3000",
                         "http://gogs.${DOMAIN}",
-                        "https://gogs.${DOMAIN}"
-                )).build())
+                        "https://gogs.${DOMAIN}"))
+                .and()
                 .build();
     }
 }
