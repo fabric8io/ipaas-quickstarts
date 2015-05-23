@@ -22,7 +22,7 @@
   <parent>
     <groupId>io.fabric8.jube.images.fabric8</groupId>
     <artifactId>apps</artifactId>
-    <version>2.2-SNAPSHOT</version>
+    <version>2.1.4</version>
   </parent>
 
   <artifactId>console</artifactId>
@@ -35,7 +35,7 @@
   <properties>
     <docker.image>fabric8/fabric8-console</docker.image>
     <docker.port.container.http>9090</docker.port.container.http>
-    <docker.port.container.jolokia/>
+    <docker.port.container.jolokia />
 
     <fabric8.replicationController.name>fabric8-controller</fabric8.replicationController.name>
     <fabric8.service.name>fabric8</fabric8.service.name>
