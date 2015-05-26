@@ -23,11 +23,11 @@
   <parent>
     <groupId>io.fabric8.jube.images.fabric8</groupId>
     <artifactId>quickstart-karaf</artifactId>
-    <version>2.2-SNAPSHOT</version>
+    <version>2.1.5</version>
   </parent>
 
   <artifactId>quickstart-karaf-camelwiki</artifactId>
-  <version>2.2-SNAPSHOT</version>
+  <version>2.1.5</version>
   <packaging>bundle</packaging>
   <name>Karaf Quickstart : Beginner :: Camel Log (wiki)</name>
   <description>Camel Log Example (wiki)</description>
