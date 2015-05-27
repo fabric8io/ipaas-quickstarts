@@ -29,7 +29,7 @@
   <groupId>io.fabric8.archetypes</groupId>
   <artifactId>archetypes</artifactId>
   <packaging>pom</packaging>
-  <name>Archetypes :: Parent</name>
+  <name>Fabric8 :: Archetypes :: Parent</name>
 
   <licenses>
     <license>

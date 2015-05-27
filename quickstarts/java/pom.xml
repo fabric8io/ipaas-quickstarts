@@ -30,7 +30,7 @@
   <artifactId>quickstart-java</artifactId>
   <version>2.2-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>Quickstart : Parent</name>
+  <name>Fabric8 :: Quickstarts :: Java : Parent</name>
 
   <properties>
     <fabric8.iconRef>icons/java.svg</fabric8.iconRef>
@@ -41,12 +41,9 @@
     <module>camel-cdi-mq</module>
     <module>camel-spring</module>
     <module>cxf-cdi</module>
-    <module>simple-mainclass</module>
-    <module>simple-fatjar</module>
-<!--
-    TODO
     <module>jgroups-greeter</module>
--->
+    <module>simple-fatjar</module>
+    <module>simple-mainclass</module>
   </modules>
 
   <build>
