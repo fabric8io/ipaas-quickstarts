@@ -28,7 +28,7 @@
   <artifactId>quickstart-karaf-camelrest</artifactId>
   <version>2.2-SNAPSHOT</version>
   <packaging>bundle</packaging>
-  <name>Karaf Quickstart : Camel Rest using SQL</name>
+  <name>Fabric8 :: Quickstarts :: Karaf : Camel Rest using SQL</name>
   <description>Camel Example using Rest DSL with SQL Database</description>
 
   <properties>

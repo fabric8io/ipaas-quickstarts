@@ -27,7 +27,7 @@
 
   <artifactId>quickstart-war-cxf-cdi-servlet</artifactId>
   <packaging>war</packaging>
-  <name>War Quickstart : CXF JAX-RS with CDI Servlet</name>
+  <name>Fabric8 :: Quickstarts :: War : CXF JAX-RS with CDI Servlet</name>
   <description>CXF JAX-RS using CDI deployed as WAR</description>
 
   <properties>

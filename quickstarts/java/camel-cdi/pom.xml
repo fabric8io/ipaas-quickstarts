@@ -30,7 +30,7 @@
   <version>2.2-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>Quickstart : Camel CDI</name>
+  <name>Fabric8 :: Quickstarts :: Java : Camel CDI</name>
   <description>Camel route using CDI in a standalone Java Container</description>
 
   <properties>
