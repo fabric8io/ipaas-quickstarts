@@ -24,17 +24,53 @@ import java.util.Arrays;
 
 @KubernetesModelProcessor
 public class GogsModelProcessor {
+    
+    private static final String NAME = "gogs";
 
     public void onList(TemplateBuilder builder) {
         builder.addNewOAuthClientObject()
                 .withNewMetadata()
-                .withName("gogs")
+                .withName(NAME)
                 .and()
                 .withRedirectURIs(Arrays.asList(
                         "http://localhost:3000",
                         "http://gogs.${DOMAIN}",
                         "https://gogs.${DOMAIN}"))
                 .and()
+                .addNewServiceObject()
+                .withNewMetadata()
+                .withName(NAME + "-http-service")
+                .addToLabels("component", NAME)
+                .addToLabels("provider", "fabric8")
+                .endMetadata()
+                .withNewSpec()
+                .addNewPort()
+                .withProtocol("TCP")
+                .withPort(80)
+                .withNewTargetPort(3000)
+                .endPort()
+                .addToSelector("component", NAME)
+                .addToSelector("provider", "fabric8")
+                .endSpec()
+                .endServiceObject()
+
+                // Second service
+                .addNewServiceObject()
+                .withNewMetadata()
+                .withName(NAME + "-ssh-service")
+                .addToLabels("component", NAME)
+                .addToLabels("provider", "fabric8")
+                .endMetadata()
+                .withNewSpec()
+                .addNewPort()
+                .withProtocol("TCP")
+                .withPort(22)
+                .withNewTargetPort(22)
+                .endPort()
+                .addToSelector("component", NAME)
+                .addToSelector("provider", "fabric8")
+                .endSpec()
+                .endServiceObject()
                 .build();
     }
 }
