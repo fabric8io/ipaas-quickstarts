@@ -42,49 +42,25 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-/*
-import io.fabric8.insight.maven.aether.Aether;
-import io.fabric8.insight.maven.aether.AetherResult;
-*/
-
 public class ArchetypeTest {
 
     private boolean verbose = true;
 
-/*
-    private Aether aether = new Aether();
-*/
-
-    //    private String groupId = "myGroup";
-//    private String artifactId = "myArtifact";
     private String packageName = "org.acme.mystuff";
 
     // lets get the versions from the pom.xml via a system property
-    private String camelVersion = System.getProperty("camel-version", "2.12.0.redhat-610379");
     private String projectVersion = System.getProperty("project.version", "2.2-SNAPSHOT");
     private File basedir = new File(System.getProperty("basedir", "."));
 
     private static List<String> outDirs = new ArrayList<String>();
 
-    private static Set<String> EXCLUDED_ARCHETYPES = new HashSet<String>(Arrays.asList(new String[] {
-            "karaf-profiles-camel-twitter-archetype",
-            "karaf-profiles-registry-archetype",
-    }));
-
     @Test
     public void testGenerateQuickstartArchetypes() throws Exception {
-        final Set<String> excludedJarFiles = new HashSet<String>();
-        for (String excludedArchetype : EXCLUDED_ARCHETYPES) {
-            String jar = excludedArchetype + "-" + projectVersion + ".jar";
-            excludedJarFiles.add(jar);
-        }
-        System.out.println("Excluding jars: " + excludedJarFiles);
-
         File archetypesDir = new File(basedir, "target/archetypes");
         String[] jars = archetypesDir.list(new FilenameFilter() {
             @Override
             public boolean accept(File dir, String name) {
-                return name.endsWith(".jar") && new File(dir, name).isFile() && !excludedJarFiles.contains(name);
+                return name.endsWith(".jar") && new File(dir, name).isFile();
             }
         });
         String versionPart = "-" + projectVersion;
@@ -103,27 +79,6 @@ public class ArchetypeTest {
         }
     }
 
-/*
-    protected void assertArchetypeCreated(String artifactId) throws Exception {
-        assertArchetypeCreated(artifactId, "org.apache.camel.archetypes");
-    }
-
-    protected void assertArchetypeCreated(String artifactId, String groupId) throws Exception {
-        assertArchetypeCreated(artifactId, groupId, camelVersion);
-    }
-
-    private void assertArchetypeCreated(String artifactId, String groupId, String version) throws Exception {
-        AetherResult result = aether.resolve(groupId, artifactId, version);
-
-        List<File> files = result.getResolvedFiles();
-        assertTrue("No files resolved for " + artifactId + " version: " + version, files.size() > 0);
-        File archetypejar = files.get(0);
-        assertTrue("archetype jar does not exist", archetypejar.exists());
-
-        assertArchetypeCreated(artifactId, groupId, version, archetypejar);
-    }
-
-*/
     private void assertArchetypeCreated(String artifactId, String groupId, String version, File archetypejar) throws Exception {
         File outDir = new File(basedir, "target/" + artifactId + "-output");
 

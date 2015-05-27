@@ -261,20 +261,6 @@
                             <type>jar</type>
                             <overWrite>false</overWrite>
                           </artifactItem>
-                          <artifactItem>
-                            <groupId>io.fabric8.archetypes</groupId>
-                            <artifactId>karaf-profiles-camel-twitter-archetype</artifactId>
-                            <version>${project.version}</version>
-                            <type>jar</type>
-                            <overWrite>false</overWrite>
-                          </artifactItem>
-                          <artifactItem>
-                            <groupId>io.fabric8.archetypes</groupId>
-                            <artifactId>karaf-profiles-registry-archetype</artifactId>
-                            <version>${project.version}</version>
-                            <type>jar</type>
-                            <overWrite>false</overWrite>
-                          </artifactItem>
 
                           <artifactItem>
                             <groupId>io.fabric8.archetypes</groupId>
