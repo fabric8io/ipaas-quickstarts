@@ -26,7 +26,7 @@
     </parent>
 
     <artifactId>java-camel-cdi-archetype</artifactId>
-    <name>Fabric8 :: Archetypes :: Quickstart : Camel CDI</name>
+    <name>Fabric8 :: Archetypes :: Java :: Camel CDI</name>
     <packaging>maven-archetype</packaging>
 
     <description>Creates a new Camel route using CDI in a standalone Java Container</description>

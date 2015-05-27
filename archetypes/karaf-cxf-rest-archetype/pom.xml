@@ -26,10 +26,10 @@
     </parent>
 
     <artifactId>karaf-cxf-rest-archetype</artifactId>
-    <name>Fabric8 :: Archetypes :: RESTful WebService</name>
+    <name>Fabric8 :: Archetypes :: Karaf :: RESTful WebService</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new RESTful WebService Example using JAX-RS with JBoss Fuse</description>
+    <description>Creates a new RESTful WebService Example using JAX-RS</description>
 
     <build>
         <extensions>

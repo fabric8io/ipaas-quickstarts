@@ -26,7 +26,7 @@
     </parent>
 
     <artifactId>war-rest-archetype</artifactId>
-    <name>Fabric8 :: Archetypes :: War Quickstart :  RESTful WebService WAR</name>
+    <name>Fabric8 :: Archetypes :: War :: RESTful WebService WAR</name>
     <packaging>maven-archetype</packaging>
 
     <description>Creates a new RESTful WebService Example using JAX-RS in a WAR</description>

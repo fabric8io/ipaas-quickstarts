@@ -26,7 +26,7 @@
     </parent>
 
     <artifactId>java-camel-spring-archetype</artifactId>
-    <name>Fabric8 :: Archetypes :: Quickstart : Camel Spring</name>
+    <name>Fabric8 :: Archetypes :: Java :: Camel Spring</name>
     <packaging>maven-archetype</packaging>
 
     <description>Creates a new Camel route using Spring XML in a standalone Java container</description>

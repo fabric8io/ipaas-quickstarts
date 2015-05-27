@@ -26,7 +26,7 @@
     </parent>
 
     <artifactId>java-simple-fatjar-archetype</artifactId>
-    <name>Fabric8 :: Archetypes :: Quickstart : Simple fat jar</name>
+    <name>Fabric8 :: Archetypes :: Java :: Simple fat jar</name>
     <packaging>maven-archetype</packaging>
 
     <description>Creates a new Simple standalone Java Container (fat jar)</description>

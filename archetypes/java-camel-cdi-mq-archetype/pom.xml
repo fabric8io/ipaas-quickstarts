@@ -26,7 +26,7 @@
     </parent>
 
     <artifactId>java-camel-cdi-mq-archetype</artifactId>
-    <name>Fabric8 :: Archetypes :: Quickstart : Camel CDI / ActiveMQ</name>
+    <name>Fabric8 :: Archetypes :: Java :: Camel CDI / ActiveMQ</name>
     <packaging>maven-archetype</packaging>
 
     <description>Creates a new Camel route using CDI and AcrtiveMQ in a standalone Java Container</description>

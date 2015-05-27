@@ -26,7 +26,7 @@
     </parent>
 
     <artifactId>karaf-camel-amq-archetype</artifactId>
-    <name>Fabric8 :: Archetypes :: Karaf Quickstart : Camel using ActiveMQ</name>
+    <name>Fabric8 :: Archetypes :: Karaf :: Camel using ActiveMQ</name>
     <packaging>maven-archetype</packaging>
 
     <description>Creates a new ActiveMQ and Camel Example</description>

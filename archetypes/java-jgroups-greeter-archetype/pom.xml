@@ -26,7 +26,7 @@
     </parent>
 
     <artifactId>java-jgroups-greeter-archetype</artifactId>
-    <name>Fabric8 :: Archetypes :: JGroups Greeter</name>
+    <name>Fabric8 :: Archetypes :: Java :: JGroups Greeter</name>
     <packaging>maven-archetype</packaging>
 
     <description>Creates a new Simple Jgroups Example using Kubernetes Discovery</description>

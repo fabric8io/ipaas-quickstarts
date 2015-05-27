@@ -26,7 +26,7 @@
     </parent>
 
     <artifactId>war-camel-servlet-archetype</artifactId>
-    <name>Fabric8 :: Archetypes :: War Quickstart :  Camel Servlet</name>
+    <name>Fabric8 :: Archetypes :: War :: Camel Servlet</name>
     <packaging>maven-archetype</packaging>
 
     <description>Creates a new Camel route using Servlet deployed as WAR</description>

@@ -26,7 +26,7 @@
     </parent>
 
     <artifactId>java-simple-mainclass-archetype</artifactId>
-    <name>Fabric8 :: Archetypes :: Quickstart : Simple main class</name>
+    <name>Fabric8 :: Archetypes :: Java :: Simple main class</name>
     <packaging>maven-archetype</packaging>
 
     <description>Creates a new Simple standalone Java Container (main class)</description>

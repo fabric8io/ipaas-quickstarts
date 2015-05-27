@@ -26,7 +26,7 @@
     </parent>
 
     <artifactId>karaf-camel-rest-sql-archetype</artifactId>
-    <name>Fabric8 :: Archetypes :: Karaf Quickstart : Camel Rest using SQL</name>
+    <name>Fabric8 :: Archetypes :: Karaf :: Camel Rest using SQL</name>
     <packaging>maven-archetype</packaging>
 
     <description>Creates a new Camel Example using Rest DSL with SQL Database</description>
