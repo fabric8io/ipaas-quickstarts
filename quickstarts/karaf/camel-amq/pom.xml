@@ -28,7 +28,7 @@
   <artifactId>quickstart-karaf-camel-amq</artifactId>
   <version>2.2-SNAPSHOT</version>
   <packaging>bundle</packaging>
-  <name>Karaf Quickstart : Camel using A-MQ</name>
+  <name>Karaf Quickstart : Camel using ActiveMQ</name>
   <description>ActiveMQ and Camel Example</description>
 
   <properties>

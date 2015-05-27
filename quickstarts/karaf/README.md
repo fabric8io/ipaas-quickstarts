@@ -1,15 +1,11 @@
 Karaf Quickstarts
 =================
 
-This is the quickstarts for using Apache Karaf based containers (including JBoss Fuse and fabric8).
+This is the quickstarts for using Apache Karaf based containers (including ServiceMix and JBoss Fuse).
 
-The quickstarts is grouped into various skill levels. New users to fabric, is recommended to try the [karaf beginner quickstarts](/beginner) first.
-
-The following quickstarts is provided out of the box:
-
-* [beginner](beginner) - a set of beginner quickstarts that new users to fabric, is recommended to try first.
-* [camel.amq](camel-amq) - demonstrates using Apache Camel to send and recieve messages to an Apache ActiveMQ message broker, using the Camel [amq](http://fabric8.io/gitbook/camelEndpointAmq.html) component.
-<!--- * [camel.dozer.wiki](camel-dozer-wiki) - an example of how to use Dozer with Camel to setup [data transformation](http://fabric8.io/gitbook/dataTransform.html) between Java beans. -->
-* [cxf](cxf) - is a set of web service and REST examples using Apache CXF.
+* [camel-amq](camel-amq) - demonstrates using Apache Camel to send and recieve messages to an Apache ActiveMQ message broker, using the Camel [amq](https://github.com/fabric8io/fabric8/tree/master/components/mq/camel-amq) component.
+* [camel-log](camel-log) - a beginner example using Apache Camel that logs a message every 5th second.
+* [camel-rest-sql](camel-rest-sql) - demonstrates how to use SQL via JDBC along with Camel's REST DSL to expose a RESTful API.
+* [cxf-rest](cxf-rest) - is a set of web service and REST examples using Apache CXF.
 
  
