@@ -53,12 +53,7 @@
    	<module>karaf-camel-amq-archetype</module>
     <module>karaf-camel-log-archetype</module>
    	<module>karaf-camel-rest-sql-archetype</module>
-   	<module>karaf-cxf-camel-cxf-code-first-archetype</module>
-   	<module>karaf-cxf-camel-cxf-contract-first-archetype</module>
    	<module>karaf-cxf-rest-archetype</module>
-   	<module>karaf-cxf-secure-rest-archetype</module>
-   	<module>karaf-cxf-secure-soap-archetype</module>
-   	<module>karaf-cxf-soap-archetype</module>
    	<module>spring-boot-activemq-archetype</module>
    	<module>spring-boot-camel-archetype</module>
    	<module>spring-boot-keycloak-archetype</module>
