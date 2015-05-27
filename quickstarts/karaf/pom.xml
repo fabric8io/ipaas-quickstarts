@@ -43,13 +43,4 @@
     <module>cxf</module>
   </modules>
 
-  <profiles>
-    <profile>
-      <id>profiles</id>
-      <modules>
-        <module>profiles</module>
-      </modules>
-    </profile>
-  </profiles>
-
 </project>
