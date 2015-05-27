@@ -26,7 +26,7 @@
     </parent>
 
     <artifactId>karaf-camel-log-archetype</artifactId>
-    <name>Fabric8 :: Archetypes :: Camel Log</name>
+    <name>Fabric8 :: Archetypes :: Karaf Quickstart : Camel Log</name>
     <packaging>maven-archetype</packaging>
 
     <description>Creates a new Camel Log Example</description>
