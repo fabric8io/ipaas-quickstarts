@@ -50,11 +50,7 @@
    	<module>java-jgroups-greeter-archetype</module>
    	<module>java-simple-fatjar-archetype</module>
    	<module>java-simple-mainclass-archetype</module>
-   	<module>karaf-beginner-camel-cbr-archetype</module>
-   	<module>karaf-beginner-camel-eips-archetype</module>
-   	<module>karaf-beginner-camel-errorhandler-archetype</module>
    	<module>karaf-beginner-camel-log-archetype</module>
-   	<module>karaf-beginner-camel-log-wiki-archetype</module>
    	<module>karaf-camel-amq-archetype</module>
    	<module>karaf-camel-rest-sql-archetype</module>
    	<module>karaf-cxf-camel-cxf-code-first-archetype</module>
