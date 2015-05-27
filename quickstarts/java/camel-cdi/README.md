@@ -8,4 +8,3 @@ The source code is provided in the following java file `src/main/java/io/fabric8
 which can be viewed from [github](https://github.com/fabric8io/quickstarts/blob/master/quickstarts/java/camel-cdi/src/main/java/io/fabric8/quickstarts/camelcdi/MyRoute.java).
 
 This example logs to the console using a timer every 5th second.
-
