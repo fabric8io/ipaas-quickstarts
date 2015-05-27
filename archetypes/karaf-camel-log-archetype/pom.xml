@@ -25,7 +25,7 @@
         <version>2.2-SNAPSHOT</version>
     </parent>
 
-    <artifactId>karaf-beginner-camel-log-archetype</artifactId>
+    <artifactId>karaf-camel-log-archetype</artifactId>
     <name>Fabric8 :: Archetypes :: Camel Log</name>
     <packaging>maven-archetype</packaging>
 
