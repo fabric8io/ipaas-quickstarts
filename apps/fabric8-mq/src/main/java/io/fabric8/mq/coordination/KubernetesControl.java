@@ -20,7 +20,6 @@ import io.fabric8.kubernetes.api.KubernetesClient;
 import io.fabric8.kubernetes.api.KubernetesFactory;
 import io.fabric8.kubernetes.api.KubernetesHelper;
 import io.fabric8.kubernetes.api.model.Container;
-import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerStatus;
@@ -34,12 +33,15 @@ import io.fabric8.mq.util.BrokerJmxUtils;
 import org.apache.activemq.command.ActiveMQDestination;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.apache.activemq.command.ActiveMQTopic;
+import org.apache.deltaspike.core.api.config.ConfigProperty;
 import org.jolokia.client.J4pClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
 import javax.management.ObjectName;
 import java.io.File;
+import java.net.URI;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.util.Collection;
@@ -54,6 +56,9 @@ public class KubernetesControl extends BaseBrokerControl {
 
     private KubernetesClient kubernetes;
     private JolokiaClients clients;
+    @Inject
+    @ConfigProperty(name = "AMQ_BROKER_CONTROLLER_ID", defaultValue = "amq-broker-controller")
+    private String defaultReplicationControllerId = "amq-broker-controller";
     private String replicationControllerId;
 
     @Override
@@ -80,7 +85,7 @@ public class KubernetesControl extends BaseBrokerControl {
                         LOG.info("Checking pod " + getName(pod) + " container: " + container.getName() + " image: " + container.getImage());
                         J4pClient client = clients.clientForContainer(host, container, pod);
 
-                        populateBrokerStatistics(pod, client);
+                        populateBrokerStatistics(pod, container, client);
 
                     } catch (Throwable e) {
                         LOG.error("Failed to get broker statistics for pod:  " + getName(pod));
@@ -93,7 +98,7 @@ public class KubernetesControl extends BaseBrokerControl {
         }
     }
 
-    private void populateBrokerStatistics(Pod pod, J4pClient client) {
+    private void populateBrokerStatistics(Pod pod, Container container,J4pClient client) {
         ObjectName root = null;
         String attribute = "";
         if (client != null) {
@@ -107,27 +112,18 @@ public class KubernetesControl extends BaseBrokerControl {
                 Object brokerId = BrokerJmxUtils.getAttribute(client, root, attribute);
 
                 attribute = "OpenWireURL";
-                Object uri = BrokerJmxUtils.getAttribute(client, root, attribute);
+                Object uriObj = BrokerJmxUtils.getAttribute(client, root, attribute);
+                URI uri = new URI(uriObj.toString());
+                int port = uri.getPort();
+
+                String amqBrokerURI = "tcp://" + KubernetesHelper.getHost(pod) + ":" + port;
 
                 BrokerModel brokerModel = model.getBrokerById(brokerId.toString());
                 if (brokerModel == null) {
                     BrokerView brokerView = new BrokerView();
                     brokerView.setBrokerName(brokerName.toString());
                     brokerView.setBrokerId(brokerId.toString());
-                    List<Container> containers = KubernetesHelper.getContainers(pod);
-                    //will only be one container
-                    if (containers.size() != 1) {
-                        throw new IllegalStateException("Expected one container for pod:" + getName(pod) + " found " + containers.size());
-                    }
-                    Container container = containers.get(0);
-                    List<ContainerPort> ports = container.getPorts();
-                    //get the first port
-                    if (ports.isEmpty()) {
-                        throw new IllegalStateException("Expected to find ports on container " + container.getName());
-                    }
-                    ContainerPort port = ports.get(0);
-                    String uriString = "tcp://" + port.getHostIP() + ":" + port.getHostPort();
-                    brokerView.setUri(uriString);
+                    brokerView.setUri(amqBrokerURI);
                     brokerModel = new BrokerModel(pod, brokerView, model);
                     brokerModel.start();
                     model.add(brokerModel);
@@ -137,7 +133,7 @@ public class KubernetesControl extends BaseBrokerControl {
                     }
                 } else {
                     //transport might not be valid
-                    brokerModel.setUri(uri.toString());
+                    brokerModel.setUri(amqBrokerURI);
                     brokerModel.updateTransport();
                 }
 
@@ -154,6 +150,7 @@ public class KubernetesControl extends BaseBrokerControl {
             }
         }
     }
+
 
     private BrokerOverview populateDestinations(J4pClient client, ObjectName root, BrokerOverview brokerOverview) throws Exception {
         populateDestinations(client, root, BrokerDestinationOverview.Type.QUEUE, brokerOverview);
@@ -236,31 +233,37 @@ public class KubernetesControl extends BaseBrokerControl {
     private String getOrCreateBrokerReplicationControllerId() {
         if (replicationControllerId == null) {
             try {
-                ObjectMapper mapper = KubernetesFactory.createObjectMapper();
+                ReplicationController running = kubernetes.getReplicationController(defaultReplicationControllerId);
+                if (running == null) {
+                    ObjectMapper mapper = KubernetesFactory.createObjectMapper();
 
-                File file = new File(getBrokerTemplateLocation());
-                URL url;
-                if (file.exists()) {
-                    url = Paths.get(file.getAbsolutePath()).toUri().toURL();
-                } else {
-                    ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-                    url = classLoader.getResource(getBrokerTemplateLocation());
-                }
-
-                if (url != null) {
-                    ReplicationController replicationController = mapper.reader(ReplicationController.class).readValue(url);
-                    replicationControllerId = getName(replicationController);
-                    ReplicationController running = kubernetes.getReplicationController(replicationControllerId);
-                    if (running == null) {
-                        kubernetes.createReplicationController(replicationController);
-                        LOG.info("Created ReplicationController " + replicationControllerId);
+                    //ToDo chould change this to look for ReplicationController for AMQ_Broker from Maven
+                    File file = new File(getBrokerTemplateLocation());
+                    URL url;
+                    if (file.exists()) {
+                        url = Paths.get(file.getAbsolutePath()).toUri().toURL();
                     } else {
-                        replicationControllerId = getName(running);
-                        LOG.info("Found ReplicationController " + replicationControllerId);
+                        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+                        url = classLoader.getResource(getBrokerTemplateLocation());
                     }
 
-                } else {
-                    LOG.error("Could not find location of Broker Template from " + getBrokerTemplateLocation());
+                    if (url != null) {
+                        ReplicationController replicationController = mapper.reader(ReplicationController.class).readValue(url);
+                        replicationControllerId = getName(replicationController);
+                        running = kubernetes.getReplicationController(replicationControllerId);
+                        if (running == null) {
+                            kubernetes.createReplicationController(replicationController);
+                            LOG.info("Created ReplicationController " + replicationControllerId);
+                        } else {
+                            replicationControllerId = getName(running);
+                            LOG.info("Found ReplicationController " + replicationControllerId);
+                        }
+
+                    } else {
+                        LOG.error("Could not find location of Broker Template from " + getBrokerTemplateLocation());
+                    }
+                }else{
+                    replicationControllerId = defaultReplicationControllerId;
                 }
 
             } catch (Throwable e) {
