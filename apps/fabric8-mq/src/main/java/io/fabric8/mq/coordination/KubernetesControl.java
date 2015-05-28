@@ -116,7 +116,7 @@ public class KubernetesControl extends BaseBrokerControl {
                 URI uri = new URI(uriObj.toString());
                 int port = uri.getPort();
 
-                String amqBrokerURI = "tcp://" + KubernetesHelper.getHost(pod) + ":" + port;
+                String amqBrokerURI = "tcp://" + pod.getStatus().getPodIP() + ":" + port;
 
                 BrokerModel brokerModel = model.getBrokerById(brokerId.toString());
                 if (brokerModel == null) {
