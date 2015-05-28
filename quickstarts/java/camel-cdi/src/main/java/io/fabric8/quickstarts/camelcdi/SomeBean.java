@@ -20,7 +20,9 @@ import javax.inject.Singleton;
 @Singleton
 public class SomeBean {
 
+    private int counter;
+
     public String someMethod(String body) {
-        return "Received: " + body;
+        return "Saying Hello World " + ++counter + " times";
     }
 }

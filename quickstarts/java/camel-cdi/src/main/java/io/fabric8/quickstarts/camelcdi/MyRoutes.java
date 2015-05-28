@@ -33,7 +33,11 @@ import org.apache.camel.cdi.Uri;
 public class MyRoutes extends RouteBuilder {
 
     @Inject
-    @Uri("file://target/out")
+    @Uri("timer:foo?period=5000")
+    private Endpoint inputEndpoint;
+
+    @Inject
+    @Uri("log:output")
     private Endpoint resultEndpoint;
 
     @Inject
@@ -43,14 +47,9 @@ public class MyRoutes extends RouteBuilder {
     public void configure() throws Exception {
         // you can configure the route rule with Java DSL here
 
-        // populate the message queue with some messages
-        from("file:src/main/fabric8/data?noop=true")
+        from(inputEndpoint)
             .bean(someBean)
-            .to("log:output")
             .to(resultEndpoint);
     }
 
-    public Endpoint getResultEndpoint() {
-        return resultEndpoint;
-    }
 }
