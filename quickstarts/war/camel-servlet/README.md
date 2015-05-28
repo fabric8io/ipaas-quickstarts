@@ -137,4 +137,3 @@ check for the service IP (on OpenShift with `osc get services`) and
 use this. 
 
 Follow the instruction from here to test this super-simple example.
-
