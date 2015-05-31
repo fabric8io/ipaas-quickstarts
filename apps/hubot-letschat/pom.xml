@@ -36,6 +36,7 @@
         <docker.image>fabric8/hubot-letschat</docker.image>
 
         <fabric8.service.port>8080</fabric8.service.port>
+        <fabric8.service.containerPort>8080</fabric8.service.containerPort>
         <fabric8.service.name>hubot-web-hook</fabric8.service.name>
 
         <docker.port.container.http>8080</docker.port.container.http>
