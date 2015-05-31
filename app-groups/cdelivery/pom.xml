@@ -60,13 +60,6 @@
     </dependency>
     <dependency>
       <groupId>io.fabric8.jube.images.fabric8</groupId>
-      <artifactId>hubot-letschat</artifactId>
-      <version>${project.version}</version>
-      <classifier>kubernetes</classifier>
-      <type>json</type>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8.jube.images.fabric8</groupId>
       <artifactId>letschat</artifactId>
       <version>${project.version}</version>
       <classifier>kubernetes</classifier>
