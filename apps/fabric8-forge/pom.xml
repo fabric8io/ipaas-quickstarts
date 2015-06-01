@@ -43,11 +43,9 @@
 
     <docker.assemblyDescriptor>${basedir}/src/main/fabric8/assembly.xml</docker.assemblyDescriptor>
 
-    <fabric8.service.name>fabric8-forge</fabric8.service.name>
     <fabric8.service.port>80</fabric8.service.port>
     <fabric8.service.containerPort>8080</fabric8.service.containerPort>
 
-    <fabric8.replicationController.name>fabric8-forge-controller</fabric8.replicationController.name>
     <fabric8.label.component>fabric8Forge</fabric8.label.component>
     <fabric8.label.provider>fabric8</fabric8.label.provider>
     <fabric8.iconRef>icons/jbossforge.svg</fabric8.iconRef>

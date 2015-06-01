@@ -37,8 +37,6 @@
     <docker.port.container.tcp>5000</docker.port.container.tcp>
     <docker.port.container.jolokia />
 
-    <fabric8.replicationController.name>registry-controller</fabric8.replicationController.name>
-    <fabric8.service.name>registry-service</fabric8.service.name>
     <fabric8.service.port>5000</fabric8.service.port>
     <fabric8.service.containerPort>5000</fabric8.service.containerPort>
     <fabric8.imagePullPolicy>IfNotPresent</fabric8.imagePullPolicy>

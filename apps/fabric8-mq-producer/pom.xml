@@ -35,7 +35,6 @@
       <destinationName>TEST.FOO</destinationName>
       <docker.env.MAIN>io.fabric8.mq.producer.ProducerMain</docker.env.MAIN>
 
-      <fabric8.replicationController.name>fabric8mq-producer-controller</fabric8.replicationController.name>
       <fabric8.env.AMQ_SERVICE_ID>FABRIC8MQ</fabric8.env.AMQ_SERVICE_ID>
       <fabric8.env.AMQ_QUEUENAME>${destinationName}</fabric8.env.AMQ_QUEUENAME>
       <fabric8.label.component>fabric8MQProducer</fabric8.label.component>

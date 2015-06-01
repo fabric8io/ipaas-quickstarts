@@ -42,7 +42,7 @@ public class AMQKubernetes {
     @Test
     public void testKubernetes() throws Exception {
         String serviceName = "amqbroker";
-        assertThat(client).replicationController(serviceName + "-controller").isNotNull();
+        assertThat(client).replicationController(serviceName).isNotNull();
         assertThat(client).hasServicePort(serviceName, 7163);
 
         assertThat(client).pods()

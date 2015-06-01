@@ -39,7 +39,7 @@ public class NexusKubernetesTest {
     @Test
     public void testGogs() throws Exception {
         String serviceName = "nexus";
-        assertThat(client).replicationController(serviceName + "-controller").isNotNull();
+        assertThat(client).replicationController(serviceName).isNotNull();
         assertThat(client).hasServicePort(serviceName, 80);
 
         assertThat(client).pods()

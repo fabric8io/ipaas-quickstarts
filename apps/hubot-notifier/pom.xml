@@ -56,7 +56,6 @@
     <!-- TODO until secrets work we must default to a namespace for polling builds -->
     <fabric8.env.BUILD_NAMESPACE>default</fabric8.env.BUILD_NAMESPACE>
 
-    <fabric8.replicationController.name>${project.artifactId}-controler</fabric8.replicationController.name>
     <fabric8.label.component>hubotNotifier</fabric8.label.component>
     <fabric8.label.provider>fabric8</fabric8.label.provider>
 

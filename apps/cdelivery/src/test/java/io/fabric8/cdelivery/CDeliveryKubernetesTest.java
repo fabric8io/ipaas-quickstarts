@@ -39,8 +39,7 @@ public class CDeliveryKubernetesTest {
     @Test
     public void testApiRegistry() throws Exception {
         String serviceName = "cdelivery";
-        String replicationControllerName = serviceName + "-controller";
-        assertThat(client).replicationController(replicationControllerName).isNotNull();
+        assertThat(client).replicationController(serviceName).isNotNull();
         assertThat(client).hasServicePort(serviceName, 9595);
 
         assertThat(client).pods()

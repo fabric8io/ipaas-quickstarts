@@ -40,7 +40,7 @@ public class GatewayKubernetesTest {
     @Test
     public void testGateway() throws Exception {
         String serviceName = "http-gateway";
-        assertThat(client).replicationController(serviceName + "-controller").isNotNull();
+        assertThat(client).replicationController(serviceName).isNotNull();
         assertThat(client).hasServicePort(serviceName, 9000);
 
         assertThat(client).pods()

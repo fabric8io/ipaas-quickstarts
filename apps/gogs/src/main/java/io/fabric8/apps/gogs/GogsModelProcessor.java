@@ -39,7 +39,7 @@ public class GogsModelProcessor {
                 .and()
                 .addNewServiceObject()
                 .withNewMetadata()
-                .withName(NAME + "-http-service")
+                .withName(NAME + "-http")
                 .addToLabels("component", NAME)
                 .addToLabels("provider", "fabric8")
                 .endMetadata()
@@ -57,7 +57,7 @@ public class GogsModelProcessor {
                 // Second service
                 .addNewServiceObject()
                 .withNewMetadata()
-                .withName(NAME + "-ssh-service")
+                .withName(NAME + "-ssh")
                 .addToLabels("component", NAME)
                 .addToLabels("provider", "fabric8")
                 .endMetadata()

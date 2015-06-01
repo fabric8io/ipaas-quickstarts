@@ -8,7 +8,7 @@
       "provider" : "amqbroker",
       "group" : "amqbroker"
     },
-    "name" : "amq-broker-controller"
+    "name" : "amq-broker"
   },
   "spec" : {
     "replicas" : 1,

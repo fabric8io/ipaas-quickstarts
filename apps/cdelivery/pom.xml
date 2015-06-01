@@ -64,10 +64,8 @@
     <!-- TODO until secrets work we must default to a namespace for polling builds -->
     <fabric8.env.BUILD_NAMESPACE>default</fabric8.env.BUILD_NAMESPACE>
 
-    <fabric8.service.name>${project.artifactId}</fabric8.service.name>
     <fabric8.service.port>9595</fabric8.service.port>
     <fabric8.service.containerPort>${http.port}</fabric8.service.containerPort>
-    <fabric8.replicationController.name>${project.artifactId}-controller</fabric8.replicationController.name>
     <fabric8.label.component>CDelivery</fabric8.label.component>
     <fabric8.label.provider>fabric8</fabric8.label.provider>
   </properties>

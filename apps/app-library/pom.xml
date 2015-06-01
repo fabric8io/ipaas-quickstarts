@@ -65,7 +65,6 @@
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
 
     <fabric8.env.IMPORT_APP_URLS>${docker.env.IMPORT_APP_URLS}</fabric8.env.IMPORT_APP_URLS>
-    <fabric8.service.name>app-library</fabric8.service.name>
 
     <fabric8.service.port.http>80</fabric8.service.port.http>
     <fabric8.service.containerPort.http>${http.port}</fabric8.service.containerPort.http>
@@ -73,7 +72,6 @@
     <fabric8.service.port.jolokia>8778</fabric8.service.port.jolokia>
     <fabric8.service.containerPort.jolokia>8778</fabric8.service.containerPort.jolokia>
 
-    <fabric8.replicationController.name>app-library-controller</fabric8.replicationController.name>
     <fabric8.label.component>AppLibrary</fabric8.label.component>
     <fabric8.label.provider>fabric8</fabric8.label.provider>
   </properties>

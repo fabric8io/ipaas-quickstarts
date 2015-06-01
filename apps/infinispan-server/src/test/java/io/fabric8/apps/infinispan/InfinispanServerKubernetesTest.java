@@ -65,7 +65,7 @@ public class InfinispanServerKubernetesTest {
         assertThat(client).replicationControllers().haveAtLeast(1, new Condition<ReplicationController>() {
             @Override
             public boolean matches(ReplicationController replicationController) {
-                return getName(replicationController).startsWith("infinispan-controller");
+                return getName(replicationController).startsWith("infinispan");
             }
         });
 

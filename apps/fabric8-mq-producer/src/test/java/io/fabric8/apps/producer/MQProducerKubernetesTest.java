@@ -39,7 +39,7 @@ public class MQProducerKubernetesTest {
 
     @Test
     public void testMQProducer() throws Exception {
-        assertThat(client).replicationController("fabric8mq-producer-controller").isNotNull();
+        assertThat(client).replicationController("fabric8mq-producer").isNotNull();
 
         assertThat(client).pods()
                 .runningStatus()

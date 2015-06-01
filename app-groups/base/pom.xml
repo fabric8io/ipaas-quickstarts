@@ -37,7 +37,7 @@
   <dependencies>
     <dependency>
       <groupId>io.fabric8.jube.images.fabric8</groupId>
-      <artifactId>console</artifactId>
+      <artifactId>fabric8</artifactId>
       <version>${project.version}</version>
       <classifier>kubernetes</classifier>
       <type>json</type>

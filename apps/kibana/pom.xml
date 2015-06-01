@@ -39,8 +39,6 @@
 
     <fabric8.env.ELASTICSEARCH_SERVICE_NAME>ELASTICSEARCH</fabric8.env.ELASTICSEARCH_SERVICE_NAME>
 
-    <fabric8.replicationController.name>kibana-controller</fabric8.replicationController.name>
-    <fabric8.service.name>kibana-service</fabric8.service.name>
     <fabric8.service.port>80</fabric8.service.port>
     <fabric8.service.containerPort>5601</fabric8.service.containerPort>
     <fabric8.imagePullPolicy>IfNotPresent</fabric8.imagePullPolicy>

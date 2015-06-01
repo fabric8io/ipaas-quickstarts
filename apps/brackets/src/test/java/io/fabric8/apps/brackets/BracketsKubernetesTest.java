@@ -39,7 +39,7 @@ public class BracketsKubernetesTest {
     @Test
     public void testInfluxDB() throws Exception {
         String serviceId = "brackets";
-        assertThat(client).replicationController(serviceId +"-controller").isNotNull();
+        assertThat(client).replicationController(serviceId).isNotNull();
         assertThat(client).hasServicePort(serviceId, 80);
 
         assertThat(client).pods()

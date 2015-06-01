@@ -7,7 +7,7 @@
       "apiVersion": "v1beta3",
       "kind": "ReplicationController",
       "metadata": {
-        "name": "kibana-controller",
+        "name": "kibana",
         "labels": {
           "component": "kibana-viewer"
         }
@@ -52,7 +52,7 @@
       "apiVersion": "v1beta3",
       "kind": "Service",
       "metadata": {
-        "name": "kibana-service"
+        "name": "kibana"
       },
       "spec": {
         "ports": [

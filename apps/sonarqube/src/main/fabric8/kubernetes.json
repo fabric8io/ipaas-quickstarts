@@ -25,7 +25,7 @@
       "kind": "ReplicationController",
       "apiVersion": "v1beta3",
       "metadata": {
-        "name": "sonarqube-controller",
+        "name": "sonarqube",
         "labels": {
           "name": "sonarqube"
         }

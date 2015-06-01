@@ -44,7 +44,6 @@
     <fabric8.service.containerPort>3000</fabric8.service.containerPort>
     -->
 
-    <fabric8.replicationController.name>gogs-controller</fabric8.replicationController.name>
     <fabric8.imagePullPolicy>IfNotPresent</fabric8.imagePullPolicy>
 
     <!--

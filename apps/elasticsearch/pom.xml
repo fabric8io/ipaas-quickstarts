@@ -41,8 +41,6 @@
     <fabric8.env.SERVICE_DNS>elasticsearch-cluster</fabric8.env.SERVICE_DNS>
     <fabric8.env.KUBERNETES_TRUST_CERT>true</fabric8.env.KUBERNETES_TRUST_CERT>
 
-    <fabric8.replicationController.name>elasticsearch-rc</fabric8.replicationController.name>
-    <fabric8.service.name>elasticsearch</fabric8.service.name>
     <fabric8.service.port>9200</fabric8.service.port>
     <fabric8.service.containerPort>9200</fabric8.service.containerPort>
     <fabric8.imagePullPolicy>IfNotPresent</fabric8.imagePullPolicy>

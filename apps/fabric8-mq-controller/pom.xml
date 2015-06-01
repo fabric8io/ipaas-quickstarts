@@ -37,7 +37,6 @@
         <guava.version>15.0</guava.version>
         <docker.port.container.amq>${activemq.container.port}</docker.port.container.amq>
         <docker.env.MAIN>io.fabric8.mq.controller.Main</docker.env.MAIN>
-        <fabric8.service.name>fabric8-mq-control</fabric8.service.name>
         <fabric8.service.port>${controller.service.port}</fabric8.service.port>
         <fabric8.service.containerPort>${controller.container.port}</fabric8.service.containerPort>
 

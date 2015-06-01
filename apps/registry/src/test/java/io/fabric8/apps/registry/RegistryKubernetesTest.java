@@ -39,8 +39,8 @@ public class RegistryKubernetesTest {
 
     @Test
     public void testJenkins() throws Exception {
-        assertThat(client).replicationController("registry-controller").isNotNull();
-        String serviceName = "registry-service";
+        String serviceName = "registry";
+        assertThat(client).replicationController(serviceName).isNotNull();
         assertThat(client).hasServicePort(serviceName, 5000);
 
         assertThat(client).pods()

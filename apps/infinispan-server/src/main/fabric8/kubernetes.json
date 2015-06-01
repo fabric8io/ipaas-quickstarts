@@ -6,7 +6,7 @@
       "kind": "ReplicationController",
       "apiVersion": "v1beta3",
       "metadata": {
-        "name": "infinispan-controller",
+        "name": "infinispan",
         "labels": {
           "cluster": "infinispan",
           "component": "infinispan"

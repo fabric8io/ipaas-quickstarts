@@ -39,7 +39,7 @@ public class InfluxDBKubernetesTest {
 
     @Test
     public void testInfluxDB() throws Exception {
-        assertThat(client).replicationController("influxdb-controller").isNotNull();
+        assertThat(client).replicationController("influxdb").isNotNull();
         String serviceName = "influxdb-service";
         assertThat(client).hasServicePort(serviceName, 8086);
 

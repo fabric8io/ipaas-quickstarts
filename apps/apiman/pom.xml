@@ -42,8 +42,6 @@
     <fabric8.label.component>ApimanManagerAPI</fabric8.label.component>
     <fabric8.label.group>defaultGatewayGroup</fabric8.label.group>
     <fabric8.label.provider>fabric8</fabric8.label.provider>
-    <fabric8.replicationController.name>apiman-controller</fabric8.replicationController.name>
-    <fabric8.service.name>apiman</fabric8.service.name>
     <fabric8.service.port>8998</fabric8.service.port>
     <fabric8.service.containerPort>${http.port}</fabric8.service.containerPort>
   </properties>

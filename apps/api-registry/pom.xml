@@ -57,10 +57,8 @@
     <docker.port.container.http>${http.port}</docker.port.container.http>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
 
-    <fabric8.service.name>api-registry</fabric8.service.name>
     <fabric8.service.port>9393</fabric8.service.port>
     <fabric8.service.containerPort>${http.port}</fabric8.service.containerPort>
-    <fabric8.replicationController.name>api-registry-controller</fabric8.replicationController.name>
     <fabric8.label.component>apiRegistry</fabric8.label.component>
     <fabric8.label.provider>fabric8</fabric8.label.provider>
     <swagger.version>1.3.10</swagger.version>

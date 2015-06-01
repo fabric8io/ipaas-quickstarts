@@ -38,9 +38,7 @@
     <docker.port.container.jolokia />
 
 
-    <fabric8.replicationController.name>${project.artifactId}-controller</fabric8.replicationController.name>
     <fabric8.service.port>80</fabric8.service.port>
-    <fabric8.service.name>${project.artifactId}</fabric8.service.name>
     <fabric8.service.containerPort>${docker.port.container.http}</fabric8.service.containerPort>
     <fabric8.imagePullPolicy>IfNotPresent</fabric8.imagePullPolicy>
 

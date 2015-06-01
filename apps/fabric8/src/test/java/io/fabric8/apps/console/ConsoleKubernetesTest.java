@@ -39,7 +39,7 @@ public class ConsoleKubernetesTest {
     @Test
     public void testConsole() throws Exception {
         String serviceName = "fabric8";
-        assertThat(client).replicationController(serviceName + "-controller").isNotNull();
+        assertThat(client).replicationController(serviceName).isNotNull();
         assertThat(client).hasServicePort(serviceName, 80);
 
         assertThat(client).pods()

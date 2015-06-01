@@ -25,9 +25,9 @@
     <version>2.2-SNAPSHOT</version>
   </parent>
 
-  <artifactId>console</artifactId>
+  <artifactId>fabric8</artifactId>
 
-  <name>Console</name>
+  <name>Fabric8 Console</name>
   <description>
     [Fabric8 Console](http://fabric8.io/v2/console.html) for working with Fabric8 and Kubernetes
   </description>
@@ -37,8 +37,6 @@
     <docker.port.container.http>9090</docker.port.container.http>
     <docker.port.container.jolokia />
 
-    <fabric8.replicationController.name>fabric8-controller</fabric8.replicationController.name>
-    <fabric8.service.name>fabric8</fabric8.service.name>
     <fabric8.service.port>80</fabric8.service.port>
     <fabric8.service.containerPort>9090</fabric8.service.containerPort>
     <fabric8.container.name>fabric8-container</fabric8.container.name>

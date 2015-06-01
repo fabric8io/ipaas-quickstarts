@@ -43,7 +43,7 @@ public class ZooKeeperKubernetes {
         assertThat(client).replicationControllers().haveAtLeast(3, new Condition<ReplicationController>() {
             @Override
             public boolean matches(ReplicationController replicationController) {
-                return getName(replicationController).startsWith("zookeeper-controller");
+                return getName(replicationController).startsWith("zookeeper");
             }
         });
 
