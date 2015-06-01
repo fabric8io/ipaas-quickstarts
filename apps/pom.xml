@@ -68,10 +68,10 @@
         <module>fabric8-forge</module>
         <module>fabric8-http-gateway</module>
         <module>fabric8-mq</module>
+        <module>fabric8-mq-controller</module>
+        <module>fabric8-mq-autoscaler</module>
         <module>fabric8-mq-producer</module>
         <module>fabric8-mq-consumer</module>
-        <module>fabric8-mq-autoscaler</module>
-        <module>fabric8-mq-controller</module>
         <module>gerrit</module>
         <module>gogs</module>
         <module>grafana</module>

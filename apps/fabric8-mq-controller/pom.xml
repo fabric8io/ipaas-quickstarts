@@ -27,7 +27,7 @@
     <artifactId>fabric8-mq-controller</artifactId>
     <packaging>jar</packaging>
 
-    <name>Fabric8 MQ : Controller</name>
+    <name>Fabric8 MQ :: Controller</name>
     <description>Fabric8 MQ Controller</description>
 
     <properties>

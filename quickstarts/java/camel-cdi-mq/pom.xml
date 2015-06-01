@@ -28,7 +28,7 @@
   <version>2.2-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>Fabric8 :: Quickstarts :: Java : Camel CDI and ActiveMQ</name>
+  <name>Fabric8 :: Quickstarts :: Java :: Camel CDI and ActiveMQ</name>
   <description>Camel route using CDI and ActiveMQ in a standalone Java Container</description>
 
   <properties>

@@ -30,7 +30,7 @@
   <artifactId>quickstart-java</artifactId>
   <version>2.2-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>Fabric8 :: Quickstarts :: Java : Parent</name>
+  <name>Fabric8 :: Quickstarts :: Java :: Parent</name>
 
   <properties>
     <fabric8.iconRef>icons/java.svg</fabric8.iconRef>

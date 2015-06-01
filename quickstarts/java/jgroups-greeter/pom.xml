@@ -29,7 +29,7 @@
   <artifactId>quickstart-java-jgroups</artifactId>
   <packaging>jar</packaging>
 
-  <name>Fabric8 :: Quickstarts :: Java : JGroups Greeter</name>
+  <name>Fabric8 :: Quickstarts :: Java :: JGroups Greeter</name>
   <description>Simple JGroups Example using Kubernetes Discovery</description>
 
   <properties>

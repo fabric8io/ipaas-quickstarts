@@ -30,7 +30,7 @@
   <artifactId>quickstart-war</artifactId>
   <version>2.2-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>Fabric8 :: Quickstarts :: War : Parent</name>
+  <name>Fabric8 :: Quickstarts :: War :: Parent</name>
 
   <properties>
     <fabric8.iconRef>icons/tomcat.svg</fabric8.iconRef>

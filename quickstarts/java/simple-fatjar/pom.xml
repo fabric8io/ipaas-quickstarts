@@ -30,7 +30,7 @@
   <version>2.2-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>Fabric8 :: Quickstarts :: Java : Simple fat jar</name>
+  <name>Fabric8 :: Quickstarts :: Java :: Simple fat jar</name>
   <description>Simple standalone Java Container (fat jar)</description>
 
   <properties>
