@@ -31,7 +31,7 @@ import org.kie.api.runtime.KieSession;
 public class BuildSignallerServiceProducer {
 
     @Produces
-    public BuildSignallerService createBuildSignallerService(@Protocol("http") @ServiceName("fabric8-console-service") String consoleLink,
+    public BuildSignallerService createBuildSignallerService(@Protocol("http") @ServiceName("fabric8") String consoleLink,
                                                              @ConfigProperty(name = "BUILD_NAMESPACE", defaultValue = "") String namespace,
                                                              KieSession ksession) {
         BuildSignallerService service = new BuildSignallerService(ksession, namespace);

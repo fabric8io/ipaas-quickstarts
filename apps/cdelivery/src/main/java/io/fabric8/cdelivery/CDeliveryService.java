@@ -56,7 +56,7 @@ public class CDeliveryService {
     private static final Logger LOG = LoggerFactory.getLogger(CDeliveryService.class);
 
     @Inject
-    @External @Protocol("http") @ServiceName("fabric8-console-service")
+    @External @Protocol("http") @ServiceName("fabric8")
     String consoleLink;
 
     @Inject
