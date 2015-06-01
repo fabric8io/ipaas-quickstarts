@@ -24,7 +24,7 @@
         <version>2.2-SNAPSHOT</version>
     </parent>
 
-    <artifactId>fabric8-mq-autoscaler</artifactId>
+    <artifactId>fabric8mq-autoscaler</artifactId>
     <packaging>jar</packaging>
 
     <name>Fabric8 MQ :: AutoScaler</name>

@@ -24,53 +24,32 @@
     <version>2.2-SNAPSHOT</version>
   </parent>
 
-  <artifactId>amq-broker</artifactId>
+  <artifactId>fabric8mq-consumer</artifactId>
   <packaging>jar</packaging>
 
-  <name>ActiveMQ Broker</name>
-  <description>ActiveMQ Broker</description>
+  <name>Fabric8 MQ :: Example Consumer</name>
+  <description>Fabric8 MQ Example Consumer</description>
 
-  <properties>
-    <version.maven-surefire-plugin>2.15</version.maven-surefire-plugin>
-    <guava.version>15.0</guava.version>
+    <properties>
+        <version.maven-surefire-plugin>2.15</version.maven-surefire-plugin>
+        <destinationName>TEST.FOO</destinationName>
+        <docker.env.MAIN>io.fabric8.mq.consumer.ConsumerMain</docker.env.MAIN>
 
-    <docker.port.container.amq>${activemq.container.port}</docker.port.container.amq>
-    <docker.env.MAIN>io.fabric8.amq.Main</docker.env.MAIN>
-
-    <fabric8.service.port>${amqbroker.service.port}</fabric8.service.port>
-    <fabric8.service.containerPort>${amqbroker.container.port}</fabric8.service.containerPort>
-
-    <fabric8.label.component>amq-broker</fabric8.label.component>
-    <fabric8.label.group>amqbroker</fabric8.label.group>
-    <fabric8.label.provider>amqbroker</fabric8.label.provider>
-    <fabric8.iconRef>icons/activemq.svg</fabric8.iconRef>
-  </properties>
+        <fabric8.env.AMQ_SERVICE_ID>FABRIC8MQ</fabric8.env.AMQ_SERVICE_ID>
+        <fabric8.env.AMQ_QUEUENAME>${destinationName}</fabric8.env.AMQ_QUEUENAME>
+        <fabric8.label.component>fabric8MQConsumer</fabric8.label.component>
+        <fabric8.label.group>fabric8mq</fabric8.label.group>
+        <fabric8.label.provider>fabric8</fabric8.label.provider>
+        <fabric8.label.queueName>${destinationName}</fabric8.label.queueName>
+        <fabric8.iconRef>icons/activemq.svg</fabric8.iconRef>
+    </properties>
 
   <dependencies>
     <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>fabric8-cdi</artifactId>
+        <groupId>io.fabric8.mq</groupId>
+        <artifactId>camel-amq</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.apache.activemq</groupId>
-      <artifactId>activemq-broker</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.activemq</groupId>
-      <artifactId>activemq-kahadb-store</artifactId>
-      <exclusions>
-        <exclusion>
-          <groupId>com.sun.jersey</groupId>
-          <artifactId>jersey-server</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-      <!-- Note: need to override guava version as leveldb has an issue with > 15.0 -->
-      <version>${guava.version}</version>
-    </dependency>
+
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
@@ -90,14 +69,14 @@
 
     <dependency>
       <groupId>io.fabric8</groupId>
-      <artifactId>fabric8-cdi</artifactId>
+      <artifactId>kubernetes-assertions</artifactId>
       <scope>test</scope>
-      <type>test-jar</type>
     </dependency>
 
     <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-assertions</artifactId>
+      <groupId>io.fabric8.jube.images.fabric8</groupId>
+      <artifactId>fabric8-mq</artifactId>
+      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
 
@@ -106,41 +85,9 @@
       <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
-
-    <!--dependency>
-        <groupId>org.apache.openejb</groupId>
-        <artifactId>arquillian-openejb-embedded-4</artifactId>
-        <version>${openejb.container.version}</version>
-        <scope>test</scope>
-    </dependency-->
-
-    <dependency>
-      <groupId>org.jboss.weld</groupId>
-      <artifactId>weld-core</artifactId>
-      <version>2.2.5.Final</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.jboss.weld.se</groupId>
-      <artifactId>weld-se</artifactId>
-      <version>2.2.5.Final</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.jboss.arquillian.container</groupId>
-      <artifactId>arquillian-weld-ee-embedded-1.1</artifactId>
-      <version>1.0.0.CR8</version>
-    </dependency>
   </dependencies>
 
   <build>
-    <resources>
-      <resource>
-        <directory>src/main/resources</directory>
-        <filtering>true</filtering>
-      </resource>
-    </resources>
-
     <plugins>
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
@@ -165,12 +112,11 @@
                 </assembly>
                 <env>
                   <MAIN>${docker.env.MAIN}</MAIN>
-                  <AMQ_PORT>${activemq.container.port}</AMQ_PORT>
-                  <AMQ_DATA_DIRECTORY>/var/activemq</AMQ_DATA_DIRECTORY>
-                  <AMQ_BROKER_NAME>default</AMQ_BROKER_NAME>
+                  <AMQ_SERVICE_ID>FABRIC8MQ</AMQ_SERVICE_ID>
+                  <AMQ_QUEUENAME>TEST.FOO</AMQ_QUEUENAME>
+                  <AMQ_PREFETCH>1000</AMQ_PREFETCH>
                 </env>
                 <ports>
-                  <port>${activemq.container.port}</port>
                   <port>8778</port>
                 </ports>
               </build>
@@ -182,24 +128,11 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
-        <version>${exec-maven-plugin.version}</version>
+        <version>1.2.1</version>
         <configuration>
-          <mainClass>io.fabric8.mq.Main</mainClass>
+          <mainClass>io.fabric8.mq.consumer.ConsumerMain</mainClass>
           <includePluginDependencies>false</includePluginDependencies>
         </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>2.5</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>test-jar</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
     </plugins>
   </build>
@@ -272,4 +205,5 @@
       </build>
     </profile>
   </profiles>
+
 </project>

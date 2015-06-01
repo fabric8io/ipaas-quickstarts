@@ -57,7 +57,7 @@
     </dependencyManagement>
 
     <modules>
-        <module>amq-broker</module>
+        <module>amqbroker</module>
         <module>api-registry</module>
         <module>apiman</module>
         <module>app-library</module>
@@ -68,11 +68,11 @@
         <module>elasticsearch</module>
         <module>fabric8-forge</module>
         <module>fabric8-http-gateway</module>
-        <module>fabric8-mq</module>
-        <module>fabric8-mq-controller</module>
-        <module>fabric8-mq-autoscaler</module>
-        <module>fabric8-mq-producer</module>
-        <module>fabric8-mq-consumer</module>
+        <module>fabric8mq</module>
+        <module>fabric8mq-controller</module>
+        <module>fabric8mq-autoscaler</module>
+        <module>fabric8mq-producer</module>
+        <module>fabric8mq-consumer</module>
         <module>gerrit</module>
         <module>gogs</module>
         <module>grafana</module>

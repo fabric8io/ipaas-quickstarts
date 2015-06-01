@@ -24,7 +24,7 @@
         <version>2.2-SNAPSHOT</version>
     </parent>
 
-    <artifactId>fabric8-mq-controller</artifactId>
+    <artifactId>fabric8mq-controller</artifactId>
     <packaging>jar</packaging>
 
     <name>Fabric8 MQ :: Controller</name>
