@@ -38,7 +38,7 @@
         },
         "template": {
           "metadata": {
-            "name": "letschatPod",
+            "name": "letschat",
             "labels": {
               "name": "letschat"
             }

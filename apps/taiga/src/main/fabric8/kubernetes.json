@@ -38,7 +38,7 @@
         },
         "template": {
           "metadata": {
-            "name": "taigaPod",
+            "name": "taiga",
             "labels": {
               "name": "taiga"
             }

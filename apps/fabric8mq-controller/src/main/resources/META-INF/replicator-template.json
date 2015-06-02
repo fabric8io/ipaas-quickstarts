@@ -14,7 +14,7 @@
       "desiredState": {
         "manifest": {
           "version": "v1beta2",
-          "id": "fabric8-mqPod",
+          "id": "fabric8-mq",
           "containers": [
             {
               "name": "fabric8-mq-container",

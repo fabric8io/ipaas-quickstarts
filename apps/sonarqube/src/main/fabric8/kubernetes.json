@@ -37,7 +37,7 @@
         },
         "template": {
           "metadata": {
-            "name": "sonarqubePod",
+            "name": "sonarqube",
             "labels": {
               "name": "sonarqube"
             }

@@ -19,7 +19,7 @@
         },
         "template": {
           "metadata": {
-            "name": "kibanaPod",
+            "name": "kibana",
             "labels": {
               "component": "kibana-viewer"
             }
