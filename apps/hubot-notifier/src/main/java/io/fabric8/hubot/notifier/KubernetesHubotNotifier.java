@@ -31,8 +31,11 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.Service;
+import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.utils.Strings;
 import org.apache.deltaspike.core.api.config.ConfigProperty;
+import org.eclipse.jetty.websocket.api.Session;
+import org.eclipse.jetty.websocket.api.WebSocketListener;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,29 +81,70 @@ public class KubernetesHubotNotifier {
 
         LOG.info("Starting watching Kubernetes namespace " + getNamespace() + " at " + client.getAddress());
 
-        addClient(client.watchServices(null, new AbstractWatcher<Service>() {
+        addClient(client.watchServices(null, new CustomWatcher<Service>() {
             @Override
             public void eventReceived(Action action, Service entity) {
                 onWatchEvent(action, entity);
             }
         }));
 
-        addClient(client.watchPods(null, new AbstractWatcher<Pod>() {
+        addClient(client.watchPods(null, new CustomWatcher<Pod>() {
             @Override
             public void eventReceived(Action action, Pod entity) {
                 onWatchEvent(action, entity);
             }
         }));
 
-        addClient(client.watchReplicationControllers(null, new AbstractWatcher<ReplicationController>() {
+        addClient(client.watchReplicationControllers(null, new CustomWatcher<ReplicationController>() {
             @Override
             public void eventReceived(Action action, ReplicationController entity) {
                 onWatchEvent(action, entity);
             }
         }));
 
+/*
+        TODO
+
+        addClient(client.watchBuilds(null, new CustomWatcher<DeploymentConfig>() {
+            @Override
+            public void eventReceived(Action action, DeploymentConfig entity) {
+                onWatchEvent(action, entity);
+            }
+        }));
+
+        addClient(client.watchDeploymentConfigs(null, new CustomWatcher<DeploymentConfig>() {
+            @Override
+            public void eventReceived(Action action, DeploymentConfig entity) {
+                onWatchEvent(action, entity);
+            }
+        }));
+*/
+
+        LOG.info("Now watching services, pods, replication controllers");
+
     }
 
+    protected static abstract class CustomWatcher<T extends HasMetadata> extends AbstractWatcher<T> implements WebSocketListener {
+
+        @Override
+        public void onWebSocketBinary(byte[] bytes, int from, int to) {
+        }
+
+        @Override
+        public void onWebSocketClose(int code, String reason) {
+            super.onClose(code, reason);
+        }
+
+        @Override
+        public void onWebSocketConnect(Session session) {
+            super.onConnect(session);
+        }
+
+        @Override
+        public void onWebSocketText(String s) {
+            super.onMessage(s);
+        }
+    }
     public String getNamespace() {
         return client.getNamespace();
     }
@@ -114,14 +158,14 @@ public class KubernetesHubotNotifier {
         String name = KubernetesHelper.getName(entity);
         String namespace = getNamespace();
 
+        String actionText = action.toString().toLowerCase();
         String room = this.roomExpression.replace("${namespace}", namespace).replace("${kind}", kind).replace("${name}", name);
 
-        String actionText = action.toString().toLowerCase();
 
         String postfix = "";
         if (action.equals(Watcher.Action.ADDED) || action.equals(Watcher.Action.MODIFIED)) {
             if (Strings.isNotBlank(consoleLink)) {
-                postfix += " " + consoleLink + "kubernetes/namespace/" + namespace + "/" + kind.toLowerCase() + "s/" + name;
+                postfix += " " + consoleLink + "/kubernetes/namespace/" + namespace + "/" + kind.toLowerCase() + "s/" + name;
             }
         }
 
