@@ -60,6 +60,13 @@
     <!-- CD building stuff -->
     <dependency>
       <groupId>io.fabric8.jube.images.fabric8</groupId>
+      <artifactId>gerrit</artifactId>
+      <version>${project.version}</version>
+      <classifier>kubernetes</classifier>
+      <type>json</type>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8.jube.images.fabric8</groupId>
       <artifactId>gogs</artifactId>
       <version>${project.version}</version>
       <classifier>kubernetes</classifier>
