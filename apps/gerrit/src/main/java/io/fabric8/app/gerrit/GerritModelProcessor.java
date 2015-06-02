@@ -9,7 +9,7 @@ public class GerritModelProcessor {
     public void onList(TemplateBuilder builder) {
         builder.addNewServiceObject()
                 .withNewMetadata()
-                  .withName("gerrit-http-service")
+                  .withName("gerrit-http")
                   .addToLabels("component", "gerrit")
                   .addToLabels("provider", "fabric8")
                 .endMetadata()
@@ -26,7 +26,7 @@ public class GerritModelProcessor {
                 // Second service
                 .addNewServiceObject()
                 .withNewMetadata()
-                  .withName("gerrit-ssh-service")
+                  .withName("gerrit-ssh")
                   .addToLabels("component", "gerrit")
                   .addToLabels("provider", "fabric8")
                 .endMetadata()
