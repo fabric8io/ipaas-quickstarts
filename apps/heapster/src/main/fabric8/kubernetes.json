@@ -1,10 +1,10 @@
 {
-  "apiVersion": "v1beta2",
+  "apiVersion": "v1beta3",
   "kind": "List",
   "id": "heapster-config",
   "items": [
     {
-      "apiVersion": "v1beta2",
+      "apiVersion": "v1beta3",
       "kind": "ReplicationController",
       "id": "heapster-rc",
       "desiredState": {
@@ -15,7 +15,7 @@
         "podTemplate": {
           "desiredState": {
             "manifest": {
-              "version": "v1beta2",
+              "version": "v1beta3",
               "containers": [
                 {
                   "name": "heapster-container",
