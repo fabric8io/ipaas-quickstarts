@@ -33,7 +33,28 @@
     </description>
 
     <properties>
-        <fabric8.generateJson>false</fabric8.generateJson>
+        <docker.from>fabric8/java</docker.from>
+
+        <docker.image>fabric8/${project.artifactId}</docker.image>
+        <docker.autoPull>true</docker.autoPull>
+        <docker.assemblyDescriptorRef>artifact-with-dependencies</docker.assemblyDescriptorRef>
+        <docker.dockerFileDir>gerrit</docker.dockerFileDir>
+
+        <!-- General -->
+        <fabric8.imagePullPolicy>IfNotPresent</fabric8.imagePullPolicy>
+        <fabric8.label.component>gerrit</fabric8.label.component>
+        <fabric8.label.provider>fabric8</fabric8.label.provider>
+        <!-- to access docker socket lets run in priviledged mode -->
+        <fabric8.containerPrivileged>true</fabric8.containerPrivileged>
+        <fabric8.generateJson>true</fabric8.generateJson>
+
+        <!--  ReplicationController  -->
+        <fabric8.replicationController.name>${project.artifactId}-controller</fabric8.replicationController.name>
+        <fabric8.generateJson>true</fabric8.generateJson>
+
+        <!-- Volume mounted to backup gerrit site -->
+        <fabric8.volume.gerrit-workspace.hostPath>/home/gerrit-site</fabric8.volume.gerrit-workspace.hostPath>
+        <fabric8.volume.gerrit-workspace.mountPath>/home/gerrit/site</fabric8.volume.gerrit-workspace.mountPath>
     </properties>
 
     <build>
@@ -62,6 +83,16 @@
             <groupId>io.fabric8</groupId>
             <artifactId>kubernetes-assertions</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>kubernetes-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>kubernetes-generator</artifactId>
         </dependency>
 
         <dependency>
