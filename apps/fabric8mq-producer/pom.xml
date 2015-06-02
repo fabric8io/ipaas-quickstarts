@@ -74,7 +74,7 @@
 
     <dependency>
       <groupId>io.fabric8.jube.images.fabric8</groupId>
-      <artifactId>fabric8-mq</artifactId>
+      <artifactId>fabric8mq</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
