@@ -31,6 +31,7 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.Service;
+import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.utils.Strings;
 import org.apache.deltaspike.core.api.config.ConfigProperty;
@@ -81,7 +82,7 @@ public class KubernetesHubotNotifier {
         this.consoleLink = consoleLink;
         this.roomExpression = roomExpression;
 
-        LOG.info("Starting watching Kubernetes namespace " + getNamespace() + " at " + client.getAddress());
+        LOG.info("Starting watching Kubernetes namespace " + getNamespace() + " at " + client.getAddress() + " using console link: " + consoleLink);
 
         addClient(client.watchServices(null, new AbstractWatcher<Service>() {
             @Override
@@ -104,12 +105,9 @@ public class KubernetesHubotNotifier {
             }
         }));
 
-/*
-        TODO
-
-        addClient(client.watchBuilds(null, new AbstractWatcher<DeploymentConfig>() {
+        addClient(client.watchBuilds(null, new AbstractWatcher<Build>() {
             @Override
-            public void eventReceived(Action action, DeploymentConfig entity) {
+            public void eventReceived(Action action, Build entity) {
                 onWatchEvent(action, entity);
             }
         }));
@@ -120,10 +118,8 @@ public class KubernetesHubotNotifier {
                 onWatchEvent(action, entity);
             }
         }));
-*/
 
-        LOG.info("Now watching services, pods, replication controllers");
-
+        LOG.info("Now watching services, pods, replication controllers, builds and deployments");
     }
 
     public String getNamespace() {

@@ -48,14 +48,6 @@
     <docker.env.MAIN>org.jboss.weld.environment.se.StartMain</docker.env.MAIN>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
 
-    <fabric8.env.KUBERNETES_TRUST_CERT>true</fabric8.env.KUBERNETES_TRUST_CERT>
-    <fabric8.env.SKIP_TLS_VERIFY>true</fabric8.env.SKIP_TLS_VERIFY>
-    <fabric8.env.KUBERNETES_CLIENT_CERTIFICATE_FILE>/etc/secret-volume/admin-cert</fabric8.env.KUBERNETES_CLIENT_CERTIFICATE_FILE>
-    <fabric8.env.KUBERNETES_CLIENT_KEY_FILE>/etc/secret-volume/admin-key</fabric8.env.KUBERNETES_CLIENT_KEY_FILE>
-
-    <!-- TODO until secrets work we must default to a namespace for polling builds -->
-    <fabric8.env.BUILD_NAMESPACE>default</fabric8.env.BUILD_NAMESPACE>
-
     <fabric8.label.component>hubotNotifier</fabric8.label.component>
     <fabric8.label.provider>fabric8</fabric8.label.provider>
 
