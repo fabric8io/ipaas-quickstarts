@@ -46,6 +46,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 
+import static java.beans.Introspector.decapitalize;
+
 /**
  * Watches the kubernetes resources in the current namespace and notifies hubot
  */
@@ -81,21 +83,21 @@ public class KubernetesHubotNotifier {
 
         LOG.info("Starting watching Kubernetes namespace " + getNamespace() + " at " + client.getAddress());
 
-        addClient(client.watchServices(null, new CustomWatcher<Service>() {
+        addClient(client.watchServices(null, new AbstractWatcher<Service>() {
             @Override
             public void eventReceived(Action action, Service entity) {
                 onWatchEvent(action, entity);
             }
         }));
 
-        addClient(client.watchPods(null, new CustomWatcher<Pod>() {
+        addClient(client.watchPods(null, new AbstractWatcher<Pod>() {
             @Override
             public void eventReceived(Action action, Pod entity) {
                 onWatchEvent(action, entity);
             }
         }));
 
-        addClient(client.watchReplicationControllers(null, new CustomWatcher<ReplicationController>() {
+        addClient(client.watchReplicationControllers(null, new AbstractWatcher<ReplicationController>() {
             @Override
             public void eventReceived(Action action, ReplicationController entity) {
                 onWatchEvent(action, entity);
@@ -105,14 +107,14 @@ public class KubernetesHubotNotifier {
 /*
         TODO
 
-        addClient(client.watchBuilds(null, new CustomWatcher<DeploymentConfig>() {
+        addClient(client.watchBuilds(null, new AbstractWatcher<DeploymentConfig>() {
             @Override
             public void eventReceived(Action action, DeploymentConfig entity) {
                 onWatchEvent(action, entity);
             }
         }));
 
-        addClient(client.watchDeploymentConfigs(null, new CustomWatcher<DeploymentConfig>() {
+        addClient(client.watchDeploymentConfigs(null, new AbstractWatcher<DeploymentConfig>() {
             @Override
             public void eventReceived(Action action, DeploymentConfig entity) {
                 onWatchEvent(action, entity);
@@ -124,27 +126,6 @@ public class KubernetesHubotNotifier {
 
     }
 
-    protected static abstract class CustomWatcher<T extends HasMetadata> extends AbstractWatcher<T> implements WebSocketListener {
-
-        @Override
-        public void onWebSocketBinary(byte[] bytes, int from, int to) {
-        }
-
-        @Override
-        public void onWebSocketClose(int code, String reason) {
-            super.onClose(code, reason);
-        }
-
-        @Override
-        public void onWebSocketConnect(Session session) {
-            super.onConnect(session);
-        }
-
-        @Override
-        public void onWebSocketText(String s) {
-            super.onMessage(s);
-        }
-    }
     public String getNamespace() {
         return client.getNamespace();
     }
@@ -169,7 +150,7 @@ public class KubernetesHubotNotifier {
             }
         }
 
-        String message = actionText + " " + kind + " " + name + postfix;
+        String message = actionText + " " + decapitalize(kind) + " " + name + postfix;
         notifier.notifyRoom(room, message);
     }
 }
