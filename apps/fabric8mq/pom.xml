@@ -190,7 +190,6 @@
     <dependency>
       <groupId>org.jolokia</groupId>
       <artifactId>jolokia-jvm</artifactId>
-      <version>1.2.3</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
