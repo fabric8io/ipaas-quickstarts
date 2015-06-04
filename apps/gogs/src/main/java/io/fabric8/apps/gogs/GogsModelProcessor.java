@@ -39,7 +39,7 @@ public class GogsModelProcessor {
                 .and()
                 .addNewServiceObject()
                 .withNewMetadata()
-                .withName(NAME + "-http")
+                .withName(NAME)
                 .addToLabels("component", NAME)
                 .addToLabels("provider", "fabric8")
                 .endMetadata()
