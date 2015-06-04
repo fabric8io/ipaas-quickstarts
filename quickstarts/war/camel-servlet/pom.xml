@@ -244,7 +244,7 @@
       <id>fabric8-snapshot</id>
       <properties>
         <fabric8.version>2.2-SNAPSHOT</fabric8.version>
-        <jube.version>2.0-SNAPSHOT</jube.version>
+        <jube.version>2.2-SNAPSHOT</jube.version>
       </properties>
     </profile>
   </profiles>
