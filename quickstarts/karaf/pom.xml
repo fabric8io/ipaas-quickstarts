@@ -40,7 +40,11 @@
     <module>camel-amq</module>
     <module>camel-log</module>
     <module>camel-rest-sql</module>
+<!--
+    TODO disabled - classloader hell with swagger / reflections / jetty!
+
     <module>cxf-rest</module>
+-->
   </modules>
 
 </project>
