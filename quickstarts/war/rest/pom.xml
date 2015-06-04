@@ -66,7 +66,8 @@
     <fabric8.service.containerPort>8080</fabric8.service.containerPort>
 
     <fabric8.label.component>quickStartWarRest</fabric8.label.component>
-    <fabric8.label.group>quickstarts</fabric8.label.group>  </properties>
+    <fabric8.label.group>quickstarts</fabric8.label.group>
+  </properties>
 
   <licenses>
     <license>
@@ -275,6 +276,9 @@
                   <descriptorRef>${docker.assemblyDescriptorRef}</descriptorRef>
                 </assembly>
                 <env>
+                  <env>
+                    <CATALINA_OPTS>-javaagent:/opt/tomcat/jolokia-agent.jar=host=0.0.0.0,port=8778,policyLocation=jar:file:///maven/ROOT.war!/WEB-INF/classes/jolokia-access.xml</CATALINA_OPTS>
+                  </env>
                 </env>
               </build>
             </image>
