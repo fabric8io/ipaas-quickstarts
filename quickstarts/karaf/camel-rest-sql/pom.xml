@@ -256,7 +256,7 @@
                 <from>${docker.from}</from>
                 <assembly>
                   <descriptor>${docker.assemblyDescriptor}</descriptor>
-                  <basedir>/opt/apache-karaf-${karaf.version}</basedir>
+                  <basedir>/opt/jboss/deploy/</basedir>
                 </assembly>
               </build>
             </image>
