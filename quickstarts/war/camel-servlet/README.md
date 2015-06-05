@@ -77,9 +77,9 @@ in the docker-maven-plugin manual for details.
 
 The final step is to apply and send the Kubernetes descriptor to the
 Kubernetes installation. You will need to set the variable
-`KUBERNETES\_MASTER` to the URL how to reach Kubernetes
+`KUBERNETES_MASTER` to the URL how to reach Kubernetes
 (e.g. `https://172.28.128.4:8443`). You can also select the Kubernetes
-namespace with the environment variable `KUBERNETESi\_NAMESPACE` (Note
+namespace with the environment variable `KUBERNETES_NAMESPACE` (Note
 for OpenShift V3 users: You should use the namespace `default` for the
 moment, but this will be fixed in a future release of the
 fabric8-maven-plugin)
@@ -112,7 +112,9 @@ If you are using OpenShift, you can verify this by calling
 ```
 
 Finally, you can setup routes within OpenShift so that you can use a
-fixed address to reach the application:
+fixed address to reach the application. If you used the `fabric8:apply` 
+above it the routes has been created automatically. You can recreate 
+the route anytime with:
 
 ```bash
  # Creates routes for all services which doesn't have one yet
