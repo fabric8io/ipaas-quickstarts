@@ -23,12 +23,12 @@
   <parent>
     <groupId>io.fabric8.quickstarts</groupId>
     <artifactId>fabric8-quickstarts-parent</artifactId>
-    <version>2.2-SNAPSHOT</version>
+    <version>2.1.9</version>
   </parent>
 
   <groupId>io.fabric8.jube.images.fabric8</groupId>
   <artifactId>quickstart-war</artifactId>
-  <version>2.2-SNAPSHOT</version>
+  <version>2.1.9</version>
   <packaging>pom</packaging>
   <name>Fabric8 :: Quickstarts :: War :: Parent</name>
 
