@@ -51,6 +51,7 @@
     <cxf.version>3.0.4</cxf.version>
     <camel.version>2.15.2</camel.version>
     <karaf.version>2.4.2</karaf.version>
+    <karaf.plugin.version>2.4.0</karaf.plugin.version>
 
     <jackson2-version>2.4.1</jackson2-version>
     <swagger-version>1.3.2_1</swagger-version>
@@ -277,7 +278,7 @@
       <plugin>
         <groupId>org.apache.karaf.tooling</groupId>
         <artifactId>features-maven-plugin</artifactId>
-        <version>${karaf.version}</version>
+        <version>${karaf.plugin.version}</version>
         <executions>
           <execution>
             <id>add-features-to-repo</id>
