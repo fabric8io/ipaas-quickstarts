@@ -156,8 +156,8 @@
                 </assembly>
                 <env>
                   <MAIN>${docker.env.MAIN}</MAIN>
-                  <KUBERNETES_TRUST_CERT>${fabric8.env.KUBERNETES_TRUST_CERT}</KUBERNETES_TRUST_CERT>
-                  <SKIP_TLS_VERIFY>${fabric8.env.SKIP_TLS_VERIFY}</SKIP_TLS_VERIFY>
+                  <KUBERNETES_TRUST_CERT>true</KUBERNETES_TRUST_CERT>
+                  <SKIP_TLS_VERIFY>true</SKIP_TLS_VERIFY>
                 </env>
                 <ports>
                   <port>8778</port>
