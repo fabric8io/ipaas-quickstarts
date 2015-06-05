@@ -171,6 +171,7 @@
                   <descriptor>${docker.assemblyDescriptor}</descriptor>
                   <basedir>/opt/jboss/deploy/</basedir>
                 </assembly>
+                <command>/usr/bin/deploy-and-start</command>
               </build>
             </image>
           </images>
