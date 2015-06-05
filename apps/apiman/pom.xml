@@ -57,6 +57,10 @@
     
     <!-- fabric8 -->
     <dependency>
+     <groupId>io.fabric8</groupId>
+     <artifactId>kubernetes-api</artifactId>
+    </dependency>
+    <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>fabric8-utils</artifactId>
     </dependency>
@@ -239,7 +243,8 @@
       <version>${mockito.version}</version>
       <scope>test</scope>
     </dependency>
-  </dependencies>
+ 
+</dependencies>
 
   <build>
     <finalName>${project.artifactId}</finalName>
