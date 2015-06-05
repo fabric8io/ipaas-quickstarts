@@ -43,7 +43,7 @@
     <jube.version>2.1.5</jube.version>
     <docker.maven.plugin.version>0.11.5</docker.maven.plugin.version>
     <camel.version>2.15.2</camel.version>
-    <karaf.version>2.4.0</karaf.version>
+    <karaf.version>2.4.2</karaf.version>
     <derby.version>10.10.2.0</derby.version>
 
     <docker.from>fabric8/karaf-2.4</docker.from>
@@ -211,7 +211,7 @@
       <plugin>
         <groupId>org.apache.karaf.tooling</groupId>
         <artifactId>features-maven-plugin</artifactId>
-        <version>2.4.0</version>
+        <version>${karaf.version}</version>
         <executions>
           <execution>
             <id>add-features-to-repo</id>
@@ -255,7 +255,7 @@
                 <from>${docker.from}</from>
                 <assembly>
                   <descriptor>${docker.assemblyDescriptor}</descriptor>
-                  <basedir>/opt/apache-karaf-2.4.0</basedir>
+                  <basedir>/opt/apache-karaf-${karaf.version}</basedir>
                 </assembly>
               </build>
             </image>
