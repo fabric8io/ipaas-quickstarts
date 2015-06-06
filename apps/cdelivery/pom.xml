@@ -354,12 +354,5 @@
         <fabric8.version>2.2-SNAPSHOT</fabric8.version>
       </properties>
     </profile>
-    <profile>
-      <id>release</id>
-      <properties>
-        <!-- when releasing lets use the release version -->
-        <fabric8.release.version>${project.version}</fabric8.release.version>
-      </properties>
-    </profile>
   </profiles>
 </project>
