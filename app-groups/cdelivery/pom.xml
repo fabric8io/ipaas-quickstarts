@@ -43,6 +43,16 @@
       <type>json</type>
     </dependency>
 
+    <!-- project wizard -->
+    <dependency>
+      <groupId>io.fabric8.jube.images.fabric8</groupId>
+      <artifactId>fabric8-forge</artifactId>
+      <version>${project.version}</version>
+      <classifier>kubernetes</classifier>
+      <type>json</type>
+    </dependency>
+
+
     <!-- CD social -->
     <dependency>
       <groupId>io.fabric8.jube.images.fabric8</groupId>
