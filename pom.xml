@@ -278,7 +278,7 @@
           <id>fabric8-snapshot</id>
           <properties>
             <fabric8.version>2.2-SNAPSHOT</fabric8.version>
-            <fabric8.release.version>2.1.6</fabric8.release.version>
+            <fabric8.release.version>2.1.9</fabric8.release.version>
           </properties>
         </profile>
         <profile>
@@ -290,10 +290,6 @@
 
         <profile>
             <id>release</id>
-            <properties>
-              <!-- when releasing lets use the release version -->
-              <fabric8.release.version>${project.version}</fabric8.release.version>
-            </properties>
             <build>
                 <plugins>
                   <plugin>

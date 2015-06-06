@@ -47,8 +47,6 @@
     <jgit.version>3.4.1.201406201815-r</jgit.version>
     <cxf.version>3.0.4</cxf.version>
 
-    <fabric8.release.version>2.0.47</fabric8.release.version>
-
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <org.eclipse.jetty.version>9.1.5.v20140505</org.eclipse.jetty.version>
 
@@ -461,13 +459,6 @@
       <id>fabric8-snapshot</id>
       <properties>
         <fabric8.version>2.2-SNAPSHOT</fabric8.version>
-      </properties>
-    </profile>
-    <profile>
-      <id>release</id>
-      <properties>
-        <!-- when releasing lets use the release version -->
-        <fabric8.release.version>${project.version}</fabric8.release.version>
       </properties>
     </profile>
   </profiles>
