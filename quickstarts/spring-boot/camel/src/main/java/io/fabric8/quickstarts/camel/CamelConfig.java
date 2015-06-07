@@ -31,7 +31,7 @@ public class CamelConfig extends CamelConfiguration {
         return new RouteBuilder() {
             @Override
             public void configure() throws Exception {
-                from("timer://foo?fixedRate=true&period=5000&daemon=false").
+                from("timer://foo?period=5000&daemon=false").
                         setBody().constant("<hello>world!</hello>").
                         log(">>> ${body}");
             }
