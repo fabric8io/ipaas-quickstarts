@@ -102,9 +102,12 @@ public class BearerTokenFilter implements Filter {
 			try {
 				String username = validateBearerToken(authHeader);
 				AuthPrincipal principal = new AuthPrincipal(username);
-				// I think we need to add the apiman roles
-				// ?? principal.addRole(role);
-				wrapTheRequest(request, principal);
+				// roles should come from keycloak, but for now we hard code.
+				principal.addRole("apiuser");
+				if ("admin".equals(username)) {
+					principal.addRole("apiadmin");
+				}
+				request = wrapTheRequest(request, principal);
 				chain.doFilter(request, response);
 			} catch (IOException e) {
 				String errMsg = e.getMessage();
@@ -117,8 +120,13 @@ public class BearerTokenFilter implements Filter {
 				sendInvalidTokenResponse((HttpServletResponse)response, errMsg);
 			}
 		} else {
+			//I think it makes sense to have the next filter be the AuthenticationFilter
+			//to also allow basic Auth, but that filter does not support this filter
+			//allowing access. So for now let's not support it.
+			
 			//no bearer token present - go to the next filter
-			chain.doFilter(request, response);
+			//chain.doFilter(request, response);
+			sendInvalidTokenResponse((HttpServletResponse)response, "No BearerToken");
 		}
 	}
 	
