@@ -61,7 +61,7 @@ public class CamelRouter extends ServiceSupport {
         if (routesString != null && !routesString.isEmpty()) {
             LOG.info("Starting Camel Router");
             camelContext = new DefaultCamelContext();
-            camelContext.setName("MQ-Controller-Camel-Router");
+            camelContext.setName("Fabric8MQ-Camel-Router");
             camelContext.start();
             doLoadRoutes();
         } else {

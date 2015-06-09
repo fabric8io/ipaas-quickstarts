@@ -441,7 +441,7 @@ public class Fabric8MQ extends BrokerStateInfo implements Handler<Transport> {
         synchronized (multiplexerControllers) {
             if (!multiplexerControllers.isEmpty()) {
                 MultiplexerController multiplexerController = multiplexerControllers.remove(0);
-                multiplexerController.addTransport(protocol, transport);
+                multiplexerController.addTransport(protocol, messageRouter);
                 multiplexerControllers.add(multiplexerController);
             }
         }
