@@ -30,9 +30,9 @@ import org.slf4j.LoggerFactory;
 
 public class Main {
 
-    public static final String DEFAULT_HOST = "127.0.0.1";
-    public static final String DEFAULT_PORT = "9090";
-    public static final String DEFAULT_APIMAN_PORT = "9089";
+    public static final String DEFAULT_HOST = "0.0.0.0";
+    public static final String DEFAULT_PORT = "9000";
+    public static final String DEFAULT_APIMAN_PORT = "8999";
     public static final String DEFAULT_INDEX_ENABLED = "true";
     public static final String DEFAULT_GATEWAY_SERVICES_SELECTORS = "[{\"container\":\"java\",\"group\":\"quickstarts\"},{\"container\":\"camel\",\"group\":\"quickstarts\"}]";
     public static final String DEFAULT_URI_TEMPLATE = "/{contextPath}";
@@ -47,11 +47,11 @@ public class Main {
     public void main(@Observes ContainerInitialized event) {
         HTTPGatewayConfig gatewayConfig = new HTTPGatewayConfig();
         
-        String serviceName = Systems.getEnvVarOrSystemProperty("HTTP_GATEWAY_SERVICE_ID", "HTTP_GATEWAY_SERVICE_ID", "FABRIC8HTTPGATEWAY").toUpperCase() + "_SERVICE_";
-        String hostEnvVar = serviceName + HTTPGatewayConfig.HOST;
+        String serviceName = Systems.getEnvVarOrSystemProperty("HTTP_GATEWAY_SERVICE", "HTTP_GATEWAY_SERVICE", "FABRIC8_HTTP_GATEWAY").toUpperCase() + "_SERVICE_";
+        String[] hostAndPort = Systems.getServiceHostAndPort(serviceName, DEFAULT_HOST, DEFAULT_PORT).split(":");
         String portEnvVar = HTTPGatewayConfig.HTTP_PORT;
         String apiManagerEnabledEnvVar = serviceName + HTTPGatewayConfig.IS_API_MANAGER_ENABLED;
-        String kubernetesMasterEnvVar = HTTPGatewayConfig.KUBERNETES_MASTER;
+        String kubernetesMasterEnvVar = "KUBERNETES";
         String selectorEnvVar = serviceName + HTTPGatewayConfig.SELECTORS;
         String uriTemplateEnvVar = serviceName + HTTPGatewayConfig.URI_TEMPLATE;
         String loadBalancerEnvVar = serviceName + HTTPGatewayConfig.LOAD_BALANCER;
@@ -59,10 +59,8 @@ public class Main {
         String enableIndexEnvVar = serviceName + HTTPGatewayConfig.ENABLE_INDEX;
         String reverseHeadersEnvVar = serviceName + HTTPGatewayConfig.REVERSE_HEADERS;
         //Gateway config
-        gatewayConfig.put(HTTPGatewayConfig.HOST,
-                Systems.getEnvVarOrSystemProperty(hostEnvVar, hostEnvVar, DEFAULT_HOST));
-        gatewayConfig.put(HTTPGatewayConfig.HTTP_PORT,
-                Systems.getEnvVarOrSystemProperty(portEnvVar, portEnvVar, DEFAULT_PORT));
+        gatewayConfig.put(HTTPGatewayConfig.HOST, hostAndPort[0]);
+        gatewayConfig.put(HTTPGatewayConfig.HTTP_PORT,hostAndPort[1]);
         gatewayConfig.put(HTTPGatewayConfig.ENABLE_INDEX,
                 Systems.getEnvVarOrSystemProperty(enableIndexEnvVar, enableIndexEnvVar, DEFAULT_INDEX_ENABLED));
         gatewayConfig.put(HTTPGatewayConfig.IS_API_MANAGER_ENABLED,
@@ -72,8 +70,9 @@ public class Main {
         LOG.info("Index enabled: " + gatewayConfig.isIndexEnabled());
         LOG.info("API Manager Enabled: " + gatewayConfig.isApiManagerEnabled());
         //Kube config
+        String defaultKubernetesMaster = "https://" + Systems.getServiceHostAndPort("KUBERNETES", "localhost", "8484");
         gatewayConfig.put(HTTPGatewayConfig.KUBERNETES_MASTER,
-                Systems.getEnvVarOrSystemProperty(kubernetesMasterEnvVar, kubernetesMasterEnvVar, DEFAULT_KUBERNETES_MASTER));
+                Systems.getEnvVarOrSystemProperty(kubernetesMasterEnvVar, kubernetesMasterEnvVar, defaultKubernetesMaster));
         LOG.info("Kubernetes Master: " + gatewayConfig.getKubernetesMaster());
         //Rule config
         gatewayConfig.put(HTTPGatewayConfig.SELECTORS,

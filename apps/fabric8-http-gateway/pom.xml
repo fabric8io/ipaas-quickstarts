@@ -33,11 +33,10 @@
   <properties>
     <version.maven-surefire-plugin>2.15</version.maven-surefire-plugin>
     <guava.version>15.0</guava.version>
-    <http.port>9090</http.port>
-    <apiman.port>9089</apiman.port>
+    <http.port>9000</http.port>
+    <apiman.port>8999</apiman.port>
     <docker.env.MAIN>org.jboss.weld.environment.se.StartMain</docker.env.MAIN>
     <docker.port.container.http>${http.port}</docker.port.container.http>
-    <docker.port.host.http>${http.port}</docker.port.host.http>
     <docker.port.container.apiman>${apiman.port}</docker.port.container.apiman>
 
     <fabric8.env.MAIN>${docker.env.MAIN}</fabric8.env.MAIN>
@@ -49,6 +48,11 @@
     <fabric8.service.containerPort.default>${http.port}</fabric8.service.containerPort.default>
     <fabric8.service.port.apiman>8999</fabric8.service.port.apiman>
     <fabric8.service.containerPort.apiman>${apiman.port}</fabric8.service.containerPort.apiman>
+    
+    <!-- add certs -->
+    <fabric8.volume.openshift-cert-secrets.secret>openshift-cert-secrets</fabric8.volume.openshift-cert-secrets.secret>
+    <fabric8.volume.openshift-cert-secrets.mountPath>/etc/secret-volume</fabric8.volume.openshift-cert-secrets.mountPath>
+    <fabric8.volume.openshift-cert-secrets.readOnly>true</fabric8.volume.openshift-cert-secrets.readOnly>
   </properties>
 
   <dependencies>
