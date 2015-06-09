@@ -15,15 +15,14 @@
      permissions and limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
     <groupId>io.fabric8.jube.images.fabric8</groupId>
     <artifactId>apps</artifactId>
-    <version>2.2-SNAPSHOT</version>
+    <version>2.1.11</version>
   </parent>
 
   <artifactId>elasticsearch</artifactId>
@@ -37,7 +36,7 @@
     <docker.image>fabric8/elasticsearch-k8s:1.5.2</docker.image>
     <docker.port.container.http>9200</docker.port.container.http>
     <docker.port.container.transport>9300</docker.port.container.transport>
-    <docker.port.container.jolokia/>
+    <docker.port.container.jolokia />
 
     <fabric8.env.SERVICE_DNS>elasticsearch-cluster</fabric8.env.SERVICE_DNS>
     <fabric8.env.KUBERNETES_TRUST_CERT>true</fabric8.env.KUBERNETES_TRUST_CERT>
@@ -80,9 +79,7 @@
                 <from>centos:7</from>
                 <assembly>
                   <basedir>/</basedir>
-                  <inline xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
-                          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+                  <inline xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2" xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
                     <id>logstash-template</id>
                     <fileSets>
                       <fileSet>
