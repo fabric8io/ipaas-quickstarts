@@ -50,8 +50,8 @@ public class ApplicationStarter {
             service = System.getenv("SERVICE");
         }
         if (service == null) {
-            // and use 'java-cxf-cdi' by default
-            service = "java-cxf-cdi";
+            // and use 'quickstart-java-cxf-cdi' by default
+            service = "quickstart-java-cxf-cdi";
         }
         String servicesPath = "/cxf/servicesList";
 
