@@ -30,13 +30,13 @@ public class Main {
 
             WeldContainer container = weld.initialize();
 
-            Fabric8MQ controller = container.instance().select(Fabric8MQ.class).get();
-            controller.start();
+            Fabric8MQ fabric8MQ = container.instance().select(Fabric8MQ.class).get();
+            fabric8MQ.start();
             waitUntilStop();
 
         } catch (Throwable e) {
             e.printStackTrace();
-            LOG.error("Failed to Start Fabric8-MQ-Controller", e);
+            LOG.error("Failed to Start Fabric8-MQ", e);
         }
 
     }
