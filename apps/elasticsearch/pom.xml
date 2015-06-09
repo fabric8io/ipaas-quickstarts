@@ -47,6 +47,9 @@
 
     <fabric8.label.component>elasticsearch</fabric8.label.component>
     <fabric8.label.provider>fabric8</fabric8.label.provider>
+
+    <fabric8.volume.elasticsearch-data.emptyDir />
+    <fabric8.volume.elasticsearch-data.mountPath>/usr/share/elasticsearch/data</fabric8.volume.elasticsearch-data.mountPath>
   </properties>
 
   <build>
