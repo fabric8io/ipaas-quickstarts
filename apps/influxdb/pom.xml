@@ -49,6 +49,9 @@
 
     <fabric8.label.component>influxdb</fabric8.label.component>
     <fabric8.label.provider>fabric8</fabric8.label.provider>
+
+    <fabric8.volume.influxdb-data.emptyDir />
+    <fabric8.volume.influxdb-data.mountPath>/data</fabric8.volume.influxdb-data.mountPath>
   </properties>
 
     <dependencies>
