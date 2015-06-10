@@ -26,14 +26,30 @@
   </parent>
 
   <artifactId>heapster</artifactId>
-  <packaging>pom</packaging>
 
   <name>Heapster</name>
   <description>
     Heapster enables monitoring of Clusters using cAdvisor.
   </description>
 
+  <dependencies>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-generator</artifactId>
+    </dependency>
+  </dependencies>
+
   <properties>
-    <fabric8.generateJson>false</fabric8.generateJson>
+    <docker.image>kubernetes/heapster:canary</docker.image>
+    <docker.port.container.http>8082</docker.port.container.http>
+    <docker.port.container.jolokia />
+
+    <fabric8.service.port>8082</fabric8.service.port>
+    <fabric8.service.containerPort>http</fabric8.service.containerPort>
+
+    <fabric8.label.component>heapster</fabric8.label.component>
+    <fabric8.label.provider>fabric8</fabric8.label.provider>
+
+    <fabric8.serviceAccount>heapster</fabric8.serviceAccount>
   </properties>
 </project>
