@@ -9,7 +9,7 @@ public class GerritModelProcessor {
     public void onList(TemplateBuilder builder) {
         builder.addNewServiceObject()
                 .withNewMetadata()
-                  .withName("gerrit-http")
+                  .withName("gerrit")
                   .addToLabels("component", "gerrit")
                   .addToLabels("provider", "fabric8")
                 .endMetadata()
