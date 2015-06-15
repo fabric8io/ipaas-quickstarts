@@ -56,7 +56,7 @@
     
     <http.port>9092</http.port>
 
-    <docker.from>fabric8/java</docker.from>
+    <docker.from>docker.io/fabric8/java</docker.from>
 
     <docker.image>fabric8/${project.artifactId}:${project.version}</docker.image>
     <docker.assemblyDescriptorRef>artifact-with-dependencies</docker.assemblyDescriptorRef>
