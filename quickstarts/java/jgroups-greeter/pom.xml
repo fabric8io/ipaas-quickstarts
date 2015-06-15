@@ -39,7 +39,7 @@
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <fabric8.version>2.1.11</fabric8.version>
     <jube.version>2.1.11</jube.version>
-    <docker.maven.plugin.version>0.11.5</docker.maven.plugin.version>
+    <docker.maven.plugin.version>0.12.0</docker.maven.plugin.version>
 
     <docker.from>fabric8/java</docker.from>
 
