@@ -49,7 +49,7 @@
     <spring-boot-plugin.version>1.2.4.RELEASE</spring-boot-plugin.version>
     <spring-boot.version>1.2.4.RELEASE</spring-boot.version>
 
-    <docker.from>fabric8/java</docker.from>
+    <docker.from>docker.io/fabric8/java</docker.from>
 
     <docker.image>fabric8/${project.artifactId}:${project.version}</docker.image>
     <docker.assemblyDescriptorRef>artifact</docker.assemblyDescriptorRef>

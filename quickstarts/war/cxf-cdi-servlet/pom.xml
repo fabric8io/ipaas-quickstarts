@@ -47,7 +47,7 @@
     <cxf.version>3.0.4</cxf.version>
     <org.eclipse.jetty.version>9.1.5.v20140505</org.eclipse.jetty.version>
     
-    <docker.from>fabric8/tomcat-8.0</docker.from>
+    <docker.from>docker.io/fabric8/tomcat-8.0</docker.from>
 
     <docker.image>fabric8/${project.artifactId}:${project.version}</docker.image>
     <docker.assemblyDescriptorRef>rootWar</docker.assemblyDescriptorRef>

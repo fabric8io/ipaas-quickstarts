@@ -41,7 +41,7 @@
     <jube.version>2.1.11</jube.version>
     <docker.maven.plugin.version>0.12.0</docker.maven.plugin.version>
 
-    <docker.from>fabric8/java</docker.from>
+    <docker.from>docker.io/fabric8/java</docker.from>
 
     <docker.image>fabric8/${project.artifactId}:${project.version}</docker.image>
     <docker.assemblyDescriptorRef>artifact-with-dependencies</docker.assemblyDescriptorRef>
