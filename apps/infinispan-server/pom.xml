@@ -79,7 +79,12 @@
                                     <port>11211</port>
                                     <port>11222</port>
                                 </ports>
-                                <command>/bin/sh /opt/jboss/upload/bin/start.sh</command>
+                                <cmd>
+                                    <exec>
+                                        <args>/bin/sh</args>
+                                        <args>/opt/jboss/upload/bin/start.sh</args>
+                                    </exec>
+                                </cmd>
                             </build>
                         </image>
                     </images>

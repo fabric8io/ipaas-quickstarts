@@ -95,7 +95,9 @@
                     </fileSets>
                   </inline>
                 </assembly>
-                <command>/put-template.sh</command>
+                <cmd>
+                  <shell>/put-template.sh</shell>
+                </cmd>
               </build>
             </image>
           </images>
