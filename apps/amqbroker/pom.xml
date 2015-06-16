@@ -36,9 +36,10 @@
 
     <docker.port.container.amq>${activemq.container.port}</docker.port.container.amq>
     <docker.env.MAIN>io.fabric8.amq.Main</docker.env.MAIN>
-
+<!--
     <fabric8.service.port>${amqbroker.service.port}</fabric8.service.port>
     <fabric8.service.containerPort>${amqbroker.container.port}</fabric8.service.containerPort>
+    -->
 
     <fabric8.label.component>amq-broker</fabric8.label.component>
     <fabric8.label.group>amqbroker</fabric8.label.group>

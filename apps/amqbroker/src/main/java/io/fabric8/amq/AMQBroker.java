@@ -41,8 +41,8 @@ public class AMQBroker extends ServiceSupport {
     @ConfigProperty(name = "AMQ_PORT", defaultValue = "61616")
     private int port;
     @Inject
-    @ConfigProperty(name = "PERSISTENT", defaultValue = "true")
-    private boolean persistent = true;
+    @ConfigProperty(name = "PERSISTENT", defaultValue = "false")
+    private boolean persistent = false;
     @Inject
     @ConfigProperty(name = "DELETE_ALL_MESSAGES_ON_START", defaultValue = "false")
     private boolean deleteAllMessagesOnStartup;
