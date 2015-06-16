@@ -32,7 +32,12 @@ public class DefaultBrokerTransport implements BrokerTransport {
     }
 
     @Override
-    public void release() {
+    public void lock() {
+        brokerModel.getReadLock();
+    }
+
+    @Override
+    public void unlock() {
         brokerModel.unlockReadLock();
     }
 }

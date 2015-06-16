@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -169,6 +170,33 @@ public class BrokerView extends ServiceSupport {
         LOG.info("Created transport for " + getBrokerName() + " to " + getUri());
     }
 
+    public Collection<MessageDistribution> detachTransport() {
+        List<MessageDistribution> result = new ArrayList<>();
+        for (MessageDistribution messageDistribution : transportMap.keySet()) {
+            Transport transport = transportMap.remove(messageDistribution);
+            if (transport != null) {
+                if (transport.isConnected()) {
+                    try {
+                        transport.stop();
+                    } catch (Exception ignored) {
+                    }
+                }
+            }
+            result.add(messageDistribution);
+        }
+        return result;
+    }
+
+    public void attachTransport(Collection<MessageDistribution> messageDistributions) {
+        for (MessageDistribution messageDistribution : messageDistributions) {
+            try {
+                createTransport(messageDistribution);
+            } catch (Exception ignore) {
+                //this will get attached at the next update
+            }
+        }
+    }
+
     public void updateTransport() throws Exception {
         for (Map.Entry<MessageDistribution, Transport> entry : transportMap.entrySet()) {
             Transport transport = entry.getValue();
@@ -191,6 +219,11 @@ public class BrokerView extends ServiceSupport {
 
     public void getWriteLock() {
         readWriteLock.writeLock().lock();
+    }
+
+    public int readLockCount() {
+        return readWriteLock.getReadLockCount();
+
     }
 
     public void unlockWriteLock() {

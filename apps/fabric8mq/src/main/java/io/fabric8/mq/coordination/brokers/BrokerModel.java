@@ -26,6 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -214,6 +215,14 @@ public class BrokerModel extends ServiceSupport implements BrokerModelMBean {
         brokerView.removeTransport(messageDistribution);
     }
 
+    public Collection<MessageDistribution> detachTransport() {
+        return brokerView.detachTransport();
+    }
+
+    public void attachTransport(Collection<MessageDistribution> messageDistributions) {
+        brokerView.attachTransport(messageDistributions);
+    }
+
     public Set<ActiveMQDestination> getActiveDestinations() {
         Set<ActiveMQDestination> result = new HashSet<>();
         BrokerOverview brokerOverview = getBrokerOverview();
@@ -257,11 +266,14 @@ public class BrokerModel extends ServiceSupport implements BrokerModelMBean {
     }
 
     public void getWriteLock() {
+        LOG.info("Getting write lock for  " + getBrokerName() + " " + brokerView.readLockCount() + ") ... " + Thread.currentThread());
         brokerView.getWriteLock();
+        LOG.info("Aquired write lock for  " + getBrokerName() + " " + Thread.currentThread());
     }
 
     public void unlockWriteLock() {
         brokerView.unlockWriteLock();
+        LOG.info(" Released write lock for  " + getBrokerName() + " " + Thread.currentThread());
     }
 
     @Override

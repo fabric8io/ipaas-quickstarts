@@ -46,13 +46,13 @@ public class MQKubernetes {
         assertThat(client).hasServicePort(serviceName, 6163);
 
         assertThat(client).pods()
-                .runningStatus()
-                .filterNamespace(session.getNamespace())
-                .haveAtLeast(1, new Condition<Pod>() {
-                    @Override
-                    public boolean matches(Pod podSchema) {
-                        return true;
-                    }
-                });
+            .runningStatus()
+            .filterNamespace(session.getNamespace())
+            .haveAtLeast(1, new Condition<Pod>() {
+                @Override
+                public boolean matches(Pod podSchema) {
+                    return true;
+                }
+            });
     }
 }

@@ -26,13 +26,13 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
-public class ControllerProducer extends DefaultAsyncProducer {
-    private static Logger LOG = LoggerFactory.getLogger(ControllerProducer.class);
-    private final ControllerEndpoint controllerEndpoint;
+public class MQProducer extends DefaultAsyncProducer {
+    private static Logger LOG = LoggerFactory.getLogger(MQProducer.class);
+    private final MQEndpoint MQEndpoint;
 
-    public ControllerProducer(ControllerEndpoint endpoint) {
+    public MQProducer(MQEndpoint endpoint) {
         super(endpoint);
-        controllerEndpoint = endpoint;
+        MQEndpoint = endpoint;
     }
 
     @Override
@@ -56,8 +56,8 @@ public class ControllerProducer extends DefaultAsyncProducer {
             if (message != null) {
                 MessageRouter messageRouter = getMessageRouter(exchange);
                 if (messageRouter != null) {
-                    message.setDestination(controllerEndpoint.getDestination());
-                    controllerEndpoint.inject(messageRouter, message);
+                    message.setDestination(MQEndpoint.getDestination());
+                    MQEndpoint.inject(messageRouter, message);
                 } else {
                     LOG.error("Transport not set for " + exchange);
                 }
@@ -76,8 +76,8 @@ public class ControllerProducer extends DefaultAsyncProducer {
         } else {
             camelMessage = exchange.getIn();
         }
-        if (camelMessage instanceof ControllerJmsMessage) {
-            return ((ControllerJmsMessage) camelMessage).getMessageRouter();
+        if (camelMessage instanceof MQJmsMessage) {
+            return ((MQJmsMessage) camelMessage).getMessageRouter();
         }
         return null;
     }

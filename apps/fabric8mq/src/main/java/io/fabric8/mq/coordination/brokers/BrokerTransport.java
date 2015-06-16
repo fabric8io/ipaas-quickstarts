@@ -20,5 +20,7 @@ import org.apache.activemq.transport.Transport;
 public interface BrokerTransport {
     Transport getTransport();
 
-    void release();
+    void lock();
+
+    void unlock();
 }

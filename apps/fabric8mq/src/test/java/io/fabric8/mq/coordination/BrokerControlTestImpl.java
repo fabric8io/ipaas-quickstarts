@@ -56,12 +56,14 @@ public class BrokerControlTestImpl extends BaseBrokerControl {
                 BrokerService broker = new BrokerService();
                 broker.setBrokerName(brokerName);
                 broker.setBrokerId(brokerName);
+                broker.setDeleteAllMessagesOnStartup(true);
                 broker.setPersistent(false);
                 broker.setUseJmx(false);
                 broker.setEnableStatistics(true);
                 broker.addConnector("tcp://localhost:0");
                 broker.start();
                 brokers.add(broker);
+                System.err.println("CREATED BROKER " + brokerName);
             } catch (Throwable e) {
                 LOG.error("Failed to create a Broker", e);
             }

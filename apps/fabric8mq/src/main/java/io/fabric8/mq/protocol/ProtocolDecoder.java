@@ -22,8 +22,6 @@ import org.vertx.java.core.buffer.Buffer;
 import java.io.IOException;
 import java.net.ProtocolException;
 
-import static io.fabric8.mq.util.BufferSupport.indexOf;
-
 /**
  * An abstract base class used to implement a Vertx handler which
  * decode a buffer stream to a protocol specific frame objects.

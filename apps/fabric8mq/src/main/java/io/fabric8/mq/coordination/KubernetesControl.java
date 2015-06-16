@@ -98,7 +98,7 @@ public class KubernetesControl extends BaseBrokerControl {
         }
     }
 
-    private void populateBrokerStatistics(Pod pod, Container container,J4pClient client) {
+    private void populateBrokerStatistics(Pod pod, Container container, J4pClient client) {
         ObjectName root = null;
         String attribute = "";
         if (client != null) {
@@ -150,7 +150,6 @@ public class KubernetesControl extends BaseBrokerControl {
             }
         }
     }
-
 
     private BrokerOverview populateDestinations(J4pClient client, ObjectName root, BrokerOverview brokerOverview) throws Exception {
         populateDestinations(client, root, BrokerDestinationOverview.Type.QUEUE, brokerOverview);
@@ -262,7 +261,7 @@ public class KubernetesControl extends BaseBrokerControl {
                     } else {
                         LOG.error("Could not find location of Broker Template from " + getBrokerTemplateLocation());
                     }
-                }else{
+                } else {
                     replicationControllerId = defaultReplicationControllerId;
                 }
 

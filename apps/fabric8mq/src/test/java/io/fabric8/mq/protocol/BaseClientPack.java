@@ -149,7 +149,7 @@ public abstract class BaseClientPack extends ServiceSupport {
                 System.err.println("Consumers at " + consumerProgress() + "% progress");
             }
         };
-        asyncExecutors.scheduleAtFixedRate(runnable, 1000, 1000);
+        asyncExecutors.scheduleAtFixedRate(runnable, 5000, 5000);
 
         producerCountDownLatch.await(5, TimeUnit.MINUTES);
         consumerCountDownLatch.await(5, TimeUnit.MINUTES);

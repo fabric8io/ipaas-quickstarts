@@ -27,8 +27,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static io.fabric8.mq.util.BufferSupport.indexOf;
-
 /**
  * Implements protocol decoding for the STOMP protocol.
  */

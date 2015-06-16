@@ -29,27 +29,27 @@ import org.apache.camel.util.UnsafeUriCharactersEncoder;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-@UriEndpoint(scheme = "controller", syntax = "controller:name", consumerClass = ControllerConsumer.class, label = "api", title = "Controller")
-public class ControllerEndpoint extends DefaultEndpoint implements MultipleConsumersSupport, Service {
+@UriEndpoint(scheme = "controller", syntax = "controller:name", consumerClass = MQConsumer.class, label = "api", title = "Controller")
+public class MQEndpoint extends DefaultEndpoint implements MultipleConsumersSupport, Service {
 
     @UriPath
     private final ActiveMQDestination destination;
     private MessageInterceptorRegistry messageInterceptorRegistry;
     private List<MessageInterceptor> messageInterceptorList = new CopyOnWriteArrayList<>();
 
-    public ControllerEndpoint(String uri, ControllerComponent component, ActiveMQDestination destination) {
+    public MQEndpoint(String uri, MQComponent component, ActiveMQDestination destination) {
         super(UnsafeUriCharactersEncoder.encode(uri), component);
         this.destination = destination;
     }
 
     @Override
     public Producer createProducer() throws Exception {
-        return new ControllerProducer(this);
+        return new MQProducer(this);
     }
 
     @Override
     public Consumer createConsumer(Processor processor) throws Exception {
-        ControllerConsumer consumer = new ControllerConsumer(this, processor);
+        MQConsumer consumer = new MQConsumer(this, processor);
         configureConsumer(consumer);
         return consumer;
     }
