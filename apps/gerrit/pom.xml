@@ -48,7 +48,6 @@
         <fabric8.containerPrivileged>true</fabric8.containerPrivileged>
 
         <!--  ReplicationController  -->
-        <fabric8.replicationController.name>${project.artifactId}-controller</fabric8.replicationController.name>
         <fabric8.generateJson>true</fabric8.generateJson>
 
         <!-- Volume mounted to backup gerrit site -->
