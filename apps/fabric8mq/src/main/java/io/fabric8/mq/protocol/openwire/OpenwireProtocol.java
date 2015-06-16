@@ -15,9 +15,9 @@
 package io.fabric8.mq.protocol.openwire;
 
 import io.fabric8.mq.protocol.ProtocolDetector;
+import io.fabric8.mq.util.BufferSupport;
 import io.fabric8.mq.util.ConnectionParameters;
 import io.fabric8.mq.util.SocketWrapper;
-import io.fabric8.mq.util.BufferSupport;
 import org.apache.activemq.command.Command;
 import org.apache.activemq.command.WireFormatInfo;
 import org.slf4j.Logger;
@@ -26,8 +26,6 @@ import org.vertx.java.core.Handler;
 import org.vertx.java.core.buffer.Buffer;
 
 import java.io.IOException;
-
-import static io.fabric8.mq.util.BufferSupport.indexOf;
 
 /**
  */

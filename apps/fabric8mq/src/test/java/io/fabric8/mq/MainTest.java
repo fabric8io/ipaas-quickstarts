@@ -55,16 +55,17 @@ public class MainTest {
 
     @Test
     public void test() throws Exception {
-        /*
+     /*
         OpenWireClientPack openWirePack = new OpenWireClientPack();
         openWirePack.setPort(fabric8MQ.getBoundPort());
-        openWirePack.setNumberOfDestinations(10);
-        openWirePack.setNumberOfProducers(2);
-        openWirePack.setNumberOfConsumers(2);
-        openWirePack.setNumberOfMessagesPerDestination(10);
+        openWirePack.setNumberOfDestinations(30);
+        openWirePack.setNumberOfProducers(1);
+        openWirePack.setNumberOfConsumers(1);
+        openWirePack.setNumberOfMessagesPerDestination(500);
         openWirePack.start();
         openWirePack.doTheTest();
         openWirePack.stop();
         */
+
     }
 }

@@ -143,7 +143,6 @@ public abstract class BaseBrokerControl extends ServiceSupport implements Broker
     public Collection<BrokerTransport> getTransports(MessageDistribution messageDistribution) {
         List<BrokerTransport> list = new ArrayList<>();
         for (BrokerModel brokerModel : model.getBrokers()) {
-            brokerModel.getReadLock();
             Transport transport = brokerModel.getTransport(messageDistribution);
             list.add(new DefaultBrokerTransport(brokerModel, transport));
         }
@@ -156,13 +155,11 @@ public abstract class BaseBrokerControl extends ServiceSupport implements Broker
         if (set != null && !set.isEmpty()) {
             BrokerModel brokerModel = set.iterator().next();
             Transport transport = brokerModel.getTransport(messageDistribution);
-            brokerModel.getReadLock();
             return new DefaultBrokerTransport(brokerModel, transport);
         } else {
             //allocate a broker for the destination
             BrokerModel brokerModel = model.addBrokerForDestination(destination);
             Transport transport = brokerModel.getTransport(messageDistribution);
-            brokerModel.getReadLock();
             return new DefaultBrokerTransport(brokerModel, transport);
         }
     }
@@ -233,28 +230,19 @@ public abstract class BaseBrokerControl extends ServiceSupport implements Broker
     public void distributeLoad() {
         if (!scalingInProgress.isWorking()) {
             if (model.getBrokerCount() > 1) {
-
                 final BrokerModel leastLoaded = model.getLeastLoadedBroker();
                 final BrokerModel mostLoaded = model.getMostLoadedBroker();
 
-                try {
-                    leastLoaded.getWriteLock();
-                    mostLoaded.getWriteLock();
-
-                    int toCopy = mostLoaded.getActiveDestinationCount() - leastLoaded.getActiveDestinationCount();
+                int toCopy = mostLoaded.getActiveDestinationCount() - leastLoaded.getActiveDestinationCount();
+                if (toCopy > 0) {
+                    toCopy = toCopy / 2;
                     if (toCopy > 0) {
-                        toCopy = toCopy / 2;
-                        if (toCopy > 0) {
-                            List<ActiveMQDestination> copyList = model.getSortedDestinations(mostLoaded, toCopy);
-                            //check to see we won't break limits
-                            if (!copyList.isEmpty()) {
-                                model.copyDestinations(mostLoaded, leastLoaded, copyList);
-                            }
+                        List<ActiveMQDestination> copyList = model.getSortedDestinations(mostLoaded, toCopy);
+                        //check to see we won't break limits
+                        if (!copyList.isEmpty()) {
+                            model.copyDestinations(mostLoaded, leastLoaded, copyList);
                         }
                     }
-                } finally {
-                    leastLoaded.unlockWriteLock();
-                    mostLoaded.unlockWriteLock();
                 }
             }
         }

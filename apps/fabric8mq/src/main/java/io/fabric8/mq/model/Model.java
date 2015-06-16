@@ -98,4 +98,18 @@ public interface Model extends Service {
 
     void unregisterInJmx(Object object);
 
+    void dispatched(MultiplexerInput MultiplexerInput, ActiveMQDestination destination);
+
+    void acked(MultiplexerInput MultiplexerInput, ActiveMQDestination destination);
+
+    void unregister(MultiplexerInput MultiplexerInput);
+
+    void stopDispatching(ActiveMQDestination destination);
+
+    public void startDispatching(ActiveMQDestination destination);
+
+    boolean canDispatch(ActiveMQDestination destination);
+
+    boolean isStoppedDispatching(ActiveMQDestination destination);
+
 }

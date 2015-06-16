@@ -26,7 +26,7 @@ import static org.apache.camel.util.ObjectHelper.removeStartingCharacters;
 /**
  * The Router Camel Component allows routing to be dynamically changed within the MQ Controller
  */
-public class ControllerComponent extends DefaultComponent {
+public class MQComponent extends DefaultComponent {
 
     @Override
     protected Endpoint createEndpoint(String uri, String remaining, Map<String, Object> parameters) throws Exception {
@@ -47,7 +47,7 @@ public class ControllerComponent extends DefaultComponent {
         }
 
         ActiveMQDestination destination = ActiveMQDestination.createDestination(remaining, destinationType);
-        ControllerEndpoint brokerEndpoint = new ControllerEndpoint(uri, this, destination);
+        MQEndpoint brokerEndpoint = new MQEndpoint(uri, this, destination);
         setProperties(brokerEndpoint, parameters);
         return brokerEndpoint;
     }

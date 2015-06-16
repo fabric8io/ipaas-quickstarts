@@ -22,22 +22,22 @@ import org.apache.camel.Processor;
 import org.apache.camel.component.jms.JmsBinding;
 import org.apache.camel.impl.DefaultConsumer;
 
-public class ControllerConsumer extends DefaultConsumer implements MessageInterceptor {
+public class MQConsumer extends DefaultConsumer implements MessageInterceptor {
     private final JmsBinding jmsBinding = new JmsBinding();
 
-    public ControllerConsumer(Endpoint endpoint, Processor processor) {
+    public MQConsumer(Endpoint endpoint, Processor processor) {
         super(endpoint, processor);
     }
 
     @Override
     protected void doStart() throws Exception {
         super.doStart();
-        ((ControllerEndpoint) getEndpoint()).addMessageInterceptor(this);
+        ((MQEndpoint) getEndpoint()).addMessageInterceptor(this);
     }
 
     @Override
     protected void doStop() throws Exception {
-        ((ControllerEndpoint) getEndpoint()).removeMessageInterceptor(this);
+        ((MQEndpoint) getEndpoint()).removeMessageInterceptor(this);
         super.doStop();
     }
 
@@ -45,7 +45,7 @@ public class ControllerConsumer extends DefaultConsumer implements MessageInterc
     public void intercept(MessageRouter messageRouter, Message message) {
         Exchange exchange = getEndpoint().createExchange(ExchangePattern.InOnly);
 
-        exchange.setIn(new ControllerJmsMessage(messageRouter, (javax.jms.Message) message, jmsBinding));
+        exchange.setIn(new MQJmsMessage(messageRouter, (javax.jms.Message) message, jmsBinding));
         exchange.setProperty(Exchange.BINDING, jmsBinding);
         try {
             getProcessor().process(exchange);

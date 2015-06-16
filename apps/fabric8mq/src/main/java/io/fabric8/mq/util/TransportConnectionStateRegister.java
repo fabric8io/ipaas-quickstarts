@@ -74,7 +74,7 @@ public class TransportConnectionStateRegister {
     }
 
     public TransportConnectionState lookupConnectionState(SessionId id) {
-        return  lookupConnectionState(id.getConnectionId());
+        return lookupConnectionState(id.getConnectionId());
     }
 
     public TransportConnectionState lookupConnectionState(ConnectionId connectionId) {

@@ -31,8 +31,6 @@ import org.apache.activemq.transport.Transport;
 import org.apache.activemq.transport.TransportListener;
 import org.apache.activemq.util.ServiceStopper;
 import org.apache.activemq.util.ServiceSupport;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,7 +42,6 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 public class ShardedMessageDistribution extends ServiceSupport implements MessageDistribution, BrokerModelChangedListener {
-    private static Logger LOG = LoggerFactory.getLogger(ShardedMessageDistribution.class);
     private final BrokerControl brokerControl;
     private final List<TransportChangedListener> transportChangedListeners = new CopyOnWriteArrayList<>();
     private final Map<MultiCallback, MultiCallback> requestMap = new LRUCache<>(50000);
@@ -68,9 +65,11 @@ public class ShardedMessageDistribution extends ServiceSupport implements Messag
         if (isStarted()) {
             Collection<BrokerTransport> transports = brokerControl.getTransports(this);
             for (BrokerTransport brokerTransport : transports) {
-                if (brokerTransport != null) {
+                try {
+                    brokerTransport.lock();
                     brokerTransport.getTransport().oneway(command);
-                    brokerTransport.release();
+                } finally {
+                    brokerTransport.unlock();
                 }
             }
         } else {
@@ -84,8 +83,12 @@ public class ShardedMessageDistribution extends ServiceSupport implements Messag
         if (isStarted()) {
             BrokerTransport brokerTransport = brokerControl.getTransport(this, destination);
             if (brokerTransport != null) {
-                brokerTransport.getTransport().oneway(command);
-                brokerTransport.release();
+                try {
+                    brokerTransport.lock();
+                    brokerTransport.getTransport().oneway(command);
+                } finally {
+                    brokerTransport.unlock();
+                }
             }
         } else {
             throw new IOException("ShardedMessageBroker not started");
@@ -102,9 +105,11 @@ public class ShardedMessageDistribution extends ServiceSupport implements Messag
             }
             Collection<BrokerTransport> brokerTransports = brokerControl.getTransports(this);
             for (BrokerTransport brokerTransport : brokerTransports) {
-                if (brokerTransport != null) {
+                try {
+                    brokerTransport.lock();
                     brokerTransport.getTransport().asyncRequest(command, multiCallback);
-                    brokerTransport.release();
+                } finally {
+                    brokerTransport.unlock();
                 }
             }
         } else {
@@ -118,8 +123,12 @@ public class ShardedMessageDistribution extends ServiceSupport implements Messag
         if (isStarted()) {
             BrokerTransport brokerTransport = brokerControl.getTransport(this, destination);
             if (brokerTransport != null) {
-                brokerTransport.getTransport().asyncRequest(command, callback);
-                brokerTransport.release();
+                try {
+                    brokerTransport.lock();
+                    brokerTransport.getTransport().asyncRequest(command, callback);
+                } finally {
+                    brokerTransport.unlock();
+                }
             }
         } else {
             throw new IOException("ShardedMessageBroker not started");

@@ -165,12 +165,16 @@ public class MultiplexerInput extends TransportSupport implements CommandVisitor
     }
 
     public void oneway(MessageDispatch messageDispatch) throws IOException {
-        ConsumerId consumerId = messageDispatch.getConsumerId();
-        ConsumerId originalConsumerId = getOriginalConsumerId(consumerId);
-        messageDispatch.setConsumerId(originalConsumerId);
-        input.oneway(messageDispatch);
-        destinationRegister.addMessageOutbound(messageDispatch.getDestination());
-        outboundMessageCount.incrementAndGet();
+        ActiveMQDestination destination = messageDispatch.getDestination();
+        if (model.canDispatch(destination)) {
+            ConsumerId consumerId = messageDispatch.getConsumerId();
+            ConsumerId originalConsumerId = getOriginalConsumerId(consumerId);
+            messageDispatch.setConsumerId(originalConsumerId);
+            input.oneway(messageDispatch);
+            destinationRegister.addMessageOutbound(messageDispatch.getDestination());
+            outboundMessageCount.incrementAndGet();
+            model.dispatched(this, destination);
+        }
     }
 
     @Override
@@ -263,6 +267,12 @@ public class MultiplexerInput extends TransportSupport implements CommandVisitor
 
         copy.setConsumerId(multiplexConsumerId);
         storeConsumerId(originalConsumerId, multiplexConsumerId);
+
+        /**
+         * ToDo: We will no longer need to do this once we have a better way of distributing load
+         */
+        //copy.setPrefetchSize(1);
+
         multiplexer.registerConsumer(multiplexConsumerId, this);
         multiplexer.sendOutAll(this, copy);
         multiplexerConnectionStateRegister.addConsumer(copy);
@@ -404,9 +414,12 @@ public class MultiplexerInput extends TransportSupport implements CommandVisitor
         ConsumerId consumerId = messageAck.getConsumerId();
         ConsumerId multiplexerConsumerId = getMultiplexConsumerId(consumerId);
         if (multiplexerConsumerId != null) {
-            copy.setConsumerId(multiplexerConsumerId);
-            multiplexer.sendOut(this, copy.getDestination(), copy);
+            if (model.canDispatch(messageAck.getDestination())) {
+                copy.setConsumerId(multiplexerConsumerId);
+                multiplexer.sendOut(this, copy.getDestination(), copy);
+            }
         }
+        model.acked(this, messageAck.getDestination());
 
         return null;
     }

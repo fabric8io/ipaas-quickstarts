@@ -17,6 +17,7 @@ package io.fabric8.mq.model;
 
 import com.codahale.metrics.JmxReporter;
 import io.fabric8.mq.AsyncExecutors;
+import io.fabric8.mq.MessageDistribution;
 import io.fabric8.mq.coordination.brokers.BrokerDestinationOverviewMBean;
 import io.fabric8.mq.coordination.brokers.BrokerModel;
 import io.fabric8.mq.coordination.brokers.BrokerOverview;
@@ -43,6 +44,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 
 @ApplicationScoped
@@ -52,6 +54,8 @@ public class DefaultModel extends ServiceSupport implements Model {
     private final ConcurrentMap<Object, ObjectName> objectNameMap = new ConcurrentHashMap<>();
     private final ConcurrentMap<String, BrokerModel> brokerModelMap = new ConcurrentHashMap<>();
     private final DestinationMap destinationMap = new DestinationMap();
+    private final DestinationController destinationController = new DestinationController();
+
     @Inject
     BrokerLimitsConfig brokerLimitsConfig;
     @Inject
@@ -90,6 +94,7 @@ public class DefaultModel extends ServiceSupport implements Model {
     @Override
     public void remove(MultiplexerInput multiplexerInput) {
         unregisterInJmx(multiplexerInput);
+        destinationController.unregister(multiplexerInput);
     }
 
     @Override
@@ -378,7 +383,28 @@ public class DefaultModel extends ServiceSupport implements Model {
     public boolean copyDestinations(BrokerModel from, BrokerModel to, Collection<ActiveMQDestination> destinations) {
         boolean result = false;
         if (!destinations.isEmpty()) {
+            Collection<MessageDistribution> messageDistributions = null;
             try {
+                for (ActiveMQDestination destination : destinations) {
+                    stopDispatching(destination);
+                    LOG.info("Moving  " + from.getBrokerName() + " TO " + to.getBrokerName() + " : " + destination);
+                }
+                List<ActiveMQDestination> copy = new CopyOnWriteArrayList<>(destinations);
+                do {
+                    for (ActiveMQDestination destination : copy) {
+                        if (isStoppedDispatching(destination)) {
+                            copy.remove(destination);
+                        }
+                    }
+                    if (!copy.isEmpty()) {
+                        Thread.sleep(1000);
+                    }
+                } while (!copy.isEmpty());
+
+                from.getWriteLock();
+                to.getWriteLock();
+
+                messageDistributions = from.detachTransport();
                 //move the queues
                 MoveDestinationWorker moveDestinationWorker = new MoveDestinationWorker(asyncExecutors, from, to);
                 for (ActiveMQDestination destination : destinations) {
@@ -394,8 +420,17 @@ public class DefaultModel extends ServiceSupport implements Model {
                     result = true;
                 }
 
-            } catch (Exception e) {
+            } catch (Throwable e) {
                 LOG.error("Failed in copy from " + from + " to " + to, e);
+            } finally {
+                if (messageDistributions != null) {
+                    from.attachTransport(messageDistributions);
+                }
+                from.unlockWriteLock();
+                to.unlockWriteLock();
+                for (ActiveMQDestination destination : destinations) {
+                    startDispatching(destination);
+                }
             }
         } else {
             result = true;
@@ -424,6 +459,41 @@ public class DefaultModel extends ServiceSupport implements Model {
         if (objectName != null) {
             JMXUtils.unregisterMBean(objectName);
         }
+    }
+
+    @Override
+    public void dispatched(MultiplexerInput MultiplexerInput, ActiveMQDestination destination) {
+        destinationController.dispatched(MultiplexerInput, destination);
+    }
+
+    @Override
+    public void acked(MultiplexerInput MultiplexerInput, ActiveMQDestination destination) {
+        destinationController.acked(MultiplexerInput, destination);
+    }
+
+    @Override
+    public void unregister(MultiplexerInput MultiplexerInput) {
+        destinationController.unregister(MultiplexerInput);
+    }
+
+    @Override
+    public void stopDispatching(ActiveMQDestination destination) {
+        destinationController.stopDispatching(destination);
+    }
+
+    @Override
+    public void startDispatching(ActiveMQDestination destination) {
+        destinationController.startDispatching(destination);
+    }
+
+    @Override
+    public boolean canDispatch(ActiveMQDestination destination) {
+        return destinationController.canDispatch(destination);
+    }
+
+    @Override
+    public boolean isStoppedDispatching(ActiveMQDestination destination) {
+        return destinationController.isStoppedDispatching(destination);
     }
 
     private class BrokerComparable implements Comparator<BrokerModel> {

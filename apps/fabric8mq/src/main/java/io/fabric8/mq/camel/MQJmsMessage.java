@@ -21,11 +21,11 @@ import org.apache.camel.util.ObjectHelper;
 
 import javax.jms.Message;
 
-public class ControllerJmsMessage extends JmsMessage {
+public class MQJmsMessage extends JmsMessage {
 
     private MessageRouter messageRouter;
 
-    public ControllerJmsMessage(MessageRouter messageRouter, Message jmsMessage, JmsBinding binding) {
+    public MQJmsMessage(MessageRouter messageRouter, Message jmsMessage, JmsBinding binding) {
         super(jmsMessage, binding);
         this.messageRouter = messageRouter;
     }
@@ -56,8 +56,8 @@ public class ControllerJmsMessage extends JmsMessage {
                 setJmsMessage(thatJmsMessage.getJmsMessage());
             }
         }
-        if (that instanceof ControllerJmsMessage) {
-            ControllerJmsMessage thatControllerJmsMessage = (ControllerJmsMessage) that;
+        if (that instanceof MQJmsMessage) {
+            MQJmsMessage thatControllerJmsMessage = (MQJmsMessage) that;
             if (getMessageRouter() == null) {
                 setMessageRouter(thatControllerJmsMessage.getMessageRouter());
             }
@@ -65,7 +65,7 @@ public class ControllerJmsMessage extends JmsMessage {
     }
 
     @Override
-    public ControllerJmsMessage newInstance() {
-        return new ControllerJmsMessage(null, null, getBinding());
+    public MQJmsMessage newInstance() {
+        return new MQJmsMessage(null, null, getBinding());
     }
 }
