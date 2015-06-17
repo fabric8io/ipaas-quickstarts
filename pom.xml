@@ -89,7 +89,7 @@
         <maven.surefire.plugin.version>2.17</maven.surefire.plugin.version>
         <jube.version>2.1.11</jube.version>
         <junit.version>4.12</junit.version>
-        <fabric8.version>2.1.11</fabric8.version>
+        <fabric8.version>2.2.0</fabric8.version>
         <fabric8.release.version>${fabric8.version}</fabric8.release.version>
         <maven.require.version>3.1.1</maven.require.version>
         <maven.enforcer.plugin.version>1.3.1</maven.enforcer.plugin.version>
@@ -278,7 +278,7 @@
           <id>fabric8-snapshot</id>
           <properties>
             <fabric8.version>2.3-SNAPSHOT</fabric8.version>
-            <fabric8.release.version>2.1.10</fabric8.release.version>
+            <fabric8.release.version>2.2.0</fabric8.release.version>
           </properties>
         </profile>
         <profile>
