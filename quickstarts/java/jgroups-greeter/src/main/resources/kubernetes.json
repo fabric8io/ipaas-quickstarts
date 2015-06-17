@@ -1,5 +1,5 @@
 {
-  "apiVersion": "v1beta3",
+  "apiVersion": "v1",
   "kind": "List",
   "id": "fabric8Greeter-config",
   "name": "fabric8Greeter-config",
@@ -7,7 +7,7 @@
   "items": [
 
     {
-      "apiVersion": "v1beta3",
+      "apiVersion": "v1",
       "id": "fabric8Greeter",
       "kind": "ReplicationController",
       "desiredState": {
@@ -19,7 +19,7 @@
         "podTemplate": {
           "desiredState": {
             "manifest": {
-              "version": "v1beta3",
+              "version": "v1",
               "id": "fabric8GreeterPod",
               "containers": [
                 {

@@ -1,10 +1,10 @@
 {
   "kind": "List",
-  "apiVersion": "v1beta3",
+  "apiVersion": "v1",
   "description": "Creates a sonarqube Server",
   "items": [
     {
-      "apiVersion": "v1beta3",
+      "apiVersion": "v1",
       "metadata": {
         "name": "sonarqube"
       },
@@ -23,7 +23,7 @@
     },
     {
       "kind": "ReplicationController",
-      "apiVersion": "v1beta3",
+      "apiVersion": "v1",
       "metadata": {
         "name": "sonarqube",
         "labels": {

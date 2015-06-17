@@ -1,6 +1,6 @@
 {
   "id": "api-registry",
-  "apiVersion": "v1beta3",
+  "apiVersion": "v1",
   "kind": "Service",
   "description": "Runs a local development API Registry on the local host",
   "port": 8588,
