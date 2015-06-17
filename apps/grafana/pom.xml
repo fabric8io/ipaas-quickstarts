@@ -15,15 +15,14 @@
      permissions and limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
     <groupId>io.fabric8.jube.images.fabric8</groupId>
     <artifactId>apps</artifactId>
-    <version>2.2-SNAPSHOT</version>
+    <version>2.2.0</version>
   </parent>
 
   <artifactId>grafana</artifactId>
@@ -36,7 +35,7 @@
   <properties>
     <docker.image>fabric8/grafana:1.9.1_1</docker.image>
     <docker.port.container.http>3000</docker.port.container.http>
-    <docker.port.container.jolokia/>
+    <docker.port.container.jolokia />
 
     <fabric8.env.INFLUXDB_SERVICE_NAME>INFLUXDB</fabric8.env.INFLUXDB_SERVICE_NAME>
     <fabric8.env.GRAFANA_DEFAULT_DASHBOARD>/dashboard/file/kubernetes.json</fabric8.env.GRAFANA_DEFAULT_DASHBOARD>
