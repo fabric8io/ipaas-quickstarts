@@ -55,6 +55,7 @@
         <fabric8.volume.jenkins-workspace.emptyDir />
         <fabric8.volume.jenkins-workspace.mountPath>/var/jenkins_home/workspace</fabric8.volume.jenkins-workspace.mountPath>
 
+
 <!--
         <fabric8.volume.jenkins-jobs.emptyDir></fabric8.volume.jenkins-jobs.emptyDir>
         <fabric8.volume.jenkins-jobs.mountPath>/var/jenkins_home/jobs</fabric8.volume.jenkins-jobs.mountPath>
@@ -72,7 +73,9 @@
         <fabric8.livenessProbe.initialDelaySeconds>30</fabric8.livenessProbe.initialDelaySeconds>
 -->
 
+
         <!-- add certs -->
+        <fabric8.serviceAccount>fabric8</fabric8.serviceAccount>
         <fabric8.volume.openshift-cert-secrets.secret>openshift-cert-secrets</fabric8.volume.openshift-cert-secrets.secret>
         <fabric8.volume.openshift-cert-secrets.mountPath>/etc/secret-volume</fabric8.volume.openshift-cert-secrets.mountPath>
         <fabric8.volume.openshift-cert-secrets.readOnly>true</fabric8.volume.openshift-cert-secrets.readOnly>
