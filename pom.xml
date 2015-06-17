@@ -87,7 +87,7 @@
         <docker.registry>registry.hub.docker.com</docker.registry>
         <exec-maven-plugin.version>1.2.1</exec-maven-plugin.version>
         <maven.surefire.plugin.version>2.17</maven.surefire.plugin.version>
-        <jube.version>2.1.11</jube.version>
+        <jube.version>2.2.0</jube.version>
         <junit.version>4.12</junit.version>
         <fabric8.version>2.2.0</fabric8.version>
         <fabric8.release.version>${fabric8.version}</fabric8.release.version>
