@@ -1,10 +1,10 @@
 {
   "kind": "List",
-  "apiVersion": "v1beta3",
+  "apiVersion": "v1",
   "description": "Creates a hubot chat bot",
   "items": [
     {
-      "apiVersion": "v1beta3",
+      "apiVersion": "v1",
       "kind": "Service",
       "metadata": {
         "name": "hubot"
@@ -29,7 +29,7 @@
     },
     {
       "kind": "ReplicationController",
-      "apiVersion": "v1beta3",
+      "apiVersion": "v1",
       "metadata": {
         "name": "hubot",
         "labels": {

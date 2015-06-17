@@ -1,13 +1,13 @@
 {
   "id": "fabric8-zookeeper-config",
   "kind": "List",
-  "apiVersion": "v1beta3",
+  "apiVersion": "v1",
   "name": "fabric8-zookeeper-config",
   "description": "Creates a ZooKeeper Server",
   "items": [
     {
       "kind": "Service",
-      "apiVersion": "v1beta3",
+      "apiVersion": "v1",
       "metadata": {
         "name": "zk-client"
       },
@@ -26,7 +26,7 @@
     },
     {
       "kind": "Service",
-      "apiVersion": "v1beta3",
+      "apiVersion": "v1",
       "metadata": {
         "name": "zk-peer-1"
       },
@@ -46,7 +46,7 @@
     },
     {
       "kind": "Service",
-      "apiVersion": "v1beta3",
+      "apiVersion": "v1",
       "metadata": {
         "name": "zk-peer-2"
       },
@@ -66,7 +66,7 @@
     },
     {
       "kind": "Service",
-      "apiVersion": "v1beta3",
+      "apiVersion": "v1",
       "metadata": {
         "name": "zk-peer-3"
       },
@@ -86,7 +86,7 @@
     },
     {
       "kind": "Service",
-      "apiVersion": "v1beta3",
+      "apiVersion": "v1",
       "metadata": {
         "name": "zk-election-1"
       },
@@ -106,7 +106,7 @@
     },
     {
       "kind": "Service",
-      "apiVersion": "v1beta3",
+      "apiVersion": "v1",
       "metadata": {
         "name": "zk-election-2"
       },
@@ -126,7 +126,7 @@
     },
     {
       "kind": "Service",
-      "apiVersion": "v1beta3",
+      "apiVersion": "v1",
       "metadata": {
         "name": "zk-election-3"
       },
@@ -146,7 +146,7 @@
     },
     {
       "kind": "ReplicationController",
-      "apiVersion": "v1beta3",
+      "apiVersion": "v1",
       "metadata": {
         "name": "zookeeper-controller-1",
         "labels": {
@@ -231,7 +231,7 @@
     },
     {
       "kind": "ReplicationController",
-      "apiVersion": "v1beta3",
+      "apiVersion": "v1",
       "metadata": {
         "name": "zookeeper-controller-2",
         "labels": {
@@ -317,7 +317,7 @@
     },
     {
       "kind": "ReplicationController",
-      "apiVersion": "v1beta3",
+      "apiVersion": "v1",
       "metadata": {
         "name": "zookeeper-controller-3",
         "labels": {

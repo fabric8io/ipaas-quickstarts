@@ -1,10 +1,10 @@
 {
-  "apiVersion": "v1beta3",
+  "apiVersion": "v1",
   "kind": "List",
   "id": "jadvisor-config",
   "items": [
     {
-      "apiVersion": "v1beta3",
+      "apiVersion": "v1",
       "kind": "ReplicationController",
       "id": "jadvisor-rc",
       "desiredState": {
@@ -15,7 +15,7 @@
         "podTemplate": {
           "desiredState": {
             "manifest": {
-              "version": "v1beta3",
+              "version": "v1",
               "containers": [
                 {
                   "name": "jadvisor-container",

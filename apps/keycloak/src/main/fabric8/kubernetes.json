@@ -1,10 +1,10 @@
 {
-  "apiVersion": "v1beta3",
+  "apiVersion": "v1",
   "kind": "List",
   "id": "keycloak-config",
   "items": [
     {
-      "apiVersion": "v1beta3",
+      "apiVersion": "v1",
       "kind": "ReplicationController",
       "id": "keycloak-rc",
       "desiredState": {
@@ -15,7 +15,7 @@
         "podTemplate": {
           "desiredState": {
             "manifest": {
-              "version": "v1beta3",
+              "version": "v1",
               "containers": [
                 {
                   "name": "keycloak-container",
@@ -38,7 +38,7 @@
       }
     },
     {
-      "apiVersion": "v1beta3",
+      "apiVersion": "v1",
       "kind": "Service",
       "id": "keycloak-service",
       "containerPort": "keycloak-port",
