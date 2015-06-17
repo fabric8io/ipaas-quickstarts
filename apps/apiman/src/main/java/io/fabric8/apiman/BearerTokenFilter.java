@@ -15,29 +15,22 @@
  */
 package io.fabric8.apiman;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.apiman.common.auth.AuthPrincipal;
 import io.fabric8.kubernetes.api.KubernetesHelper;
 import io.fabric8.openshift.api.model.OAuthClientAuthorizationList;
 import io.fabric8.utils.Systems;
 import io.fabric8.utils.cxf.TrustEverythingSSLTrustManager;
 
+import javax.net.ssl.HttpsURLConnection;
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.Principal;
-
-import javax.net.ssl.HttpsURLConnection;
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
-import javax.servlet.http.HttpServletResponse;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * A simple implementation of an bearer token filter that checks the validity of
@@ -46,7 +39,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * 
  * A great way to test is to use
  * 
- * curl https://172.30.0.2:443/osapi/v1beta3/users/ -k -H "Authorization: Bearer NVy_uBscz-Efm4s4h3zYfTvDUh_BvGP1d8S-g-oGuJY"
+ * curl https://172.30.0.2:443/oapi/v1/users/ -k -H "Authorization: Bearer NVy_uBscz-Efm4s4h3zYfTvDUh_BvGP1d8S-g-oGuJY"
  * 
  * where the IP address needs to be the one of your KUBERNETES_SERVICE_HOST, and
  * off course you need to set a valid Bearer token.
@@ -59,7 +52,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class BearerTokenFilter implements Filter {
 
-	public static final String KUBERNETES_OSAPI_URL = "/osapi/"
+	public static final String KUBERNETES_OSAPI_URL = "/oapi/"
 			+ KubernetesHelper.defaultOsApiVersion;
 	public static final String KUBERNETES_SERVICE_HOST = "KUBERNETES_SERVICE_HOST";
 	public static final String KUBERNETES_SERVICE_PORT = "KUBERNETES_SERVICE_PORT";
@@ -131,12 +124,12 @@ public class BearerTokenFilter implements Filter {
 	}
 	
 	/**
-	 * Validates the bearer token with the kubernetes osapi and returns the username
+	 * Validates the bearer token with the kubernetes oapi and returns the username
 	 * if it is a valid token.
 	 * 
 	 * @param bearerHeader
 	 * @return username of the user to whom the token was issued to
-	 * @throws IOException - when the token is invalid, or osapi cannot be reached.
+	 * @throws IOException - when the token is invalid, or oapi cannot be reached.
 	 */
 	protected String validateBearerToken(String bearerHeader) throws IOException {
 		ObjectMapper mapper = new ObjectMapper();
