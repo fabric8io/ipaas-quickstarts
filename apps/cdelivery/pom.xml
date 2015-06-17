@@ -43,7 +43,7 @@
     <skipTests>false</skipTests>
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
-    <org.eclipse.jetty.version>9.1.5.v20140505</org.eclipse.jetty.version>
+    <org.eclipse.jetty.version>9.2.10.v20150310</org.eclipse.jetty.version>
     <cxf.version>3.0.4</cxf.version>
 
     <http.port>8787</http.port>
