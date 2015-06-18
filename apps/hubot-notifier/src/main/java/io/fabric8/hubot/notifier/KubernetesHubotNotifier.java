@@ -33,6 +33,7 @@ import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerSpec;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.openshift.api.model.Build;
+import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.utils.Strings;
 import org.apache.deltaspike.core.api.config.ConfigProperty;
@@ -70,7 +71,6 @@ public class KubernetesHubotNotifier {
     private NotifyConfig podConfig = new NotifyConfig("pod");
     private NotifyConfig rcConfig = new NotifyConfig("rc");
     private NotifyConfig buildConfigConfig = new NotifyConfig("buildConfig");
-    private NotifyConfig buildConfig = new NotifyConfig("build");
     private NotifyConfig dcConfig = new NotifyConfig("dc");
 
     /**
@@ -113,10 +113,10 @@ public class KubernetesHubotNotifier {
             }
         }));
 
-        addClient(client.watchBuilds(null, new AbstractWatcher<Build>() {
+        addClient(client.watchBuildConfigs(null, new AbstractWatcher<BuildConfig>() {
             @Override
-            public void eventReceived(Action action, Build entity) {
-                onWatchEvent(action, entity, buildConfig);
+            public void eventReceived(Action action, BuildConfig entity) {
+                onWatchEvent(action, entity, buildConfigConfig);
             }
         }));
 
