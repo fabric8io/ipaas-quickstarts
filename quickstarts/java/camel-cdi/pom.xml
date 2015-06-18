@@ -224,6 +224,7 @@
         <version>${jube.version}</version>
       </plugin>
 
+      <!-- allows the route to be ran via 'mvn exec:java' -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
@@ -234,15 +235,6 @@
         </configuration>
       </plugin>
 
-      <!-- allows the route to be ran via 'mvn camel:run' -->
-      <plugin>
-        <groupId>org.apache.camel</groupId>
-        <artifactId>camel-maven-plugin</artifactId>
-        <version>${camel.version}</version>
-        <configuration>
-          <useCDI>true</useCDI>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
 

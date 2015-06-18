@@ -349,6 +349,7 @@
         <version>${jube.version}</version>
       </plugin>
 
+      <!-- allows the route to be ran via 'mvn exec:java' -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
