@@ -6,7 +6,7 @@ Apache Tomcat.
 
 The Camel route is illustrated in the figure below. The
 `servlet:hello` endpoint is listening for HTTP requests, and being
-routed using the Content Based Router.  
+routed using the Content Based Router.
 
 ![Camel Servlet diagram](images/camel-servlet-diagram.jpg)
 
@@ -102,13 +102,13 @@ If you are using OpenShift, you can verify this by calling
 
 ```bash
  # Get all pods
- osc get pods
+ os get pods
  
  # ... and services
- osc get services
+ os get services
  
  # ... and replication controllers
- osc get rc
+ os get rc
 ```
 
 Finally, you can setup routes within OpenShift so that you can use a
@@ -130,12 +130,12 @@ the IP of the Kubernetes master).
 
 To use the application be sure to have deployed the quickstart in
 fabric8 as described above. You probably have to wait a bit until the
-pods are in state `running`. If you are on OpenShift, you can use `osc
+pods are in state `running`. If you are on OpenShift, you can use `os
 get pods` to check the status of all pods.
 
 If you set up the OpenShift routes, you can simply go to
 `http://quickstart-camelservlet.vagrant.local`. Otherwise, you should
-check for the service IP (on OpenShift with `osc get services`) and
+check for the service IP (on OpenShift with `os get services`) and
 use this. 
 
 Follow the instruction from here to test this super-simple example.
