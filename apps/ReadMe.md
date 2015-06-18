@@ -7,4 +7,4 @@ The applications are packed into an [AppZip](http://fabric8.io/guide/appzip.html
 See [Apps](http://fabric8.io/guide/apps.html) for more information.
 
 Each application is easily installable in a Kubernetes environment, such as using the [Fabric8 Console](http://fabric8.io/guide/console.html),
-or using `kubectl`, `osc`, or [`fabric8:apply`](http://fabric8.io/guide/mavenFabric8Apply.html) CLI command line tooling.
+or using `kubectl`, `os`, or [`fabric8:apply`](http://fabric8.io/guide/mavenFabric8Apply.html) CLI command line tooling.
