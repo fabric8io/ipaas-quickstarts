@@ -102,13 +102,13 @@ If you are using OpenShift, you can verify this by calling
 
 ```bash
  # Get all pods
- os get pods
+ oc get pods
  
  # ... and services
- os get services
+ oc get services
  
  # ... and replication controllers
- os get rc
+ oc get rc
 ```
 
 Finally, you can setup routes within OpenShift so that you can use a
@@ -130,12 +130,12 @@ the IP of the Kubernetes master).
 
 To use the application be sure to have deployed the quickstart in
 fabric8 as described above. You probably have to wait a bit until the
-pods are in state `running`. If you are on OpenShift, you can use `os
+pods are in state `running`. If you are on OpenShift, you can use `oc
 get pods` to check the status of all pods.
 
 If you set up the OpenShift routes, you can simply go to
 `http://quickstart-camelservlet.vagrant.local`. Otherwise, you should
-check for the service IP (on OpenShift with `os get services`) and
+check for the service IP (on OpenShift with `oc get services`) and
 use this. 
 
 Follow the instruction from here to test this super-simple example.
