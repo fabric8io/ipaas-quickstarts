@@ -30,6 +30,7 @@ import io.fabric8.kubernetes.api.builds.BuildWatcher;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.ReplicationController;
+import io.fabric8.kubernetes.api.model.ReplicationControllerSpec;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.openshift.api.model.Build;
 import io.fabric8.openshift.api.model.DeploymentConfig;
@@ -65,6 +66,13 @@ public class KubernetesHubotNotifier {
     private KubernetesClient client = new KubernetesClient();
     private List<WebSocketClient> websocketClients = new ArrayList<>();
 
+    private NotifyConfig serviceConfig = new NotifyConfig("service");
+    private NotifyConfig podConfig = new NotifyConfig("pod");
+    private NotifyConfig rcConfig = new NotifyConfig("rc");
+    private NotifyConfig buildConfigConfig = new NotifyConfig("buildConfig");
+    private NotifyConfig buildConfig = new NotifyConfig("build");
+    private NotifyConfig dcConfig = new NotifyConfig("dc");
+
     /**
      * Note this constructor is only added to help CDI work with the {@link Eager} extension
      */
@@ -87,35 +95,35 @@ public class KubernetesHubotNotifier {
         addClient(client.watchServices(null, new AbstractWatcher<Service>() {
             @Override
             public void eventReceived(Action action, Service entity) {
-                onWatchEvent(action, entity);
+                onWatchEvent(action, entity, serviceConfig);
             }
         }));
 
         addClient(client.watchPods(null, new AbstractWatcher<Pod>() {
             @Override
             public void eventReceived(Action action, Pod entity) {
-                onWatchEvent(action, entity);
+                onWatchEvent(action, entity, podConfig);
             }
         }));
 
         addClient(client.watchReplicationControllers(null, new AbstractWatcher<ReplicationController>() {
             @Override
             public void eventReceived(Action action, ReplicationController entity) {
-                onWatchEvent(action, entity);
+                onWatchEvent(action, entity, rcConfig);
             }
         }));
 
         addClient(client.watchBuilds(null, new AbstractWatcher<Build>() {
             @Override
             public void eventReceived(Action action, Build entity) {
-                onWatchEvent(action, entity);
+                onWatchEvent(action, entity, buildConfig);
             }
         }));
 
         addClient(client.watchDeploymentConfigs(null, new AbstractWatcher<DeploymentConfig>() {
             @Override
             public void eventReceived(Action action, DeploymentConfig entity) {
-                onWatchEvent(action, entity);
+                onWatchEvent(action, entity, dcConfig);
             }
         }));
 
@@ -130,14 +138,16 @@ public class KubernetesHubotNotifier {
         websocketClients.add(webSocketClient);
     }
 
-    protected void onWatchEvent(Watcher.Action action, HasMetadata entity) {
+    protected void onWatchEvent(Watcher.Action action, HasMetadata entity, NotifyConfig notifyConfig) {
+        if (!notifyConfig.isEnabled(action)) {
+            return;
+        }
         String kind = KubernetesHelper.getKind(entity);
         String name = KubernetesHelper.getName(entity);
         String namespace = getNamespace();
 
         String actionText = action.toString().toLowerCase();
         String room = this.roomExpression.replace("${namespace}", namespace).replace("${kind}", kind).replace("${name}", name);
-
 
         String postfix = "";
         if (action.equals(Watcher.Action.ADDED) || action.equals(Watcher.Action.MODIFIED)) {
