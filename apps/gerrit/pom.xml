@@ -33,12 +33,12 @@
     </description>
 
     <properties>
-        <docker.from>fabric8/java</docker.from>
 
-        <docker.image>fabric8/${project.artifactId}</docker.image>
-        <docker.autoPull>true</docker.autoPull>
-        <docker.assemblyDescriptorRef>artifact-with-dependencies</docker.assemblyDescriptorRef>
-        <docker.dockerFileDir>gerrit</docker.dockerFileDir>
+        <!--Hardcoding the docker image name because we use it directly, we don't generate it
+        from this project-->
+        <docker.image>fabric8/gerrit</docker.image>
+        <docker.port.container.http>8080</docker.port.container.http>
+
 
         <!-- General -->
         <fabric8.imagePullPolicy>IfNotPresent</fabric8.imagePullPolicy>
