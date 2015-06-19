@@ -12,7 +12,7 @@
  *  * permissions and limitations under the License.
  *
  */
-package io.fabric8.mq.camel;
+package io.fabric8.mq.interceptors.camel;
 
 import org.apache.activemq.command.ActiveMQDestination;
 import org.apache.camel.Endpoint;

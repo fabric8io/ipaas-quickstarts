@@ -1,17 +1,16 @@
-/**
- * Copyright 2005-2015 Red Hat, Inc.
- * <p/>
- * Red Hat licenses this file to you under the Apache License, version
- * 2.0 (the "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- * <p/>
- * http://www.apache.org/licenses/LICENSE-2.0
- * <p/>
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
- * implied.  See the License for the specific language governing
- * permissions and limitations under the License.
+/*
+ *
+ *  * Copyright 2005-2015 Red Hat, Inc.
+ *  * Red Hat licenses this file to you under the Apache License, version
+ *  * 2.0 (the "License"); you may not use this file except in compliance
+ *  * with the License.  You may obtain a copy of the License at
+ *  *    http://www.apache.org/licenses/LICENSE-2.0
+ *  * Unless required by applicable law or agreed to in writing, software
+ *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+ *  * implied.  See the License for the specific language governing
+ *  * permissions and limitations under the License.
+ *
  */
 package io.fabric8.mq;
 
@@ -30,8 +29,8 @@ import javax.inject.Inject;
  * Test the entire thing - but will use the BrokerControlTestImpl instead of KubernetesControl
  */
 @RunWith(WeldJUnitRunner.class)
-public class MainTest {
-    private static final Logger LOG = LoggerFactory.getLogger(MainTest.class);
+public class MainTestMQTT {
+    private static final Logger LOG = LoggerFactory.getLogger(MainTestMQTT.class);
     @Inject
     BrokerControl brokerControl;
     @Inject
@@ -55,17 +54,17 @@ public class MainTest {
 
     @Test
     public void test() throws Exception {
-/*
-        OpenWireClientPack openWirePack = new OpenWireClientPack();
+       /*
+        MQTTClientPack openWirePack = new MQTTClientPack();
         openWirePack.setPort(fabric8MQ.getBoundPort());
         openWirePack.setNumberOfDestinations(1);
         openWirePack.setNumberOfProducers(1);
         openWirePack.setNumberOfConsumers(1);
-        openWirePack.setNumberOfMessagesPerDestination(50000);
+        openWirePack.setNumberOfMessagesPerDestination(5000);
         openWirePack.start();
         openWirePack.doTheTest();
         openWirePack.stop();
-*/
+        */
 
     }
 }

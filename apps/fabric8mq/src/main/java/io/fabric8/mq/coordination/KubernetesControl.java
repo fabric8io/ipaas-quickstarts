@@ -58,16 +58,21 @@ public class KubernetesControl extends BaseBrokerControl {
     private JolokiaClients clients;
     @Inject
     @ConfigProperty(name = "AMQ_BROKER_CONTROLLER_ID", defaultValue = "amq-broker")
-    private String defaultReplicationControllerId = "amq-broker";
-    private String replicationControllerId;
+    private String replicationControllerId = "amq-broker";
+
+    public String getReplicationControllerId() {
+        return replicationControllerId;
+    }
+
+    public void setReplicationControllerId(String replicationControllerId) {
+        this.replicationControllerId = replicationControllerId;
+    }
 
     @Override
     protected void doStart() throws Exception {
         kubernetes = new KubernetesClient();
 
         clients = new JolokiaClients(kubernetes);
-        //this will create the broker ReplicationController if it doesn't exist
-        this.replicationControllerId = getOrCreateBrokerReplicationControllerId();
         super.doStart();
     }
 
@@ -187,8 +192,7 @@ public class KubernetesControl extends BaseBrokerControl {
         int desiredNumber = model.getBrokerCount() + 1;
         if (scalingInProgress.startWork(desiredNumber)) {
             try {
-                String id = getOrCreateBrokerReplicationControllerId();
-                ReplicationController replicationController = kubernetes.getReplicationController(id);
+                ReplicationController replicationController = getBrokerReplicationController();
                 ReplicationControllerStatus status = replicationController.getStatus();
                 int currentDesiredNumber = 0;
                 if (status != null) {
@@ -199,7 +203,7 @@ public class KubernetesControl extends BaseBrokerControl {
                 }
                 if (desiredNumber == (currentDesiredNumber + 1)) {
                     replicationController.getStatus().setReplicas(desiredNumber);
-                    kubernetes.updateReplicationController(id, replicationController);
+                    kubernetes.updateReplicationController(getReplicationControllerId(), replicationController);
                     LOG.error("Updated Broker Replication Controller desired state from " + currentDesiredNumber + " to " + desiredNumber);
                 }
             } catch (Throwable e) {
@@ -212,15 +216,14 @@ public class KubernetesControl extends BaseBrokerControl {
         int desiredNumber = model.getBrokerCount() - 1;
         if (scalingInProgress.startWork(desiredNumber)) {
             try {
-                String id = getOrCreateBrokerReplicationControllerId();
-                ReplicationController replicationController = kubernetes.getReplicationController(id);
+                ReplicationController replicationController = getBrokerReplicationController();
                 int currentDesiredNumber = replicationController.getStatus().getReplicas();
                 if (desiredNumber == (currentDesiredNumber - 1)) {
                     replicationController.getStatus().setReplicas(desiredNumber);
                     model.remove(brokerModel);
                     //Todo update when Kubernetes allows you to target exact pod to discard from replication controller
                     kubernetes.deletePod(brokerModel.getPod());
-                    kubernetes.updateReplicationController(id, replicationController);
+                    kubernetes.updateReplicationController(getReplicationControllerId(), replicationController);
                     LOG.error("Updated Broker Replication Controller desired state from " + currentDesiredNumber + " to " + desiredNumber + " and removed Broker " + brokerModel);
                 }
             } catch (Throwable e) {
@@ -229,10 +232,22 @@ public class KubernetesControl extends BaseBrokerControl {
         }
     }
 
-    private String getOrCreateBrokerReplicationControllerId() {
+    private ReplicationController getBrokerReplicationController() throws InterruptedException {
+        ReplicationController running;
+        do {
+            running = kubernetes.getReplicationController(getReplicationControllerId());
+            if (running == null) {
+                LOG.warn("Waiting for ReplicationController " + getReplicationControllerId() + " to start");
+                Thread.sleep(5000);
+            }
+        } while (running == null);
+        return running;
+    }
+
+    private String getOrCreaBteBrokerReplicationControllerId() {
         if (replicationControllerId == null) {
             try {
-                ReplicationController running = kubernetes.getReplicationController(defaultReplicationControllerId);
+                ReplicationController running = kubernetes.getReplicationController(getOrCreaBteBrokerReplicationControllerId());
                 if (running == null) {
                     ObjectMapper mapper = KubernetesFactory.createObjectMapper();
 
@@ -261,8 +276,6 @@ public class KubernetesControl extends BaseBrokerControl {
                     } else {
                         LOG.error("Could not find location of Broker Template from " + getBrokerTemplateLocation());
                     }
-                } else {
-                    replicationControllerId = defaultReplicationControllerId;
                 }
 
             } catch (Throwable e) {

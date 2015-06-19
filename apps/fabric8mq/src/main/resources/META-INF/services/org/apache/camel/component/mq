@@ -15,4 +15,4 @@
 ## ---------------------------------------------------------------------------
 
 
-class=io.fabric8.mq.controller.camel.MQComponent
+class=io.fabric8.mq.interceptors.camel.MQComponent

@@ -113,8 +113,6 @@ public class TestProtocolServer extends ServiceSupport {
     @Override
     protected void doStart() throws Exception {
         asyncExecutors.start();
-        testMessageDistribution.start();
-
         final CountDownLatch countDownLatch = new CountDownLatch(1);
         FutureHandler<AsyncResult<NetServer>> listenFuture = new FutureHandler<AsyncResult<NetServer>>() {
             @Override

@@ -145,16 +145,39 @@ public abstract class BaseClientPack extends ServiceSupport {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                System.err.println("Producers at " + producerProgress() + "% progress");
-                System.err.println("Consumers at " + consumerProgress() + "% progress");
+                if (getNumberOfProducers() > 0) {
+                    System.err.println("Producers at " + producerProgress() + "% progress");
+                }
+                if (getNumberOfConsumers() > 0) {
+                    System.err.println("Consumers at " + consumerProgress() + "% progress");
+                }
             }
         };
         asyncExecutors.scheduleAtFixedRate(runnable, 5000, 5000);
 
-        producerCountDownLatch.await(5, TimeUnit.MINUTES);
-        consumerCountDownLatch.await(5, TimeUnit.MINUTES);
-        System.err.println("Producers at " + producerProgress() + "% progress");
-        System.err.println("Consumers at " + consumerProgress() + "% progress");
+        if (getNumberOfProducers() > 0) {
+            producerCountDownLatch.await(5, TimeUnit.MINUTES);
+        }
+        if (getNumberOfConsumers() > 0) {
+            consumerCountDownLatch.await(5, TimeUnit.MINUTES);
+        }
+        if (getNumberOfProducers() > 0) {
+            System.err.println("Producers at " + producerProgress() + "% progress");
+        }
+        if (getNumberOfConsumers() > 0) {
+            System.err.println("Consumers at " + consumerProgress() + "% progress");
+        }
+    }
+
+    public boolean isTestFinished() {
+        boolean result = false;
+        if (producerCountDownLatch != null) {
+            result = producerCountDownLatch.getCount() == 0;
+        }
+        if (consumerCountDownLatch != null) {
+            result &= consumerCountDownLatch.getCount() == 0;
+        }
+        return result;
     }
 
     @Override
@@ -162,24 +185,34 @@ public abstract class BaseClientPack extends ServiceSupport {
         asyncExecutors = new AsyncExecutors();
         asyncExecutors.start();
         int totalMessages = getNumberOfMessagesPerDestination() * getNumberOfDestinations();
-        producerCountDownLatch = new CountDownLatch(totalMessages);
-        consumerCountDownLatch = new CountDownLatch(totalMessages);
+        if (getNumberOfProducers() > 0) {
+            producerCountDownLatch = new CountDownLatch(totalMessages);
+        }
+        if (getNumberOfConsumers() > 0) {
+            consumerCountDownLatch = new CountDownLatch(totalMessages);
+        }
 
         for (int i = 0; i < getNumberOfDestinations(); i++) {
             String destinationName = getDestinationBaseName() + "." + i;
-            int messagesPerProducer = getNumberOfMessagesPerDestination() / getNumberOfProducers();
-            for (int j = 0; j < getNumberOfProducers(); j++) {
-                Runnable runnable = createProducers(destinationName, producerCountDownLatch, messagesPerProducer);
-                producersSet.add(runnable);
+            if (getNumberOfConsumers() > 0) {
+                for (int j = 0; j < getNumberOfConsumers(); j++) {
+                    Runnable runnable = createConsumers(destinationName, consumerCountDownLatch);
+                    consumerSet.add(runnable);
+                }
             }
-            for (int j = 0; j < getNumberOfConsumers(); j++) {
-                Runnable runnable = createConsumers(destinationName, consumerCountDownLatch);
-                consumerSet.add(runnable);
+
+            if (getNumberOfProducers() > 0) {
+                int messagesPerProducer = getNumberOfMessagesPerDestination() / getNumberOfProducers();
+                for (int j = 0; j < getNumberOfProducers(); j++) {
+                    Runnable runnable = createProducers(destinationName, producerCountDownLatch, messagesPerProducer);
+                    producersSet.add(runnable);
+                }
             }
         }
         for (Runnable runnable : consumerSet) {
             asyncExecutors.execute(runnable);
         }
+        Thread.sleep(2000);
         for (Runnable runnable : producersSet) {
             asyncExecutors.execute(runnable);
         }

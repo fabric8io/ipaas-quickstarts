@@ -16,10 +16,18 @@
 package io.fabric8.mq.protocol;
 
 import io.fabric8.mq.MessageDistribution;
-import io.fabric8.mq.TransportChangedListener;
+import io.fabric8.mq.util.TransportConnectionState;
+import io.fabric8.mq.util.TransportConnectionStateRegister;
 import org.apache.activemq.broker.BrokerService;
 import org.apache.activemq.command.ActiveMQDestination;
 import org.apache.activemq.command.Command;
+import org.apache.activemq.command.ConnectionInfo;
+import org.apache.activemq.command.ConsumerInfo;
+import org.apache.activemq.command.ProducerInfo;
+import org.apache.activemq.command.SessionInfo;
+import org.apache.activemq.state.ConsumerState;
+import org.apache.activemq.state.ProducerState;
+import org.apache.activemq.state.SessionState;
 import org.apache.activemq.transport.ResponseCallback;
 import org.apache.activemq.transport.Transport;
 import org.apache.activemq.transport.TransportFactory;
@@ -34,11 +42,17 @@ import java.net.URI;
 
 public class TestMessageDistribution extends ServiceSupport implements MessageDistribution {
     private static Logger LOG = LoggerFactory.getLogger(TestMessageDistribution.class);
+    private final TransportConnectionStateRegister transportConnectionStateRegister = new TransportConnectionStateRegister();
     private final InternalTransportListener internalTransportListener = new InternalTransportListener();
     private final BrokerService brokerService = new BrokerService();
     private Transport transport;
 
     public TestMessageDistribution() {
+    }
+
+    @Override
+    public TransportConnectionStateRegister getTransportConnectionStateRegister() {
+        return transportConnectionStateRegister;
     }
 
     @Override
@@ -77,14 +91,6 @@ public class TestMessageDistribution extends ServiceSupport implements MessageDi
     }
 
     @Override
-    public void addTransportCreatedListener(TransportChangedListener transportChangedListener) {
-    }
-
-    @Override
-    public void removeTransportCreatedListener(TransportChangedListener transportChangedListener) {
-    }
-
-    @Override
     public void transportCreated(String brokerId, Transport transport) {
     }
 
@@ -109,6 +115,31 @@ public class TestMessageDistribution extends ServiceSupport implements MessageDi
         String uriString = brokerService.getDefaultSocketURIString();
         transport = createTransport(uriString);
 
+        for (TransportConnectionState transportConnectionState : transportConnectionStateRegister.listConnectionStates()) {
+
+            ConnectionInfo connectionInfo = transportConnectionState.getInfo();
+            transport.oneway(connectionInfo);
+
+            int sessionCount = transportConnectionState.getSessionStates().size();
+            int consumerCount = 0;
+            int producerCount = 0;
+            for (SessionState sessionState : transportConnectionState.getSessionStates()) {
+                SessionInfo sessionInfo = sessionState.getInfo();
+                transport.oneway(sessionInfo);
+                consumerCount = sessionState.getConsumerStates().size();
+                for (ConsumerState consumerState : sessionState.getConsumerStates()) {
+                    ConsumerInfo consumerInfo = consumerState.getInfo();
+                    transport.oneway(consumerInfo);
+                }
+                producerCount = sessionState.getProducerStates().size();
+                for (ProducerState producerState : sessionState.getProducerStates()) {
+                    ProducerInfo producerInfo = producerState.getInfo();
+                    transport.oneway(producerInfo);
+                }
+            }
+            LOG.info("Sent to " + transport + " Connection Info " + connectionInfo.getClientId() + " [ sessions = " + sessionCount + ",consumers = " + consumerCount + ",producers=" + producerCount + "]");
+
+        }
     }
 
     protected void doStop(ServiceStopper serviceStopper) throws Exception {

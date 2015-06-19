@@ -12,10 +12,13 @@
  *  * permissions and limitations under the License.
  *
  */
-package io.fabric8.mq.camel;
+package io.fabric8.mq.interceptors.camel;
 
+import io.fabric8.mq.interceptors.MessageInterceptor;
+import io.fabric8.mq.interceptors.MessageInterceptorRegistry;
+import io.fabric8.mq.interceptors.MessageRouter;
+import org.apache.activemq.advisory.AdvisorySupport;
 import org.apache.activemq.command.ActiveMQDestination;
-import org.apache.activemq.command.ActiveMQMessage;
 import org.apache.camel.Consumer;
 import org.apache.camel.MultipleConsumersSupport;
 import org.apache.camel.Processor;
@@ -29,7 +32,7 @@ import org.apache.camel.util.UnsafeUriCharactersEncoder;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-@UriEndpoint(scheme = "controller", syntax = "controller:name", consumerClass = MQConsumer.class, label = "api", title = "Controller")
+@UriEndpoint(scheme = "mq", syntax = "mq:name", consumerClass = MQConsumer.class, label = "api", title = "Fabric8MQ")
 public class MQEndpoint extends DefaultEndpoint implements MultipleConsumersSupport, Service {
 
     @UriPath
@@ -71,7 +74,7 @@ public class MQEndpoint extends DefaultEndpoint implements MultipleConsumersSupp
     @Override
     protected void doStart() throws Exception {
         super.doStart();
-        messageInterceptorRegistry = MessageInterceptorRegistry.getInstance();
+        messageInterceptorRegistry = MessageInterceptorRegistry.getInstance(CamelRouter.REGISTRY_NAME);
         for (MessageInterceptor messageInterceptor : messageInterceptorList) {
             addMessageInterceptor(messageInterceptor);
         }
@@ -95,10 +98,23 @@ public class MQEndpoint extends DefaultEndpoint implements MultipleConsumersSupp
         messageInterceptorRegistry.removeMessageInterceptor(destination, messageInterceptor);
     }
 
-    protected void inject(MessageRouter messageRouter, ActiveMQMessage message) throws Exception {
-        if (message != null) {
-            message.setDestination(destination);
-            messageRouter.inject(message);
+    protected void inject(MessageRouter messageRouter, CommandMessage message) throws Exception {
+        if (message != null && messageRouter != null) {
+            ActiveMQDestination endpointDestination = destination;
+            ActiveMQDestination originalDestination = message.getDestination();
+            ActiveMQDestination newDestination = endpointDestination;
+            if (!AdvisorySupport.isAdvisoryTopic(originalDestination)) {
+                if (endpointDestination.isPattern()) {
+                    String physicalName = originalDestination.getPhysicalName();
+                    newDestination = ActiveMQDestination.createDestination(physicalName, endpointDestination.getDestinationType());
+
+                }
+            } else {
+                newDestination = originalDestination;
+            }
+            message.setDestination(newDestination);
+            messageRouter.inject(message.getCommand());
+
         }
     }
 }

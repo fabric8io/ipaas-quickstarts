@@ -16,15 +16,10 @@ package io.fabric8.mq.multiplexer;
 
 import io.fabric8.mq.AsyncExecutors;
 import io.fabric8.mq.MessageDistribution;
-import io.fabric8.mq.TransportChangedListener;
 import io.fabric8.mq.model.Model;
 import io.fabric8.mq.model.Multiplex;
-import io.fabric8.mq.util.TransportConnectionState;
 import io.fabric8.mq.util.TransportConnectionStateRegister;
 import org.apache.activemq.command.*;
-import org.apache.activemq.state.ConsumerState;
-import org.apache.activemq.state.ProducerState;
-import org.apache.activemq.state.SessionState;
 import org.apache.activemq.transport.DefaultTransportListener;
 import org.apache.activemq.transport.FutureResponse;
 import org.apache.activemq.transport.ResponseCallback;
@@ -40,20 +35,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.atomic.AtomicReference;
 
-public class Multiplexer extends ServiceSupport implements Multiplex, TransportChangedListener {
+public class Multiplexer extends ServiceSupport implements Multiplex {
 
     private static final Logger LOG = LoggerFactory.getLogger(Multiplexer.class);
     private final String name;
     private final AsyncExecutors asyncExecutors;
     private final MessageDistribution messageDistribution;
-    private final TransportConnectionStateRegister transportConnectionStateRegister;
     private final Map<Transport, MultiplexerInput> inputs;
     private final Map<ConsumerId, MultiplexerInput> consumerIdMultiplexerInputMap;
+    private final ConcurrentMap<String, Transport> outTransports;
     private final IdGenerator inputId;
     private final ConnectionInfo multiplexerConnectionInfo;
     private final SessionInfo multiplexerSessionInfo; //for advisories
@@ -62,7 +55,6 @@ public class Multiplexer extends ServiceSupport implements Multiplex, TransportC
     private final AtomicLong consumerIdGenerator;
     private final AtomicLong transactionIdGenerator;
     private final AtomicLong inputCount;
-    private final AtomicReference<CountDownLatch> attachedToBroker;
     private Model model;
     private String userName;
     private String password;
@@ -72,9 +64,9 @@ public class Multiplexer extends ServiceSupport implements Multiplex, TransportC
         this.name = name;
         this.asyncExecutors = asyncExecutors;
         this.messageDistribution = messageDistribution;
-        this.transportConnectionStateRegister = new TransportConnectionStateRegister();
         inputs = new ConcurrentHashMap<>();
         consumerIdMultiplexerInputMap = new ConcurrentHashMap<>();
+        outTransports = new ConcurrentHashMap<>();
         inputId = new IdGenerator("InTransport");
         multiplexerConnectionInfo = new ConnectionInfo(new ConnectionId(inputId.generateSanitizedId()));
         multiplexerSessionInfo = new SessionInfo(multiplexerConnectionInfo, -1);
@@ -85,7 +77,6 @@ public class Multiplexer extends ServiceSupport implements Multiplex, TransportC
         inputCount = new AtomicLong();
         userName = "";
         password = "";
-        attachedToBroker = new AtomicReference<>(new CountDownLatch(1));
     }
 
     public Model getModel() {
@@ -156,6 +147,7 @@ public class Multiplexer extends ServiceSupport implements Multiplex, TransportC
     public void addInput(String protocol, Transport transport) throws Exception {
         if (transport != null && !isStopping() && !isStopped()) {
             String name = getName() + ".input." + inputCount.getAndIncrement();
+            TransportConnectionStateRegister transportConnectionStateRegister = messageDistribution.getTransportConnectionStateRegister();
             MultiplexerInput multiplexerInput = new MultiplexerInput(this, name, protocol, asyncExecutors, transportConnectionStateRegister, transport);
             inputs.put(transport, multiplexerInput);
             multiplexerInput.start();
@@ -189,7 +181,6 @@ public class Multiplexer extends ServiceSupport implements Multiplex, TransportC
     }
 
     public void sendOutAll(final MultiplexerInput input, final Command command) {
-        waitForBroker();
         if (command != null) {
             try {
                 if (command.isResponseRequired()) {
@@ -218,7 +209,6 @@ public class Multiplexer extends ServiceSupport implements Multiplex, TransportC
     }
 
     public void sendOut(final MultiplexerInput input, ActiveMQDestination destination, Command command) {
-        waitForBroker();
         if (command != null) {
             try {
                 if (command.isResponseRequired()) {
@@ -253,50 +243,6 @@ public class Multiplexer extends ServiceSupport implements Multiplex, TransportC
     }
 
     @Override
-    public void transportCreated(String brokerId, Transport transport) {
-        if (isStarted()) {
-            try {
-                for (TransportConnectionState transportConnectionState : transportConnectionStateRegister.listConnectionStates()) {
-
-                    ConnectionInfo connectionInfo = transportConnectionState.getInfo();
-                    transport.oneway(connectionInfo);
-
-                    int sessionCount = transportConnectionState.getSessionStates().size();
-                    int consumerCount = 0;
-                    int producerCount = 0;
-                    for (SessionState sessionState : transportConnectionState.getSessionStates()) {
-                        SessionInfo sessionInfo = sessionState.getInfo();
-                        transport.oneway(sessionInfo);
-                        consumerCount = sessionState.getConsumerStates().size();
-                        for (ConsumerState consumerState : sessionState.getConsumerStates()) {
-                            ConsumerInfo consumerInfo = consumerState.getInfo();
-                            transport.oneway(consumerInfo);
-                        }
-                        producerCount = sessionState.getProducerStates().size();
-                        for (ProducerState producerState : sessionState.getProducerStates()) {
-                            ProducerInfo producerInfo = producerState.getInfo();
-                            transport.oneway(producerInfo);
-                        }
-                    }
-                    LOG.info("Sent to " + transport + " Connection Info " + connectionInfo.getClientId() + " [ sessions = " + sessionCount + ",consumers = " + consumerCount + ",producers=" + producerCount + "]");
-                }
-            } catch (Throwable e) {
-                LOG.error("Failed to update connection state ", e);
-            }
-        }
-        CountDownLatch countDownLatch = attachedToBroker.get();
-        countDownLatch.countDown();
-
-    }
-
-    @Override
-    public void transportDestroyed(String brokerId) {
-        if (messageDistribution.getCurrentConnectedBrokerCount() == 0) {
-            attachedToBroker.set(new CountDownLatch(1));
-        }
-    }
-
-    @Override
     protected void doStart() throws Exception {
 
         messageDistribution.setTransportListener(new DefaultTransportListener() {
@@ -321,22 +267,17 @@ public class Multiplexer extends ServiceSupport implements Multiplex, TransportC
         multiplexerConnectionInfo.setClientId(getName());
         multiplexerConnectionInfo.setUserName(getUserName());
         multiplexerConnectionInfo.setPassword(getPassword());
+        TransportConnectionStateRegister transportConnectionStateRegister = messageDistribution.getTransportConnectionStateRegister();
         transportConnectionStateRegister.registerConnectionState(multiplexerConnectionInfo.getConnectionId(), multiplexerConnectionInfo);
         transportConnectionStateRegister.addSession(multiplexerSessionInfo);
-        messageDistribution.addTransportCreatedListener(this);
         messageDistribution.start();
-        if (messageDistribution.getCurrentConnectedBrokerCount() > 0) {
-            messageDistribution.sendAll(multiplexerConnectionInfo);
-            messageDistribution.sendAll(multiplexerSessionInfo);
-            CountDownLatch countDownLatch = attachedToBroker.get();
-            countDownLatch.countDown();
-        }
         model.add(this);
     }
 
     @Override
     protected void doStop(ServiceStopper serviceStopper) {
-        messageDistribution.removeTransportCreatedListener(this);
+        TransportConnectionStateRegister transportConnectionStateRegister = messageDistribution.getTransportConnectionStateRegister();
+        transportConnectionStateRegister.unregisterConnectionState(multiplexerConnectionInfo.getConnectionId());
         transportConnectionStateRegister.clear();
         try {
             if (!messageDistribution.isStopped()) {
@@ -394,19 +335,6 @@ public class Multiplexer extends ServiceSupport implements Multiplex, TransportC
             response.copy(copy);
             copy.setCorrelationId(realCorrelationId);
             input.oneway(copy);
-        }
-    }
-
-    private void waitForBroker() {
-        CountDownLatch countDownLatch = attachedToBroker.get();
-        try {
-            while (!isStopping()) {
-                if (countDownLatch.await(100, TimeUnit.MILLISECONDS)) {
-                    break;
-                }
-            }
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
         }
     }
 

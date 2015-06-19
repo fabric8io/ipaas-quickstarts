@@ -12,14 +12,14 @@
  *  * permissions and limitations under the License.
  *
  */
-package io.fabric8.mq.camel;
+package io.fabric8.mq.interceptors;
 
-import org.apache.activemq.command.Message;
+import io.fabric8.mq.interceptors.camel.CommandMessage;
 
 /**
  * route a Message
  */
 public interface MessageInterceptor {
 
-    void intercept(MessageRouter messageRouter, Message message);
+    void intercept(MessageRouter messageRouter, CommandMessage command);
 }

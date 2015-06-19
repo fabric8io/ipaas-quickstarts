@@ -13,34 +13,26 @@
  *
  */
 
-package io.fabric8.mq.camel;
+package io.fabric8.mq.interceptors.camel;
 
 import org.apache.activemq.util.ServiceStopper;
 import org.apache.activemq.util.ServiceSupport;
 import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.camel.model.RouteDefinition;
 import org.apache.camel.model.RoutesDefinition;
-import org.apache.deltaspike.core.api.config.ConfigProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 
-@ApplicationScoped
 public class CamelRouter extends ServiceSupport {
+    public static final String REGISTRY_NAME = "camel";
     private static Logger LOG = LoggerFactory.getLogger(CamelRouter.class);
-    @Inject
-    @ConfigProperty(name = "CAMEL_ROUTES", defaultValue = "")
     private String camelRoutes;
     private DefaultCamelContext camelContext;
-    private long lastRoutesModified = -1;
-    private CountDownLatch countDownLatch;
 
     public String getCamelRoutes() {
         return camelRoutes;
@@ -70,10 +62,6 @@ public class CamelRouter extends ServiceSupport {
     }
 
     protected void doStop(ServiceStopper serviceStopper) throws Exception {
-        CountDownLatch latch = this.countDownLatch;
-        if (latch != null) {
-            latch.countDown();
-        }
         if (camelContext != null) {
             camelContext.stop();
         }
@@ -82,6 +70,10 @@ public class CamelRouter extends ServiceSupport {
     private void doLoadRoutes() {
         String routesString = getCamelRoutes();
         routesString = routesString.trim();
+        if (!routesString.matches("route>")) {
+            String str = "<route>" + System.lineSeparator() + routesString + System.lineSeparator() + "</route>";
+            routesString = str;
+        }
         if (!routesString.matches("<routes")) {
             String str = "<routes xmlns=\"http://camel.apache.org/schema/spring\">";
             str += System.lineSeparator();
@@ -91,8 +83,7 @@ public class CamelRouter extends ServiceSupport {
             routesString = str;
         }
         LOG.info("Loading Camel Routes " + routesString);
-        CountDownLatch latch = new CountDownLatch(1);
-        this.countDownLatch = latch;
+
         try {
             InputStream is = new ByteArrayInputStream(routesString.getBytes(StandardCharsets.UTF_8));
 
@@ -103,27 +94,10 @@ public class CamelRouter extends ServiceSupport {
             }
 
             RoutesDefinition routesDefinition = camelContext.loadRoutesDefinition(is);
-
-            for (RouteDefinition rd : routesDefinition.getRoutes()) {
-                camelContext.startRoute(rd);
-            }
+            camelContext.addRouteDefinitions(routesDefinition.getRoutes());
             is.close();
         } catch (Throwable e) {
             LOG.error("Failed to getLoad routes " + e.getMessage(), e);
-        } finally {
-            latch.countDown();
-            this.countDownLatch = null;
-        }
-    }
-
-    private void blockWhileLoadingCamelRoutes() {
-        CountDownLatch latch = this.countDownLatch;
-        if (latch != null) {
-            try {
-                latch.await();
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
         }
     }
 

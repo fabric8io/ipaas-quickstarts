@@ -15,7 +15,7 @@
 
 package io.fabric8.mq;
 
-import io.fabric8.mq.camel.CamelRouter;
+import io.fabric8.mq.interceptors.camel.CamelRouter;
 import io.fabric8.mq.model.BrokerControl;
 import io.fabric8.mq.model.Model;
 import org.apache.activemq.util.ServiceStopper;
@@ -36,7 +36,7 @@ public class BrokerStateInfo extends ServiceSupport {
     protected AsyncExecutors asyncExecutors;
     @Inject
     protected Fabric8MQStatus fabric8MQStatus;
-    @Inject
+
     protected CamelRouter camelRouter;
 
     public AsyncExecutors getAsyncExectutors() {
@@ -79,7 +79,8 @@ public class BrokerStateInfo extends ServiceSupport {
         }
         model.start();
         brokerControl.start();
-        fabric8MQStatus.setCamelRoutes(camelRouter.getCamelRoutes());
+        camelRouter = new CamelRouter();
+        camelRouter.setCamelRoutes(fabric8MQStatus.getCamelRoutes());
         camelRouter.start();
     }
 }
