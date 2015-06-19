@@ -12,9 +12,10 @@
  *  * permissions and limitations under the License.
  *
  */
-package io.fabric8.mq.camel;
+package io.fabric8.mq.interceptors.camel;
 
-import org.apache.activemq.command.Message;
+import io.fabric8.mq.interceptors.MessageInterceptor;
+import io.fabric8.mq.interceptors.MessageRouter;
 import org.apache.camel.Endpoint;
 import org.apache.camel.Exchange;
 import org.apache.camel.ExchangePattern;
@@ -42,11 +43,10 @@ public class MQConsumer extends DefaultConsumer implements MessageInterceptor {
     }
 
     @Override
-    public void intercept(MessageRouter messageRouter, Message message) {
+    public void intercept(MessageRouter messageRouter, CommandMessage message) {
         Exchange exchange = getEndpoint().createExchange(ExchangePattern.InOnly);
 
-        exchange.setIn(new MQJmsMessage(messageRouter, (javax.jms.Message) message, jmsBinding));
-        exchange.setProperty(Exchange.BINDING, jmsBinding);
+        exchange.setIn(message);
         try {
             getProcessor().process(exchange);
         } catch (Exception e) {

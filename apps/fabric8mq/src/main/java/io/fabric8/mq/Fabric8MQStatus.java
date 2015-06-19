@@ -14,7 +14,6 @@
  */
 package io.fabric8.mq;
 
-import io.fabric8.mq.camel.CamelRouter;
 import org.apache.deltaspike.core.api.config.ConfigProperty;
 
 import javax.enterprise.inject.Default;
@@ -47,8 +46,9 @@ public class Fabric8MQStatus implements Fabric8MQStatusMBean {
     @Inject
     @ConfigProperty(name = "VIRTUAL_HOST", defaultValue = "")
     private String defaultVirtualHost;
-    @Inject
-    private CamelRouter camelRouter;
+
+    @ConfigProperty(name = "CAMEL_ROUTES", defaultValue = "")
+    private String camelRoutes;
 
     private int boundPort;
     private String host;
@@ -100,11 +100,11 @@ public class Fabric8MQStatus implements Fabric8MQStatusMBean {
 
     @Override
     public String getCamelRoutes() {
-        return camelRouter.getCamelRoutes();
+        return camelRoutes;
     }
 
     public void setCamelRoutes(String camelRoutes) {
-        camelRouter.setCamelRoutes(camelRoutes);
+        this.camelRoutes = camelRoutes;
     }
 
     @Override

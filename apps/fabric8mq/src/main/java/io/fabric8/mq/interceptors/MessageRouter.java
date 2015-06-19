@@ -13,15 +13,14 @@
  *
  */
 
-package io.fabric8.mq.camel;
+package io.fabric8.mq.interceptors;
 
 import org.apache.activemq.command.Command;
 
-import javax.jms.Message;
 import java.io.IOException;
 
 public interface MessageRouter {
     void process(Command command) throws IOException;
 
-    void inject(Message message) throws Exception;
+    void inject(Command command) throws Exception;
 }

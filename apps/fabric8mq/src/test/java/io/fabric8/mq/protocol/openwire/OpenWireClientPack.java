@@ -15,6 +15,7 @@
 package io.fabric8.mq.protocol.openwire;
 
 import io.fabric8.mq.protocol.BaseClientPack;
+import org.apache.activemq.ActiveMQConnection;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQDestination;
 import org.apache.activemq.util.ServiceStopper;
@@ -136,7 +137,7 @@ public class OpenWireClientPack extends BaseClientPack {
             }
             return connection;
         } else {
-            Connection connection = connectionFactory.createConnection();
+            ActiveMQConnection connection = (ActiveMQConnection) connectionFactory.createConnection();
             connection.start();
             connectionList.add(connection);
             return connection;

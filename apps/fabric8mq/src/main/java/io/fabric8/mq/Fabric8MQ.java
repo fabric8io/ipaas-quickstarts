@@ -14,7 +14,8 @@
  */
 package io.fabric8.mq;
 
-import io.fabric8.mq.camel.DefaultMessageRouter;
+import io.fabric8.mq.interceptors.apiman.APIManRouter;
+import io.fabric8.mq.interceptors.camel.DefaultMessageRouter;
 import io.fabric8.mq.model.Model;
 import io.fabric8.mq.multiplexer.MultiplexerController;
 import io.fabric8.mq.protocol.FutureHandler;
@@ -437,11 +438,13 @@ public class Fabric8MQ extends BrokerStateInfo implements Handler<Transport> {
 
         //add in Camel Interceptor
         DefaultMessageRouter messageRouter = new DefaultMessageRouter(transport);
+        //add in APIMan Interceptor
+        APIManRouter apiManRouter = new APIManRouter(messageRouter);
         //round robin
         synchronized (multiplexerControllers) {
             if (!multiplexerControllers.isEmpty()) {
                 MultiplexerController multiplexerController = multiplexerControllers.remove(0);
-                multiplexerController.addTransport(protocol, messageRouter);
+                multiplexerController.addTransport(protocol, apiManRouter);
                 multiplexerControllers.add(multiplexerController);
             }
         }

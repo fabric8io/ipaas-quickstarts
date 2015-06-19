@@ -15,6 +15,7 @@
 
 package io.fabric8.mq;
 
+import io.fabric8.mq.util.TransportConnectionStateRegister;
 import org.apache.activemq.Service;
 import org.apache.activemq.command.ActiveMQDestination;
 import org.apache.activemq.command.Command;
@@ -47,8 +48,6 @@ public interface MessageDistribution extends Service {
 
     boolean isStopped();
 
-    void addTransportCreatedListener(TransportChangedListener transportChangedListener);
-
-    void removeTransportCreatedListener(TransportChangedListener transportChangedListener);
+    TransportConnectionStateRegister getTransportConnectionStateRegister();
 
 }

@@ -16,40 +16,55 @@
 package io.fabric8.mq.sharding;
 
 import io.fabric8.mq.MessageDistribution;
-import io.fabric8.mq.TransportChangedListener;
 import io.fabric8.mq.coordination.brokers.BrokerTransport;
 import io.fabric8.mq.model.BrokerControl;
 import io.fabric8.mq.model.BrokerModelChangedListener;
 import io.fabric8.mq.util.LRUCache;
 import io.fabric8.mq.util.MultiCallback;
+import io.fabric8.mq.util.TransportConnectionState;
+import io.fabric8.mq.util.TransportConnectionStateRegister;
 import org.apache.activemq.command.ActiveMQDestination;
 import org.apache.activemq.command.Command;
+import org.apache.activemq.command.ConnectionInfo;
+import org.apache.activemq.command.ConsumerInfo;
 import org.apache.activemq.command.ExceptionResponse;
+import org.apache.activemq.command.ProducerInfo;
+import org.apache.activemq.command.SessionInfo;
+import org.apache.activemq.state.ConsumerState;
+import org.apache.activemq.state.ProducerState;
+import org.apache.activemq.state.SessionState;
 import org.apache.activemq.transport.FutureResponse;
 import org.apache.activemq.transport.ResponseCallback;
 import org.apache.activemq.transport.Transport;
 import org.apache.activemq.transport.TransportListener;
 import org.apache.activemq.util.ServiceStopper;
 import org.apache.activemq.util.ServiceSupport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ShardedMessageDistribution extends ServiceSupport implements MessageDistribution, BrokerModelChangedListener {
+    private static final Logger LOG = LoggerFactory.getLogger(ShardedMessageDistribution.class);
     private final BrokerControl brokerControl;
-    private final List<TransportChangedListener> transportChangedListeners = new CopyOnWriteArrayList<>();
+    private final TransportConnectionStateRegister transportConnectionStateRegister = new TransportConnectionStateRegister();
     private final Map<MultiCallback, MultiCallback> requestMap = new LRUCache<>(50000);
     private final InternalTransportListener listener = new InternalTransportListener();
-    private final CountDownLatch countDownLatch = new CountDownLatch(1);
+    private final AtomicReference<CountDownLatch> attachedToBroker = new AtomicReference<>(new CountDownLatch(1));
 
     public ShardedMessageDistribution(BrokerControl brokerControl) {
         this.brokerControl = brokerControl;
+    }
+
+    @Override
+    public TransportConnectionStateRegister getTransportConnectionStateRegister() {
+        return transportConnectionStateRegister;
     }
 
     @Override
@@ -146,28 +161,49 @@ public class ShardedMessageDistribution extends ServiceSupport implements Messag
     }
 
     @Override
-    public void addTransportCreatedListener(TransportChangedListener transportChangedListener) {
-        transportChangedListeners.add(transportChangedListener);
-    }
-
-    @Override
-    public void removeTransportCreatedListener(TransportChangedListener transportChangedListener) {
-        transportChangedListeners.remove(transportChangedListener);
-    }
-
-    @Override
     public void transportCreated(String brokerId, Transport transport) {
         if (isStarted()) {
-            for (TransportChangedListener transportChangedListener : transportChangedListeners) {
-                transportChangedListener.transportCreated(brokerId, transport);
+            try {
+                for (TransportConnectionState transportConnectionState : transportConnectionStateRegister.listConnectionStates()) {
+
+                    ConnectionInfo connectionInfo = transportConnectionState.getInfo();
+                    transport.oneway(connectionInfo);
+
+                    int sessionCount = transportConnectionState.getSessionStates().size();
+                    int consumerCount = 0;
+                    int producerCount = 0;
+                    for (SessionState sessionState : transportConnectionState.getSessionStates()) {
+                        SessionInfo sessionInfo = sessionState.getInfo();
+                        transport.oneway(sessionInfo);
+                        consumerCount = sessionState.getConsumerStates().size();
+                        for (ConsumerState consumerState : sessionState.getConsumerStates()) {
+                            ConsumerInfo consumerInfo = consumerState.getInfo();
+                            transport.oneway(consumerInfo);
+                        }
+                        producerCount = sessionState.getProducerStates().size();
+                        for (ProducerState producerState : sessionState.getProducerStates()) {
+                            ProducerInfo producerInfo = producerState.getInfo();
+                            transport.oneway(producerInfo);
+                        }
+                    }
+                    LOG.info("Sent to " + transport + " Connection Info " + connectionInfo.getClientId() + " [ sessions = " + sessionCount + ",consumers = " + consumerCount + ",producers=" + producerCount + "]");
+
+                }
+            } catch (Throwable e) {
+                LOG.error("Failed to update connection state ", e);
             }
+            CountDownLatch countDownLatch = attachedToBroker.get();
+            countDownLatch.countDown();
+
         }
 
     }
 
     @Override
     public void transportDestroyed(String brokerIdl) {
-
+        if (getCurrentConnectedBrokerCount() == 0) {
+            attachedToBroker.set(new CountDownLatch(1));
+        }
     }
 
     @Override
@@ -177,16 +213,14 @@ public class ShardedMessageDistribution extends ServiceSupport implements Messag
 
     @Override
     public void brokerNumberChanged(int numberOfBrokers) {
-        if (numberOfBrokers > 0) {
-            countDownLatch.countDown();
-        }
     }
 
     @Override
     protected void doStart() throws Exception {
-        brokerControl.addMessageDistribution(this);
         brokerControl.addBrokerModelChangedListener(this);
+        brokerControl.addMessageDistribution(this);
         if (!brokerControl.getBrokerModels().isEmpty()) {
+            CountDownLatch countDownLatch = this.attachedToBroker.get();
             countDownLatch.countDown();
         }
     }
@@ -211,6 +245,7 @@ public class ShardedMessageDistribution extends ServiceSupport implements Messag
 
     private void waitForBroker() {
         try {
+            CountDownLatch countDownLatch = attachedToBroker.get();
             if (!countDownLatch.await(1, TimeUnit.MINUTES)) {
                 throw new IllegalStateException("Broker didn't start");
             }
