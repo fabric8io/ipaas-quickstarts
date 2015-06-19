@@ -25,10 +25,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>io.fabric8.apps</groupId>
-  <artifactId>cdelivery</artifactId>
+  <artifactId>chat</artifactId>
   <packaging>pom</packaging>
 
-  <name>Fabric8 :: Apps Groups :: Continuous Delivery</name>
+  <name>Fabric8 :: Apps Groups :: Chat</name>
 
   <properties>
     <fabric8.combineDependencies>true</fabric8.combineDependencies>
@@ -37,63 +37,33 @@
   <dependencies>
     <dependency>
       <groupId>io.fabric8.apps</groupId>
-      <artifactId>cdelivery-core</artifactId>
-      <version>${project.version}</version>
-      <classifier>kubernetes</classifier>
-      <type>json</type>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8.apps</groupId>
-      <artifactId>chat</artifactId>
-      <version>${project.version}</version>
-      <classifier>kubernetes</classifier>
-      <type>json</type>
-    </dependency>
-
-    <!-- project wizard -->
-    <dependency>
-      <groupId>io.fabric8.jube.images.fabric8</groupId>
-      <artifactId>fabric8-forge</artifactId>
-      <version>${project.version}</version>
-      <classifier>kubernetes</classifier>
-      <type>json</type>
-    </dependency>
-
-
-    <!-- CD social -->
-    <dependency>
-      <groupId>io.fabric8.jube.images.fabric8</groupId>
-      <artifactId>taiga</artifactId>
+      <artifactId>base</artifactId>
       <version>${project.version}</version>
       <classifier>kubernetes</classifier>
       <type>json</type>
     </dependency>
     <dependency>
       <groupId>io.fabric8.jube.images.fabric8</groupId>
-      <artifactId>orion</artifactId>
-      <version>${project.version}</version>
-      <classifier>kubernetes</classifier>
-      <type>json</type>
-    </dependency>
-
-
-    <!-- jbpm CD stuff -->
-<!--
-    <dependency>
-      <groupId>io.fabric8.jube.images.fabric8</groupId>
-      <artifactId>cdelivery</artifactId>
+      <artifactId>hubot-notifier</artifactId>
       <version>${project.version}</version>
       <classifier>kubernetes</classifier>
       <type>json</type>
     </dependency>
     <dependency>
       <groupId>io.fabric8.jube.images.fabric8</groupId>
-      <artifactId>jbpm-designer</artifactId>
+      <artifactId>letschat</artifactId>
       <version>${project.version}</version>
       <classifier>kubernetes</classifier>
       <type>json</type>
     </dependency>
--->
+    <dependency>
+      <groupId>io.fabric8.jube.images.fabric8</groupId>
+      <artifactId>hubot-letschat</artifactId>
+      <version>${project.version}</version>
+      <classifier>kubernetes</classifier>
+      <type>json</type>
+    </dependency>
+
   </dependencies>
 
 </project>
