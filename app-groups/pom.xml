@@ -37,6 +37,7 @@
     <module>base</module>
     <module>cdelivery-core</module>
     <module>cdelivery</module>
+    <module>chat</module>
     <module>ipaas</module>
     <module>logging</module>
     <module>kitchen-sink</module>
