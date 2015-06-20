@@ -46,7 +46,6 @@ public class MQAutoScaler implements MQAutoScalerMBean {
     private int pollTime = 5;
     private int minimumGroupSize = 1;
     private int maximumGroupSize = 2;
-    private String kubernetesMaster = KubernetesFactory.DEFAULT_KUBERNETES_MASTER;
     private ObjectName MQAutoScalerObjectName;
     private AtomicBoolean started = new AtomicBoolean();
     private JolokiaClients clients;
@@ -180,14 +179,6 @@ public class MQAutoScaler implements MQAutoScalerMBean {
         this.minimumGroupSize = minimumGroupSize;
     }
 
-    public String getKubernetesMaster() {
-        return kubernetesMaster;
-    }
-
-    public void setKubernetesMaster(String kubernetesMaster) {
-        this.kubernetesMaster = kubernetesMaster;
-    }
-
     public String getBrokerSelector() {
         return brokerSelector;
     }
@@ -220,13 +211,13 @@ public class MQAutoScaler implements MQAutoScalerMBean {
             MQAutoScalerObjectName = new ObjectName(DEFAULT_DOMAIN, "type", "mq-autoscaler");
             JMXUtils.registerMBean(this, MQAutoScalerObjectName);
 
-            KubernetesFactory kubernetesFactory = new KubernetesFactory(getKubernetesMaster());
+            KubernetesFactory kubernetesFactory = new KubernetesFactory();
             kubernetes = new KubernetesClient(kubernetesFactory);
             clients = new JolokiaClients(kubernetes);
 
             timer = new Timer("MQAutoScaler timer");
             startTimerTask();
-            LOG.info("MQAutoScaler started, using Kubernetes master " + getKubernetesMaster());
+            LOG.info("MQAutoScaler started, using Kubernetes master " + kubernetesFactory.getKubernetesMaster());
 
         }
     }

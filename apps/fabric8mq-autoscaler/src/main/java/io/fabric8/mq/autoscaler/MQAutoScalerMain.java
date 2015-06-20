@@ -36,8 +36,6 @@ public class MQAutoScalerMain {
             mqAutoScaler.setMaximumGroupSize(maximumGroupSize.intValue());
             Number minimumGroupSize = Systems.getEnvVarOrSystemProperty("MIN_GROUP_SIZE", mqAutoScaler.getMinimumGroupSize());
             mqAutoScaler.setMinimumGroupSize(minimumGroupSize.intValue());
-            String kubernetesMaster = Systems.getEnvVarOrSystemProperty("KUBERNETES_MASTER", mqAutoScaler.getKubernetesMaster());
-            mqAutoScaler.setKubernetesMaster(kubernetesMaster);
             Number maxBrokerConnections = Systems.getEnvVarOrSystemProperty("MAX_BROKER_CONNECTIONS", mqAutoScaler.getMaxConnectionsPerBroker());
             mqAutoScaler.setMaxConnectionsPerBroker(maxBrokerConnections.intValue());
             Number maxBrokerDestinations = Systems.getEnvVarOrSystemProperty("MAX_BROKER_DESTINATIONS", mqAutoScaler.getMaxDestinationsPerBroker());
