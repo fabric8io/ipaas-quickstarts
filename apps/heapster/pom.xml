@@ -40,12 +40,8 @@
   </dependencies>
 
   <properties>
-    <docker.image>kubernetes/heapster:canary</docker.image>
-    <docker.port.container.http>8082</docker.port.container.http>
+    <docker.image>kubernetes/heapster:V0.14.2</docker.image>
     <docker.port.container.jolokia />
-
-    <fabric8.service.port>8082</fabric8.service.port>
-    <fabric8.service.containerPort>http</fabric8.service.containerPort>
 
     <fabric8.label.component>heapster</fabric8.label.component>
     <fabric8.label.provider>fabric8</fabric8.label.provider>
