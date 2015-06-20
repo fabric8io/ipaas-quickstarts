@@ -78,7 +78,7 @@ public class KubernetesControl extends BaseBrokerControl {
 
     public void pollBrokers() {
         try {
-            Map<String, Pod> podMap = KubernetesHelper.getSelectedPodMap(kubernetes, getBrokerSelector());
+            Map<String, Pod> podMap = KubernetesHelper.getSelectedPodMap(kubernetes, kubernetes.getNamespace(), getBrokerSelector());
             Collection<Pod> pods = podMap.values();
             LOG.info("Checking " + getBrokerSelector() + ": groupSize = " + pods.size());
             for (Pod pod : pods) {
