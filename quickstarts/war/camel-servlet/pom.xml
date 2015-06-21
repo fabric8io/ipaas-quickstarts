@@ -142,7 +142,7 @@
                   <descriptorRef>${docker.assemblyDescriptorRef}</descriptorRef>
                 </assembly>
                 <env>
-                  <CATALINA_OPTS>-javaagent:/opt/tomcat/jolokia-agent.jar=host=0.0.0.0,port=8778,policyLocation=jar:file:///maven/ROOT.war!/WEB-INF/classes/jolokia-access.xml</CATALINA_OPTS>
+                  <CATALINA_OPTS>-javaagent:/opt/tomcat/jolokia-agent.jar=host=0.0.0.0,port=8778</CATALINA_OPTS>
                 </env>
               </build>
             </image>
