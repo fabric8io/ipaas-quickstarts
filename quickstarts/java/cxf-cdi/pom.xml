@@ -69,8 +69,9 @@
     <fabric8.service.port>9002</fabric8.service.port>
     <fabric8.service.containerPort>${http.port}</fabric8.service.containerPort>
 
-    <fabric8.label.component>quickStartJavaCxfCdi</fabric8.label.component>
+    <fabric8.label.container>java</fabric8.label.container>
     <fabric8.label.group>quickstarts</fabric8.label.group>
+    <fabric8.iconRef>icons/java.svg</fabric8.iconRef>
   </properties>
 
   <dependencyManagement>

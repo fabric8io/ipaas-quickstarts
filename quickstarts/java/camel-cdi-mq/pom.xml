@@ -59,7 +59,6 @@
     <fabric8.label.container>java</fabric8.label.container>
     <fabric8.label.group>quickstarts</fabric8.label.group>
     <fabric8.iconRef>icons/camel.svg</fabric8.iconRef>
-
   </properties>
 
   <dependencyManagement>

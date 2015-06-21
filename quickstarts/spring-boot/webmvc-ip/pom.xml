@@ -56,12 +56,14 @@
     <docker.env.JAR>${project.artifactId}-${project.version}.jar</docker.env.JAR>
     <docker.port.container.http>8080</docker.port.container.http>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
+
     <fabric8.service.name>spring-boot-webmvc-ip</fabric8.service.name>
     <fabric8.service.port>80</fabric8.service.port>
     <fabric8.service.containerPort>8080</fabric8.service.containerPort>
+
     <fabric8.label.container>spring-boot</fabric8.label.container>
     <fabric8.label.group>quickstarts</fabric8.label.group>
-    <fabric8.label.quickstart>webmvc-ip</fabric8.label.quickstart>
+    <fabric8.iconRef>icons/java.svg</fabric8.iconRef>
   </properties>
 
   <dependencyManagement>

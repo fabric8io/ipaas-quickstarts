@@ -68,6 +68,10 @@
     <docker.assemblyDescriptor>${basedir}/src/main/fabric8/assembly.xml</docker.assemblyDescriptor>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
     <docker.port.container.http>8181</docker.port.container.http>
+
+    <fabric8.label.container>karaf</fabric8.label.container>
+    <fabric8.label.group>quickstarts</fabric8.label.group>
+    <fabric8.iconRef>icons/karaf.svg</fabric8.iconRef>    
   </properties>
 
   <dependencyManagement>

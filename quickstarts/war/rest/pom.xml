@@ -59,7 +59,6 @@
     <docker.port.container.http>8080</docker.port.container.http>
 
     <fabric8.replicationController.name>quickstart-war-rest</fabric8.replicationController.name>
-    <fabric8.iconRef>icons/tomcat.svg</fabric8.iconRef>
 
     <fabric8.service.name>quickstart-rest</fabric8.service.name>
     <fabric8.service.port>9103</fabric8.service.port>
@@ -67,6 +66,7 @@
 
     <fabric8.label.component>quickStartWarRest</fabric8.label.component>
     <fabric8.label.group>quickstarts</fabric8.label.group>
+    <fabric8.iconRef>icons/tomcat.svg</fabric8.iconRef>
   </properties>
 
   <licenses>
