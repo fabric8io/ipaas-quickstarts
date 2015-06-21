@@ -58,7 +58,7 @@
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
 
     <fabric8.service.name>spring-boot-webmvc-ip</fabric8.service.name>
-    <fabric8.service.port>80</fabric8.service.port>
+    <fabric8.service.port>9011</fabric8.service.port>
     <fabric8.service.containerPort>8080</fabric8.service.containerPort>
 
     <fabric8.label.component>${project.artifactId}</fabric8.label.component>
