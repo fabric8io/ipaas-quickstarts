@@ -71,8 +71,11 @@ public class CamelRouter extends ServiceSupport {
         String routesString = getCamelRoutes();
         routesString = routesString.trim();
         if (!routesString.matches("route>")) {
-            String str = "<route>" + System.lineSeparator() + routesString + System.lineSeparator() + "</route>";
-            routesString = str;
+            String lines[] = routesString.split("\\r?\\n");
+            routesString = "";
+            for (int i= 0; i < lines.length;i++){
+                routesString +=  "<route>" + lines[i]+  "</route>" +  System.lineSeparator();
+            }
         }
         if (!routesString.matches("<routes")) {
             String str = "<routes xmlns=\"http://camel.apache.org/schema/spring\">";

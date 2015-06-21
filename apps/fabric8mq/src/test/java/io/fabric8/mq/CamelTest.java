@@ -59,7 +59,8 @@ public class CamelTest {
 
     @Test
     public void test() throws Exception {
-/*
+
+        /*
         final int numberOfMessages = 10;
         final CountDownLatch countDownLatch = new CountDownLatch(numberOfMessages);
         String destinationName = "testtopic";
@@ -70,7 +71,7 @@ public class CamelTest {
         final Connection connection = connectionFactory.createConnection();
         connection.start();
 
-        Session session = connection.createSession(false,Session.AUTO_ACKNOWLEDGE);
+        Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
         Destination destination = new ActiveMQQueue(destinationName);
         MessageConsumer consumer = session.createConsumer(destination);
         consumer.setMessageListener(new MessageListener() {
@@ -97,7 +98,7 @@ public class CamelTest {
         connection.close();
 
         countDownLatch.await(numberOfMessages * 100, TimeUnit.SECONDS);
-        Assert.assertTrue(countDownLatch.getCount()==0);
-*/
+        Assert.assertTrue(countDownLatch.getCount() == 0);
+        */
     }
 }
