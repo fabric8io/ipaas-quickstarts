@@ -58,7 +58,8 @@
     <docker.assemblyDescriptorRef>artifact-with-dependencies</docker.assemblyDescriptorRef>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
     <docker.env.MAIN>org.apache.camel.cdi.Main</docker.env.MAIN>
-
+ 
+    <fabric8.label.component>${project.artifactId}</fabric8.label.component>
     <fabric8.label.container>java</fabric8.label.container>
     <fabric8.label.group>quickstarts</fabric8.label.group>
     <fabric8.iconRef>icons/camel.svg</fabric8.iconRef>
@@ -177,7 +178,7 @@
       <plugin>
         <groupId>io.fabric8</groupId>
         <artifactId>fabric8-maven-plugin</artifactId>
-        <version>2.3-SNAPSHOT</version>
+        <version>${fabric8.version}</version>
         <executions>
           <execution>
             <id>json</id>

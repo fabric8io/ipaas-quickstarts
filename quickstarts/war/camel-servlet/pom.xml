@@ -57,7 +57,7 @@
     <fabric8.service.port>9101</fabric8.service.port>
     <fabric8.service.containerPort>8080</fabric8.service.containerPort>
 
-    <fabric8.label.component>quickStartCamelServlet</fabric8.label.component>
+    <fabric8.label.component>${project.artifactId}</fabric8.label.component>
     <fabric8.label.group>quickstarts</fabric8.label.group>
     <fabric8.iconRef>icons/tomcat.svg</fabric8.iconRef>
   </properties>
