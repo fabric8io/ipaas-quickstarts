@@ -51,8 +51,6 @@
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
     <docker.port.container.http>8080</docker.port.container.http>
 
-    <fabric8.replicationController.name>quickstart-camel-servlet</fabric8.replicationController.name>
-
     <fabric8.service.name>quickstart-camelservlet</fabric8.service.name>
     <fabric8.service.port>9101</fabric8.service.port>
     <fabric8.service.containerPort>8080</fabric8.service.containerPort>
