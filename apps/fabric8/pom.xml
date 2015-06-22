@@ -45,7 +45,7 @@
 
     <fabric8.extra.json>${basedir}/src/main/fabric8/kubernetes-extra.json</fabric8.extra.json>
 
-    <fabric8.parameter.DOMAIN.value>vagrant.local</fabric8.parameter.DOMAIN.value>
+    <fabric8.parameter.DOMAIN.value>vagrant.f8</fabric8.parameter.DOMAIN.value>
     <fabric8.parameter.DOMAIN.description>The domain name to append to the service name to access web applications</fabric8.parameter.DOMAIN.description>
   </properties>
 
