@@ -44,6 +44,13 @@
     </dependency>
     <dependency>
       <groupId>io.fabric8.apps</groupId>
+      <artifactId>messaging</artifactId>
+      <version>${project.version}</version>
+      <classifier>kubernetes</classifier>
+      <type>json</type>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8.apps</groupId>
       <artifactId>cdelivery</artifactId>
       <version>${project.version}</version>
       <classifier>kubernetes</classifier>

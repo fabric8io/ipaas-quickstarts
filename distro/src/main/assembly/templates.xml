@@ -1,0 +1,30 @@
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.3"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.3 http://maven.apache.org/xsd/assembly-1.1.3.xsd">
+  <id>templates</id>
+  <formats>
+    <format>zip</format>
+  </formats>
+  <includeBaseDirectory>false</includeBaseDirectory>
+    <dependencySets>
+      <dependencySet>
+        <useTransitiveDependencies>true</useTransitiveDependencies>
+        <!-- main apps -->
+        <includes>
+          <include>io.fabric8.apps:*:json:kubernetes:*</include>
+        </includes>
+        <outputDirectory>/main</outputDirectory>
+        <outputFileNameMapping>${artifact.artifactId}-${artifact.version}.json</outputFileNameMapping>
+      </dependencySet>
+
+      <!-- individual microservices -->
+      <dependencySet>
+        <useTransitiveDependencies>false</useTransitiveDependencies>
+        <includes>
+          <include>io.fabric8.jube.images.fabric8:*:json:kubernetes:*</include>
+        </includes>
+        <outputDirectory>/microservices</outputDirectory>
+        <outputFileNameMapping>${artifact.artifactId}-${artifact.version}.json</outputFileNameMapping>
+      </dependencySet>
+    </dependencySets>
+</assembly>
