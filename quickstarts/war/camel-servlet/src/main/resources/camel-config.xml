@@ -44,6 +44,8 @@
           </transform>
         </otherwise>
       </choice>
+      <!-- log what we are replying -->
+      <log message="Reply: ${body}}"/>
     </route>
 
   </camelContext>
