@@ -393,6 +393,7 @@
           <modules>
             <module>apps</module>
             <module>app-groups</module>
+            <module>distro</module>
           </modules>
         </profile>
         <profile>
