@@ -11,3 +11,9 @@ The REST service provides a customer service that supports the following operati
 - GET /customerservice/orders/{orderId}/products/{productId} - to view a specific product on an order with the given id
 
 When the application is deployed in Apache Tomcat, you can use the web console to list the Tomcat applications, and easily access the quickstart by clicking the url on the `rest` application.
+
+
+## REST client
+
+There is a standalone Java client `quickstarts/java/camel-cdi-rest` which invokes this REST service using a Camel route that triggers every 5th second.
+
