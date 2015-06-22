@@ -69,7 +69,7 @@ public abstract class BaseBrokerControl extends ServiceSupport implements Broker
     @ConfigProperty(name = "BBROKER_TEMPLATE_LOCATION", defaultValue = "META-INF/replicator-template.json")
     private String brokerTemplateLocation;
     @Inject
-    @ConfigProperty(name = "BROKER_SELECTOR", defaultValue = "container=java,component=fabric8MQ,provider=fabric8,group=fabric8MQGroup")
+    @ConfigProperty(name = "BROKER_SELECTOR", defaultValue = "component=amqbroker,provider=fabric8,group=amqbroker")
     private String brokerSelector;
     @Inject
     @ConfigProperty(name = "BBROKER_COORDINATOR", defaultValue = "singleton")
