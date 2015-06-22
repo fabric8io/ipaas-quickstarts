@@ -31,7 +31,7 @@
     <name>Fabric8 :: Apps</name>
 
     <properties>
-        <activemq.container.port>6162</activemq.container.port>
+        <activemq.container.port>6194</activemq.container.port>
         <activemq.service.port>6163</activemq.service.port>
         <amqbroker.container.port>7162</amqbroker.container.port>
         <amqbroker.service.port>7163</amqbroker.service.port>
