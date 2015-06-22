@@ -57,8 +57,8 @@ public class KubernetesControl extends BaseBrokerControl {
     private KubernetesClient kubernetes;
     private JolokiaClients clients;
     @Inject
-    @ConfigProperty(name = "AMQ_BROKER_CONTROLLER_ID", defaultValue = "amq-broker")
-    private String replicationControllerId = "amq-broker";
+    @ConfigProperty(name = "AMQ_BROKER_CONTROLLER_ID", defaultValue = "amqbroker")
+    private String replicationControllerId = "amqbroker";
 
     public String getReplicationControllerId() {
         return replicationControllerId;
