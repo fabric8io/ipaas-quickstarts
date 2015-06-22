@@ -18,6 +18,9 @@ package io.fabric8.quickstarts.cxfcdi;
 import java.util.Map;
 
 import io.fabric8.cxf.endpoint.ManagedApi;
+import io.fabric8.utils.Strings;
+import io.fabric8.utils.Systems;
+
 import org.apache.cxf.cdi.CXFCdiServlet;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -44,7 +47,7 @@ public class ApplicationStarter {
             port = "8586";
         }
         Integer num = Integer.parseInt(port);
-        String service = System.getProperty("SERVICE");
+        String service = Systems.getEnvVarOrSystemProperty("WEB_CONTEXT_PATH", "WEB_CONTEXT_PATH", "");
         if (service == null) {
             // and fallback to use environment variable
             service = System.getenv("SERVICE");
@@ -62,7 +65,10 @@ public class ApplicationStarter {
         System.out.println("View the services at:            http://localhost:" + port + servletContextPath + servicesPath);
         System.out.println("View an example REST service at: http://localhost:" + port + servletContextPath + "/cxfcdi/customerservice/customers/123");
         System.out.println();
-        System.out.println();
+        String url = "http://localhost:" + port + servletContextPath;
+        if (!url.endsWith("/")) {
+           url += "/";
+        }
 
 /*
         Map<String, String> env = System.getenv();
@@ -82,8 +88,13 @@ public class ApplicationStarter {
         context.setContextPath("/");
         context.addEventListener(new Listener());
         context.addEventListener(new BeanManagerResourceBindingListener());
-        context.addServlet(servletHolder, "/" + service + "/*");
-
+        
+        String servletPath = "/*";
+        if (Strings.isNotBlank(service)) {
+         servletPath = servletContextPath + "/*";
+        }
+        context.addServlet(servletHolder, servletPath);
+        
         server.setHandler(context);
         server.start();
         return server;
