@@ -33,7 +33,7 @@
   <name>Fabric8 :: Quickstarts :: Karaf :: Parent</name>
 
   <properties>
-    <fabric8.iconRef>icons/karaf.svg</fabric8.iconRef>
+    <fabric8.iconRef>karaf.svg</fabric8.iconRef>
   </properties>
 
   <modules>

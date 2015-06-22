@@ -33,7 +33,7 @@
   <name>Fabric8 :: Quickstarts :: Java :: Parent</name>
 
   <properties>
-    <fabric8.iconRef>icons/java.svg</fabric8.iconRef>
+    <fabric8.iconRef>java.svg</fabric8.iconRef>
   </properties>
 
   <modules>

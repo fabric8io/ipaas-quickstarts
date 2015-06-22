@@ -62,7 +62,7 @@
     <fabric8.label.component>${project.artifactId}</fabric8.label.component>
     <fabric8.label.container>java</fabric8.label.container>
     <fabric8.label.group>quickstarts</fabric8.label.group>
-    <fabric8.iconRef>icons/camel.svg</fabric8.iconRef>
+    <fabric8.iconRef>camel.svg</fabric8.iconRef>
   </properties>
 
   <dependencyManagement>

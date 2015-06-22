@@ -32,10 +32,6 @@
   <packaging>pom</packaging>
   <name>Fabric8 :: Quickstarts :: War :: Parent</name>
 
-  <properties>
-    <fabric8.iconRef>icons/tomcat.svg</fabric8.iconRef>
-  </properties>
-
   <modules>
     <module>camel-servlet</module>
     <module>cxf-cdi-servlet</module>
