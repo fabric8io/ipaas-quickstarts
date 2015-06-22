@@ -45,6 +45,7 @@
     <module>management</module>
     <module>messaging</module>
     <module>metrics</module>
+    <module>quickstarts</module>
   </modules>
 
     <build>
