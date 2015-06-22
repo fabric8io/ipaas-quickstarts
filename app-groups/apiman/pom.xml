@@ -37,7 +37,7 @@
   <dependencies>
     <dependency>
       <groupId>io.fabric8.apps</groupId>
-      <artifactId>base</artifactId>
+      <artifactId>logging</artifactId>
       <version>${project.version}</version>
       <classifier>kubernetes</classifier>
       <type>json</type>
