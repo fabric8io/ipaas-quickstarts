@@ -211,14 +211,12 @@ public class MQAutoScaler implements MQAutoScalerMBean {
             MQAutoScalerObjectName = new ObjectName(DEFAULT_DOMAIN, "type", "mq-autoscaler");
             JMXUtils.registerMBean(this, MQAutoScalerObjectName);
 
-            KubernetesFactory kubernetesFactory = new KubernetesFactory();
-            kubernetes = new KubernetesClient(kubernetesFactory);
+            kubernetes = new KubernetesClient();
             clients = new JolokiaClients(kubernetes);
 
             timer = new Timer("MQAutoScaler timer");
             startTimerTask();
-            LOG.info("MQAutoScaler started, using Kubernetes master " + kubernetesFactory.getKubernetesMaster());
-
+            LOG.info("MQAutoScaler started, using Kubernetes master " + kubernetes.getAddress());
         }
     }
 
