@@ -122,8 +122,8 @@ the route anytime with:
 ```
 
 Now you can access the example with the URL
-`https://quickstart-camelservlet.vagrant.local` (assuming that your
-Kubernetes domain is `vagrant.local` and this host can be resolved to
+`https://quickstart-camelservlet.vagrant.f8` (assuming that your
+Kubernetes domain is `vagrant.f8` and this host can be resolved to
 the IP of the Kubernetes master).
 
 ### How to try this example
@@ -134,7 +134,7 @@ pods are in state `running`. If you are on OpenShift, you can use `oc
 get pods` to check the status of all pods.
 
 If you set up the OpenShift routes, you can simply go to
-`http://quickstart-camelservlet.vagrant.local`. Otherwise, you should
+`http://quickstart-camelservlet.vagrant.f8`. Otherwise, you should
 check for the service IP (on OpenShift with `oc get services`) and
 use this. 
 
