@@ -34,6 +34,7 @@
   </properties>
 
   <modules>
+    <module>apiman</module>
     <module>base</module>
     <module>cdelivery-core</module>
     <module>cdelivery</module>
@@ -42,6 +43,7 @@
     <module>logging</module>
     <module>kitchen-sink</module>
     <module>management</module>
+    <module>messaging</module>
     <module>metrics</module>
   </modules>
 
