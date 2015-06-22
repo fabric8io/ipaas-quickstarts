@@ -17,7 +17,13 @@ package io.fabric8.mq;
 
 import io.fabric8.mq.model.BrokerControl;
 import io.fabric8.mq.util.WeldJUnitRunner;
+import org.apache.activemq.ActiveMQConnectionFactory;
+import org.apache.activemq.command.ActiveMQQueue;
+import org.fusesource.mqtt.client.BlockingConnection;
+import org.fusesource.mqtt.client.MQTT;
+import org.fusesource.mqtt.client.QoS;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,6 +31,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import javax.jms.Connection;
+import javax.jms.ConnectionFactory;
+import javax.jms.Destination;
+import javax.jms.Message;
+import javax.jms.MessageConsumer;
+import javax.jms.MessageListener;
+import javax.jms.Session;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 /*
     Test the entire thing - but will use the BrokerControlTestImpl instead of KubernetesControl
@@ -60,8 +75,8 @@ public class CamelTest {
     @Test
     public void test() throws Exception {
 
-        /*
-        final int numberOfMessages = 10;
+
+        final int numberOfMessages = 0;
         final CountDownLatch countDownLatch = new CountDownLatch(numberOfMessages);
         String destinationName = "testtopic";
         String uri = "tcp://0.0.0.0:";
@@ -99,6 +114,6 @@ public class CamelTest {
 
         countDownLatch.await(numberOfMessages * 100, TimeUnit.SECONDS);
         Assert.assertTrue(countDownLatch.getCount() == 0);
-        */
+
     }
 }
