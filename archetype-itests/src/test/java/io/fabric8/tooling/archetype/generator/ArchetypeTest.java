@@ -49,7 +49,7 @@ public class ArchetypeTest {
     private String packageName = "org.acme.mystuff";
 
     // lets get the versions from the pom.xml via a system property
-    private String projectVersion = System.getProperty("project.version", "2.2-SNAPSHOT");
+    private String projectVersion = System.getProperty("project.version", "2.3-SNAPSHOT");
     private File basedir = new File(System.getProperty("basedir", "."));
 
     private static List<String> outDirs = new ArrayList<String>();

@@ -32,7 +32,7 @@
             "args": [],
             "command": [],
             "env": [],
-            "image": "fabric8/amq-broker:2.2-SNAPSHOT",
+            "image": "fabric8/amq-broker:2.3-SNAPSHOT",
             "imagePullPolicy": "Always",
             "name": "amq-broker-container",
             "ports": [
