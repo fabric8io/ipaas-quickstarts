@@ -46,14 +46,14 @@
     <!-- rest server and client -->
     <dependency>
       <groupId>io.fabric8.jube.images.fabric8</groupId>
-      <artifactId>quickstart-java-camel-cdi-rest</artifactId>
+      <artifactId>quickstart-war-rest</artifactId>
       <version>${project.version}</version>
       <classifier>kubernetes</classifier>
       <type>json</type>
     </dependency>
     <dependency>
       <groupId>io.fabric8.jube.images.fabric8</groupId>
-      <artifactId>quickstart-war-rest</artifactId>
+      <artifactId>quickstart-java-camel-cdi-rest</artifactId>
       <version>${project.version}</version>
       <classifier>kubernetes</classifier>
       <type>json</type>
