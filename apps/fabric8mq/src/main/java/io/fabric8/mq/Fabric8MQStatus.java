@@ -38,10 +38,10 @@ public class Fabric8MQStatus implements Fabric8MQStatusMBean {
     @ConfigProperty(name = "NAME", defaultValue = "MQController")
     private String name;
     @Inject
-    @ConfigProperty(name = "CONTROLER_PORT", defaultValue = "6194")
+    @ConfigProperty(name = "CONTROLLER_PORT", defaultValue = "6194")
     private int controllerPort;
     @Inject
-    @ConfigProperty(name = "CONTROLER_HOST", defaultValue = "0.0.0.0")
+    @ConfigProperty(name = "CONTROLLER_HOST", defaultValue = "0.0.0.0")
     private String controllerHost;
     @Inject
     @ConfigProperty(name = "VIRTUAL_HOST", defaultValue = "")
