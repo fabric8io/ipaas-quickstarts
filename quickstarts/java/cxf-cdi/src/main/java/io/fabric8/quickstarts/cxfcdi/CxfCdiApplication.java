@@ -34,12 +34,14 @@ import org.apache.cxf.feature.LoggingFeature;
 @ApplicationPath( "cxfcdi" )
 public class CxfCdiApplication extends Application {
     @Inject private CustomerService customerService;
+    @Inject private RootService rootService;
     @Produces private JacksonJsonProvider jacksonJsonProvider = new JacksonJsonProvider();
 
     @Override
     public Set<Object> getSingletons() {
             return new HashSet<Object>(
                     Arrays.asList(
+                    rootService,
                     customerService,
                     jacksonJsonProvider,
                     new SwaggerFeature(),
