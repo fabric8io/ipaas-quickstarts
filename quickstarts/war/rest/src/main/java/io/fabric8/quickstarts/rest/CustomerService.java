@@ -15,7 +15,6 @@
  */
 package io.fabric8.quickstarts.rest;
 
-
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
@@ -25,7 +24,6 @@ import org.apache.cxf.jaxrs.ext.MessageContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.Resource;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -106,7 +104,6 @@ public class CustomerService {
                            @ApiResponse(code = 500, message = "Invalid ID supplied"),
                            @ApiResponse(code = 204, message = "Customer not found") 
                          })
-
     public Response updateCustomer(@ApiParam(value = "Customer object that needs to be updated", required = true) Customer customer) {
         LOG.info("Invoking updateCustomer, Customer name is: {}", customer.getName());
         Customer c = customers.get(customer.getId());
