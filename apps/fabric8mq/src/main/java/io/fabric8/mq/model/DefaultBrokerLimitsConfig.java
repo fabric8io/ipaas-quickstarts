@@ -21,21 +21,21 @@ import javax.inject.Inject;
 
 public class DefaultBrokerLimitsConfig implements BrokerLimitsConfig {
     @Inject
-    @ConfigProperty(name = "MAX_CONNECTIONS_PER_BROKER", defaultValue = "20")
-    private int maxConnectionsPerBroker = 20;
+    @ConfigProperty(name = "MAX_CONNECTIONS_PER_BROKER", defaultValue = "5")
+    private int maxConnectionsPerBroker = 5;
     @Inject
-    @ConfigProperty(name = "MAX_DESTINATIONS_PER_BROKER", defaultValue = "20")
-    private int maxDestinationsPerBroker = 20;
+    @ConfigProperty(name = "MAX_DESTINATIONS_PER_BROKER", defaultValue = "4")
+    private int maxDestinationsPerBroker = 4;
     @Inject
     @ConfigProperty(name = "MAX_DESTINATION_DEPTH", defaultValue = "20")
     private int maxDestinationDepth = 20;
     @Inject
-    @ConfigProperty(name = "MAX_PRODUCERS_PER_DESTINATION", defaultValue = "20")
-    private int maxProducersPerDestination = 20;
+    @ConfigProperty(name = "MAX_PRODUCERS_PER_DESTINATION", defaultValue = "10")
+    private int maxProducersPerDestination = 10;
 
     @Inject
-    @ConfigProperty(name = "MAX_CONSUMERS_PER_DESTINATION", defaultValue = "20")
-    private int maxConsumersPerDestination = 20;
+    @ConfigProperty(name = "MAX_CONSUMERS_PER_DESTINATION", defaultValue = "10")
+    private int maxConsumersPerDestination = 10;
 
     @Inject
     @ConfigProperty(name = "MAX_NUMBER_OF_BROKERS", defaultValue = "20")
