@@ -14,3 +14,4 @@ The following [Apps](http://fabric8.io/guide/apps.html) are included in the Fabr
     * [API Registry](http://fabric8.io/guide/apiRegistry.html) provides a global view of all of your RESTful and web service APIs that is displayed in the [Console](http://fabric8.io/guide/console.html) allowing you to inspect and invoke all the endpoints 
     * [MQ](http://fabric8.io/guide/fabric8MQ.html) implements _Messaging As A Service_ with [Apache ActiveMQ](http://activemq.apache.org/) on Kubernetes.
     * [MQ AutoScaler](http://fabric8.io/guide/fabric8MQAutoScaler.html) monitors and scales the [Apache ActiveMQ](http://activemq.apache.org/) brokers running on Kubernetes
+* [Quickstarts](quickstarts) provides a number of quickstart examples such as REST, Camel and ActiveMQ examples
