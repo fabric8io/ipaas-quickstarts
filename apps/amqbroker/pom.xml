@@ -41,9 +41,9 @@
     <fabric8.service.containerPort>${amqbroker.container.port}</fabric8.service.containerPort>
     -->
 
-    <fabric8.label.component>amq-broker</fabric8.label.component>
+    <fabric8.label.component>amqbroker</fabric8.label.component>
     <fabric8.label.group>amqbroker</fabric8.label.group>
-    <fabric8.label.provider>amqbroker</fabric8.label.provider>
+    <fabric8.label.provider>fabric8</fabric8.label.provider>
     <fabric8.iconRef>icons/activemq.svg</fabric8.iconRef>
   </properties>
 
