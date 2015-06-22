@@ -55,6 +55,23 @@
   <build>
     <defaultGoal>install</defaultGoal>
 
+    <plugins>
+      <!-- generate a .zip with all the quickstarts -->
+      <plugin>
+        <groupId>io.fabric8</groupId>
+        <artifactId>fabric8-maven-plugin</artifactId>
+        <version>${fabric8.version}</version>
+        <executions>
+          <execution>
+            <id>attach</id>
+            <phase>package</phase>
+            <goals>
+              <goal>attach</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
     <pluginManagement>
       <plugins>
         <!-- to avoid java8 javadoc being very strict issue during compiling -->
