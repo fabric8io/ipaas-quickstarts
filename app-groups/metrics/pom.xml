@@ -50,11 +50,6 @@
       <classifier>kubernetes</classifier>
       <type>json</type>
     </dependency>
-<!--
-
-    TODO FIXME ASAP
-    this container doesn't startup properly yet to lets disable for now
-
     <dependency>
       <groupId>io.fabric8.jube.images.fabric8</groupId>
       <artifactId>grafana</artifactId>
@@ -62,11 +57,6 @@
       <classifier>kubernetes</classifier>
       <type>json</type>
     </dependency>
--->
-
-    <!--
-    TODO
-
     <dependency>
       <groupId>io.fabric8.jube.images.fabric8</groupId>
       <artifactId>heapster</artifactId>
@@ -74,7 +64,6 @@
       <classifier>kubernetes</classifier>
       <type>json</type>
     </dependency>
--->
 
   </dependencies>
 
