@@ -80,7 +80,7 @@ public class KubernetesControl extends BaseBrokerControl {
         try {
             Map<String, Pod> podMap = KubernetesHelper.getSelectedPodMap(kubernetes, kubernetes.getNamespace(), getBrokerSelector());
             Collection<Pod> pods = podMap.values();
-            LOG.info("Checking " + getBrokerSelector() + ": groupSize = " + pods.size());
+            LOG.debug("Checking " + getBrokerSelector() + ": groupSize = " + pods.size());
             for (Pod pod : pods) {
                 String host = KubernetesHelper.getHost(pod);
                 List<Container> containers = KubernetesHelper.getContainers(pod);
@@ -203,8 +203,8 @@ public class KubernetesControl extends BaseBrokerControl {
                 }
                 if (desiredNumber == (currentDesiredNumber + 1)) {
                     replicationController.getStatus().setReplicas(desiredNumber);
-                    kubernetes.updateReplicationController(getReplicationControllerId(), replicationController);
-                    LOG.error("Updated Broker Replication Controller desired state from " + currentDesiredNumber + " to " + desiredNumber);
+                    kubernetes.updateReplicationController(getReplicationControllerId(), replicationController,kubernetes.getNamespace());
+                    LOG.info("Updated Broker Replication Controller desired state from " + currentDesiredNumber + " to " + desiredNumber);
                 }
             } catch (Throwable e) {
                 LOG.error("Failed to create a Broker", e);
@@ -222,9 +222,9 @@ public class KubernetesControl extends BaseBrokerControl {
                     replicationController.getStatus().setReplicas(desiredNumber);
                     model.remove(brokerModel);
                     //Todo update when Kubernetes allows you to target exact pod to discard from replication controller
-                    kubernetes.deletePod(brokerModel.getPod());
-                    kubernetes.updateReplicationController(getReplicationControllerId(), replicationController);
-                    LOG.error("Updated Broker Replication Controller desired state from " + currentDesiredNumber + " to " + desiredNumber + " and removed Broker " + brokerModel);
+                    kubernetes.deletePod(brokerModel.getPod(),kubernetes.getNamespace());
+                    kubernetes.updateReplicationController(getReplicationControllerId(), replicationController,kubernetes.getNamespace());
+                    LOG.info("Updated Broker Replication Controller desired state from " + currentDesiredNumber + " to " + desiredNumber + " and removed Broker " + brokerModel);
                 }
             } catch (Throwable e) {
                 LOG.error("Failed to create a Broker", e);
@@ -235,7 +235,7 @@ public class KubernetesControl extends BaseBrokerControl {
     private ReplicationController getBrokerReplicationController() throws InterruptedException {
         ReplicationController running;
         do {
-            running = kubernetes.getReplicationController(getReplicationControllerId());
+            running = kubernetes.getReplicationController(getReplicationControllerId(),kubernetes.getNamespace());
             if (running == null) {
                 LOG.warn("Waiting for ReplicationController " + getReplicationControllerId() + " to start");
                 Thread.sleep(5000);
@@ -247,7 +247,7 @@ public class KubernetesControl extends BaseBrokerControl {
     private String getOrCreaBteBrokerReplicationControllerId() {
         if (replicationControllerId == null) {
             try {
-                ReplicationController running = kubernetes.getReplicationController(getOrCreaBteBrokerReplicationControllerId());
+                ReplicationController running = kubernetes.getReplicationController(getOrCreaBteBrokerReplicationControllerId(),kubernetes.getNamespace());
                 if (running == null) {
                     ObjectMapper mapper = KubernetesFactory.createObjectMapper();
 
