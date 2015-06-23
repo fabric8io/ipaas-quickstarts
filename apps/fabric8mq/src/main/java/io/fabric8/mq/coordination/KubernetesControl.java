@@ -22,7 +22,7 @@ import io.fabric8.kubernetes.api.KubernetesHelper;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.ReplicationController;
-import io.fabric8.kubernetes.api.model.ReplicationControllerStatus;
+import io.fabric8.kubernetes.api.model.ReplicationControllerSpec;
 import io.fabric8.kubernetes.jolokia.JolokiaClients;
 import io.fabric8.mq.MessageDistribution;
 import io.fabric8.mq.coordination.brokers.BrokerDestinationOverview;
@@ -51,7 +51,6 @@ import java.util.Map;
 import static io.fabric8.kubernetes.api.KubernetesHelper.getName;
 
 public class KubernetesControl extends BaseBrokerControl {
-    static final int DEFAULT_POLLING_TIME = 2000;
     private static final Logger LOG = LoggerFactory.getLogger(KubernetesControl.class);
 
     private KubernetesClient kubernetes;
@@ -76,24 +75,33 @@ public class KubernetesControl extends BaseBrokerControl {
         super.doStart();
     }
 
+    @Override
+    public void scaleDown() {
+        /**
+         * ToDo: Remove this when Kubernetes supports targeted pod deletion
+         */
+    }
+
     public void pollBrokers() {
         try {
             Map<String, Pod> podMap = KubernetesHelper.getSelectedPodMap(kubernetes, kubernetes.getNamespace(), getBrokerSelector());
             Collection<Pod> pods = podMap.values();
             LOG.debug("Checking " + getBrokerSelector() + ": groupSize = " + pods.size());
             for (Pod pod : pods) {
-                String host = KubernetesHelper.getHost(pod);
-                List<Container> containers = KubernetesHelper.getContainers(pod);
+                if (KubernetesHelper.isPodRunning(pod)) {
+                    String host = KubernetesHelper.getHost(pod);
+                    List<Container> containers = KubernetesHelper.getContainers(pod);
 
-                for (Container container : containers) {
-                    try {
-                        LOG.info("Checking pod " + getName(pod) + " container: " + container.getName() + " image: " + container.getImage());
-                        J4pClient client = clients.clientForContainer(host, container, pod);
+                    for (Container container : containers) {
+                        try {
+                            LOG.debug("Checking pod " + getName(pod) + " container: " + container.getName() + " image: " + container.getImage());
+                            J4pClient client = clients.clientForContainer(host, container, pod);
 
-                        populateBrokerStatistics(pod, container, client);
+                            populateBrokerStatistics(pod, container, client);
 
-                    } catch (Throwable e) {
-                        LOG.error("Failed to get broker statistics for pod:  " + getName(pod));
+                        } catch (Throwable e) {
+                            LOG.error("Failed to get broker statistics for pod:  " + getName(pod));
+                        }
                     }
                 }
             }
@@ -144,9 +152,14 @@ public class KubernetesControl extends BaseBrokerControl {
 
                 BrokerOverview brokerOverview = new BrokerOverview();
 
-                attribute = "TotalConnectionsCount";
-                Number result = (Number) BrokerJmxUtils.getAttribute(client, root, attribute);
+                /**
+                 * ToDo: totalConnectionsCount is total connections over lifetime of the Broker
+                 * so best find a better way of figuring out "active" connections
+
+                 attribute = "TotalConnectionsCount";
+                 Number result = (Number) BrokerJmxUtils.getAttribute(client, root, attribute);
                 brokerOverview.setTotalConnections(result.intValue());
+                 */
                 populateDestinations(client, root, brokerOverview);
                 brokerModel.setBrokerStatistics(brokerOverview);
 
@@ -169,7 +182,7 @@ public class KubernetesControl extends BaseBrokerControl {
 
             for (ObjectName objectName : list) {
                 String destinationName = objectName.getKeyProperty("destinationName");
-                if (destinationName.toLowerCase().contains("advisory") && !destinationName.contains(ActiveMQDestination.TEMP_DESTINATION_NAME_PREFIX)) {
+                if (!destinationName.toLowerCase().contains("advisory") && !destinationName.contains(ActiveMQDestination.TEMP_DESTINATION_NAME_PREFIX)) {
                     String producerCount = BrokerJmxUtils.getAttribute(client, objectName, "ProducerCount").toString().trim();
                     String consumerCount = BrokerJmxUtils.getAttribute(client, objectName, "ConsumerCount").toString().trim();
                     String queueSize = BrokerJmxUtils.getAttribute(client, objectName, "QueueSize").toString().trim();
@@ -183,7 +196,7 @@ public class KubernetesControl extends BaseBrokerControl {
             }
         } catch (Exception ex) {
             // Destinations don't exist yet on the broker
-            LOG.debug("populateDestinations failed", ex);
+            LOG.error("populateDestinations failed", ex);
         }
         return brokerOverview;
     }
@@ -193,16 +206,16 @@ public class KubernetesControl extends BaseBrokerControl {
         if (scalingInProgress.startWork(desiredNumber)) {
             try {
                 ReplicationController replicationController = getBrokerReplicationController();
-                ReplicationControllerStatus status = replicationController.getStatus();
+                ReplicationControllerSpec spec = replicationController.getSpec();
                 int currentDesiredNumber = 0;
-                if (status != null) {
-                    currentDesiredNumber = status.getReplicas();
+                if (spec != null) {
+                    currentDesiredNumber = spec.getReplicas();
                 } else {
-                    status = new ReplicationControllerStatus();
-                    replicationController.setStatus(status);
+                    spec = new ReplicationControllerSpec();
+                    replicationController.setSpec(spec);
                 }
                 if (desiredNumber == (currentDesiredNumber + 1)) {
-                    replicationController.getStatus().setReplicas(desiredNumber);
+                    replicationController.getSpec().setReplicas(desiredNumber);
                     kubernetes.updateReplicationController(getReplicationControllerId(), replicationController,kubernetes.getNamespace());
                     LOG.info("Updated Broker Replication Controller desired state from " + currentDesiredNumber + " to " + desiredNumber);
                 }
@@ -217,9 +230,9 @@ public class KubernetesControl extends BaseBrokerControl {
         if (scalingInProgress.startWork(desiredNumber)) {
             try {
                 ReplicationController replicationController = getBrokerReplicationController();
-                int currentDesiredNumber = replicationController.getStatus().getReplicas();
+                int currentDesiredNumber = replicationController.getSpec().getReplicas();
                 if (desiredNumber == (currentDesiredNumber - 1)) {
-                    replicationController.getStatus().setReplicas(desiredNumber);
+                    replicationController.getSpec().setReplicas(desiredNumber);
                     model.remove(brokerModel);
                     //Todo update when Kubernetes allows you to target exact pod to discard from replication controller
                     kubernetes.deletePod(brokerModel.getPod(),kubernetes.getNamespace());

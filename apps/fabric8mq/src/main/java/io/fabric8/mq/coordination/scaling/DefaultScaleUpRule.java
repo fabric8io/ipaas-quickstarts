@@ -61,6 +61,7 @@ public class DefaultScaleUpRule extends ScalingRule {
         for (BrokerModel brokerModel : model.getBrokers()) {
             spareDestinations += model.spareDestinations(brokerModel);
         }
+        System.err.println("SPARE DESTINATIONS = " + spareDestinations);
         return spareDestinations - number > 0;
     }
 

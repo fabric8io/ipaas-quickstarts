@@ -102,6 +102,7 @@ public class DefaultModel extends ServiceSupport implements Model {
         if (brokerModelMap.putIfAbsent(brokerModel.getBrokerId(), brokerModel) == null) {
             try {
                 String name = getClass().getPackage().getName() + ".broker." + brokerModel.getBrokerId();
+                name = ObjectName.quote(name);
                 ObjectName objectName = new ObjectName(DEFAULT_JMX_DOMAIN, "name", name);
                 registerInJmx(objectName, brokerModel);
             } catch (Throwable e) {
