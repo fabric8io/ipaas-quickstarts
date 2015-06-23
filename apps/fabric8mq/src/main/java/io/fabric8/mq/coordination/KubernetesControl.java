@@ -196,7 +196,7 @@ public class KubernetesControl extends BaseBrokerControl {
             }
         } catch (Exception ex) {
             // Destinations don't exist yet on the broker
-            LOG.error("populateDestinations failed", ex);
+            LOG.debug("populateDestinations failed", ex);
         }
         return brokerOverview;
     }
