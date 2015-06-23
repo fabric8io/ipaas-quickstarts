@@ -46,6 +46,6 @@
     <fabric8.label.component>heapster</fabric8.label.component>
     <fabric8.label.provider>fabric8</fabric8.label.provider>
 
-    <fabric8.serviceAccount>heapster</fabric8.serviceAccount>
+    <fabric8.serviceAccount>metrics</fabric8.serviceAccount>
   </properties>
 </project>
