@@ -32,7 +32,7 @@ public class Fabric8MQStatus implements Fabric8MQStatusMBean {
     @ConfigProperty(name = "NUMBER_NET_SERVERS", defaultValue = "-1")
     private int numberOfSevers;
     @Inject
-    @ConfigProperty(name = "NUMBER_MULTIPLEXERS", defaultValue = "-1")
+    @ConfigProperty(name = "NUMBER_MULTIPLEXERS", defaultValue = "1")
     private int numberOfMultiplexers;
     @Inject
     @ConfigProperty(name = "NAME", defaultValue = "MQController")

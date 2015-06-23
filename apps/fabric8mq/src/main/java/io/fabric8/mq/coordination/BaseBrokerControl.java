@@ -57,7 +57,7 @@ public abstract class BaseBrokerControl extends ServiceSupport implements Broker
     protected List<BrokerModelChangedListener> brokerModelChangedListeners;
     private ScheduledFuture poller;
     @Inject
-    @ConfigProperty(name = "BROKER_POLL_INTERVAL", defaultValue = "2000")
+    @ConfigProperty(name = "BROKER_POLL_INTERVAL", defaultValue = "5000")
     private int pollTime;
     @Inject
     @ConfigProperty(name = "BROKER_NAME", defaultValue = "fabric8MQ-AMQ")
