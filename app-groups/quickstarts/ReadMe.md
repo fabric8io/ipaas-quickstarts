@@ -1,4 +1,1 @@
-## Fabric8 Quickstarts
-
-Provides a number of quickstarts to easily try fabric8 with Camel, REST, and ActiveMQ examples that are easily
-installable from the [web-console](http://fabric8.io/guide/console.html).
+Provides a number of quickstarts to easily try fabric8 with Camel, REST, and ActiveMQ examples that are easily installable from the [web-console](http://fabric8.io/guide/console.html).
