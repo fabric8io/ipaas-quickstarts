@@ -15,8 +15,6 @@
  */
 package io.fabric8.quickstarts.cxfcdi;
 
-import java.util.Map;
-
 import io.fabric8.cxf.endpoint.ManagedApi;
 import io.fabric8.utils.Strings;
 import io.fabric8.utils.Systems;
@@ -47,7 +45,7 @@ public class ApplicationStarter {
             port = "8586";
         }
         Integer num = Integer.parseInt(port);
-        String service = Systems.getEnvVarOrSystemProperty("WEB_CONTEXT_PATH", "WEB_CONTEXT_PATH", "");
+        String service = Systems.getEnvVarOrSystemProperty("WEB_CONTEXT_PATH", "WEB_CONTEXT_PATH", "quickstart-java-cxf-cdi");
         if (service == null) {
             // and fallback to use environment variable
             service = System.getenv("SERVICE");
