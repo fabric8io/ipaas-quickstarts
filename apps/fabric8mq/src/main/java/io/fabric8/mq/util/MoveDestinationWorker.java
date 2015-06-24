@@ -133,7 +133,9 @@ public class MoveDestinationWorker extends ServiceSupport {
     }
 
     private void doWork() {
-        LOG.info("Moving Destinations from " + fromBroker.getBrokerId() + " to " + toBroker.getBrokerId());
+        String fromName = fromBroker.getPodId() + "[" + fromBroker.getBrokerId() +"]";
+        String toName = toBroker.getPodId() + "[" + toBroker.getBrokerId() +"]";
+        LOG.info("Moving Destinations from " + fromName+ " to " + toName);
         boolean success = false;
         try {
 
