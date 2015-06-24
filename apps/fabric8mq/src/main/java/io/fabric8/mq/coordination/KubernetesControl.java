@@ -75,12 +75,6 @@ public class KubernetesControl extends BaseBrokerControl {
         super.doStart();
     }
 
-    @Override
-    public void scaleDown() {
-        /**
-         * ToDo: Remove this when Kubernetes supports targeted pod deletion
-         */
-    }
 
     public void pollBrokers() {
         try {
@@ -225,6 +219,16 @@ public class KubernetesControl extends BaseBrokerControl {
         }
     }
 
+
+    @Override
+    public void scaleDown() {
+        /**
+         * ToDo we override this method so that destroyBroker is never called.
+         * Once K8 supports deleting a targeted Pod - we can re-enable it
+         */
+    }
+
+
     public void destroyBroker(BrokerModel brokerModel) {
         int desiredNumber = model.getBrokerCount() - 1;
         if (scalingInProgress.startWork(desiredNumber)) {
@@ -235,8 +239,10 @@ public class KubernetesControl extends BaseBrokerControl {
                     replicationController.getSpec().setReplicas(desiredNumber);
                     model.remove(brokerModel);
                     //Todo update when Kubernetes allows you to target exact pod to discard from replication controller
-                    kubernetes.deletePod(brokerModel.getPod(),kubernetes.getNamespace());
-                    kubernetes.updateReplicationController(getReplicationControllerId(), replicationController,kubernetes.getNamespace());
+                    //kubernetes.deletePod(brokerModel.getPod(),kubernetes.getNamespace());
+                    Pod pod = brokerModel.getPod();
+                    pod.getStatus().setStartTime("0");
+                    //kubernetes.updateReplicationController(getReplicationControllerId(), replicationController,kubernetes.getNamespace());
                     LOG.info("Updated Broker Replication Controller desired state from " + currentDesiredNumber + " to " + desiredNumber + " and removed Broker " + brokerModel);
                 }
             } catch (Throwable e) {

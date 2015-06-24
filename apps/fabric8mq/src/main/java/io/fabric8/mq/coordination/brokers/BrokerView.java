@@ -18,6 +18,7 @@ package io.fabric8.mq.coordination.brokers;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.fabric8.mq.MessageDistribution;
 import org.apache.activemq.command.ActiveMQDestination;
+import org.apache.activemq.transport.DefaultTransportListener;
 import org.apache.activemq.transport.Transport;
 import org.apache.activemq.transport.TransportFactory;
 import org.apache.activemq.transport.TransportListener;
@@ -176,9 +177,11 @@ public class BrokerView extends ServiceSupport {
             Transport transport = transportMap.remove(messageDistribution);
             if (transport != null) {
                 if (transport.isConnected()) {
+                    //prevent exceptions being perculated when we stop this thing
+                    transport.setTransportListener(new DefaultTransportListener());
                     try {
                         transport.stop();
-                    } catch (Exception ignored) {
+                    } catch (Throwable ignored) {
                     }
                 }
             }
