@@ -269,9 +269,10 @@ public class ShardedMessageDistribution extends ServiceSupport implements Messag
         }
 
         public void onException(IOException ex) {
-            //we don't want to perculate this back
-            //we've lost a Broker transport - it should
-            //get attached again
+            TransportListener l = this.listener;
+            if (listener != null){
+                l.onException(ex);
+            }
         }
 
         public void transportInterupted() {
