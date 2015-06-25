@@ -43,13 +43,16 @@
 
     <fabric8.service.port>9200</fabric8.service.port>
     <fabric8.service.containerPort>9200</fabric8.service.containerPort>
-    <fabric8.imagePullPolicy>IfNotPresent</fabric8.imagePullPolicy>
 
     <fabric8.label.component>elasticsearch</fabric8.label.component>
     <fabric8.label.provider>fabric8</fabric8.label.provider>
 
     <fabric8.volume.elasticsearch-data.emptyDir />
     <fabric8.volume.elasticsearch-data.mountPath>/usr/share/elasticsearch/data</fabric8.volume.elasticsearch-data.mountPath>
+
+    <fabric8.livenessProbe.port>9200</fabric8.livenessProbe.port>
+    <fabric8.readinessProbe.httpGet.path>/_template/logstash</fabric8.readinessProbe.httpGet.path>
+    <fabric8.readinessProbe.httpGet.port>9200</fabric8.readinessProbe.httpGet.port>
   </properties>
 
   <build>
