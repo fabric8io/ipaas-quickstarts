@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eo pipefail
+set -exo pipefail
 
 # Wait for ES to start up properly
 until $(curl -s -f -o /dev/null --connect-timeout 1 -m 1 --head http://localhost:9200/); do

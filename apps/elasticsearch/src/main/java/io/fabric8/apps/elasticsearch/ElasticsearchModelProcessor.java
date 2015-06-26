@@ -24,7 +24,7 @@ import io.fabric8.kubernetes.generator.annotation.KubernetesModelProcessor;
 import io.fabric8.openshift.api.model.template.TemplateBuilder;
 
 @KubernetesModelProcessor
-public class ElasticSearchModelProcessor {
+public class ElasticsearchModelProcessor {
 
     public void onTemplate(TemplateBuilder builder) {
         builder.addNewServiceObject()
