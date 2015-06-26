@@ -280,9 +280,6 @@ public class Multiplexer extends ServiceSupport implements Multiplex {
         transportConnectionStateRegister.unregisterConnectionState(multiplexerConnectionInfo.getConnectionId());
         transportConnectionStateRegister.clear();
         try {
-            if (!messageDistribution.isStopped()) {
-                messageDistribution.sendAll(new ShutdownInfo(), true);
-            }
             serviceStopper.stop(messageDistribution);
         } catch (Throwable ignored) {
         }

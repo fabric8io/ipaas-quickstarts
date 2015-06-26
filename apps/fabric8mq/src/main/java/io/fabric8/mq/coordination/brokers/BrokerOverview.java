@@ -65,8 +65,9 @@ public class BrokerOverview implements Comparable<BrokerOverview> {
     private int getTotalActiveCount(Collection<BrokerDestinationOverviewMBean> brokerDestinationOverviewImpls) {
         int result = 0;
         for (BrokerDestinationOverviewMBean brokerDestinationOverview : brokerDestinationOverviewImpls) {
-            if (brokerDestinationOverview.getQueueDepth() > 0 || brokerDestinationOverview.getNumberOfConsumers() > 0) {
-                result++;
+            if (brokerDestinationOverview.getQueueDepth() > 0) {
+            //if (brokerDestinationOverview.getQueueDepth() > 0 || brokerDestinationOverview.getNumberOfConsumers() > 0) {
+                    result++;
             }
         }
         return result;
