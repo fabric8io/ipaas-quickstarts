@@ -58,6 +58,7 @@
 
     <modules>
         <module>amqbroker</module>
+        <module>artifactory</module>
         <module>api-registry</module>
         <module>apiman</module>
         <module>app-library</module>
