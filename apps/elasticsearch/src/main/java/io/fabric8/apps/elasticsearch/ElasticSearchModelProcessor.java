@@ -16,18 +16,18 @@
 
 package io.fabric8.apps.elasticsearch;
 
-import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
 import io.fabric8.kubernetes.api.model.PodSpec;
 import io.fabric8.kubernetes.api.model.PodSpecBuilder;
 import io.fabric8.kubernetes.api.model.PodTemplateSpecBuilder;
 import io.fabric8.kubernetes.api.model.util.IntOrString;
 import io.fabric8.kubernetes.generator.annotation.KubernetesModelProcessor;
+import io.fabric8.openshift.api.model.template.TemplateBuilder;
 
 @KubernetesModelProcessor
 public class ElasticSearchModelProcessor {
 
-    public void onList(KubernetesListBuilder builder) {
-        builder.addNewServiceItem()
+    public void onTemplate(TemplateBuilder builder) {
+        builder.addNewServiceObject()
                 .withNewMetadata()
                     .withName("elasticsearch-cluster")
                     .endMetadata()
