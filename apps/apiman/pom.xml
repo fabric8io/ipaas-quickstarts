@@ -53,6 +53,11 @@
       <classifier>classes</classifier>
       <version>${apiman.version}</version>
     </dependency>
+    <dependency>
+      <groupId>io.apiman</groupId>
+      <artifactId>apiman-distro-data</artifactId>
+      <version>${apiman.version}</version>
+    </dependency>
     
     <!-- fabric8 -->
     <dependency>
