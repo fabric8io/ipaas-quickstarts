@@ -15,7 +15,8 @@
      permissions and limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
 
@@ -29,46 +30,45 @@
 
   <name>Keycloak</name>
   <description>
-    Integrated SSO and IDM for browser apps and RESTful web services
+    Keycloack (security) - Integrated SSO and IDM for browser apps and RESTful services
   </description>
 
   <properties>
-    <fabric8.generateJson>false</fabric8.generateJson>
+    <docker.image>jboss/keycloak:1.1.0.Beta2</docker.image>
+    <docker.port.container.http>8080</docker.port.container.http>
+    <docker.port.container.jolokia/>
+
+    <fabric8.service.port>80</fabric8.service.port>
+    <fabric8.service.containerPort>http</fabric8.service.containerPort>
+
+    <fabric8.label.component>keycloack</fabric8.label.component>
+    <fabric8.label.provider>fabric8</fabric8.label.provider>
   </properties>
 
+  <dependencies>
+    <dependency>
+      <groupId>org.jboss.arquillian.junit</groupId>
+      <artifactId>arquillian-junit-container</artifactId>
+      <scope>test</scope>
+    </dependency>
 
-    <build>
-        <resources>
-            <resource>
-                <directory>src/main/fabric8</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
-    </build>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>fabric8-arquillian</artifactId>
+      <scope>test</scope>
+    </dependency>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.jboss.arquillian.junit</groupId>
-            <artifactId>arquillian-junit-container</artifactId>
-            <scope>test</scope>
-        </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-assertions</artifactId>
+      <scope>test</scope>
+    </dependency>
 
-        <dependency>
-            <groupId>io.fabric8</groupId>
-            <artifactId>fabric8-arquillian</artifactId>
-            <scope>test</scope>
-        </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 
-        <dependency>
-            <groupId>io.fabric8</groupId>
-            <artifactId>kubernetes-assertions</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
 </project>

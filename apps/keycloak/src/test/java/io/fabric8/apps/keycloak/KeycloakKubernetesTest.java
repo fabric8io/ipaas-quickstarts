@@ -39,7 +39,7 @@ public class KeycloakKubernetesTest {
 
     @Test
     public void testKeycloak() throws Exception {
-        assertThat(client).replicationController("keycloak-rc").isNotNull();
+        assertThat(client).replicationController("keycloak").isNotNull();
         assertThat(client).pods()
                 .runningStatus()
                 .filterNamespace(session.getNamespace())

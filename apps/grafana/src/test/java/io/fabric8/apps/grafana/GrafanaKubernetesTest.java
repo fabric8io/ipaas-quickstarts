@@ -39,8 +39,8 @@ public class GrafanaKubernetesTest {
 
     @Test
     public void testGrafana() throws Exception {
-        assertThat(client).replicationController("grafana-rc").isNotNull();
-        String serviceName = "grafana-service";
+        assertThat(client).replicationController("grafana").isNotNull();
+        String serviceName = "grafana";
         assertThat(client).hasServicePort(serviceName, 80);
 
         assertThat(client).pods()
