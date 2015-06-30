@@ -78,7 +78,7 @@
         <module>gogs</module>
         <module>grafana</module>
         <module>heapster</module>
-        <module>hubot</module>
+        <module>hubot-irc</module>
         <module>hubot-letschat</module>
         <module>hubot-notifier</module>
         <module>hubot-slack</module>

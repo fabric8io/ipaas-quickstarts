@@ -1,1 +1,0 @@
-Hubot chat bot

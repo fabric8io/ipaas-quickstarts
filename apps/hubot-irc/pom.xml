@@ -25,11 +25,11 @@
         <version>2.3-SNAPSHOT</version>
     </parent>
 
-    <artifactId>hubot</artifactId>
+    <artifactId>hubot-irc</artifactId>
 
-    <name>Hubot</name>
+    <name>Hubot IRC</name>
     <description>
-        [Hubot](http://hubot.github.com) chat bot
+        [Hubot](http://hubot.github.com) IRC chat bot
     </description>
 
     <properties>

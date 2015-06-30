@@ -1,7 +1,7 @@
 {
   "kind": "List",
   "apiVersion": "v1",
-  "description": "Creates a hubot chat bot",
+  "description": "Creates a hubot IRC chat bot",
   "items": [
     {
       "apiVersion": "v1",
