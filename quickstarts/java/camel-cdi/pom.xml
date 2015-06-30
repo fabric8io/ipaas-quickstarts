@@ -84,29 +84,23 @@
       <artifactId>camel-cdi</artifactId>
     </dependency>
 
-    <!-- we make use of the javax.ejb.Startup API while running the example -->
+    <!-- cdi api -->
     <dependency>
-      <groupId>org.apache.geronimo.specs</groupId>
-      <artifactId>geronimo-ejb_3.1_spec</artifactId>
+      <groupId>javax.enterprise</groupId>
+      <artifactId>cdi-api</artifactId>
+      <version>1.2</version>
       <scope>provided</scope>
     </dependency>
 
+    <!-- need to use a CDI container such as JBoss Weld -->
     <!-- lets use weld for CDI -->
     <dependency>
       <groupId>org.jboss.weld.se</groupId>
       <artifactId>weld-se</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.jboss.weld.servlet</groupId>
-      <artifactId>weld-servlet</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.jboss.weld</groupId>
       <artifactId>weld-core</artifactId>
-    </dependency>
-    <dependency>
-       <groupId>com.google.guava</groupId>
-       <artifactId>guava</artifactId>
     </dependency>
     <dependency>
       <groupId>org.apache.deltaspike.cdictrl</groupId>

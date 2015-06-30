@@ -15,8 +15,6 @@
  */
 package io.fabric8.quickstarts.camelcdi;
 
-import javax.ejb.Startup;
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import org.apache.camel.Endpoint;
@@ -28,8 +26,6 @@ import org.apache.camel.cdi.Uri;
  * Configures all our Camel routes, components, endpoints and beans
  */
 @ContextName("myCdiCamelContext")
-@Startup
-@ApplicationScoped
 public class MyRoutes extends RouteBuilder {
 
     @Inject
