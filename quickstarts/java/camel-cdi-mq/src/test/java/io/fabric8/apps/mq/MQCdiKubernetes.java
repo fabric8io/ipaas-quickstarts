@@ -13,7 +13,6 @@
  * implied.  See the License for the specific language governing
  * permissions and limitations under the License.
  */
-
 package io.fabric8.apps.mq;
 
 import io.fabric8.annotations.ServiceName;
@@ -53,8 +52,7 @@ public class MQCdiKubernetes {
                 .addClasses(DeltaspikeTestBase.getDeltaSpikeHolders())
                 .addClasses(ActiveMQConfigurer.class);
     }
-    
-    
+
     @Test
     public void testConnectionFactory() throws Exception {
         Assert.assertNotNull(connectionFactory);

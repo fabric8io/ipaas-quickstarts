@@ -15,23 +15,18 @@
  */
 package io.fabric8.quickstarts.camelcdi;
 
+import javax.inject.Inject;
+
 import io.fabric8.annotations.Alias;
 import io.fabric8.annotations.ServiceName;
 import org.apache.activemq.camel.component.ActiveMQComponent;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.cdi.ContextName;
-import org.apache.camel.model.language.ConstantExpression;
-
-import javax.ejb.Startup;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 
 /**
  * Configures all our Camel routes, components, endpoints and beans
  */
 @ContextName("myCdiCamelContext")
-@Startup
-@ApplicationScoped
 public class MyRoutes extends RouteBuilder {
 
     @Inject
@@ -41,8 +36,8 @@ public class MyRoutes extends RouteBuilder {
 
     @Override
     public void configure() throws Exception {
-        from("timer://foo?fixedRate=true&period=10")
-                .setBody(new ConstantExpression("Everything is awesome!"))
+        from("timer://foo")
+                .setBody(constant("Everything is awesome!"))
                 .to("jms:queue:TEST.FOO");
 
         from("jms:queue:TEST.FOO")

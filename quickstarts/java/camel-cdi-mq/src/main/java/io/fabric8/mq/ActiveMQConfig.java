@@ -13,7 +13,6 @@
  * implied.  See the License for the specific language governing
  * permissions and limitations under the License.
  */
-
 package io.fabric8.mq;
 
 import org.apache.deltaspike.core.api.config.ConfigProperty;
@@ -93,7 +92,6 @@ public class ActiveMQConfig {
     @Inject
     @ConfigProperty(name = ALWAYS_SYNC_SEND, defaultValue = "false")
     private Boolean alwaysSyncSend;
-
 
     @Inject
     @ConfigProperty(name = WATCH_TOPIC_ADVISORIES, defaultValue = "true")

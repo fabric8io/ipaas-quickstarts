@@ -13,7 +13,6 @@
  * implied.  See the License for the specific language governing
  * permissions and limitations under the License.
  */
-
 package io.fabric8.tests.integration;
 
 import io.fabric8.annotations.ServiceName;
@@ -23,7 +22,6 @@ import io.fabric8.kubernetes.api.KubernetesClient;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.mq.ActiveMQConfigurer;
 import io.fabric8.quickstarts.camelcdi.ActiveMQComponentFactory;
-import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.camel.component.ActiveMQComponent;
 import org.assertj.core.api.Condition;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -56,7 +54,6 @@ public class AppKubernetesTest {
                 .addClasses(DeltaspikeTestBase.getDeltaSpikeHolders())
                 .addClasses(ActiveMQComponentFactory.class, ActiveMQConfigurer.class);
     }
-
 
     @Test
     public void testAppProvisionsRunningPods() throws Exception {

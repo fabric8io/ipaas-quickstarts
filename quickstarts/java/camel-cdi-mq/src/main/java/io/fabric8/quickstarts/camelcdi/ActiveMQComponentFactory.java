@@ -13,7 +13,6 @@
  * implied.  See the License for the specific language governing
  * permissions and limitations under the License.
  */
-
 package io.fabric8.quickstarts.camelcdi;
 
 import io.fabric8.annotations.Factory;
@@ -23,7 +22,6 @@ import org.apache.activemq.camel.component.ActiveMQComponent;
 
 public class ActiveMQComponentFactory {
 
-
     @Factory
     @ServiceName
     public ActiveMQComponent create(@ServiceName ActiveMQConnectionFactory factory) {
@@ -31,7 +29,6 @@ public class ActiveMQComponentFactory {
         component.setConnectionFactory(factory);
         return component;
     }
-
 
     /*
     @Factory
