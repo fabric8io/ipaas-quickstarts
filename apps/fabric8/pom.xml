@@ -33,7 +33,12 @@
   </description>
 
   <properties>
+<!--
+    TODO using master while we get the console working on openshift and google - we can switch to v1.0.9 when we're done
+
     <docker.image>fabric8/fabric8-console:v1.0.8</docker.image>
+-->
+    <docker.image>fabric8/fabric8-console:latest</docker.image>
     <docker.port.container.http>9090</docker.port.container.http>
     <docker.port.container.jolokia />
 
@@ -43,10 +48,6 @@
     <fabric8.label.component>console</fabric8.label.component>
     <fabric8.label.provider>fabric8</fabric8.label.provider>
 
-    <fabric8.extra.json>${basedir}/src/main/fabric8/kubernetes-extra.json</fabric8.extra.json>
-
-    <fabric8.parameter.DOMAIN.value>vagrant.f8</fabric8.parameter.DOMAIN.value>
-    <fabric8.parameter.DOMAIN.description>The domain name to append to the service name to access web applications</fabric8.parameter.DOMAIN.description>
   </properties>
 
     <dependencies>
