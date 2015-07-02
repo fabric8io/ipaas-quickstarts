@@ -51,7 +51,7 @@
           "spec": {
             "containers": [
               {
-                "image": "fabric8/hubot",
+                "image": "fabric8/hubot-irc",
                 "name": "hubot-container",
                 "ports": [
                   {
