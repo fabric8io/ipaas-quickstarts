@@ -54,8 +54,7 @@
     <fabric8.volume.openshift-cert-secrets.mountPath>/etc/secret-volume</fabric8.volume.openshift-cert-secrets.mountPath>
     <fabric8.volume.openshift-cert-secrets.readOnly>true</fabric8.volume.openshift-cert-secrets.readOnly>
 
-
-    <fabric8.addon.release.version>2.3-SNAPSHOT</fabric8.addon.release.version>
+    <fabric8.addon.release.version>{fabric8.release.version}</fabric8.addon.release.version>
     <camel.addon.release.version>${fabric8.release.version}</camel.addon.release.version>
 
     <jboss.forge.version>2.15.2.Final</jboss.forge.version>
@@ -196,6 +195,13 @@
       </build>
     </profile>
 -->
+    <profile>
+      <id>fabric8-snapshot</id>
+      <properties>
+        <fabric8.addon.release.version>2.3-SNAPSHOT</fabric8.addon.release.version>
+      </properties>
+    </profile>
+
 
     <profile>
       <id>docker-build</id>
