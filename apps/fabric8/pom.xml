@@ -33,12 +33,7 @@
   </description>
 
   <properties>
-<!--
-    TODO using master while we get the console working on openshift and google - we can switch to v1.0.9 when we're done
-
-    <docker.image>fabric8/fabric8-console:v1.0.8</docker.image>
--->
-    <docker.image>fabric8/fabric8-console:latest</docker.image>
+    <docker.image>fabric8/fabric8-console:v1.0.9</docker.image>
     <docker.port.container.http>9090</docker.port.container.http>
     <docker.port.container.jolokia />
 
