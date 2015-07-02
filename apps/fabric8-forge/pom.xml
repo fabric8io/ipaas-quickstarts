@@ -54,6 +54,7 @@
     <fabric8.volume.openshift-cert-secrets.mountPath>/etc/secret-volume</fabric8.volume.openshift-cert-secrets.mountPath>
     <fabric8.volume.openshift-cert-secrets.readOnly>true</fabric8.volume.openshift-cert-secrets.readOnly>
 
+    <!-- allows you to work on different release versions of the forge plugins -->
     <fabric8.addon.release.version>${fabric8.release.version}</fabric8.addon.release.version>
     <camel.addon.release.version>${fabric8.release.version}</camel.addon.release.version>
 
