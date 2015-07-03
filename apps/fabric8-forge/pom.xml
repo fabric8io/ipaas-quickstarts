@@ -81,7 +81,7 @@
     </dependency>
     <dependency>
       <groupId>io.fabric8.forge</groupId>
-      <artifactId>openshift</artifactId>
+      <artifactId>devops</artifactId>
       <version>${fabric8.version}</version>
       <classifier>forge-addon</classifier>
       <scope>provided</scope>
@@ -121,7 +121,7 @@
               <addonRepository>${addon.repository}</addonRepository>
               <addonIds>
                 <addonId>io.fabric8.forge:camel,${camel.addon.release.version}</addonId>
-                <addonId>io.fabric8.forge:openshift,${fabric8.addon.release.version}</addonId>
+                <addonId>io.fabric8.forge:devops,${fabric8.addon.release.version}</addonId>
                 <addonId>org.jboss.forge.addon:git,${jboss.forge.version}</addonId>
               </addonIds>
             </configuration>
