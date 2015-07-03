@@ -50,7 +50,7 @@
     <fabric8.volume.elasticsearch-data.emptyDir />
     <fabric8.volume.elasticsearch-data.mountPath>/usr/share/elasticsearch/data</fabric8.volume.elasticsearch-data.mountPath>
 
-    <fabric8.livenessProbe.port>9200</fabric8.livenessProbe.port>
+    <fabric8.livenessProbe.port>9300</fabric8.livenessProbe.port>
     <fabric8.readinessProbe.httpGet.path>/_template/logstash</fabric8.readinessProbe.httpGet.path>
     <fabric8.readinessProbe.httpGet.port>9200</fabric8.readinessProbe.httpGet.port>
   </properties>
