@@ -3,10 +3,10 @@
   "description": "",
   "hits": 0,
   "columns": [
-    "log",
-    "pod",
-    "pod_container",
-    "pod_namespace"
+    "kubernetes.namespace",
+    "kubernetes.pod_name",
+    "kubernetes.container_name",
+    "log"
   ],
   "sort": [
     "@timestamp",
