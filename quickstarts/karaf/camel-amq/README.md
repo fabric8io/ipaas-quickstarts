@@ -1,11 +1,13 @@
 # Camel AMQ QuickStart
 
-This quickstart demonstrates how to connect to the local ActiveMQ broker and use JMS messaging between two Camel routes.
+This quickstart demonstrates how to connect to an ActiveMQ broker and use JMS messaging between two Camel routes.
 
-In this quickstart, orders from zoos all over the world will be copied from the input directory into a specific
-output directory per country.
+In this example we will use two containers, one container to run as a ActiveMQ broker, and another as a client to the broker, where the Camel routes is running.
 
-In this example we will use two containers, one container to run as a standalone ActiveMQ broker, and another as a client to the broker, where the Camel routes is running.
+This quickstarts requires the ActiveMQ broker has been deployed and running first. This can be done from the web console from the `Apps` page, and then install the `messaging` application.
 
-The two Camel routes send and receives JMS message using the `amq:incomingOrders` endpoint, which is a queue on the ActiveMQ broker.
+To install this quickstart from the command line type
 
+    mvn clean install docker:build fabric8:apply
+
+This requires you have [setup your local computer](http://fabric8.io/guide/getStarted/develop.html) to work with docker and kubernetes.
