@@ -35,7 +35,7 @@ public class MyRoutes extends RouteBuilder {
     @Inject @Uri("netty4-http:http://{{service:QUICKSTART_CAMELSERVLET}}/camel/hello?keepAlive=false&disconnect=true")
     private Endpoint httpEndpoint;
 
-    @Inject @Uri("log:output?showExchangePattern=false&showStreams=true")
+    @Inject @Uri("log:output?showExchangePattern=false&showBodyType=false&showStreams=true")
     private Endpoint resultEndpoint;
 
     @Inject
