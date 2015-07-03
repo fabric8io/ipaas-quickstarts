@@ -44,6 +44,7 @@
 
   <modules>
     <module>java-camel-cdi-archetype</module>
+    <module>java-camel-cdi-http-archetype</module>
     <module>java-camel-cdi-mq-archetype</module>
     <module>java-camel-cdi-rest-archetype</module>
    	<module>java-camel-spring-archetype</module>
