@@ -45,7 +45,8 @@
     <module>management</module>
     <module>messaging</module>
     <module>metrics</module>
-    <module>quickstarts</module>
+    <module>quickstarts-http</module>
+    <module>quickstarts-rest</module>
   </modules>
 
     <build>

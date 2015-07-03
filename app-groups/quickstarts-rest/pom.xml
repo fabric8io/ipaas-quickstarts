@@ -25,10 +25,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>io.fabric8.apps</groupId>
-  <artifactId>quickstarts</artifactId>
+  <artifactId>quickstarts-rest</artifactId>
   <packaging>pom</packaging>
 
-  <name>Fabric8 :: Apps Groups :: Quickstarts</name>
+  <name>Fabric8 :: Apps Groups :: Quickstarts :: REST</name>
 
   <properties>
     <fabric8.combineDependencies>true</fabric8.combineDependencies>
