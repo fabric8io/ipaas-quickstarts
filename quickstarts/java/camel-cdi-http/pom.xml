@@ -87,6 +87,7 @@
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-netty4-http</artifactId>
+      <!-- TODO next release of fabric8 we can drop the version below -->
       <version>${camel.version}</version>
     </dependency>
 
