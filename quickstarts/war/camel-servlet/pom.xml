@@ -45,6 +45,7 @@
     <fabric8.version>2.2.6</fabric8.version>
 
     <docker.from>docker.io/fabric8/tomcat-8.0</docker.from>
+    <docker.maven.plugin.version>0.13.0</docker.maven.plugin.version>
 
     <docker.image>fabric8/${project.artifactId}:${project.version}</docker.image>
     <docker.assemblyDescriptorRef>rootWar</docker.assemblyDescriptorRef>
