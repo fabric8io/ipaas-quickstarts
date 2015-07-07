@@ -78,9 +78,6 @@ public class ManagerApiMicroService {
         server.start();
         long endTime = System.currentTimeMillis();
         System.out.println("******* Started in " + (endTime - startTime) + "ms");
-        
-        //bootstrap
-        
     }
 
     /**

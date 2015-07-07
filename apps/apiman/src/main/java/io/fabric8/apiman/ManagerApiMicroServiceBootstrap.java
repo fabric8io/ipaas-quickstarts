@@ -15,17 +15,15 @@
  */
 package io.fabric8.apiman;
 
-import io.apiman.manager.api.beans.idm.PermissionBean;
 import io.apiman.manager.api.beans.idm.PermissionType;
 import io.apiman.manager.api.beans.idm.RoleBean;
-import io.apiman.manager.api.beans.idm.UserPermissionsBean;
 import io.apiman.manager.api.beans.policies.PolicyDefinitionBean;
 import io.apiman.manager.api.beans.search.SearchCriteriaBean;
 import io.apiman.manager.api.beans.search.SearchCriteriaFilterOperator;
-import io.apiman.manager.api.beans.search.SearchResultsBean;
 import io.apiman.manager.api.core.IIdmStorage;
 import io.apiman.manager.api.core.IStorage;
 import io.apiman.manager.api.core.exceptions.StorageException;
+import io.apiman.manager.api.core.logging.IApimanLogger;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,9 +34,7 @@ import java.util.Set;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 
@@ -56,7 +52,10 @@ public class ManagerApiMicroServiceBootstrap {
 	@Inject
 	IIdmStorage idmStorage;
 	
-	void loadDefaultPolicies() {
+	@Inject
+	IApimanLogger logger;
+	
+	public void loadDefaultPolicies() {
 		
 		try {
 			//1. Find the policies
@@ -66,6 +65,7 @@ public class ManagerApiMicroServiceBootstrap {
 			List<PolicyDefinitionBean> policyDefList = mapper.readValue(is, tRef);
 			//2. Store the policies if they are not already installed
 			for (PolicyDefinitionBean policyDefinitionBean : policyDefList) {
+				logger.info("Loading up APIMan policies");
 				storage.beginTx();
 				if (storage.getPolicyDefinition(policyDefinitionBean.getId()) == null) {
 					storage.createPolicyDefinition(policyDefinitionBean);
@@ -75,16 +75,17 @@ public class ManagerApiMicroServiceBootstrap {
 				}
 			}
 		} catch (StorageException | IOException e) {
-			e.printStackTrace();
+			logger.error(e);
 		}
 	}
 	
-	void loadDefaultRoles() {
+	public void loadDefaultRoles() {
 		try {
 			//Organization Owner
 			SearchCriteriaBean searchRoles = new SearchCriteriaBean();
 			searchRoles.addFilter("name", "ServiceDeveloper", SearchCriteriaFilterOperator.eq);
 			if (idmStorage.findRoles(searchRoles).getTotalSize() == 0) {
+				logger.info("Creating Organization Owner Role");
 				RoleBean roleBean = new RoleBean();
 				roleBean.setAutoGrant(true);
 				roleBean.setName("Organization Owner");
@@ -110,6 +111,7 @@ public class ManagerApiMicroServiceBootstrap {
 			searchRoles = new SearchCriteriaBean();
 			searchRoles.addFilter("name", "Application Developer", SearchCriteriaFilterOperator.eq);
 			if (idmStorage.findRoles(searchRoles).getTotalSize() == 0) {
+				logger.info("Creating Application Developer Role");
 				RoleBean roleBean = new RoleBean();
 				roleBean.setName("Application Developer");
 				roleBean.setDescription("Users responsible for creating and managing applications should be granted this role within an Organization.");
@@ -125,6 +127,7 @@ public class ManagerApiMicroServiceBootstrap {
 			searchRoles = new SearchCriteriaBean();
 			searchRoles.addFilter("name", "Service Developer", SearchCriteriaFilterOperator.eq);
 			if (idmStorage.findRoles(searchRoles).getTotalSize() == 0) {
+				logger.info("Creating Service Developer Role");
 				RoleBean roleBean = new RoleBean();
 				roleBean.setAutoGrant(true);
 				roleBean.setName("Service Developer");
