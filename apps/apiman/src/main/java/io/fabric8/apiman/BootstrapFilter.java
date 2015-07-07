@@ -15,24 +15,33 @@
  */
 package io.fabric8.apiman;
 
+import io.apiman.common.util.AbstractMessages;
 import io.apiman.manager.api.beans.idm.PermissionType;
 import io.apiman.manager.api.beans.idm.RoleBean;
 import io.apiman.manager.api.beans.policies.PolicyDefinitionBean;
-import io.apiman.manager.api.beans.search.SearchCriteriaBean;
-import io.apiman.manager.api.beans.search.SearchCriteriaFilterOperator;
+import io.apiman.manager.api.beans.summary.PolicyDefinitionSummaryBean;
 import io.apiman.manager.api.core.IIdmStorage;
 import io.apiman.manager.api.core.IStorage;
+import io.apiman.manager.api.core.IStorageQuery;
 import io.apiman.manager.api.core.exceptions.StorageException;
+import io.apiman.manager.api.core.logging.ApimanLogger;
 import io.apiman.manager.api.core.logging.IApimanLogger;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -44,30 +53,43 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 @SuppressWarnings("nls")
 @ApplicationScoped
-public class ManagerApiMicroServiceBootstrap {
+public class BootstrapFilter implements Filter {
 
 	@Inject
 	IStorage storage;
 	
 	@Inject
-	IIdmStorage idmStorage;
+	IStorageQuery storageQuery;
 	
 	@Inject
+	IIdmStorage idmStorage;
+	
+	@Inject @ApimanLogger(BootstrapFilter.class)
 	IApimanLogger logger;
 	
 	public void loadDefaultPolicies() {
 		
 		try {
 			//1. Find the policies
+			logger.info("Looking up /data/all-policyDefs.json on the classpath...");
 			InputStream is = getClass().getResourceAsStream("/data/all-policyDefs.json");
 			ObjectMapper mapper = new ObjectMapper();
 			TypeReference<List<PolicyDefinitionBean>> tRef = new TypeReference<List<PolicyDefinitionBean>>() {};
 			List<PolicyDefinitionBean> policyDefList = mapper.readValue(is, tRef);
-			//2. Store the policies if they are not already installed
+			logger.info("Found " + policyDefList.size() + " policyDefs");
+			//2. Look up the already installed policies
+			Set<String> existingPolicyDefinitions = new HashSet<String>(); 
+			List<PolicyDefinitionSummaryBean> policyDefinitions = storageQuery.listPolicyDefinitions();
+			logger.info("Found " + policyDefinitions.size() + " existing policies");
+			for (PolicyDefinitionSummaryBean policyDefinitionSummaryBean: policyDefinitions) {
+				existingPolicyDefinitions.add(policyDefinitionSummaryBean.getName());
+			}
+			//3. Store the policies if they are not already installed
 			for (PolicyDefinitionBean policyDefinitionBean : policyDefList) {
-				logger.info("Loading up APIMan policies");
+				String policyName = policyDefinitionBean.getName();
 				storage.beginTx();
-				if (storage.getPolicyDefinition(policyDefinitionBean.getId()) == null) {
+				if (! existingPolicyDefinitions.contains(policyName)) {
+					logger.info("Creating Policy " + policyDefinitionBean.getName());
 					storage.createPolicyDefinition(policyDefinitionBean);
 					storage.commitTx();
 				} else {
@@ -81,14 +103,17 @@ public class ManagerApiMicroServiceBootstrap {
 	
 	public void loadDefaultRoles() {
 		try {
+			Date now = new Date();
 			//Organization Owner
-			SearchCriteriaBean searchRoles = new SearchCriteriaBean();
-			searchRoles.addFilter("name", "ServiceDeveloper", SearchCriteriaFilterOperator.eq);
-			if (idmStorage.findRoles(searchRoles).getTotalSize() == 0) {
+			String name = "Organization Owner";
+			if (idmStorage.getRole(name) == null) {
 				logger.info("Creating Organization Owner Role");
 				RoleBean roleBean = new RoleBean();
 				roleBean.setAutoGrant(true);
-				roleBean.setName("Organization Owner");
+				roleBean.setCreatedBy("admin");
+				roleBean.setCreatedOn(now);
+				roleBean.setId(name);
+				roleBean.setName(name);
 				roleBean.setDescription("Automatically granted to the user who creates an Organization.  Grants all privileges.");
 				Set<PermissionType> permissions = new HashSet<PermissionType>();
 				permissions.add(PermissionType.orgAdmin);
@@ -108,11 +133,13 @@ public class ManagerApiMicroServiceBootstrap {
 			}
 			
 			//Application Developer
-			searchRoles = new SearchCriteriaBean();
-			searchRoles.addFilter("name", "Application Developer", SearchCriteriaFilterOperator.eq);
-			if (idmStorage.findRoles(searchRoles).getTotalSize() == 0) {
+			name = "Application Developer";
+			if (idmStorage.getRole(name) == null) {
 				logger.info("Creating Application Developer Role");
 				RoleBean roleBean = new RoleBean();
+				roleBean.setCreatedBy("admin");
+				roleBean.setCreatedOn(now);
+				roleBean.setId(name);
 				roleBean.setName("Application Developer");
 				roleBean.setDescription("Users responsible for creating and managing applications should be granted this role within an Organization.");
 				Set<PermissionType> permissions = new HashSet<PermissionType>();
@@ -124,12 +151,13 @@ public class ManagerApiMicroServiceBootstrap {
 			}
 			
 			//Service Developer
-			searchRoles = new SearchCriteriaBean();
-			searchRoles.addFilter("name", "Service Developer", SearchCriteriaFilterOperator.eq);
-			if (idmStorage.findRoles(searchRoles).getTotalSize() == 0) {
+			name = "Service Developer";
+			if (idmStorage.getRole(name) == null) {
 				logger.info("Creating Service Developer Role");
 				RoleBean roleBean = new RoleBean();
-				roleBean.setAutoGrant(true);
+				roleBean.setCreatedBy("admin");
+				roleBean.setCreatedOn(now);
+				roleBean.setId(name);
 				roleBean.setName("Service Developer");
 				roleBean.setDescription("Users responsible for creating and managing services should be granted this role within an Organization.");
 				Set<PermissionType> permissions = new HashSet<PermissionType>();
@@ -144,9 +172,31 @@ public class ManagerApiMicroServiceBootstrap {
 			}
 			
 		} catch (StorageException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e);
 		}
 	}
+
+	@Override
+	public void init(FilterConfig filterConfig) throws ServletException {
+		loadDefaultPolicies();
+		loadDefaultRoles();
+	}
+
+	/**
+	 * No-opt filter, we really only care about the init phase to bootstrap apiman.
+	 */
+	@Override
+	public void doFilter(ServletRequest request, ServletResponse response,
+			FilterChain chain) throws IOException, ServletException {
+		//no-opt, we only cared about bootstrapping on startup
+        try {
+            chain.doFilter(request, response);
+        } finally {
+            AbstractMessages.clearLocale();
+        }
+	}
+
+	@Override
+	public void destroy() {}
 
 }

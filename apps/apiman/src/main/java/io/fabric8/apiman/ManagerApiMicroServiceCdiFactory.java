@@ -36,7 +36,6 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.New;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
-import javax.inject.Inject;
 
 /**
  * Attempt to create producer methods for CDI beans.
@@ -49,9 +48,6 @@ public class ManagerApiMicroServiceCdiFactory {
     private static JestClient sESClient;
     private static EsStorage sESStorage;
     
-    @Inject
-    private static ManagerApiMicroServiceBootstrap bootstrapManager;
-
     @Produces @ApimanLogger
     public static IApimanLogger provideLogger(ManagerApiMicroServiceConfig config, InjectionPoint injectionPoint) {
         ApimanLogger logger = injectionPoint.getAnnotated().getAnnotation(ApimanLogger.class);
@@ -138,8 +134,6 @@ public class ManagerApiMicroServiceCdiFactory {
                 sESStorage.initialize();
             }
         }
-        bootstrapManager.loadDefaultPolicies();
-        bootstrapManager.loadDefaultRoles();
         return sESStorage;
     }
 

@@ -57,7 +57,7 @@ public class ManagerApiMicroServiceApplication extends ApiManagerApplication {
         classes.add(GatewayResourceImpl.class);
         classes.add(PluginResourceImpl.class);
         classes.add(ActionResourceImpl.class);
-
+   
         classes.add(RestExceptionMapper.class);
     }
 
