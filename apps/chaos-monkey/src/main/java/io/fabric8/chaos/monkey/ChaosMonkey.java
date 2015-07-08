@@ -145,11 +145,10 @@ public class ChaosMonkey {
         }
         String message = null;
         Pod pod = null;
-        int size = targets.size();
-        if (size > 0) {
-            int idx = (int) Math.round(Math.random() * (size - 1));
-            pod = targets.get(idx);
+        if (targets.size() > 0) {
+            pod = pickRandom(targets);
         }
+        boolean killed = false;
         if (pod == null) {
             message = "No matching pods available to kill. Boo!";
         } else {
@@ -157,11 +156,68 @@ public class ChaosMonkey {
             try {
                 kubernetes.deletePod(pod);
                 message = "killed pod " + name + " in namespace " + namespace;
+                killed = true;
             } catch (Exception e) {
                 message = "failed to kill pod " + name + " in namespace " + namespace + " due to: " + e;
             }
         }
         notify(message);
+        if (killed) {
+            String monkey = getMonkey();
+            if (monkey != null) {
+                notify(monkey);
+            }
+        }
+    }
+
+    /**
+     * Returns a random selection from the list
+     */
+    public static <T> T pickRandom(List<T> list) {
+        int size = list.size();
+        if (size <= 0) {
+            return null;
+        } else {
+            int idx = (int) Math.round(Math.random() * (size - 1));
+            return list.get(idx);
+        }
+    }
+
+    protected String getMonkey() {
+        String[] monkeys = {
+                "http://i.giphy.com/yD9vMV7aDl3xK.gif",
+                "http://i.giphy.com/ncBhyy0TVZHmU.gif",
+                "http://i.giphy.com/12oyZr7VXoTn68.gif",
+                "http://i.giphy.com/43nZCD3lLbri0.gif",
+                "http://i.giphy.com/M93ZgxJzIV8v6.gif",
+                "http://i.giphy.com/bLHJ71uLsgqWI.gif",
+                "http://i.giphy.com/5Zesu5VPNGJlm.gif",
+                "http://i.giphy.com/ava8sWgcW387C.gif",
+                "http://i.giphy.com/dchERAZ73GvOE.gif",
+                "http://i.giphy.com/pFwRzOLfuGHok.gif",
+                "http://i.giphy.com/VH3X9TU7aQLrq.gif",
+                "http://i.giphy.com/1Ia8zGu9QtH2w.gif",
+                "http://i.giphy.com/2Faz9JzRpalvpYKGc.gif",
+                "http://i.giphy.com/2ymva1ROJjoEU.gif",
+                "http://i.giphy.com/TLulTJKuyLgMU.gif",
+                "http://i.giphy.com/fw4EIdDeVvjna.gif",
+                "http://i.giphy.com/OYJ2kbvdTPW6I.gif",
+                "http://i.giphy.com/BBkKEBJkmFbTG.gif",
+                "http://i.giphy.com/KqN5Nw9TuBJWE.gif",
+                "http://i.giphy.com/yLZQKurQvmIAo.gif",
+                "http://i.giphy.com/vIyZvUXy7O7XW.gif",
+                "http://i.giphy.com/13nRKeBVhrAqmk.gif",
+                "http://i.giphy.com/5YWrACKqcsPcI.gif",
+                "http://i.giphy.com/kfse8uuYqn30c.gif",
+                "http://i.giphy.com/Aak2oJcN9BS1y.gif",
+                "http://i.giphy.com/AwXAC8MMX1JUk.gif",
+                "http://i.giphy.com/rEEYzhbkalKLK.gif",
+                "http://i.giphy.com/7RVJ5arTndqvK.gif",
+                "http://i.giphy.com/j7Ol3sUfRY39S.gif",
+                "http://i.giphy.com/CKZHnkRNIcr8A.gif"
+        };
+        return pickRandom(Arrays.asList(monkeys));
+
     }
 
     protected void notify(String message) {
