@@ -45,8 +45,8 @@
     <jube.version>2.2.0</jube.version>
     <docker.maven.plugin.version>0.13.0</docker.maven.plugin.version>
 
-    <spring-boot-plugin.version>1.2.4.RELEASE</spring-boot-plugin.version>
-    <spring-boot.version>1.2.4.RELEASE</spring-boot.version>
+    <spring-boot-plugin.version>1.2.5.RELEASE</spring-boot-plugin.version>
+    <spring-boot.version>1.2.5.RELEASE</spring-boot.version>
 
     <!-- fabric8 configuration -->
     <docker.from>docker.io/fabric8/java</docker.from>

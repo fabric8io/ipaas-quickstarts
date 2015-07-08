@@ -46,8 +46,8 @@
     <docker.maven.plugin.version>0.13.0</docker.maven.plugin.version>
     <camel.version>2.15.2</camel.version>
 
-    <spring-boot-plugin.version>1.2.4.RELEASE</spring-boot-plugin.version>
-    <spring-boot.version>1.2.4.RELEASE</spring-boot.version>
+    <spring-boot-plugin.version>1.2.5.RELEASE</spring-boot-plugin.version>
+    <spring-boot.version>1.2.5.RELEASE</spring-boot.version>
 
     <docker.from>docker.io/fabric8/java</docker.from>
 
