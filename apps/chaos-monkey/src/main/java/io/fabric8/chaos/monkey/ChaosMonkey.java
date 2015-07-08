@@ -44,10 +44,10 @@ import java.util.concurrent.CountDownLatch;
 @Eager
 public class ChaosMonkey {
     public static final String DEFAULT_ROOM_EXPRESSION = "#fabric8_${namespace}";
+    public static final String DEFAULT_INCLUDES = "";
+    public static final String DEFAULT_EXCLUDES = "letschat*,gogs*";
 
     private static final transient Logger LOG = LoggerFactory.getLogger(ChaosMonkey.class);
-    public static final String DEFAULT_INCLUDES = "";
-    public static final String DEFAULT_EXCLUDES = "letschat";
     private TimerTask task;
     private HubotNotifier notifier;
     private final String roomExpression;
@@ -147,7 +147,7 @@ public class ChaosMonkey {
         Pod pod = null;
         int size = targets.size();
         if (size > 0) {
-            int idx = (int) Math.round(Math.random() * size);
+            int idx = (int) Math.round(Math.random() * (size - 1));
             pod = targets.get(idx);
         }
         if (pod == null) {
