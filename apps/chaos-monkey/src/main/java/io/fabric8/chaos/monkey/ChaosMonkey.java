@@ -155,10 +155,10 @@ public class ChaosMonkey {
             String name = KubernetesHelper.getName(pod);
             try {
                 kubernetes.deletePod(pod);
-                message = "killed pod " + name + " in namespace " + namespace;
+                message = "Chaos Monkey killed pod " + name + " in namespace " + namespace;
                 killed = true;
             } catch (Exception e) {
-                message = "failed to kill pod " + name + " in namespace " + namespace + " due to: " + e;
+                message = "Chaos Monkey failed to kill pod " + name + " in namespace " + namespace + " due to: " + e;
             }
         }
         notify(message);
