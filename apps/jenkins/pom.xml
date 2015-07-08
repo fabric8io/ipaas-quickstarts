@@ -51,6 +51,8 @@
 
         <fabric8.volume.docker-socket.hostPath>/var/run/docker.sock</fabric8.volume.docker-socket.hostPath>
         <fabric8.volume.docker-socket.mountPath>/var/run/docker.sock</fabric8.volume.docker-socket.mountPath>
+	<fabric8.volume.jenkis-master-key.hostPath>/home/jenkins/ssh-keys</fabric8.volume.jenkis-master-key.hostPath>
+	<fabric8.volume.jenkis-master-key.mountPath>/home/jenkins/ssh-keys</fabric8.volume.jenkis-master-key.mountPath>
 
         <fabric8.volume.jenkins-workspace.emptyDir />
         <fabric8.volume.jenkins-workspace.mountPath>/var/jenkins_home/workspace</fabric8.volume.jenkins-workspace.mountPath>
