@@ -39,7 +39,7 @@
     <maven.compiler.source>1.7</maven.compiler.source>
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
-    <fabric8.version>2.2.6</fabric8.version>
+    <fabric8.version>2.2.7</fabric8.version>
     <jube.version>2.2.0</jube.version>
     <docker.maven.plugin.version>0.13.0</docker.maven.plugin.version>
     <derby.version>10.10.2.0</derby.version>

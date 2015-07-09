@@ -45,7 +45,7 @@
     <cxf-version-range>[3.0.4,3.0.5)</cxf-version-range>
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
-    <fabric8.version>2.2.6</fabric8.version>
+    <fabric8.version>2.2.7</fabric8.version>
     <jube.version>2.2.0</jube.version>
     <docker.maven.plugin.version>0.13.0</docker.maven.plugin.version>
     <cxf.version>3.0.4</cxf.version>
