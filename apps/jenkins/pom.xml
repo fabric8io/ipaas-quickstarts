@@ -47,6 +47,8 @@
         <!-- to access docker socket lets run in priviledged mode -->
         <fabric8.containerPrivileged>true</fabric8.containerPrivileged>
 
+        <fabric8.includePodEnvVar>true</fabric8.includePodEnvVar>
+
         <fabric8.env.CGO_ENABLED>0</fabric8.env.CGO_ENABLED>
 
         <fabric8.volume.docker-socket.hostPath>/var/run/docker.sock</fabric8.volume.docker-socket.hostPath>
