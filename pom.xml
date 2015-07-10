@@ -83,7 +83,7 @@
         <!-- TODO this can be removed once we upgrade the docker maven plugin -->
         <docker.assembly.exportBase>false</docker.assembly.exportBase>
         <docker.maven.plugin.version>0.13.1</docker.maven.plugin.version>
-        <fabric8.registryPrefix>docker.io/</fabric8.registryPrefix>
+        <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>
         <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
 <!--
         <docker.registry>registry.hub.docker.com</docker.registry>
