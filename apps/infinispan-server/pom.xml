@@ -60,7 +60,7 @@
                 <configuration>
                     <images>
                         <image>
-                            <name>${docker.registryPrefix}${docker.image}</name>
+                            <name>${docker.image}</name>
                             <build>
                                 <from>jboss/infinispan-server:7.0.0.Final</from>
                                 <assembly>

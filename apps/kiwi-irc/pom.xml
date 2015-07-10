@@ -33,7 +33,7 @@
     </description>
 
   <properties>
-    <docker.image>fabric8/fabric8-kiwiirc</docker.image>
+    <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}fabric8-kiwiirc</docker.image>
     <docker.port.container.irc>7778</docker.port.container.irc>
     <docker.port.container.jolokia />
 

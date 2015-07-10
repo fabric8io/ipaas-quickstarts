@@ -33,7 +33,7 @@
   </description>
 
   <properties>
-    <docker.image>fabric8/brackets</docker.image>
+    <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}brackets</docker.image>
     <docker.port.container.http>80</docker.port.container.http>
     <docker.port.container.jolokia />
 

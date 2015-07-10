@@ -51,7 +51,7 @@
     <!-- fabric8 configuration -->
     <docker.from>docker.io/fabric8/java</docker.from>
 
-    <docker.image>fabric8/${project.artifactId}:${project.version}</docker.image>
+    <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
     <docker.assemblyDescriptorRef>artifact</docker.assemblyDescriptorRef>
     <docker.env.JAR>${project.artifactId}-${project.version}.jar</docker.env.JAR>
     <docker.port.container.http>8080</docker.port.container.http>

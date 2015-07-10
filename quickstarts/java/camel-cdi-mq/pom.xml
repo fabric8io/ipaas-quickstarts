@@ -51,7 +51,7 @@
     <docker.maven.plugin.version>0.13.0</docker.maven.plugin.version>
     <docker.from>docker.io/fabric8/java</docker.from>
 
-    <docker.image>fabric8/${project.artifactId}:${project.version}</docker.image>
+    <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
     <docker.assemblyDescriptorRef>artifact-with-dependencies</docker.assemblyDescriptorRef>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
     <docker.env.MAIN>org.apache.camel.cdi.Main</docker.env.MAIN>

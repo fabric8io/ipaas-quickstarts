@@ -43,7 +43,7 @@
 
     <docker.from>docker.io/fabric8/java</docker.from>
 
-    <docker.image>fabric8/${project.artifactId}:${project.version}</docker.image>
+    <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
     <docker.assemblyDescriptorRef>artifact-with-dependencies</docker.assemblyDescriptorRef>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
     <docker.port.container.jgroups>7800</docker.port.container.jgroups>

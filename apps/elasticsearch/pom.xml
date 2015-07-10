@@ -33,7 +33,7 @@
   </description>
 
   <properties>
-    <docker.image>fabric8/elasticsearch-k8s:1.5.2</docker.image>
+    <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}elasticsearch-k8s:1.5.2</docker.image>
     <docker.port.container.http>9200</docker.port.container.http>
     <docker.port.container.transport>9300</docker.port.container.transport>
     <docker.port.container.jolokia />

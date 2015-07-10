@@ -38,7 +38,7 @@
 
         <docker.from>fabric8/java</docker.from>
 
-        <docker.image>fabric8/${project.artifactId}:${project.version}</docker.image>
+        <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
         <docker.assemblyDescriptorRef>artifact-with-dependencies</docker.assemblyDescriptorRef>
         <docker.port.container.jolokia>8778</docker.port.container.jolokia>
         <commons.beanutils.version>1.9.2</commons.beanutils.version>

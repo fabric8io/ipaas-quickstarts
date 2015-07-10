@@ -110,7 +110,7 @@
                 <configuration>
                   <images>
                     <image>
-                      <name>${docker.registryPrefix}${docker.image}</name>
+                      <name>${docker.image}</name>
                       <build>
                         <from>${docker.from}</from>
                         <assembly>

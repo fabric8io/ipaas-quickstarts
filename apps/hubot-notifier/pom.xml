@@ -43,7 +43,7 @@
 
     <docker.from>fabric8/java</docker.from>
 
-    <docker.image>fabric8/${project.artifactId}:${project.version}</docker.image>
+    <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
     <docker.assemblyDescriptorRef>artifact-with-dependencies</docker.assemblyDescriptorRef>
     <docker.env.MAIN>org.jboss.weld.environment.se.StartMain</docker.env.MAIN>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
@@ -149,7 +149,7 @@
         <configuration>
           <images>
             <image>
-              <name>${docker.registryPrefix}${docker.image}</name>
+              <name>${docker.image}</name>
               <build>
                 <from>${docker.from}</from>
                 <assembly>

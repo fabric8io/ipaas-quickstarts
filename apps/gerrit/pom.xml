@@ -36,7 +36,7 @@
 
         <!--Hardcoding the docker image name because we use it directly, we don't generate it
         from this project-->
-        <docker.image>fabric8/gerrit</docker.image>
+        <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}gerrit</docker.image>
         <docker.port.container.http>8080</docker.port.container.http>
 
 
