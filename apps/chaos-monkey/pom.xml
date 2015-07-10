@@ -28,7 +28,7 @@
   <artifactId>chaos-monkey</artifactId>
   <packaging>jar</packaging>
 
-  <name>Chaos Mokey</name>
+  <name>Chaos Monkey</name>
   <description>Kills random pods for chaos fun!</description>
 
   <properties>
