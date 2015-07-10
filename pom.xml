@@ -82,8 +82,8 @@
         <docker.assembly.exportBaseDir>false</docker.assembly.exportBaseDir>
         <!-- TODO this can be removed once we upgrade the docker maven plugin -->
         <docker.assembly.exportBase>false</docker.assembly.exportBase>
-        <docker.maven.plugin.version>0.13.0</docker.maven.plugin.version>
-        <docker.registryPrefix />
+        <docker.maven.plugin.version>0.13.1</docker.maven.plugin.version>
+        <docker.registryPrefix>docker.io/</docker.registryPrefix>
 <!--
         <docker.registry>registry.hub.docker.com</docker.registry>
 -->

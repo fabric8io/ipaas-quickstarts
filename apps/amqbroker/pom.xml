@@ -158,7 +158,7 @@
         <configuration>
           <images>
             <image>
-              <name>${docker.image}</name>
+              <name>${docker.registryPrefix}${docker.image}</name>
               <build>
                 <from>${docker.from}</from>
                 <assembly>
