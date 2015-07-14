@@ -38,23 +38,10 @@
   <dependencies>
     <dependency>
       <groupId>io.fabric8.apps</groupId>
-      <artifactId>base</artifactId>
-      <version>${project.version}</version>
-      <classifier>kubernetes</classifier>
-      <type>json</type>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8.apps</groupId>
       <artifactId>logging</artifactId>
       <version>${project.version}</version>
       <classifier>kubernetes</classifier>
       <type>json</type>
-      <exclusions>
-        <exclusion>
-          <groupId>io.fabric8.apps</groupId>
-          <artifactId>base</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
 
     <!-- CD building stuff -->
