@@ -1,0 +1,1 @@
+Implements the OpenShift Templates REST API so templates can be used on vanilla Kubernetes environments 

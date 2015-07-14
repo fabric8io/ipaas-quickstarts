@@ -33,7 +33,7 @@
   </description>
 
   <properties>
-    <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}fabric8-console:v1.0.13</docker.image>
+    <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}fabric8-console:v1.0.18</docker.image>
     <docker.port.container.http>9090</docker.port.container.http>
     <docker.port.container.jolokia />
 
