@@ -1,0 +1,7 @@
+scrape_configs:
+- job_name: prometheus
+  scheme: http
+  file_sd_configs:
+    - names:
+      - /etc/prometheus/targets.d/*.yml
+      - /etc/prometheus/targets.d/*.json

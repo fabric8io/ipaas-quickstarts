@@ -94,6 +94,7 @@
         <module>letschat</module>
         <module>nexus</module>
         <module>orion</module>
+        <module>prometheus</module>
         <module>registry</module>
         <module>sonarqube</module>
         <module>taiga</module>
