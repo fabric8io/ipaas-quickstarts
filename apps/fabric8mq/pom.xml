@@ -45,9 +45,6 @@
         <fabric8.label.provider>fabric8</fabric8.label.provider>
         <fabric8.iconRef>icons/activemq.svg</fabric8.iconRef>
 
-        <!-- try previlleged mode -->
-        <fabric8.containerPrivileged>true</fabric8.containerPrivileged>
-
         <!-- add certs -->
         <fabric8.serviceAccount>fabric8</fabric8.serviceAccount>
         <fabric8.volume.openshift-cert-secrets.secret>openshift-cert-secrets</fabric8.volume.openshift-cert-secrets.secret>
