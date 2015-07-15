@@ -45,9 +45,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Represents the Templates REST API
+ * Represents the OpenShift Templates REST API
  */
-@Path("/api/v1/namespaces/{namespace}")
+@Path("/oapi/v1/namespaces/{namespace}")
 @Produces({"application/json", "text/xml"})
 @Consumes({"application/json", "text/xml"})
 public class TemplatesService {
