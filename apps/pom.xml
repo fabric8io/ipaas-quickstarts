@@ -78,6 +78,7 @@
         <module>gerrit</module>
         <module>gogs</module>
         <module>grafana</module>
+        <module>grafana2</module>
         <module>heapster</module>
         <module>hubot-irc</module>
         <module>hubot-letschat</module>
