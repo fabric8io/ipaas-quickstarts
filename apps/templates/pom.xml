@@ -411,7 +411,10 @@
     <profile>
       <id>jube</id>
       <activation>
-        <activeByDefault>true</activeByDefault>
+        <property>
+          <name>jube.plugin.enabled</name>
+          <value>true</value>
+        </property>
       </activation>
       <build>
         <plugins>
