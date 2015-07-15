@@ -34,14 +34,18 @@ import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -73,7 +77,11 @@ public class TemplatesService {
 
     @GET
     @Path("templates")
-    public TemplateList getTemplates(@PathParam("namespace") String namespace) {
+    public Object getTemplates(@PathParam("namespace") String namespace, @QueryParam("watch") String watchFlag, @HeaderParam("Sec-WebSocket-Key") String reqid) {
+        if (watchFlag != null && watchFlag.equals("true")) {
+            // TODO
+            // return monitorTemplates(reqid);
+        }
         List<Template> items = getResourceList(namespace, Template.class);
         TemplateList answer = new TemplateList();
         answer.setItems(items);
@@ -217,14 +225,13 @@ public class TemplatesService {
         }
     }
 
+
     protected File getResourceFile(String namespace, String name, Class<? extends HasMetadata> clazz) {
         if (Strings.isNullOrBlank(name)) {
             return null;
         }
         File folder = getResourceCollectionFolder(namespace, clazz);
-        File entityFile = new File(folder, name + "json");
-        entityFile.mkdirs();
-        return entityFile;
+        return new File(folder, name + ".json");
     }
 
     protected <T extends HasMetadata> String updateNamed(String namespace, String name, T entity) throws IOException {
@@ -234,6 +241,7 @@ public class TemplatesService {
         metadata.setName(name);
         if (entityFile != null) {
             KubernetesHelper.saveJson(entityFile, entity);
+            sendEvent(entity);
         }
         return "No metadata.name supplied!";
     }
@@ -248,7 +256,7 @@ public class TemplatesService {
         String path = clazz.getSimpleName().toLowerCase();
         File data = new File(dataFolder);
         File namespaceFolder = new File(data, namespace);
-        File answer = new File(data, path);
+        File answer = new File(namespaceFolder, path);
         answer.mkdirs();
         return answer;
     }
