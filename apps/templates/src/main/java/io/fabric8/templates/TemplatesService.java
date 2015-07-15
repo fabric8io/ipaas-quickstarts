@@ -241,7 +241,7 @@ public class TemplatesService {
         metadata.setName(name);
         if (entityFile != null) {
             KubernetesHelper.saveJson(entityFile, entity);
-            sendEvent(entity);
+            // TODO sendEvent(entity);
         }
         return "No metadata.name supplied!";
     }
