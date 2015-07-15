@@ -30,7 +30,7 @@ public class PrometheusModelProcessor {
                 .withName("prometheus-k8s-watcher")
                 .withImage(System.getProperty("fabric8.dockerPrefix") + System.getProperty("fabric8.dockerUser") + "prometheus-k8s-watcher:" + System.getProperty("project.version"))
                 .addNewVolumeMount().withName("prometheus-targets").withMountPath("/etc/prometheus/targets.d").endVolumeMount()
-                .addToArgs("-insecure=true").addToArgs("-master=https://kubernetes.default.svc.cluster.local").addToArgs("-nodes-file=/etc/prometheus/targets.d/nodes.yml")
+                .addToArgs("-master=https://kubernetes.default.svc.cluster.local").addToArgs("-nodes-file=/etc/prometheus/targets.d/nodes.yml")
                 .endContainer()
                 .build();
 
