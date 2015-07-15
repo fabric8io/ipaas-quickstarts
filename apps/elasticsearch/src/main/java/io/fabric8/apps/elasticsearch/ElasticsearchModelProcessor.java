@@ -19,9 +19,8 @@ package io.fabric8.apps.elasticsearch;
 import io.fabric8.kubernetes.api.model.PodSpec;
 import io.fabric8.kubernetes.api.model.PodSpecBuilder;
 import io.fabric8.kubernetes.api.model.PodTemplateSpecBuilder;
-import io.fabric8.kubernetes.api.model.util.IntOrString;
 import io.fabric8.kubernetes.generator.annotation.KubernetesModelProcessor;
-import io.fabric8.openshift.api.model.template.TemplateBuilder;
+import io.fabric8.openshift.api.model.TemplateBuilder;
 
 @KubernetesModelProcessor
 public class ElasticsearchModelProcessor {
@@ -37,7 +36,7 @@ public class ElasticsearchModelProcessor {
                         .withName("")
                         .withProtocol("TCP")
                         .withPort(9300)
-                        .withTargetPort(new IntOrString(9300))
+                        .withNewTargetPort(9300)
                     .endPort()
                 .addToSelector("component", "elasticsearch")
                 .addToSelector("provider", "fabric8")

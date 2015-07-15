@@ -1,8 +1,8 @@
 package io.fabric8.app.hubotslack;
 
 import io.fabric8.kubernetes.generator.annotation.KubernetesProvider;
-import io.fabric8.openshift.api.model.template.Template;
-import io.fabric8.openshift.api.model.template.TemplateBuilder;
+import io.fabric8.openshift.api.model.Template;
+import io.fabric8.openshift.api.model.TemplateBuilder;
 
 public class HubotSlackModelProcessor {
 

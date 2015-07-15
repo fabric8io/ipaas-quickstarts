@@ -65,7 +65,7 @@
      <artifactId>kubernetes-api</artifactId>
     </dependency>
     <dependency>
-     <groupId>io.fabric8.schemagenerator</groupId>
+     <groupId>io.fabric8</groupId>
      <artifactId>kubernetes-model</artifactId>
     </dependency>
     <dependency>

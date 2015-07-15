@@ -1,7 +1,7 @@
 package io.fabric8.app.gerrit;
 
 import io.fabric8.kubernetes.generator.annotation.KubernetesModelProcessor;
-import io.fabric8.openshift.api.model.template.TemplateBuilder;
+import io.fabric8.openshift.api.model.TemplateBuilder;
 
 @KubernetesModelProcessor
 public class GerritModelProcessor {
