@@ -73,6 +73,8 @@
         <skipItests>true</skipItests>
         <integrationTestPattern>**/*KubernetesTest*.java</integrationTestPattern>
 
+        <jube.plugin.enabled>false</jube.plugin.enabled>
+
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
 
