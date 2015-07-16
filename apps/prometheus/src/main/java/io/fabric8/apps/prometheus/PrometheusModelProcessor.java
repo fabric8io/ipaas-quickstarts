@@ -14,7 +14,7 @@
  * permissions and limitations under the License.
  */
 
-package io.fabric8.apps.elasticsearch;
+package io.fabric8.apps.prometheus;
 
 import io.fabric8.kubernetes.api.model.PodSpec;
 import io.fabric8.kubernetes.api.model.PodSpecBuilder;
@@ -30,7 +30,7 @@ public class PrometheusModelProcessor {
                 .withName("prometheus-k8s-watcher")
                 .withImage(System.getProperty("fabric8.dockerPrefix") + System.getProperty("fabric8.dockerUser") + "prometheus-k8s-watcher:" + System.getProperty("project.version"))
                 .addNewVolumeMount().withName("prometheus-targets").withMountPath("/etc/prometheus/targets.d").endVolumeMount()
-                .addToArgs("-master=https://kubernetes.default.svc.cluster.local").addToArgs("-nodes-file=/etc/prometheus/targets.d/nodes.yml")
+                .addToArgs("-master=https://kubernetes.default.svc.cluster.local").addToArgs("-nodes-file=/etc/prometheus/targets.d/nodes.yml").addToArgs("-insecure=true")
                 .endContainer()
                 .build();
 
