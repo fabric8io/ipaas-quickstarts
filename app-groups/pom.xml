@@ -36,6 +36,7 @@
   <modules>
     <module>apiman</module>
     <module>base</module>
+    <module>console-kubernetes</module>
     <module>cdelivery-core</module>
     <module>cdelivery</module>
     <module>chat</module>
