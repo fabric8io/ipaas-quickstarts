@@ -41,6 +41,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.WebApplicationException;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -91,9 +92,9 @@ public class TemplatesService {
     @Path("templates")
     @POST
     @Consumes({"application/json", "application/yaml"})
-    public String createTemplate(@PathParam("namespace") String namespace, Template entity) throws Exception {
+    public void createTemplate(@PathParam("namespace") String namespace, Template entity) throws Exception {
         String name = KubernetesHelper.getName(entity);
-        return updateNamed(namespace, name, entity);
+        updateNamed(namespace, name, entity);
     }
 
 
@@ -107,8 +108,8 @@ public class TemplatesService {
     @PUT
     @Path("templates/{name}")
     @Consumes({"application/json", "application/yaml"})
-    public String updateTemplate(@PathParam("namespace") String namespace, @PathParam("name") @NotNull String name, Template entity) throws IOException {
-        return updateNamed(namespace, name, entity);
+    public void updateTemplate(@PathParam("namespace") String namespace, @PathParam("name") @NotNull String name, Template entity) throws IOException {
+        updateNamed(namespace, name, entity);
     }
 
     @DELETE
@@ -135,9 +136,9 @@ public class TemplatesService {
     @Path("buildconfigs")
     @POST
     @Consumes({"application/json", "application/yaml"})
-    public String createBuildConfig(@PathParam("namespace") String namespace, BuildConfig entity) throws Exception {
+    public void createBuildConfig(@PathParam("namespace") String namespace, BuildConfig entity) throws Exception {
         String name = KubernetesHelper.getName(entity);
-        return updateNamed(namespace, name, entity);
+        updateNamed(namespace, name, entity);
     }
 
 
@@ -151,8 +152,8 @@ public class TemplatesService {
     @PUT
     @Path("buildconfigs/{name}")
     @Consumes({"application/json", "application/yaml"})
-    public String updateBuildConfig(@PathParam("namespace") String namespace, @PathParam("name") @NotNull String name, BuildConfig entity) throws IOException {
-        return updateNamed(namespace, name, entity);
+    public void updateBuildConfig(@PathParam("namespace") String namespace, @PathParam("name") @NotNull String name, BuildConfig entity) throws IOException {
+        updateNamed(namespace, name, entity);
     }
 
     @DELETE
@@ -234,7 +235,7 @@ public class TemplatesService {
         return new File(folder, name + ".json");
     }
 
-    protected <T extends HasMetadata> String updateNamed(String namespace, String name, T entity) throws IOException {
+    protected <T extends HasMetadata> void updateNamed(String namespace, String name, T entity) throws IOException {
         File entityFile = getResourceFile(namespace, name, entity.getClass());
         ObjectMeta metadata = KubernetesHelper.getOrCreateMetadata(entity);
         metadata.setNamespace(namespace);
@@ -242,8 +243,9 @@ public class TemplatesService {
         if (entityFile != null) {
             KubernetesHelper.saveJson(entityFile, entity);
             // TODO sendEvent(entity);
+        } else {
+            throw new WebApplicationException("No metadata.name supplied!");
         }
-        return "No metadata.name supplied!";
     }
 
 
