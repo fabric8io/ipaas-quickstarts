@@ -27,9 +27,13 @@ import io.fabric8.openshift.api.model.Template;
 import io.fabric8.openshift.api.model.TemplateList;
 import io.fabric8.utils.Objects;
 import io.fabric8.utils.Strings;
+import io.fabric8.utils.Systems;
+import org.apache.deltaspike.core.api.config.ConfigProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -56,13 +60,15 @@ import java.util.List;
 @Path("/oapi/v1/namespaces/{namespace}")
 @Produces({"application/json", "text/xml"})
 @Consumes({"application/json", "text/xml"})
+@Singleton
 public class TemplatesService {
     private static final Logger LOG = LoggerFactory.getLogger(TemplatesService.class);
 
-    // TODO inject nicely
-    private String dataFolder = "resourceData";
+    private String dataFolder = Systems.getEnvVar("DATA_DIR", ".data");
 
     public TemplatesService() {
+        System.out.println("Starting TemplateService using dataFolder " + dataFolder);
+        LOG.info("Starting TemplateService using dataFolder " + dataFolder);
     }
 
     @POST
