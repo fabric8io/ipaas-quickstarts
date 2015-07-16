@@ -42,6 +42,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -116,8 +117,8 @@ public class TemplatesService {
     @Path("templates/{name}")
     @Produces("application/json")
     @Consumes("text/plain")
-    public String deleteTemplate(@PathParam("namespace") String namespace, @PathParam("name") @NotNull String name) {
-        return deleteNamed(namespace, name, Template.class);
+    public void deleteTemplate(@PathParam("namespace") String namespace, @PathParam("name") @NotNull String name) {
+        deleteNamed(namespace, name, Template.class);
     }
 
 
@@ -160,8 +161,8 @@ public class TemplatesService {
     @Path("buildconfigs/{name}")
     @Produces("application/json")
     @Consumes("text/plain")
-    public String deleteBuildConfig(@PathParam("namespace") String namespace, @PathParam("name") @NotNull String name) {
-        return deleteNamed(namespace, name, BuildConfig.class);
+    public void deleteBuildConfig(@PathParam("namespace") String namespace, @PathParam("name") @NotNull String name) {
+        deleteNamed(namespace, name, BuildConfig.class);
     }
 
 
@@ -216,13 +217,12 @@ public class TemplatesService {
         return answer;
     }
 
-    protected String deleteNamed(String namespace, String name, Class<? extends HasMetadata> clazz) {
+    protected void deleteNamed(String namespace, String name, Class<? extends HasMetadata> clazz) {
         File entityFile = getResourceFile(namespace, name, clazz);
         if (entityFile != null && entityFile.exists()) {
             entityFile.delete();
-            return "Deleted";
         } else {
-            return "No such entity";
+            throw new WebApplicationException("No such entity", Response.Status.NOT_FOUND);
         }
     }
 
