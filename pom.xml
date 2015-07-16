@@ -26,7 +26,7 @@
 
     <groupId>io.fabric8.quickstarts</groupId>
     <artifactId>project</artifactId>
-    <version>2.3-SNAPSHOT</version>
+    <version>2.2.10</version>
     <packaging>pom</packaging>
 
     <name>Fabric8 Quickstarts</name>
@@ -65,7 +65,7 @@
         <connection>scm:git:git@github.com:fabric8io/quickstarts.git</connection>
         <developerConnection>scm:git:git@github.com:fabric8io/quickstarts.git</developerConnection>
         <url>http://github.com/fabric8io/quickstarts</url>
-        <tag>quickstarts-2.0.1</tag>
+        <tag>project-2.2.10</tag>
     </scm>
 
     <properties>
