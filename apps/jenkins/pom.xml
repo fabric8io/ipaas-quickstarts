@@ -33,8 +33,9 @@
     </description>
 
     <properties>
-        <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}jenkins-with-docker</docker.image>
+        <docker.image>fabric8/jenkernetes</docker.image>
         <docker.port.container.http>8080</docker.port.container.http>
+        <docker.port.container.slave>50000</docker.port.container.slave>
         <docker.port.container.jolokia />
 
         <fabric8.service.port>80</fabric8.service.port>
@@ -57,7 +58,7 @@
         <fabric8.volume.jenkis-master-key.mountPath>/home/jenkins/ssh-keys</fabric8.volume.jenkis-master-key.mountPath>
 
         <fabric8.volume.jenkins-workspace.emptyDir />
-        <fabric8.volume.jenkins-workspace.mountPath>/var/jenkins_home/workspace</fabric8.volume.jenkins-workspace.mountPath>
+        <fabric8.volume.jenkins-workspace.mountPath>/var/jenkins_home</fabric8.volume.jenkins-workspace.mountPath>
 
 
 <!--
