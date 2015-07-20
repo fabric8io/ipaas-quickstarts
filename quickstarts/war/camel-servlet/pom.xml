@@ -47,8 +47,8 @@
     <docker.from>docker.io/fabric8/tomcat-8.0</docker.from>
     <docker.maven.plugin.version>0.13.1</docker.maven.plugin.version>
 
-    <fabric8.dockerPrefix>${fabric8.dockerPrefix}</fabric8.dockerPrefix>
-    <fabric8.dockerUser>${fabric8.dockerUser}</fabric8.dockerUser>
+    <fabric8.dockerPrefix></fabric8.dockerPrefix>
+    <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
     <docker.assemblyDescriptorRef>rootWar</docker.assemblyDescriptorRef>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
