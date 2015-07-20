@@ -33,7 +33,7 @@
     </description>
 
     <properties>
-        <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}hubot-letschat</docker.image>
+        <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}hubot-letschat:v1.0.0</docker.image>
 
         <fabric8.service.port>8080</fabric8.service.port>
         <fabric8.service.containerPort>8080</fabric8.service.containerPort>
