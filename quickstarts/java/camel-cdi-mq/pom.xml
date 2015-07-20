@@ -21,11 +21,11 @@
   <parent>
     <groupId>io.fabric8.jube.images.fabric8</groupId>
     <artifactId>quickstart-java</artifactId>
-    <version>2.3-SNAPSHOT</version>
+    <version>2.2.12</version>
   </parent>
 
   <artifactId>quickstart-java-camel-cdi-mq</artifactId>
-  <version>2.3-SNAPSHOT</version>
+  <version>2.2.12</version>
   <packaging>jar</packaging>
 
   <name>Fabric8 :: Quickstarts :: Java :: Camel CDI and ActiveMQ</name>
