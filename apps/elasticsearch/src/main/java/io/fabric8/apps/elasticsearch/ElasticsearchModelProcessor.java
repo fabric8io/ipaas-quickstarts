@@ -31,7 +31,7 @@ public class ElasticsearchModelProcessor {
                     .withName("elasticsearch-cluster")
                     .endMetadata()
                 .withNewSpec()
-                    .withPortalIP("None")
+                    .withClusterIP("None")
                     .addNewPort()
                         .withName("")
                         .withProtocol("TCP")
