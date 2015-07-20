@@ -110,7 +110,7 @@ public class InfinispanServerKubernetesTest {
         assertTrue("Should have at least one port for service " + restService, ports.size() > 0);
         ServicePort firstServicePort = ports.get(0);
 
-        final String serverURL = "http://" + restService.getPortalIP() + ":" + firstServicePort.getPort() + "/rest/default";
+        final String serverURL = "http://" + restService.getClusterIP() + ":" + firstServicePort.getPort() + "/rest/default";
         //TODO: We need to find a more elegant/robust way to know when the service is actually ready.
         Asserts.assertWaitFor(2 * 60 * 1000, new Block() {
             @Override
