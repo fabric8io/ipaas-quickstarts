@@ -283,7 +283,7 @@
           <id>fabric8-snapshot</id>
           <properties>
             <fabric8.version>2.3-SNAPSHOT</fabric8.version>
-            <fabric8.release.version>2.2.8</fabric8.release.version>
+            <fabric8.release.version>2.2.12</fabric8.release.version>
             <fabric8.dockerPrefix />
           </properties>
         </profile>
