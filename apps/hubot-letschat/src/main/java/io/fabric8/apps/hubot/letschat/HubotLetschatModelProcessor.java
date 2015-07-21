@@ -27,7 +27,7 @@ public class HubotLetschatModelProcessor {
     public void onTemplate(TemplateBuilder builder) {
         builder.addNewServiceObject()
                 .withNewMetadata()
-                .withName("Hubot-jenkins-notifier")
+                .withName("hubot-jenkins-notifier")
                 .addToLabels("component", NAME)
                 .addToLabels("provider", "fabric8")
                 .endMetadata()
