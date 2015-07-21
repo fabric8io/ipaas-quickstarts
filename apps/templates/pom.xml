@@ -61,7 +61,7 @@
     <fabric8.service.port>80</fabric8.service.port>
     <fabric8.service.containerPort>${http.port}</fabric8.service.containerPort>
     <fabric8.env.DATA_DIR>${docker.env.DATA_DIR}</fabric8.env.DATA_DIR>
-    <fabric8.label.component>apiRegistry</fabric8.label.component>
+    <fabric8.label.component>templates</fabric8.label.component>
     <fabric8.label.provider>fabric8</fabric8.label.provider>
 
     <fabric8.volume.template-data.gitRepo>https://github.com/fabric8io/templates.git</fabric8.volume.template-data.gitRepo>
