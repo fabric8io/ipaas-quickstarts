@@ -14,7 +14,7 @@
  * permissions and limitations under the License.
  */
 
-package io.fabric8.tests.integration;
+package io.fabric8.quickstarts.cxfcdi;
 
 import io.fabric8.arquillian.kubernetes.Session;
 import io.fabric8.kubernetes.api.KubernetesClient;
@@ -28,7 +28,7 @@ import org.junit.runner.RunWith;
 import static io.fabric8.kubernetes.assertions.Assertions.assertThat;
 
 @RunWith(Arquillian.class)
-public class AppKubernetesTest {
+public class KubernetesIntegrationKT {
 
     @ArquillianResource
     KubernetesClient client;
