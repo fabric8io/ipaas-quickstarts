@@ -33,11 +33,9 @@
   </description>
 
   <properties>
-    <prometheus.version>0.15.0rc1</prometheus.version>
-
     <fabric8.serviceAccount>metrics</fabric8.serviceAccount>
 
-    <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}prometheus-kubernetes:0.15.0rc1</docker.image>
+    <docker.image>jimmidyson/prometheus-kubernetes:latest</docker.image>
     <docker.port.container.http>9090</docker.port.container.http>
     <docker.port.container.jolokia />
 
@@ -48,9 +46,7 @@
     <fabric8.label.provider>fabric8</fabric8.label.provider>
 
     <fabric8.volume.prometheus-data.emptyDir />
-    <fabric8.volume.prometheus-data.mountPath>/var/prometheus</fabric8.volume.prometheus-data.mountPath>
-    <fabric8.volume.prometheus-targets.emptyDir />
-    <fabric8.volume.prometheus-targets.mountPath>/etc/prometheus/targets.d</fabric8.volume.prometheus-targets.mountPath>
+    <fabric8.volume.prometheus-data.mountPath>/prometheus</fabric8.volume.prometheus-data.mountPath>
 
     <fabric8.livenessProbe.port>9090</fabric8.livenessProbe.port>
   </properties>
@@ -62,71 +58,9 @@
         <filtering>true</filtering>
       </resource>
     </resources>
-    <plugins>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <fork>true</fork>
-          <compilerArgs>
-            <arg>-J-Dproject.version=${project.version}</arg>
-            <arg>-J-Dfabric8.dockerPrefix=${fabric8.dockerPrefix}</arg>
-            <arg>-J-Dfabric8.dockerUser=${fabric8.dockerUser}</arg>
-          </compilerArgs>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.jolokia</groupId>
-        <artifactId>docker-maven-plugin</artifactId>
-        <version>${docker.maven.plugin.version}</version>
-        <configuration>
-          <image>${fabric8.dockerPrefix}${fabric8.dockerUser}prometheus-kubernetes:${prometheus.version},${fabric8.dockerPrefix}${fabric8.dockerUser}prometheus-k8s-watcher:${project.version}</image>
-          <images>
-            <image>
-              <name>${fabric8.dockerPrefix}${fabric8.dockerUser}prometheus-kubernetes:${prometheus.version}</name>
-              <build>
-                <from>fabric8/prometheus:${prometheus.version}</from>
-                <assembly>
-                  <basedir>/etc/prometheus</basedir>
-                  <inline xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2" xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
-                    <id>prometheus-config</id>
-                    <fileSets>
-                      <fileSet>
-                        <directory>${basedir}/src/main/resources/prometheus</directory>
-                        <outputDirectory>/</outputDirectory>
-                        <includes>
-                          <include>*</include>
-                        </includes>
-                      </fileSet>
-                    </fileSets>
-                  </inline>
-                </assembly>
-              </build>
-            </image>
-            <image>
-              <name>${fabric8.dockerPrefix}${fabric8.dockerUser}prometheus-k8s-watcher:${project.version}</name>
-              <build>
-                <assembly>
-                  <dockerFileDir>${project.basedir}/src/main/resources/watcher</dockerFileDir>
-                </assembly>
-              </build>
-            </image>
-          </images>
-        </configuration>
-      </plugin>
-    </plugins>
   </build>
 
   <dependencies>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-api</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-generator</artifactId>
-    </dependency>
-
     <dependency>
       <groupId>org.jboss.arquillian.junit</groupId>
       <artifactId>arquillian-junit-container</artifactId>
@@ -151,48 +85,4 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <profiles>
-    <profile>
-      <id>docker-build</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.jolokia</groupId>
-            <artifactId>docker-maven-plugin</artifactId>
-            <version>${docker.maven.plugin.version}</version>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>build</goal>
-                </goals>
-                <phase>package</phase>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>docker-push</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.jolokia</groupId>
-            <artifactId>docker-maven-plugin</artifactId>
-            <version>${docker.maven.plugin.version}</version>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>build</goal>
-                  <goal>push</goal>
-                </goals>
-                <phase>package</phase>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 </project>
