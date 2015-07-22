@@ -65,6 +65,7 @@
     <docker.env.MAIN>io.fabric8.quickstarts.cxfcdi.ApplicationStarter</docker.env.MAIN>
     <docker.port.container.http>${http.port}</docker.port.container.http>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
+    <docker.port.container.metrics>9779</docker.port.container.metrics>
 
     <fabric8.service.name>quickstart-java-cxf-cdi</fabric8.service.name>
     <fabric8.service.port>9002</fabric8.service.port>
