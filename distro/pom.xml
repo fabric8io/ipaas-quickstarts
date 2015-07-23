@@ -39,6 +39,15 @@
       <type>json</type>
     </dependency>
 
+    <!-- console -->
+    <dependency>
+      <groupId>io.fabric8.apps</groupId>
+      <artifactId>base</artifactId>
+      <version>${project.version}</version>
+      <classifier>kubernetes</classifier>
+      <type>json</type>
+    </dependency>
+
     <!-- apps and microservices -->
     <dependency>
       <groupId>io.fabric8.jube.images.fabric8</groupId>
@@ -70,6 +79,7 @@
       <classifier>kubernetes</classifier>
       <type>json</type>
     </dependency>
+
   </dependencies>
 
   <build>
