@@ -53,7 +53,7 @@
     <jube.version>2.2.0</jube.version>
     <docker.maven.plugin.version>0.13.1</docker.maven.plugin.version>
     <org.eclipse.jetty.version>9.2.10.v20150310</org.eclipse.jetty.version>
-    
+
     <http.port>9092</http.port>
 
     <docker.from>docker.io/fabric8/java</docker.from>
@@ -70,6 +70,9 @@
     <fabric8.service.name>quickstart-java-cxf-cdi</fabric8.service.name>
     <fabric8.service.port>9002</fabric8.service.port>
     <fabric8.service.containerPort>${http.port}</fabric8.service.containerPort>
+
+    <fabric8.metrics.scrape>true</fabric8.metrics.scrape>
+    <fabric8.metrics.port>9779</fabric8.metrics.port>
 
     <fabric8.label.component>${project.artifactId}</fabric8.label.component>
     <fabric8.label.container>java</fabric8.label.container>
@@ -88,7 +91,7 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-  
+
 
   <dependencies>
 
@@ -141,7 +144,7 @@
       <artifactId>weld-core</artifactId>
     </dependency>
 
-    <!-- these explicit transitive dependencies avoid issues of 8.x bleeding into the generated archetype 
+    <!-- these explicit transitive dependencies avoid issues of 8.x bleeding into the generated archetype
          WARNING - this quickstart fails with jetty-8.x, the symptoms are that the endpoints are not registered. -->
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
