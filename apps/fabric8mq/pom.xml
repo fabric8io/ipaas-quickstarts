@@ -47,9 +47,6 @@
 
         <!-- add certs -->
         <fabric8.serviceAccount>fabric8</fabric8.serviceAccount>
-        <fabric8.volume.openshift-cert-secrets.secret>openshift-cert-secrets</fabric8.volume.openshift-cert-secrets.secret>
-        <fabric8.volume.openshift-cert-secrets.mountPath>/etc/secret-volume</fabric8.volume.openshift-cert-secrets.mountPath>
-        <fabric8.volume.openshift-cert-secrets.readOnly>true</fabric8.volume.openshift-cert-secrets.readOnly>
     </properties>
 
     <dependencyManagement>
