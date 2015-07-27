@@ -16,7 +16,7 @@
 package io.fabric8.tests.integration;
 
 import io.fabric8.arquillian.kubernetes.Session;
-import io.fabric8.kubernetes.api.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.api.model.Pod;
 import org.assertj.core.api.Condition;
 import org.jboss.arquillian.junit.Arquillian;

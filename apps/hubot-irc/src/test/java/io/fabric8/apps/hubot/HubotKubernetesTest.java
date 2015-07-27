@@ -17,9 +17,9 @@
 package io.fabric8.apps.hubot;
 
 import io.fabric8.arquillian.kubernetes.Session;
-import io.fabric8.kubernetes.api.KubernetesClient;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 
+import io.fabric8.kubernetes.client.KubernetesClient;
 import org.assertj.core.api.Condition;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;

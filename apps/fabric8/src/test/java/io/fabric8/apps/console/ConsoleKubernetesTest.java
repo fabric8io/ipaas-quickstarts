@@ -17,8 +17,8 @@
 package io.fabric8.apps.console;
 
 import io.fabric8.arquillian.kubernetes.Session;
-import io.fabric8.kubernetes.api.KubernetesClient;
 import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import org.assertj.core.api.Condition;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
@@ -39,8 +39,8 @@ public class ConsoleKubernetesTest {
     @Test
     public void testConsole() throws Exception {
         String serviceName = "fabric8";
-        assertThat(client).replicationController(serviceName).isNotNull();
-        assertThat(client).hasServicePort(serviceName, 80);
+        assertThat(client).replicationController(serviceName, session.getNamespace()).isNotNull();
+        assertThat(client).hasServicePort(serviceName, session.getNamespace(), 80);
 
         assertThat(client).pods()
                 .runningStatus()

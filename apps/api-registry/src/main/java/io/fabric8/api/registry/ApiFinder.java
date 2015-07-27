@@ -19,7 +19,6 @@ package io.fabric8.api.registry;
 
 import io.fabric8.api.registry.rules.CamelEndpointFinder;
 import io.fabric8.api.registry.rules.CxfEndpointFinder;
-import io.fabric8.kubernetes.api.Kubernetes;
 import io.fabric8.kubernetes.api.KubernetesHelper;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.Container;
@@ -27,6 +26,7 @@ import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodStatus;
 import io.fabric8.kubernetes.api.model.Service;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.jolokia.JolokiaClients;
 import io.fabric8.swagger.model.ApiDeclaration;
 import io.fabric8.utils.Closeables;
@@ -77,7 +77,7 @@ public class ApiFinder {
     private final long pollTimeMs;
     private MessageContext messageContext;
     private JolokiaClients clients = new JolokiaClients();
-    private Kubernetes kubernetes = clients.getKubernetes();
+    private KubernetesClient kubernetes = clients.getKubernetes();
     private AtomicReference<ApiSnapshot> snapshotCache = new AtomicReference<>();
     private Timer timer = new Timer();
     private TimerTask task = new TimerTask() {

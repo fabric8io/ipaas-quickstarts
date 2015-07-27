@@ -18,8 +18,8 @@ package io.fabric8.apps.gateway;
 
 import io.fabric8.arquillian.kubernetes.Constants;
 import io.fabric8.arquillian.kubernetes.Session;
-import io.fabric8.kubernetes.api.KubernetesClient;
 import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import org.assertj.core.api.Condition;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
@@ -40,8 +40,8 @@ public class GatewayKubernetesTest {
     @Test
     public void testGateway() throws Exception {
         String serviceName = "http-gateway";
-        assertThat(client).replicationController(serviceName).isNotNull();
-        assertThat(client).hasServicePort(serviceName, 9000);
+        assertThat(client).replicationController(serviceName, session.getNamespace()).isNotNull();
+        assertThat(client).hasServicePort(serviceName, session.getNamespace(), 9000);
 
         assertThat(client).pods()
                 .runningStatus()

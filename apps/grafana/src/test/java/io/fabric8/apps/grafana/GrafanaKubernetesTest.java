@@ -18,8 +18,8 @@ package io.fabric8.apps.grafana;
 
 import io.fabric8.arquillian.kubernetes.Constants;
 import io.fabric8.arquillian.kubernetes.Session;
-import io.fabric8.kubernetes.api.KubernetesClient;
 import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import org.assertj.core.api.Condition;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
@@ -39,9 +39,9 @@ public class GrafanaKubernetesTest {
 
     @Test
     public void testGrafana() throws Exception {
-        assertThat(client).replicationController("grafana").isNotNull();
+        assertThat(client).replicationController("grafana", session.getNamespace()).isNotNull();
         String serviceName = "grafana";
-        assertThat(client).hasServicePort(serviceName, 80);
+        assertThat(client).hasServicePort(serviceName, session.getNamespace(), 80);
 
         assertThat(client).pods()
                 .runningStatus()

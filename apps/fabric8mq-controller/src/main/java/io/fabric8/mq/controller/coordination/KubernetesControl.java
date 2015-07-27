@@ -16,14 +16,14 @@
 package io.fabric8.mq.controller.coordination;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.fabric8.kubernetes.api.KubernetesClient;
-import io.fabric8.kubernetes.api.KubernetesFactory;
 import io.fabric8.kubernetes.api.KubernetesHelper;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerStatus;
+import io.fabric8.kubernetes.client.DefaultKubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.jolokia.JolokiaClients;
 import io.fabric8.mq.controller.MessageDistribution;
 import io.fabric8.mq.controller.coordination.brokers.BrokerDestinationOverview;
@@ -49,16 +49,19 @@ import java.util.Map;
 import static io.fabric8.kubernetes.api.KubernetesHelper.getName;
 
 public class KubernetesControl extends BaseBrokerControl {
+
     static final int DEFAULT_POLLING_TIME = 2000;
     private static final Logger LOG = LoggerFactory.getLogger(KubernetesControl.class);
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
+    private String namespace = KubernetesHelper.defaultNamespace();
     private KubernetesClient kubernetes;
     private JolokiaClients clients;
     private String replicationControllerId;
 
     @Override
     protected void doStart() throws Exception {
-        kubernetes = new KubernetesClient();
+        kubernetes = new DefaultKubernetesClient();
 
         clients = new JolokiaClients(kubernetes);
         //this will create the broker ReplicationController if it doesn't exist
@@ -192,7 +195,7 @@ public class KubernetesControl extends BaseBrokerControl {
         if (scalingInProgress.startWork(desiredNumber)) {
             try {
                 String id = getOrCreateBrokerReplicationControllerId();
-                ReplicationController replicationController = kubernetes.getReplicationController(id);
+                ReplicationController replicationController = kubernetes.replicationControllers().inNamespace(namespace).withName(id).get();
                 ReplicationControllerStatus status = replicationController.getStatus();
                 int currentDesiredNumber = 0;
                 if (status != null) {
@@ -203,7 +206,7 @@ public class KubernetesControl extends BaseBrokerControl {
                 }
                 if (desiredNumber == (currentDesiredNumber + 1)) {
                     replicationController.getStatus().setReplicas(desiredNumber);
-                    kubernetes.updateReplicationController(id, replicationController);
+                    kubernetes.replicationControllers().inNamespace(namespace).withName(id).update(replicationController);
                     LOG.error("Updated Broker Replication Controller desired state from " + currentDesiredNumber + " to " + desiredNumber);
                 }
             } catch (Throwable e) {
@@ -217,14 +220,14 @@ public class KubernetesControl extends BaseBrokerControl {
         if (scalingInProgress.startWork(desiredNumber)) {
             try {
                 String id = getOrCreateBrokerReplicationControllerId();
-                ReplicationController replicationController = kubernetes.getReplicationController(id);
+                ReplicationController replicationController = kubernetes.replicationControllers().inNamespace(namespace).withName(id).get();
                 int currentDesiredNumber = replicationController.getStatus().getReplicas();
                 if (desiredNumber == (currentDesiredNumber - 1)) {
                     replicationController.getStatus().setReplicas(desiredNumber);
                     model.remove(brokerModel);
                     //Todo update when Kubernetes allows you to target exact pod to discard from replication controller
-                    kubernetes.deletePod(brokerModel.getPod());
-                    kubernetes.updateReplicationController(id, replicationController);
+                    kubernetes.pods().inNamespace(namespace).withName(getName(brokerModel.getPod())).delete();
+                    kubernetes.replicationControllers().inNamespace(namespace).withName(id).update(replicationController);
                     LOG.error("Updated Broker Replication Controller desired state from " + currentDesiredNumber + " to " + desiredNumber + " and removed Broker " + brokerModel);
                 }
             } catch (Throwable e) {
@@ -236,7 +239,6 @@ public class KubernetesControl extends BaseBrokerControl {
     private String getOrCreateBrokerReplicationControllerId() {
         if (replicationControllerId == null) {
             try {
-                ObjectMapper mapper = KubernetesFactory.createObjectMapper();
 
                 File file = new File(getBrokerTemplateLocation());
                 URL url;
@@ -248,11 +250,11 @@ public class KubernetesControl extends BaseBrokerControl {
                 }
 
                 if (url != null) {
-                    ReplicationController replicationController = mapper.reader(ReplicationController.class).readValue(url);
+                    ReplicationController replicationController = OBJECT_MAPPER.reader(ReplicationController.class).readValue(url);
                     replicationControllerId = getName(replicationController);
-                    ReplicationController running = kubernetes.getReplicationController(replicationControllerId);
+                    ReplicationController running = kubernetes.replicationControllers().inNamespace(namespace).withName(replicationControllerId).getIfExists();
                     if (running == null) {
-                        kubernetes.createReplicationController(replicationController);
+                        kubernetes.replicationControllers().inNamespace(namespace).create(replicationController);
                         LOG.info("Created ReplicationController " + replicationControllerId);
                     } else {
                         replicationControllerId = getName(running);

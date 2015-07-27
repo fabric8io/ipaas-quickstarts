@@ -16,7 +16,6 @@
 package io.fabric8.mq.controller.coordination;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.fabric8.kubernetes.api.KubernetesFactory;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import org.junit.Assert;
 import org.junit.Test;
@@ -27,7 +26,7 @@ public class ReplicationControllerTest {
 
     @Test
     public void testCreateReplicationController() throws Exception {
-        ObjectMapper mapper = KubernetesFactory.createObjectMapper();
+        ObjectMapper mapper = new ObjectMapper();
         /*
         String basedir = System.getProperty("basedir", "apps/fabric8-mq-controller");
         String fileName = basedir + "/src/main/resources/replication-template.json";

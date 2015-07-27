@@ -16,10 +16,9 @@
 
 package io.fabric8.apps.producer;
 
-import io.fabric8.arquillian.kubernetes.Constants;
 import io.fabric8.arquillian.kubernetes.Session;
-import io.fabric8.kubernetes.api.KubernetesClient;
 import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import org.assertj.core.api.Condition;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
@@ -39,7 +38,7 @@ public class MQProducerKubernetesTest {
 
     @Test
     public void testMQProducer() throws Exception {
-        assertThat(client).replicationController("fabric8mq-producer").isNotNull();
+        assertThat(client).replicationController("fabric8mq-producer", session.getNamespace()).isNotNull();
 
         assertThat(client).pods()
                 .runningStatus()

@@ -17,8 +17,8 @@
 package io.fabric8.apps.elasticsearch;
 
 import io.fabric8.arquillian.kubernetes.Session;
-import io.fabric8.kubernetes.api.KubernetesClient;
 import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import org.assertj.core.api.Condition;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
@@ -39,8 +39,8 @@ public class ElasticSearchKubernetesTest {
     @Test
     public void testElasticSearch() throws Exception {
         String serviceName = "elasticsearch";
-        assertThat(client).replicationController(serviceName).isNotNull();
-        assertThat(client).hasServicePort(serviceName, 9200);
+        assertThat(client).replicationController(serviceName, session.getNamespace()).isNotNull();
+        assertThat(client).hasServicePort(serviceName, session.getNamespace(), 9200);
 
         assertThat(client).pods()
                 .runningStatus()

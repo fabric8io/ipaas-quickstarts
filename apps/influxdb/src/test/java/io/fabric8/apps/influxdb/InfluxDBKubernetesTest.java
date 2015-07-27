@@ -18,8 +18,8 @@ package io.fabric8.apps.influxdb;
 
 import io.fabric8.arquillian.kubernetes.Constants;
 import io.fabric8.arquillian.kubernetes.Session;
-import io.fabric8.kubernetes.api.KubernetesClient;
 import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import org.assertj.core.api.Condition;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
@@ -39,9 +39,9 @@ public class InfluxDBKubernetesTest {
 
     @Test
     public void testInfluxDB() throws Exception {
-        assertThat(client).replicationController("influxdb").isNotNull();
+        assertThat(client).replicationController("influxdb", session.getNamespace()).isNotNull();
         String serviceName = "influxdb";
-        assertThat(client).hasServicePort(serviceName, 8086);
+        assertThat(client).hasServicePort(serviceName, session.getNamespace(), 8086);
 
         assertThat(client).pods()
                 .runningStatus()

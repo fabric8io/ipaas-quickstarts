@@ -17,12 +17,12 @@
 package io.fabric8.apps.infinispan;
 
 import io.fabric8.arquillian.kubernetes.Session;
-import io.fabric8.kubernetes.api.KubernetesClient;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.ServiceList;
 import io.fabric8.kubernetes.api.model.ServicePort;
 import io.fabric8.kubernetes.api.model.ServiceSpec;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.utils.Asserts;
 import io.fabric8.utils.Block;
 import org.apache.http.client.fluent.Request;

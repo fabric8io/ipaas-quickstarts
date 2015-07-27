@@ -15,10 +15,10 @@
  */
 package io.fabric8.mq.autoscaler;
 
-import io.fabric8.kubernetes.api.KubernetesClient;
-import io.fabric8.kubernetes.api.KubernetesFactory;
 import io.fabric8.kubernetes.api.KubernetesHelper;
 import io.fabric8.kubernetes.api.model.*;
+import io.fabric8.kubernetes.client.DefaultKubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.jolokia.JolokiaClients;
 import io.fabric8.utils.JMXUtils;
 import org.apache.activemq.command.ActiveMQDestination;
@@ -50,6 +50,7 @@ public class MQAutoScaler implements MQAutoScalerMBean {
     private AtomicBoolean started = new AtomicBoolean();
     private JolokiaClients clients;
     private KubernetesClient kubernetes;
+    private String namespace = KubernetesHelper.defaultNamespace();
     private final BrokerLimits brokerLimits = new BrokerLimits();
     private final DestinationLimits destinationLimits = new DestinationLimits();
     private Timer timer;
@@ -211,12 +212,12 @@ public class MQAutoScaler implements MQAutoScalerMBean {
             MQAutoScalerObjectName = new ObjectName(DEFAULT_DOMAIN, "type", "mq-autoscaler");
             JMXUtils.registerMBean(this, MQAutoScalerObjectName);
 
-            kubernetes = new KubernetesClient();
+            kubernetes = new DefaultKubernetesClient();
             clients = new JolokiaClients(kubernetes);
 
             timer = new Timer("MQAutoScaler timer");
             startTimerTask();
-            LOG.info("MQAutoScaler started, using Kubernetes master " + kubernetes.getAddress());
+            LOG.info("MQAutoScaler started, using Kubernetes master " + kubernetes.getMasterUrl());
         }
     }
 
@@ -528,7 +529,7 @@ public class MQAutoScaler implements MQAutoScalerMBean {
             }
         }
         //got here so do a dump
-        ReplicationControllerList replicationControllerListSchema = kubernetes.getReplicationControllers();
+        ReplicationControllerList replicationControllerListSchema = kubernetes.replicationControllers().inNamespace(namespace).list();
         List<ReplicationController> replicationControllerSchemaList = replicationControllerListSchema.getItems();
         for (ReplicationController replicationControllerSchema : replicationControllerSchemaList) {
             System.err.println("DUMP replication controller = " + replicationControllerSchema);
@@ -547,7 +548,7 @@ public class MQAutoScaler implements MQAutoScalerMBean {
                 spec.setReplicas(number);
                 replicationController.setSpec(spec);
                 try {
-                    kubernetes.updateReplicationController(getName(replicationController), replicationController);
+                    kubernetes.replicationControllers().inNamespace(namespace).withName(getName(replicationController)).update(replicationController);
                     result = true;
                     LOG.info("Set DesiredState for " + selector + " to " + number + " pods");
                 } catch (Exception e) {

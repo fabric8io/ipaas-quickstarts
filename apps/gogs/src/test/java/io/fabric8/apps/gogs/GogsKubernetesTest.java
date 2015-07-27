@@ -17,8 +17,8 @@
 package io.fabric8.apps.gogs;
 
 import io.fabric8.arquillian.kubernetes.Session;
-import io.fabric8.kubernetes.api.KubernetesClient;
 import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import org.assertj.core.api.Condition;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
@@ -39,8 +39,8 @@ public class GogsKubernetesTest {
     @Test
     public void testGogs() throws Exception {
         String service = "gogs";
-        assertThat(client).replicationController(service).isNotNull();
-        assertThat(client).hasServicePort(service, 80);
+        assertThat(client).replicationController(service, session.getNamespace()).isNotNull();
+        assertThat(client).hasServicePort(service, session.getNamespace(), 80);
         // TODO
         // assertThat(client).hasServicePort(service, 22);
 

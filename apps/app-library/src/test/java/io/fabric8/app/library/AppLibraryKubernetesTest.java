@@ -17,8 +17,8 @@
 package io.fabric8.app.library;
 
 import io.fabric8.arquillian.kubernetes.Session;
-import io.fabric8.kubernetes.api.KubernetesClient;
 import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import org.assertj.core.api.Condition;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
@@ -38,8 +38,8 @@ public class AppLibraryKubernetesTest {
 
     @Test
     public void testApiRegistry() throws Exception {
-        assertThat(client).replicationController("app-library").isNotNull();
-        assertThat(client).hasServicePort("app-library", 9494);
+        assertThat(client).replicationController("app-library", session.getNamespace()).isNotNull();
+        assertThat(client).hasServicePort("app-library", session.getNamespace(), 9494);
 
         assertThat(client).pods()
                 .runningStatus()

@@ -20,7 +20,7 @@ import io.apiman.common.auth.AuthPrincipal;
 import io.fabric8.kubernetes.api.KubernetesHelper;
 import io.fabric8.openshift.api.model.OAuthClientAuthorizationList;
 import io.fabric8.utils.Systems;
-import io.fabric8.utils.cxf.TrustEverythingSSLTrustManager;
+import io.fabric8.utils.ssl.TrustEverythingSSLTrustManager;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.*;

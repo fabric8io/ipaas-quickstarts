@@ -17,8 +17,8 @@
 package io.fabric8.hubot.notifier;
 
 import io.fabric8.arquillian.kubernetes.Session;
-import io.fabric8.kubernetes.api.KubernetesClient;
 import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import org.assertj.core.api.Condition;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
@@ -38,7 +38,7 @@ public class HubotNotifierKubernetesTest {
 
     @Test
     public void testApiRegistry() throws Exception {
-        assertThat(client).replicationController("hubot-notifier").isNotNull();
+        assertThat(client).replicationController("hubot-notifier", session.getNamespace()).isNotNull();
 
         assertThat(client).pods()
                 .runningStatus()

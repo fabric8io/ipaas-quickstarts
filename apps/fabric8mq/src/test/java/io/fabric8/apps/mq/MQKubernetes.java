@@ -17,8 +17,8 @@
 package io.fabric8.apps.mq;
 
 import io.fabric8.arquillian.kubernetes.Session;
-import io.fabric8.kubernetes.api.KubernetesClient;
 import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import org.assertj.core.api.Condition;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
@@ -42,8 +42,8 @@ public class MQKubernetes {
     @Test
     public void testKubernetes() throws Exception {
         String serviceName = "fabric8mq";
-        assertThat(client).replicationController(serviceName).isNotNull();
-        assertThat(client).hasServicePort(serviceName, 6163);
+        assertThat(client).replicationController(serviceName, session.getNamespace()).isNotNull();
+        assertThat(client).hasServicePort(serviceName, session.getNamespace(), 6163);
 
         assertThat(client).pods()
             .runningStatus()

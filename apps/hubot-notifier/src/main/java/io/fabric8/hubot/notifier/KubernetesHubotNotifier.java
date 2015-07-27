@@ -17,29 +17,25 @@
  */
 package io.fabric8.hubot.notifier;
 
+import com.ning.http.client.ws.WebSocket;
 import io.fabric8.annotations.Eager;
 import io.fabric8.annotations.External;
 import io.fabric8.annotations.Protocol;
 import io.fabric8.annotations.ServiceName;
 import io.fabric8.hubot.HubotNotifier;
-import io.fabric8.kubernetes.api.AbstractWatcher;
-import io.fabric8.kubernetes.api.KubernetesClient;
 import io.fabric8.kubernetes.api.KubernetesHelper;
 import io.fabric8.kubernetes.api.Watcher;
-import io.fabric8.kubernetes.api.builds.BuildWatcher;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.ReplicationController;
-import io.fabric8.kubernetes.api.model.ReplicationControllerSpec;
 import io.fabric8.kubernetes.api.model.Service;
-import io.fabric8.openshift.api.model.Build;
+import io.fabric8.kubernetes.client.DefaultKubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.OpenShiftClient;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.utils.Strings;
 import org.apache.deltaspike.core.api.config.ConfigProperty;
-import org.eclipse.jetty.websocket.api.Session;
-import org.eclipse.jetty.websocket.api.WebSocketListener;
-import org.eclipse.jetty.websocket.client.WebSocketClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,7 +43,6 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
 
 import static java.beans.Introspector.decapitalize;
 
@@ -64,8 +59,9 @@ public class KubernetesHubotNotifier {
     private final String consoleLink;
     private final String roomExpression;
 
-    private KubernetesClient client = new KubernetesClient();
-    private List<WebSocketClient> websocketClients = new ArrayList<>();
+    private String namespace = KubernetesHelper.defaultNamespace();
+    private OpenShiftClient client = new DefaultKubernetesClient();
+    private List<WebSocket> webSockets = new ArrayList<>();
 
     private NotifyConfig serviceConfig = new NotifyConfig("service");
     private NotifyConfig podConfig = new NotifyConfig("pod");
@@ -90,40 +86,41 @@ public class KubernetesHubotNotifier {
         this.consoleLink = consoleLink;
         this.roomExpression = roomExpression;
 
-        LOG.info("Starting watching Kubernetes namespace " + getNamespace() + " at " + client.getAddress() + " using console link: " + consoleLink);
+        LOG.info("Starting watching Kubernetes namespace " + getNamespace() + " at " + client.getMasterUrl() + " using console link: " + consoleLink);
 
-        addClient(client.watchServices(null, new AbstractWatcher<Service>() {
+        addClient(client.services().watch(new io.fabric8.kubernetes.client.Watcher<Service>() {
             @Override
-            public void eventReceived(Action action, Service entity) {
-                onWatchEvent(action, entity, serviceConfig);
+            public void eventReceived(Action action, Service service) {
+                onWatchEvent(action, service, serviceConfig);
             }
         }));
 
-        addClient(client.watchPods(null, new AbstractWatcher<Pod>() {
+
+        addClient(client.pods().watch(new io.fabric8.kubernetes.client.Watcher<Pod>() {
             @Override
-            public void eventReceived(Action action, Pod entity) {
-                onWatchEvent(action, entity, podConfig);
+            public void eventReceived(Action action, Pod pod) {
+                onWatchEvent(action, pod, podConfig);
             }
         }));
 
-        addClient(client.watchReplicationControllers(null, new AbstractWatcher<ReplicationController>() {
+        addClient(client.replicationControllers().watch(new io.fabric8.kubernetes.client.Watcher<ReplicationController>() {
             @Override
-            public void eventReceived(Action action, ReplicationController entity) {
-                onWatchEvent(action, entity, rcConfig);
+            public void eventReceived(Action action, ReplicationController replicationController) {
+                onWatchEvent(action, replicationController, rcConfig);
             }
         }));
 
-        addClient(client.watchBuildConfigs(null, new AbstractWatcher<BuildConfig>() {
+        addClient(client.buildConfigs().watch(new io.fabric8.kubernetes.client.Watcher<BuildConfig>() {
             @Override
-            public void eventReceived(Action action, BuildConfig entity) {
-                onWatchEvent(action, entity, buildConfigConfig);
+            public void eventReceived(Action action, BuildConfig buildConfig) {
+                onWatchEvent(action, buildConfig, buildConfigConfig);
             }
         }));
 
-        addClient(client.watchDeploymentConfigs(null, new AbstractWatcher<DeploymentConfig>() {
+        addClient(client.deploymentConfigs().watch(new io.fabric8.kubernetes.client.Watcher<DeploymentConfig>() {
             @Override
-            public void eventReceived(Action action, DeploymentConfig entity) {
-                onWatchEvent(action, entity, dcConfig);
+            public void eventReceived(Action action, DeploymentConfig deploymentConfig) {
+                onWatchEvent(action, deploymentConfig, dcConfig);
             }
         }));
 
@@ -131,14 +128,14 @@ public class KubernetesHubotNotifier {
     }
 
     public String getNamespace() {
-        return client.getNamespace();
+        return namespace;
     }
 
-    protected void addClient(WebSocketClient webSocketClient) {
-        websocketClients.add(webSocketClient);
+    protected void addClient(WebSocket webSocket) {
+        webSockets.add(webSocket);
     }
 
-    protected void onWatchEvent(Watcher.Action action, HasMetadata entity, NotifyConfig notifyConfig) {
+    protected void onWatchEvent(io.fabric8.kubernetes.client.Watcher.Action action, HasMetadata entity, NotifyConfig notifyConfig) {
         if (!notifyConfig.isEnabled(action)) {
             return;
         }

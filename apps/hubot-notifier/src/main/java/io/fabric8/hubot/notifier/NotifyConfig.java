@@ -16,7 +16,7 @@
  */
 package io.fabric8.hubot.notifier;
 
-import io.fabric8.kubernetes.api.Watcher;
+import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.utils.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

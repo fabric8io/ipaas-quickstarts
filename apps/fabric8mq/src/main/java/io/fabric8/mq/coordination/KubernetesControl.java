@@ -16,13 +16,13 @@
 package io.fabric8.mq.coordination;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.fabric8.kubernetes.api.KubernetesClient;
-import io.fabric8.kubernetes.api.KubernetesFactory;
 import io.fabric8.kubernetes.api.KubernetesHelper;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.ReplicationControllerSpec;
+import io.fabric8.kubernetes.client.DefaultKubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.jolokia.JolokiaClients;
 import io.fabric8.mq.MessageDistribution;
 import io.fabric8.mq.coordination.brokers.BrokerDestinationOverview;
@@ -51,10 +51,15 @@ import java.util.Map;
 import static io.fabric8.kubernetes.api.KubernetesHelper.getName;
 
 public class KubernetesControl extends BaseBrokerControl {
-    private static final Logger LOG = LoggerFactory.getLogger(KubernetesControl.class);
 
+    private static final Logger LOG = LoggerFactory.getLogger(KubernetesControl.class);
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
+
+    private String namespace = KubernetesHelper.defaultNamespace();
     private KubernetesClient kubernetes;
     private JolokiaClients clients;
+
     @Inject
     @ConfigProperty(name = "AMQ_BROKER_CONTROLLER_ID", defaultValue = "amqbroker")
     private String replicationControllerId = "amqbroker";
@@ -69,7 +74,7 @@ public class KubernetesControl extends BaseBrokerControl {
 
     @Override
     protected void doStart() throws Exception {
-        kubernetes = new KubernetesClient();
+        kubernetes = new DefaultKubernetesClient();
 
         clients = new JolokiaClients(kubernetes);
         super.doStart();
@@ -78,7 +83,7 @@ public class KubernetesControl extends BaseBrokerControl {
 
     public void pollBrokers() {
         try {
-            Map<String, Pod> podMap = KubernetesHelper.getSelectedPodMap(kubernetes, kubernetes.getNamespace(), getBrokerSelector());
+            Map<String, Pod> podMap = KubernetesHelper.getSelectedPodMap(kubernetes,namespace, getBrokerSelector());
             Collection<Pod> pods = podMap.values();
             LOG.debug("Checking " + getBrokerSelector() + ": groupSize = " + pods.size());
             for (Pod pod : pods) {
@@ -210,7 +215,7 @@ public class KubernetesControl extends BaseBrokerControl {
                 }
                 if (desiredNumber == (currentDesiredNumber + 1)) {
                     replicationController.getSpec().setReplicas(desiredNumber);
-                    kubernetes.updateReplicationController(getReplicationControllerId(), replicationController,kubernetes.getNamespace());
+                    kubernetes.replicationControllers().inNamespace(namespace).withName(getReplicationControllerId()).update(replicationController);
                     LOG.info("Updated Broker Replication Controller desired state from " + currentDesiredNumber + " to " + desiredNumber);
                 }
             } catch (Throwable e) {
@@ -254,7 +259,7 @@ public class KubernetesControl extends BaseBrokerControl {
     private ReplicationController getBrokerReplicationController() throws InterruptedException {
         ReplicationController running;
         do {
-            running = kubernetes.getReplicationController(getReplicationControllerId(),kubernetes.getNamespace());
+            running = kubernetes.replicationControllers().inNamespace(namespace).withName(getReplicationControllerId()).getIfExists();
             if (running == null) {
                 LOG.warn("Waiting for ReplicationController " + getReplicationControllerId() + " to start");
                 Thread.sleep(5000);
@@ -266,9 +271,8 @@ public class KubernetesControl extends BaseBrokerControl {
     private String getOrCreaBteBrokerReplicationControllerId() {
         if (replicationControllerId == null) {
             try {
-                ReplicationController running = kubernetes.getReplicationController(getOrCreaBteBrokerReplicationControllerId(),kubernetes.getNamespace());
+                ReplicationController running = kubernetes.replicationControllers().inNamespace(namespace).withName(getOrCreaBteBrokerReplicationControllerId()).getIfExists();
                 if (running == null) {
-                    ObjectMapper mapper = KubernetesFactory.createObjectMapper();
 
                     //ToDo chould change this to look for ReplicationController for AMQ_Broker from Maven
                     File file = new File(getBrokerTemplateLocation());
@@ -281,11 +285,11 @@ public class KubernetesControl extends BaseBrokerControl {
                     }
 
                     if (url != null) {
-                        ReplicationController replicationController = mapper.reader(ReplicationController.class).readValue(url);
+                        ReplicationController replicationController = OBJECT_MAPPER.reader(ReplicationController.class).readValue(url);
                         replicationControllerId = getName(replicationController);
-                        running = kubernetes.getReplicationController(replicationControllerId);
+                        running = kubernetes.replicationControllers().inNamespace(namespace).withName(replicationControllerId).getIfExists();
                         if (running == null) {
-                            kubernetes.createReplicationController(replicationController);
+                            kubernetes.replicationControllers().inNamespace(namespace).create(replicationController);
                             LOG.info("Created ReplicationController " + replicationControllerId);
                         } else {
                             replicationControllerId = getName(running);

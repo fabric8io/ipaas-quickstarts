@@ -18,10 +18,11 @@ package io.fabric8.chaos.monkey;
 
 import io.fabric8.annotations.Eager;
 import io.fabric8.hubot.HubotNotifier;
-import io.fabric8.kubernetes.api.KubernetesClient;
 import io.fabric8.kubernetes.api.KubernetesHelper;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodList;
+import io.fabric8.kubernetes.client.DefaultKubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.utils.Filter;
 import io.fabric8.utils.Filters;
 import org.apache.deltaspike.core.api.config.ConfigProperty;
@@ -57,7 +58,8 @@ public class ChaosMonkey {
     private Filter<String> includeFilter;
     private Filter<String> excludeFilter;
 
-    private KubernetesClient kubernetes = new KubernetesClient();
+    private String namespace = KubernetesHelper.defaultNamespace();
+    private KubernetesClient kubernetes = new DefaultKubernetesClient();
     private Timer timer = new Timer("Chaos Monkey timer", true);
 
     /**
@@ -90,7 +92,7 @@ public class ChaosMonkey {
             killFrequency = 60;
         }
 
-        LOG.info("Starting Chaos Monkey on Kubernetes namespace " + getNamespace() + " at " + kubernetes.getAddress() + " with includes " + includePatterns + " excludes " + excludePatterns + " " + " kill frequency " + killFrequency + " seconds");
+        LOG.info("Starting Chaos Monkey on Kubernetes namespace " + getNamespace() + " at " + kubernetes.getMasterUrl() + " with includes " + includePatterns + " excludes " + excludePatterns + " " + " kill frequency " + killFrequency + " seconds");
 
         notify("Chaos Monkey is starting in namespace " + getNamespace() + " with include patterns '" + includePatterns + "' exclude patterns '" + excludePatterns + "' and a kill frequency of " + killFrequency + " seconds. Here I come!");
 
@@ -128,12 +130,12 @@ public class ChaosMonkey {
     }
 
     public String getNamespace() {
-        return kubernetes.getNamespace();
+        return namespace;
     }
 
     protected void killPod() {
         String namespace = getNamespace();
-        PodList pods = kubernetes.getPods(namespace);
+        PodList pods = kubernetes.pods().inNamespace(namespace).list();
         List<Pod> targets = new ArrayList<>();
         if (pods != null) {
             List<Pod> podList = pods.getItems();
@@ -154,7 +156,7 @@ public class ChaosMonkey {
         } else {
             String name = KubernetesHelper.getName(pod);
             try {
-                kubernetes.deletePod(pod);
+                kubernetes.pods().inNamespace(namespace).withName(KubernetesHelper.getName(pod)).delete();
                 message = "Chaos Monkey killed pod " + name + " in namespace " + namespace;
                 killed = true;
             } catch (Exception e) {

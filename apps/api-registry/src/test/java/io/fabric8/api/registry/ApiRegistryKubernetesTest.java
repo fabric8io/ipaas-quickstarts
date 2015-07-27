@@ -17,8 +17,8 @@
 package io.fabric8.api.registry;
 
 import io.fabric8.arquillian.kubernetes.Session;
-import io.fabric8.kubernetes.api.KubernetesClient;
 import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import org.assertj.core.api.Condition;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
@@ -38,8 +38,8 @@ public class ApiRegistryKubernetesTest {
 
     @Test
     public void testApiRegistry() throws Exception {
-        assertThat(client).replicationController("api-registry").isNotNull();
-        assertThat(client).hasServicePort("api-registry", 9393);
+        assertThat(client).replicationController("api-registry", session.getNamespace()).isNotNull();
+        assertThat(client).hasServicePort("api-registry", session.getNamespace(), 9393);
 
         assertThat(client).pods()
                 .runningStatus()
