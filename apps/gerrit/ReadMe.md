@@ -4,4 +4,4 @@ Gerrit makes reviews easier by showing changes in a side-by-side display, and al
 
 Gerrit simplifies Git based project maintainership by permitting any authorized user to submit changes to the master Git repository, rather than requiring all approved changes to be merged in by hand by the project maintainer. This functionality enables a more centralized usage of Git.
 
-[https://code.google.com/p/gerrit/](https://code.google.com/p/gerrit/)
+[https://www.gerritcodereview.com/](https://www.gerritcodereview.com/)
