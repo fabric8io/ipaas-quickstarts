@@ -39,6 +39,8 @@
 
     <fabric8.service.port>5000</fabric8.service.port>
     <fabric8.service.containerPort>5000</fabric8.service.containerPort>
+    <fabric8.service.type>LoadBalancer</fabric8.service.type>
+
     <fabric8.imagePullPolicy>IfNotPresent</fabric8.imagePullPolicy>
     <fabric8.container.name>registry-container</fabric8.container.name>
 

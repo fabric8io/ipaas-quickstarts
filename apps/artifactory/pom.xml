@@ -38,6 +38,7 @@
 
         <fabric8.service.port>80</fabric8.service.port>
         <fabric8.service.containerPort>8081</fabric8.service.containerPort>
+        <fabric8.service.type>LoadBalancer</fabric8.service.type>
     </properties>
 
     <build>

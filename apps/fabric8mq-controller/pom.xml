@@ -39,6 +39,7 @@
         <docker.env.MAIN>io.fabric8.mq.controller.Main</docker.env.MAIN>
         <fabric8.service.port>${controller.service.port}</fabric8.service.port>
         <fabric8.service.containerPort>${controller.container.port}</fabric8.service.containerPort>
+        <fabric8.service.type>LoadBalancer</fabric8.service.type>
 
         <fabric8.label.container>java</fabric8.label.container>
         <fabric8.label.group>mqGroup</fabric8.label.group>

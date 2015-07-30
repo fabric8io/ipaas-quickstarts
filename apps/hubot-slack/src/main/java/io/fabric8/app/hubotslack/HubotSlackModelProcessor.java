@@ -60,6 +60,7 @@ public class HubotSlackModelProcessor {
                 .withName(NAME)
                     .endMetadata()
                 .withNewSpec()
+                .withType("LoadBalancer")
                     .addNewPort()
                 .withPort(80)
                         .withNewTargetPort(8080)

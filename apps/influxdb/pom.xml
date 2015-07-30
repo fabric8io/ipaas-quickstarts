@@ -45,6 +45,7 @@
 
     <fabric8.service.port>8086</fabric8.service.port>
     <fabric8.service.containerPort>8086</fabric8.service.containerPort>
+    <fabric8.service.type>LoadBalancer</fabric8.service.type>
 
     <fabric8.label.component>influxdb</fabric8.label.component>
     <fabric8.label.provider>fabric8</fabric8.label.provider>

@@ -39,6 +39,8 @@
 
     <fabric8.service.port>80</fabric8.service.port>
     <fabric8.service.containerPort>7778</fabric8.service.containerPort>
+    <fabric8.service.type>LoadBalancer</fabric8.service.type>
+
     <fabric8.imagePullPolicy>IfNotPresent</fabric8.imagePullPolicy>
 
     <fabric8.label.component>kiwiirc</fabric8.label.component>

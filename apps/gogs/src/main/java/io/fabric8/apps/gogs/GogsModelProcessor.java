@@ -43,6 +43,7 @@ public class GogsModelProcessor {
                 .addToLabels("provider", "fabric8")
                 .endMetadata()
                 .withNewSpec()
+                .withType("LoadBalancer")
                 .addNewPort()
                 .withProtocol("TCP")
                 .withPort(80)

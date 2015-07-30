@@ -59,6 +59,8 @@
 
     <fabric8.service.port>80</fabric8.service.port>
     <fabric8.service.containerPort>${http.port}</fabric8.service.containerPort>
+    <fabric8.service.type>LoadBalancer</fabric8.service.type>
+
     <fabric8.label.component>imageLinker</fabric8.label.component>
     <fabric8.label.provider>fabric8</fabric8.label.provider>
 
