@@ -166,7 +166,6 @@
             </bootFeatures>
             <bootBundles>
               <bootBundle>mvn:org.apache.camel/camel-core/${camel.version}</bootBundle>
-              <bootBundle>mvn:org.apache.camel/camel-catalog/${camel.version}</bootBundle>
               <bootBundle>mvn:org.apache.camel/camel-blueprint/${camel.version}</bootBundle>
               <bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}</bundle>
             </bootBundles>
