@@ -56,6 +56,7 @@
     <module>karaf-camel-log-archetype</module>
    	<module>karaf-camel-rest-sql-archetype</module>
    	<module>karaf-cxf-rest-archetype</module>
+    <module>karaf4-camel-log-archetype</module>
    	<module>spring-boot-activemq-archetype</module>
    	<module>spring-boot-camel-archetype</module>
    	<module>spring-boot-keycloak-archetype</module>
