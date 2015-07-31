@@ -61,8 +61,6 @@
     <fabric8.label.container>karaf4</fabric8.label.container>
     <fabric8.label.group>quickstarts</fabric8.label.group>
     <fabric8.iconRef>camel</fabric8.iconRef>
-
-    <jube.plugin.enabled>false</jube.plugin.enabled>
   </properties>
 
   <dependencyManagement>
@@ -330,6 +328,7 @@
           <value>true</value>
         </property>
       </activation>
+<!--
       <build>
         <plugins>
           <plugin>
@@ -351,6 +350,7 @@
           </plugin>
         </plugins>
       </build>
+-->
     </profile>
 
     <profile>
