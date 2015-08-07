@@ -259,7 +259,7 @@ public class KubernetesControl extends BaseBrokerControl {
     private ReplicationController getBrokerReplicationController() throws InterruptedException {
         ReplicationController running;
         do {
-            running = kubernetes.replicationControllers().inNamespace(namespace).withName(getReplicationControllerId()).getIfExists();
+            running = kubernetes.replicationControllers().inNamespace(namespace).withName(getReplicationControllerId()).get();
             if (running == null) {
                 LOG.warn("Waiting for ReplicationController " + getReplicationControllerId() + " to start");
                 Thread.sleep(5000);
@@ -271,7 +271,7 @@ public class KubernetesControl extends BaseBrokerControl {
     private String getOrCreaBteBrokerReplicationControllerId() {
         if (replicationControllerId == null) {
             try {
-                ReplicationController running = kubernetes.replicationControllers().inNamespace(namespace).withName(getOrCreaBteBrokerReplicationControllerId()).getIfExists();
+                ReplicationController running = kubernetes.replicationControllers().inNamespace(namespace).withName(getOrCreaBteBrokerReplicationControllerId()).get();
                 if (running == null) {
 
                     //ToDo chould change this to look for ReplicationController for AMQ_Broker from Maven
@@ -287,7 +287,7 @@ public class KubernetesControl extends BaseBrokerControl {
                     if (url != null) {
                         ReplicationController replicationController = OBJECT_MAPPER.reader(ReplicationController.class).readValue(url);
                         replicationControllerId = getName(replicationController);
-                        running = kubernetes.replicationControllers().inNamespace(namespace).withName(replicationControllerId).getIfExists();
+                        running = kubernetes.replicationControllers().inNamespace(namespace).withName(replicationControllerId).get();
                         if (running == null) {
                             kubernetes.replicationControllers().inNamespace(namespace).create(replicationController);
                             LOG.info("Created ReplicationController " + replicationControllerId);

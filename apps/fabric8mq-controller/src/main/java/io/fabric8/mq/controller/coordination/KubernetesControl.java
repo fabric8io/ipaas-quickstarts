@@ -252,7 +252,7 @@ public class KubernetesControl extends BaseBrokerControl {
                 if (url != null) {
                     ReplicationController replicationController = OBJECT_MAPPER.reader(ReplicationController.class).readValue(url);
                     replicationControllerId = getName(replicationController);
-                    ReplicationController running = kubernetes.replicationControllers().inNamespace(namespace).withName(replicationControllerId).getIfExists();
+                    ReplicationController running = kubernetes.replicationControllers().inNamespace(namespace).withName(replicationControllerId).get();
                     if (running == null) {
                         kubernetes.replicationControllers().inNamespace(namespace).create(replicationController);
                         LOG.info("Created ReplicationController " + replicationControllerId);

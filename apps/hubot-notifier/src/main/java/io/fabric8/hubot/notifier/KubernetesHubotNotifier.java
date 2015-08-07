@@ -31,9 +31,9 @@ import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.OpenShiftClient;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.DeploymentConfig;
+import io.fabric8.openshift.client.OpenShiftClient;
 import io.fabric8.utils.Strings;
 import org.apache.deltaspike.core.api.config.ConfigProperty;
 import org.slf4j.Logger;
@@ -60,7 +60,7 @@ public class KubernetesHubotNotifier {
     private final String roomExpression;
 
     private String namespace = KubernetesHelper.defaultNamespace();
-    private OpenShiftClient client = new DefaultKubernetesClient();
+    private KubernetesClient client = new DefaultKubernetesClient();
     private List<WebSocket> webSockets = new ArrayList<>();
 
     private NotifyConfig serviceConfig = new NotifyConfig("service");
@@ -110,14 +110,14 @@ public class KubernetesHubotNotifier {
             }
         }));
 
-        addClient(client.buildConfigs().watch(new io.fabric8.kubernetes.client.Watcher<BuildConfig>() {
+        addClient(client.adapt(OpenShiftClient.class).buildConfigs().watch(new io.fabric8.kubernetes.client.Watcher<BuildConfig>() {
             @Override
             public void eventReceived(Action action, BuildConfig buildConfig) {
                 onWatchEvent(action, buildConfig, buildConfigConfig);
             }
         }));
 
-        addClient(client.deploymentConfigs().watch(new io.fabric8.kubernetes.client.Watcher<DeploymentConfig>() {
+        addClient(client.adapt(OpenShiftClient.class).deploymentConfigs().watch(new io.fabric8.kubernetes.client.Watcher<DeploymentConfig>() {
             @Override
             public void eventReceived(Action action, DeploymentConfig deploymentConfig) {
                 onWatchEvent(action, deploymentConfig, dcConfig);
