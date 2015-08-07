@@ -23,11 +23,11 @@
   <parent>
     <groupId>io.fabric8.jube.images.fabric8</groupId>
     <artifactId>quickstart-karaf4-quickstarts</artifactId>
-    <version>2.3-SNAPSHOT</version>
+    <version>2.2.20</version>
   </parent>
 
   <artifactId>quickstart-karaf4-camellog</artifactId>
-  <version>2.3-SNAPSHOT</version>
+  <version>2.2.20</version>
   <packaging>bundle</packaging>
   <name>Fabric8 :: Quickstarts :: Karaf4 :: Camel Log</name>
   <description>Camel Log Example</description>
@@ -228,9 +228,7 @@
                 <assembly>
                   <dockerFileDir>${project.build.directory}/fabric8/docker</dockerFileDir>
                   <basedir>/opt/jboss</basedir>
-                  <inline xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
-                          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+                  <inline xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2" xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
                     <id>${project.artifactId}</id>
                     <files>
                       <!-- copy karaf archive -->
