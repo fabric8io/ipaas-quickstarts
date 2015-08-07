@@ -16,9 +16,8 @@
 package io.fabric8.cdelivery;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
-import io.fabric8.cxf.endpoint.EnableJMXFeature;
 import io.fabric8.cxf.endpoint.SwaggerFeature;
-import io.fabric8.io.fabric8.workflow.build.signal.BuildSignallerService;
+import io.fabric8.workflow.build.signal.BuildSignallerService;
 import org.apache.cxf.feature.LoggingFeature;
 
 import javax.enterprise.inject.Produces;

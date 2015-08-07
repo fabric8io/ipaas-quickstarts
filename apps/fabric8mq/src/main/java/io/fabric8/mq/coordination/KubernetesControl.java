@@ -215,7 +215,7 @@ public class KubernetesControl extends BaseBrokerControl {
                 }
                 if (desiredNumber == (currentDesiredNumber + 1)) {
                     replicationController.getSpec().setReplicas(desiredNumber);
-                    kubernetes.replicationControllers().inNamespace(namespace).withName(getReplicationControllerId()).update(replicationController);
+                    kubernetes.replicationControllers().inNamespace(namespace).withName(getReplicationControllerId()).replace(replicationController);
                     LOG.info("Updated Broker Replication Controller desired state from " + currentDesiredNumber + " to " + desiredNumber);
                 }
             } catch (Throwable e) {
@@ -261,17 +261,17 @@ public class KubernetesControl extends BaseBrokerControl {
         do {
             running = kubernetes.replicationControllers().inNamespace(namespace).withName(getReplicationControllerId()).get();
             if (running == null) {
-                LOG.warn("Waiting for ReplicationController " + getReplicationControllerId() + " to start");
+                LOG.info("Waiting for ReplicationController " + getReplicationControllerId() + " to start");
                 Thread.sleep(5000);
             }
         } while (running == null);
         return running;
     }
 
-    private String getOrCreaBteBrokerReplicationControllerId() {
+    private String getOrCreateBrokerReplicationControllerId() {
         if (replicationControllerId == null) {
             try {
-                ReplicationController running = kubernetes.replicationControllers().inNamespace(namespace).withName(getOrCreaBteBrokerReplicationControllerId()).get();
+                ReplicationController running = kubernetes.replicationControllers().inNamespace(namespace).withName(getOrCreateBrokerReplicationControllerId()).get();
                 if (running == null) {
 
                     //ToDo chould change this to look for ReplicationController for AMQ_Broker from Maven
@@ -285,7 +285,7 @@ public class KubernetesControl extends BaseBrokerControl {
                     }
 
                     if (url != null) {
-                        ReplicationController replicationController = OBJECT_MAPPER.reader(ReplicationController.class).readValue(url);
+                        ReplicationController replicationController = OBJECT_MAPPER.readerFor(ReplicationController.class).readValue(url);
                         replicationControllerId = getName(replicationController);
                         running = kubernetes.replicationControllers().inNamespace(namespace).withName(replicationControllerId).get();
                         if (running == null) {

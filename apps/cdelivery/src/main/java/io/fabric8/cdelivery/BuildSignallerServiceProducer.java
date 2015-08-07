@@ -17,14 +17,13 @@
  */
 package io.fabric8.cdelivery;
 
-import io.fabric8.io.fabric8.workflow.build.signal.BuildSignallerService;
-
-import javax.enterprise.inject.Produces;
-
 import io.fabric8.annotations.Protocol;
 import io.fabric8.annotations.ServiceName;
+import io.fabric8.workflow.build.signal.BuildSignallerService;
 import org.apache.deltaspike.core.api.config.ConfigProperty;
 import org.kie.api.runtime.KieSession;
+
+import javax.enterprise.inject.Produces;
 
 /**
  */

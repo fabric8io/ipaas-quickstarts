@@ -17,7 +17,7 @@
  */
 package io.fabric8.hubot.notifier;
 
-import com.ning.http.client.ws.WebSocket;
+import io.fabric8.kubernetes.client.internal.com.ning.http.client.ws.WebSocket;
 import io.fabric8.annotations.Eager;
 import io.fabric8.annotations.External;
 import io.fabric8.annotations.Protocol;
