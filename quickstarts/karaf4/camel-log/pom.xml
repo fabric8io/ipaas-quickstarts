@@ -45,7 +45,7 @@
     <docker.maven.plugin.version>0.13.2</docker.maven.plugin.version>
     <camel.version>2.15.2</camel.version>
     <karaf.version>4.0.0</karaf.version>
-    <karaf.plugin.version>4.0.0</karaf.plugin.version>
+    <karaf.plugin.version>4.0.1-SNAPSHOT</karaf.plugin.version>
 
     <docker.from>fabric8/base-sti</docker.from>
 
@@ -399,5 +399,18 @@
       </properties>
     </profile>
   </profiles>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>fusesource-repo</id>
+      <url>http://repo.fusesource.com/nexus/content/groups/m2-proxy</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
 
 </project>
