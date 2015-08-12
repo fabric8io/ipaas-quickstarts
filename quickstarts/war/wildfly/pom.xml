@@ -29,6 +29,8 @@
 	<artifactId>quickstart-wildfly</artifactId>
 	<packaging>war</packaging>
 	<version>2.3-SNAPSHOT</version>
+    <name>Fabric8 :: Quickstarts :: War :: Wildfly</name>
+    <description>Simple Wildfly Application deployed as war</description>
 
 	<properties>
 		<maven.compiler.source>1.7</maven.compiler.source>
