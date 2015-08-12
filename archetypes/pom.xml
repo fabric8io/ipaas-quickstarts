@@ -65,6 +65,7 @@
    	<module>war-camel-servlet-archetype</module>
    	<module>war-cxf-cdi-servlet-archetype</module>
    	<module>war-rest-archetype</module>
+        <module>war-wildfly-archetype</module>
   </modules>
 
   <build>
