@@ -24,5 +24,5 @@ And then run the script
 While the script runs, you can try to scale up or down the number of pods on the remote HTTP service using either the fabric8 web console,
 or from the command line using the openshift client
 
-    oc resize --replicas=3 replicationcontrollers camel-servlet-quickstart
+    oc scale --replicas=3 replicationcontrollers camel-servlet-quickstart
 
