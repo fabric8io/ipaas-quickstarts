@@ -17,7 +17,6 @@
  */
 package io.fabric8.hubot.notifier;
 
-import io.fabric8.kubernetes.client.internal.com.ning.http.client.ws.WebSocket;
 import io.fabric8.annotations.Eager;
 import io.fabric8.annotations.External;
 import io.fabric8.annotations.Protocol;
@@ -31,6 +30,7 @@ import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.client.OpenShiftClient;
@@ -61,7 +61,7 @@ public class KubernetesHubotNotifier {
 
     private String namespace = KubernetesHelper.defaultNamespace();
     private KubernetesClient client = new DefaultKubernetesClient();
-    private List<WebSocket> webSockets = new ArrayList<>();
+    private List<Watch> watches = new ArrayList<>();
 
     private NotifyConfig serviceConfig = new NotifyConfig("service");
     private NotifyConfig podConfig = new NotifyConfig("pod");
@@ -131,8 +131,8 @@ public class KubernetesHubotNotifier {
         return namespace;
     }
 
-    protected void addClient(WebSocket webSocket) {
-        webSockets.add(webSocket);
+    protected void addClient(Watch watch) {
+        watches.add(watch);
     }
 
     protected void onWatchEvent(io.fabric8.kubernetes.client.Watcher.Action action, HasMetadata entity, NotifyConfig notifyConfig) {
