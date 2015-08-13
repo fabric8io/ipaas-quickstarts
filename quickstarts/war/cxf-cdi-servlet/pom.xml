@@ -46,7 +46,7 @@
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <cxf.version>3.0.4</cxf.version>
     <org.eclipse.jetty.version>9.2.10.v20150310</org.eclipse.jetty.version>
-    <docker.maven.plugin.version>0.13.2</docker.maven.plugin.version>
+    <docker.maven.plugin.version>0.13.3</docker.maven.plugin.version>
  
     <docker.from>docker.io/fabric8/tomcat-8.0</docker.from>
 
