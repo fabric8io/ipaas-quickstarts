@@ -44,8 +44,7 @@
     <jube.version>2.2.0</jube.version>
     <docker.maven.plugin.version>0.13.3</docker.maven.plugin.version>
     <camel.version>2.15.2</camel.version>
-    <karaf.version>4.0.0</karaf.version>
-    <karaf.plugin.version>4.0.1-SNAPSHOT</karaf.plugin.version>
+    <karaf.version>4.0.1</karaf.version>
 
     <docker.from>fabric8/base-sti</docker.from>
 
@@ -131,7 +130,7 @@
         <plugin>
           <groupId>org.apache.karaf.tooling</groupId>
           <artifactId>karaf-maven-plugin</artifactId>
-          <version>${karaf.plugin.version}</version>
+          <version>${karaf.version}</version>
           <extensions>true</extensions>
           <configuration>
             <!-- do not include build output directory -->
@@ -399,18 +398,5 @@
       </properties>
     </profile>
   </profiles>
-
-  <pluginRepositories>
-    <pluginRepository>
-      <id>fusesource-repo</id>
-      <url>http://repo.fusesource.com/nexus/content/groups/m2-proxy</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </pluginRepository>
-  </pluginRepositories>
 
 </project>
