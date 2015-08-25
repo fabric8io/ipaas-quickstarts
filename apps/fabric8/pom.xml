@@ -33,7 +33,7 @@
   </description>
 
   <properties>
-    <fabric8.console.version>v1.0.27</fabric8.console.version>
+    <fabric8.console.version>v1.0.29</fabric8.console.version>
 
     <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}fabric8-console:${fabric8.console.version}</docker.image>
     <docker.port.container.http>9090</docker.port.container.http>
