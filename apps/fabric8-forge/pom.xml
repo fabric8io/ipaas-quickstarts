@@ -56,8 +56,13 @@
     <fabric8.addon.release.version>${fabric8.release.version}</fabric8.addon.release.version>
     <camel.addon.release.version>${fabric8.release.version}</camel.addon.release.version>
 
-    <jboss.forge.version>2.15.2.Final</jboss.forge.version>
-    <furnace.version>2.17.0.Final</furnace.version>
+<!--
+    TODO note that 2.18.0.Final is broken - don't use it!
+
+    <jboss.forge.version>2.18.1.Final</jboss.forge.version>
+-->
+    <jboss.forge.version>2.17.0.Final</jboss.forge.version>
+    <furnace.version>2.20.1.Final</furnace.version>
   </properties>
 
   <dependencies>
@@ -198,6 +203,7 @@
       <id>fabric8-snapshot</id>
       <properties>
         <fabric8.addon.release.version>2.3-SNAPSHOT</fabric8.addon.release.version>
+        <camel.addon.release.version>2.2.19</camel.addon.release.version>
       </properties>
     </profile>
 
@@ -243,6 +249,15 @@
           </plugin>
         </plugins>
       </build>
+    </profile>
+
+    <profile>
+      <id>debug</id>
+      <properties>
+        <fabric8.env.JAVA_OPTIONS>-Xdebug -agentlib:jdwp=transport=dt_socket,address=9999,server=y,suspend=n</fabric8.env.JAVA_OPTIONS>
+        <docker.port.container.debug>9999</docker.port.container.debug>
+        <docker.port.host.debug>9999</docker.port.host.debug>
+      </properties>
     </profile>
   </profiles>
 </project>
