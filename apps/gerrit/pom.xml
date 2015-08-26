@@ -58,14 +58,22 @@
 
         <!-- Volume mounted containing Users SSH Public Key (jenkins, sonar, ...) -->
         <!-- The keys should be imported within the Virtual Box of Vagrant if used -->
-        <fabric8.volume.gerrit-users-ssh-key.hostPath>/home/gerrit/ssh-keys</fabric8.volume.gerrit-users-ssh-key.hostPath>
-        <fabric8.volume.gerrit-users-ssh-key.mountPath>/home/gerrit/ssh-keys</fabric8.volume.gerrit-users-ssh-key.mountPath>
+        <!--
+                <fabric8.volume.gerrit-users-ssh-key.hostPath>/home/gerrit/ssh-keys</fabric8.volume.gerrit-users-ssh-key.hostPath>
+                <fabric8.volume.gerrit-users-ssh-key.mountPath>/home/gerrit/ssh-keys</fabric8.volume.gerrit-users-ssh-key.mountPath>
+        -->
+        <fabric8.volume.gerrit-users-ssh-keys.secret>gerrit-users-ssh-keys</fabric8.volume.gerrit-users-ssh-keys.secret>
+        <fabric8.volume.gerrit-users-ssh-keys.mountPath>/home/gerrit/ssh-keys</fabric8.volume.gerrit-users-ssh-keys.mountPath>
 
         <!-- Volume mounted Containing Private &Public Key to be used to set the Admin User of Gerrit  -->
+        <fabric8.volume.gerrit-admin-ssh-key.secret>gerrit-admin-ssh</fabric8.volume.gerrit-admin-ssh-key.secret>
+        <fabric8.volume.gerrit-admin-ssh-key.mountPath>/root/.ssh</fabric8.volume.gerrit-admin-ssh-key.mountPath>
+<!--
         <fabric8.volume.gerrit-admin-ssh-private-key.hostPath>/home/gerrit/admin-ssh-key/id_rsa</fabric8.volume.gerrit-admin-ssh-private-key.hostPath>
         <fabric8.volume.gerrit-admin-ssh-private-key.mountPath>/root/.ssh/id_rsa</fabric8.volume.gerrit-admin-ssh-private-key.mountPath>
         <fabric8.volume.gerrit-admin-ssh-public-key.hostPath>/home/gerrit/admin-ssh-key/id_rsa.pub</fabric8.volume.gerrit-admin-ssh-public-key.hostPath>
         <fabric8.volume.gerrit-admin-ssh-public-key.mountPath>/root/.ssh/id_rsa.pub</fabric8.volume.gerrit-admin-ssh-public-key.mountPath>
+-->
     </properties>
 
     <build>
