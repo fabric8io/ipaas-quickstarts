@@ -44,8 +44,8 @@
         <fabric8.imagePullPolicy>IfNotPresent</fabric8.imagePullPolicy>
         <fabric8.label.component>gerrit</fabric8.label.component>
         <fabric8.label.provider>fabric8</fabric8.label.provider>
-        <fabric8.serviceAccount>fabric8</fabric8.serviceAccount>
-        
+        <fabric8.serviceAccount>gerrit</fabric8.serviceAccount>
+
         <!-- to access docker socket lets run in priviledged mode -->
         <fabric8.containerPrivileged>true</fabric8.containerPrivileged>
 
