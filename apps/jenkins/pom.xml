@@ -56,12 +56,14 @@
 
         <fabric8.volume.docker-socket.hostPath>/var/run/docker.sock</fabric8.volume.docker-socket.hostPath>
         <fabric8.volume.docker-socket.mountPath>/var/run/docker.sock</fabric8.volume.docker-socket.mountPath>
-        <fabric8.volume.jenkins-master-key.hostPath>/home/jenkins/ssh-keys</fabric8.volume.jenkins-master-key.hostPath>
-        <fabric8.volume.jenkins-master-key.mountPath>/home/jenkins/ssh-keys</fabric8.volume.jenkins-master-key.mountPath>
 
         <fabric8.volume.jenkins-workspace.emptyDir />
         <fabric8.volume.jenkins-workspace.mountPath>/var/jenkins_home</fabric8.volume.jenkins-workspace.mountPath>
 
+
+        <fabric8.volume.jenkins-master-key.secret>jenkins-master-ssh</fabric8.volume.jenkins-master-key.secret>
+        <fabric8.volume.jenkins-master-key.mountPath>/home/jenkins/ssh-keys</fabric8.volume.jenkins-master-key.mountPath>
+        <fabric8.volume.jenkins-master-key.readOnly>false</fabric8.volume.jenkins-master-key.readOnly>
 
         <fabric8.volume.git-ssh.secret>fabric8-git-ssh</fabric8.volume.git-ssh.secret>
         <fabric8.volume.git-ssh.mountPath>/var/jenkins/.ssh-git</fabric8.volume.git-ssh.mountPath>
