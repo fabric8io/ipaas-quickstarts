@@ -30,6 +30,7 @@ import io.fabric8.kubernetes.api.model.ReplicationController;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.openshift.api.model.BuildConfig;
 import io.fabric8.openshift.api.model.DeploymentConfig;
@@ -88,7 +89,7 @@ public class KubernetesHubotNotifier {
 
         LOG.info("Starting watching Kubernetes namespace " + getNamespace() + " at " + client.getMasterUrl() + " using console link: " + consoleLink);
 
-        addClient(client.services().watch(new io.fabric8.kubernetes.client.Watcher<Service>() {
+        addClient(client.services().watch(new WatcherSupport<Service>() {
             @Override
             public void eventReceived(Action action, Service service) {
                 onWatchEvent(action, service, serviceConfig);
@@ -96,28 +97,28 @@ public class KubernetesHubotNotifier {
         }));
 
 
-        addClient(client.pods().watch(new io.fabric8.kubernetes.client.Watcher<Pod>() {
+        addClient(client.pods().watch(new WatcherSupport<Pod>() {
             @Override
             public void eventReceived(Action action, Pod pod) {
                 onWatchEvent(action, pod, podConfig);
             }
         }));
 
-        addClient(client.replicationControllers().watch(new io.fabric8.kubernetes.client.Watcher<ReplicationController>() {
+        addClient(client.replicationControllers().watch(new WatcherSupport<ReplicationController>() {
             @Override
             public void eventReceived(Action action, ReplicationController replicationController) {
                 onWatchEvent(action, replicationController, rcConfig);
             }
         }));
 
-        addClient(client.adapt(OpenShiftClient.class).buildConfigs().watch(new io.fabric8.kubernetes.client.Watcher<BuildConfig>() {
+        addClient(client.adapt(OpenShiftClient.class).buildConfigs().watch(new WatcherSupport<BuildConfig>() {
             @Override
             public void eventReceived(Action action, BuildConfig buildConfig) {
                 onWatchEvent(action, buildConfig, buildConfigConfig);
             }
         }));
 
-        addClient(client.adapt(OpenShiftClient.class).deploymentConfigs().watch(new io.fabric8.kubernetes.client.Watcher<DeploymentConfig>() {
+        addClient(client.adapt(OpenShiftClient.class).deploymentConfigs().watch(new WatcherSupport<DeploymentConfig>() {
             @Override
             public void eventReceived(Action action, DeploymentConfig deploymentConfig) {
                 onWatchEvent(action, deploymentConfig, dcConfig);
@@ -127,6 +128,12 @@ public class KubernetesHubotNotifier {
         LOG.info("Now watching services, pods, replication controllers, builds and deployments");
     }
 
+    protected static abstract class WatcherSupport<T> implements io.fabric8.kubernetes.client.Watcher<T> {
+
+        public void onClose(KubernetesClientException e) {
+            LOG.info("Watcher " + this + " closed due to : " + e);
+        }
+    }
     public String getNamespace() {
         return namespace;
     }
