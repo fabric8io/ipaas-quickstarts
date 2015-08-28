@@ -36,7 +36,7 @@
 
     <addon.repository>${project.build.directory}/addon-repository</addon.repository>
 
-    <docker.from>fabric8/jetty-9</docker.from>
+    <docker.from>docker.io/fabric8/jetty-9:1.0.0</docker.from>
     <docker.env.FORGE_ADDON_DIRECTORY>/forge-addon-repo</docker.env.FORGE_ADDON_DIRECTORY>
 
     <docker.assemblyDescriptor>${basedir}/src/main/fabric8/assembly.xml</docker.assemblyDescriptor>
