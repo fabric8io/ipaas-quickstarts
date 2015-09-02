@@ -33,7 +33,7 @@
   </description>
 
   <properties>
-    <docker.image>jboss/keycloak:1.1.0.Beta2</docker.image>
+    <docker.image>jboss/keycloak:1.3.1.Final</docker.image>
     <docker.port.container.http>8080</docker.port.container.http>
     <docker.port.container.jolokia />
 
@@ -41,7 +41,7 @@
     <fabric8.service.containerPort>http</fabric8.service.containerPort>
     <fabric8.service.type>LoadBalancer</fabric8.service.type>
 
-    <fabric8.label.component>keycloack</fabric8.label.component>
+    <fabric8.label.component>keycloak</fabric8.label.component>
     <fabric8.label.provider>fabric8</fabric8.label.provider>
   </properties>
 
