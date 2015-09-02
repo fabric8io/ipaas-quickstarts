@@ -35,7 +35,7 @@
   <properties>
     <fabric8.serviceAccount>metrics</fabric8.serviceAccount>
 
-    <docker.image>jimmidyson/prometheus-kubernetes:latest</docker.image>
+    <docker.image>fabric8/prometheus-kubernetes:${project.version}</docker.image>
     <docker.port.container.http>9090</docker.port.container.http>
     <docker.port.container.jolokia />
 
@@ -51,15 +51,6 @@
 
     <fabric8.livenessProbe.port>9090</fabric8.livenessProbe.port>
   </properties>
-
-  <build>
-    <resources>
-      <resource>
-        <directory>src/main/fabric8</directory>
-        <filtering>true</filtering>
-      </resource>
-    </resources>
-  </build>
 
   <dependencies>
     <dependency>
@@ -86,4 +77,47 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/fabric8</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <groupId>org.jolokia</groupId>
+        <artifactId>docker-maven-plugin</artifactId>
+        <version>${docker.maven.plugin.version}</version>
+        <configuration>
+          <images>
+            <image>
+              <name>${docker.image}</name>
+              <build>
+                <from>prom/prometheus:master</from>
+                <assembly>
+                  <basedir>/etc/prometheus</basedir>
+                  <inline xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+                              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                              xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+                    <id>prometheus-conf</id>
+                    <files>
+                      <file>
+                        <source>${basedir}/src/main/resources/prometheus.yml</source>
+                        <outputDirectory>.</outputDirectory>
+                      </file>
+                    </files>
+                  </inline>
+                </assembly>
+                <ports>
+                  <port>9090</port>
+                </ports>
+              </build>
+            </image>
+          </images>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>
