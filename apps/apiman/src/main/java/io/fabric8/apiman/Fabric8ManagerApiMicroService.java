@@ -33,13 +33,13 @@ import io.apiman.manager.api.micro.Users;
 public class Fabric8ManagerApiMicroService extends ManagerApiMicroService {
 
 	@Override
-	public void addAuthFilter(ServletContextHandler apiManServer) {
+	protected void addAuthFilter(ServletContextHandler apiManServer) {
 		apiManServer.addFilter(BootstrapFilter.class,  "/*", EnumSet.of(DispatcherType.REQUEST));
 		apiManServer.addFilter(BearerTokenFilter.class, "/*", EnumSet.of(DispatcherType.REQUEST));
 	}
 
 	@Override
-	public SecurityHandler createSecurityHandler() {
+	protected SecurityHandler createSecurityHandler() {
         HashLoginService l = new HashLoginService();
         for (User user : Users.getUsers()) {
             String[] roles = user.getRolesAsArray();
