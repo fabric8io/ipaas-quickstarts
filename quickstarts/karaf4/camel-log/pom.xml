@@ -45,6 +45,7 @@
     <docker.maven.plugin.version>0.13.3</docker.maven.plugin.version>
     <camel.version>2.15.2</camel.version>
     <karaf.version>4.0.1</karaf.version>
+    <maven-install-plugin.version>2.5.2</maven-install-plugin.version>
 
     <docker.from>fabric8/base-sti</docker.from>
 
@@ -125,54 +126,6 @@
       </resource>
     </resources>
 
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.karaf.tooling</groupId>
-          <artifactId>karaf-maven-plugin</artifactId>
-          <version>${karaf.version}</version>
-          <extensions>true</extensions>
-          <configuration>
-            <!-- do not include build output directory -->
-            <includeBuildOutputDirectory>false</includeBuildOutputDirectory>
-            <!-- no startupFeatures -->
-            <bootFeatures>
-<!--
-              <feature>wrap</feature>
-              <feature>shell</feature>
-              <feature>shell-compat</feature>
-              <feature>feature</feature>
-              <feature>ssh</feature>
-              <feature>bundle</feature>
-              <feature>config</feature>
-              <feature>deployer</feature>
-              <feature>diagnostic</feature>
-              <feature>feature</feature>
-              <feature>instance</feature>
-              <feature>kar</feature>
-              <feature>package</feature>
-              <feature>service</feature>
--->
-              <feature>jaas</feature>
-              <feature>management</feature>
-              <feature>log</feature>
-              <feature>system</feature>
-              <feature>aries-blueprint</feature>
-<!-- commented because it pulls in bundles like camel-commands, which should be optional
-              <feature>camel-core</feature>
-              <feature>camel-blueprint</feature>
--->
-            </bootFeatures>
-            <bootBundles>
-              <bootBundle>mvn:org.apache.camel/camel-core/${camel.version}</bootBundle>
-              <bootBundle>mvn:org.apache.camel/camel-blueprint/${camel.version}</bootBundle>
-              <bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}</bundle>
-            </bootBundles>
-          </configuration>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-
     <plugins>
       <!-- Compiler plugin enforces Java 1.7 compatibility and activates annotation processors -->
       <plugin>
@@ -211,6 +164,85 @@
         <extensions>true</extensions>
       </plugin>
 
+      <!-- plugin goals have to be executed in order -->
+      <!-- 1. install the bundle -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-install-plugin</artifactId>
+        <version>${maven-install-plugin.version}</version>
+        <executions>
+          <execution>
+            <id>install-bundle</id>
+            <goals>
+              <goal>install</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- 2. create karaf assembly -->
+      <!-- karaf-maven-plugin creates custom microservice distribution -->
+      <plugin>
+        <groupId>org.apache.karaf.tooling</groupId>
+        <artifactId>karaf-maven-plugin</artifactId>
+        <version>${karaf.version}</version>
+        <extensions>true</extensions>
+        <executions>
+          <execution>
+            <id>karaf-assembly</id>
+            <goals>
+              <goal>assembly</goal>
+            </goals>
+            <phase>install</phase>
+          </execution>
+          <execution>
+            <id>karaf-archive</id>
+            <goals>
+              <goal>archive</goal>
+            </goals>
+            <phase>install</phase>
+          </execution>
+        </executions>
+        <configuration>
+          <!-- do not include build output directory -->
+          <includeBuildOutputDirectory>false</includeBuildOutputDirectory>
+          <!-- no startupFeatures -->
+          <bootFeatures>
+            <!--
+            <feature>wrap</feature>
+            <feature>shell</feature>
+            <feature>shell-compat</feature>
+            <feature>feature</feature>
+            <feature>ssh</feature>
+            <feature>bundle</feature>
+            <feature>config</feature>
+            <feature>deployer</feature>
+            <feature>diagnostic</feature>
+            <feature>feature</feature>
+            <feature>instance</feature>
+            <feature>kar</feature>
+            <feature>package</feature>
+            <feature>service</feature>
+            -->
+            <feature>jaas</feature>
+            <feature>management</feature>
+            <feature>log</feature>
+            <feature>system</feature>
+            <feature>aries-blueprint</feature>
+            <!-- commented because it pulls in bundles like camel-commands, which should be optional
+            <feature>camel-core</feature>
+            <feature>camel-blueprint</feature>
+            -->
+          </bootFeatures>
+          <bootBundles>
+            <bootBundle>mvn:org.apache.camel/camel-core/${camel.version}</bootBundle>
+            <bootBundle>mvn:org.apache.camel/camel-blueprint/${camel.version}</bootBundle>
+            <bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}</bundle>
+          </bootBundles>
+        </configuration>
+      </plugin>
+
+      <!-- 3. create docker image -->
       <plugin>
         <groupId>org.jolokia</groupId>
         <artifactId>docker-maven-plugin</artifactId>
