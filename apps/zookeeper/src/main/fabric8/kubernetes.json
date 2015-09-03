@@ -16,7 +16,7 @@
           {
             "protocol": "TCP",
             "port": 2181,
-            "targetPort": "zookeeper-client-port"
+            "targetPort": "client"
           }
         ],
         "selector": {
@@ -28,74 +28,27 @@
       "kind": "Service",
       "apiVersion": "v1",
       "metadata": {
-        "name": "zk-peer-1"
+        "name": "zookeeper-1",
+        "labels": {
+          "name": "zookeeper-1"
+        }
       },
       "spec": {
         "ports": [
           {
-            "protocol": "TCP",
+            "name": "client",
+            "port": 2181,
+            "targetPort": 2181
+          },
+          {
+            "name": "followers",
             "port": 2888,
-            "targetPort": "zookeeper-peer-port"
-          }
-        ],
-        "selector": {
-          "name": "zookeeper-pod",
-          "server": "1"
-        }
-      }
-    },
-    {
-      "kind": "Service",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "zk-peer-2"
-      },
-      "spec": {
-        "ports": [
+            "targetPort": 2888
+          },
           {
-            "protocol": "TCP",
-            "port": 2889,
-            "targetPort": "zookeeper-peer-port"
-          }
-        ],
-        "selector": {
-          "name": "zookeeper-pod",
-          "server": "2"
-        }
-      }
-    },
-    {
-      "kind": "Service",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "zk-peer-3"
-      },
-      "spec": {
-        "ports": [
-          {
-            "protocol": "TCP",
-            "port": 2890,
-            "targetPort": "zookeeper-peer-port"
-          }
-        ],
-        "selector": {
-          "name": "zookeeper-pod",
-          "server": "3"
-        }
-      }
-    },
-    {
-      "kind": "Service",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "zk-election-1"
-      },
-      "spec": {
-        "ports": [
-          {
-            "protocol": "TCP",
+            "name": "election",
             "port": 3888,
-            "targetPort": "zookeeper-election-port"
+            "targetPort": 3888
           }
         ],
         "selector": {
@@ -108,14 +61,27 @@
       "kind": "Service",
       "apiVersion": "v1",
       "metadata": {
-        "name": "zk-election-2"
+        "name": "zookeeper-2",
+        "labels": {
+          "name": "zookeeper-2"
+        }
       },
       "spec": {
         "ports": [
           {
-            "protocol": "TCP",
-            "port": 3889,
-            "targetPort": "zookeeper-election-port"
+            "name": "client",
+            "port": 2181,
+            "targetPort": 2181
+          },
+          {
+            "name": "followers",
+            "port": 2888,
+            "targetPort": 2888
+          },
+          {
+            "name": "election",
+            "port": 3888,
+            "targetPort": 3888
           }
         ],
         "selector": {
@@ -128,14 +94,27 @@
       "kind": "Service",
       "apiVersion": "v1",
       "metadata": {
-        "name": "zk-election-3"
+        "name": "zookeeper-3",
+        "labels": {
+          "name": "zookeeper-3"
+        }
       },
       "spec": {
         "ports": [
           {
-            "protocol": "TCP",
-            "port": 3890,
-            "targetPort": "zookeeper-election-port"
+            "name": "client",
+            "port": 2181,
+            "targetPort": 2181
+          },
+          {
+            "name": "peer",
+            "port": 2888,
+            "targetPort": 2888
+          },
+          {
+            "name": "election",
+            "port": 3888,
+            "targetPort": 3888
           }
         ],
         "selector": {
@@ -187,29 +166,29 @@
                 "image": "fabric8/zookeeper",
                 "ports": [
                   {
-                    "name": "zookeeper-client-port",
+                    "name": "client",
                     "containerPort": 2181,
                     "protocol": "TCP"
                   },
                   {
-                    "name": "zookeeper-peer-port",
+                    "name": "peer",
                     "containerPort": 2888,
                     "protocol": "TCP"
                   },
                   {
-                    "name": "zookeeper-election-port",
+                    "name": "election",
                     "containerPort": 3888,
                     "protocol": "TCP"
                   }
                 ],
                 "env": [
                   {
-                    "name": "ZK_SERVER_ID",
+                    "name": "SERVER_ID",
                     "value": "1"
                   },
                   {
-                    "name": "USE_BRIDGE",
-                    "value": "true"
+                    "name": "MAX_SERVERS",
+                    "value": "3"
                   }
                 ],
                 "volumeMounts": [
@@ -224,7 +203,8 @@
                 ],
                 "imagePullPolicy": "IfNotPresent"
               }
-            ]
+            ],
+            "serviceAccountName" : "fabric8"
           }
         }
       }
@@ -272,29 +252,29 @@
                 "image": "fabric8/zookeeper",
                 "ports": [
                   {
-                    "name": "zookeeper-client-port",
+                    "name": "client",
                     "containerPort": 2181,
                     "protocol": "TCP"
                   },
                   {
-                    "name": "zookeeper-peer-port",
+                    "name": "peer",
                     "containerPort": 2888,
                     "protocol": "TCP"
                   },
                   {
-                    "name": "zookeeper-election-port",
+                    "name": "election",
                     "containerPort": 3888,
                     "protocol": "TCP"
                   }
                 ],
                 "env": [
                   {
-                    "name": "ZK_SERVER_ID",
+                    "name": "SERVER_ID",
                     "value": "2"
                   },
                   {
-                    "name": "USE_BRIDGE",
-                    "value": "true"
+                    "name": "MAX_SERVERS",
+                    "value": "3"
                   }
                 ],
                 "resources": {},
@@ -310,7 +290,8 @@
                 ],
                 "imagePullPolicy": "IfNotPresent"
               }
-            ]
+            ],
+            "serviceAccountName" : "fabric8"
           }
         }
       }
@@ -358,29 +339,29 @@
                 "image": "fabric8/zookeeper",
                 "ports": [
                   {
-                    "name": "zookeeper-client-port",
+                    "name": "client",
                     "containerPort": 2181,
                     "protocol": "TCP"
                   },
                   {
-                    "name": "zookeeper-peer-port",
+                    "name": "peer",
                     "containerPort": 2888,
                     "protocol": "TCP"
                   },
                   {
-                    "name": "zookeeper-election-port",
+                    "name": "election",
                     "containerPort": 3888,
                     "protocol": "TCP"
                   }
                 ],
                 "env": [
                   {
-                    "name": "ZK_SERVER_ID",
-                    "value": "3"
+                    "name": "SERVER_ID",
+                    "value": "1"
                   },
                   {
-                    "name": "USE_BRIDGE",
-                    "value": "true"
+                    "name": "MAX_SERVERS",
+                    "value": "3"
                   }
                 ],
                 "resources": {},
@@ -396,7 +377,8 @@
                 ],
                 "imagePullPolicy": "IfNotPresent"
               }
-            ]
+            ],
+            "serviceAccountName" : "fabric8"
           }
         }
       }

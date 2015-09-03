@@ -50,14 +50,14 @@ public class ZooKeeperKubernetes {
         assertThat(client).services().haveAtLeast(3, new Condition<Service>() {
             @Override
             public boolean matches(Service serviceSchema) {
-                return getName(serviceSchema).startsWith("zk-peer");
+                return getName(serviceSchema).startsWith("zookeeper");
             }
         });
 
-        assertThat(client).services().haveAtLeast(3, new Condition<Service>() {
+        assertThat(client).services().haveAtLeast(1, new Condition<Service>() {
             @Override
             public boolean matches(Service serviceSchema) {
-                return getName(serviceSchema).startsWith("zk-election");
+                return getName(serviceSchema).startsWith("zk-client");
             }
         });
 
