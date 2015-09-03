@@ -61,6 +61,7 @@
         <module>artifactory</module>
         <module>api-registry</module>
         <module>apiman</module>
+        <module>apiman-gateway</module>
         <module>app-library</module>
         <module>brackets</module>
         <module>cadvisor</module>

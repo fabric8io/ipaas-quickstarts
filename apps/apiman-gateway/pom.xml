@@ -1,0 +1,216 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>io.fabric8.jube.images.fabric8</groupId>
+    <artifactId>apps</artifactId>
+    <version>2.3-SNAPSHOT</version>
+  </parent>
+  <artifactId>apiman-gateway</artifactId>
+  <name>Apiman Gateway</name>
+  <description>Apiman Gateway deployed on Jetty</description>
+
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <version.compiler.plugin>2.3.1</version.compiler.plugin>
+    <maven.compiler.target>1.7</maven.compiler.target>
+    <maven.compiler.source>1.7</maven.compiler.source>
+    <version.maven-surefire-plugin>2.15</version.maven-surefire-plugin>
+    <version.maven-bundle-plugin>2.3.7</version.maven-bundle-plugin>
+    <apiman.version>1.1.6.Final</apiman.version>
+
+    <http.port>7777</http.port>    
+    <docker.from>fabric8/java</docker.from>
+    <docker.image>fabric8/${project.artifactId}:${project.version}</docker.image>
+    <docker.assemblyDescriptorRef>artifact-with-dependencies</docker.assemblyDescriptorRef>
+    <docker.env.MAIN>io.fabric8.apiman.gateway.ApimanGatewayStarter</docker.env.MAIN>
+    <docker.port.container.http>${http.port}</docker.port.container.http>
+    <docker.port.container.jolokia>8778</docker.port.container.jolokia>
+
+    <fabric8.env.MAIN>${docker.env.MAIN}</fabric8.env.MAIN>
+    <fabric8.label.component>ApimanGateway</fabric8.label.component>
+    <fabric8.label.group>defaultGatewayGroup</fabric8.label.group>
+    <fabric8.label.provider>fabric8</fabric8.label.provider>
+    <fabric8.service.port>${http.port}</fabric8.service.port>
+    <fabric8.service.containerPort>${http.port}</fabric8.service.containerPort>
+  </properties>
+
+<dependencies>
+    <dependency>
+      <groupId>io.apiman</groupId>
+      <artifactId>apiman-gateway-platforms-war-micro</artifactId>
+      <type>jar</type>
+      <version>${apiman.version}</version>
+    </dependency>
+    
+    <!-- fabric8 -->
+    <dependency>
+     <groupId>io.fabric8</groupId>
+     <artifactId>kubernetes-api</artifactId>
+    </dependency>
+    
+    <!-- overriding versions from dependencyManagement -->
+    <dependency>
+     <groupId>javax.servlet</groupId>
+     <artifactId>javax.servlet-api</artifactId>
+     <version>3.1.0</version>
+    </dependency>
+    <dependency>
+     <groupId>commons-logging</groupId>
+     <artifactId>commons-logging</artifactId>
+     <version>1.2</version>
+    </dependency>  
+    <dependency>
+      <groupId>io.apiman</groupId>
+      <artifactId>apiman-gateway-engine-policies</artifactId>
+      <version>${apiman.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.apiman</groupId>
+      <artifactId>apiman-gateway-engine-beans</artifactId>
+      <version>${apiman.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.apiman</groupId>
+      <artifactId>apiman-gateway-engine-core</artifactId>
+      <version>${apiman.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.apiman</groupId>
+      <artifactId>apiman-gateway-api-rest</artifactId>
+      <version>${apiman.version}</version>
+    </dependency>
+
+</dependencies>
+
+  <build>
+    <finalName>${project.artifactId}</finalName>
+
+    <plugins>
+      <plugin>
+        <groupId>org.jolokia</groupId>
+        <artifactId>docker-maven-plugin</artifactId>
+        <version>${docker.maven.plugin.version}</version>
+        <configuration>
+          <images>
+            <image>
+              <name>${docker.image}</name>
+              <build>
+                <from>${docker.from}</from>
+                <assembly>
+                  <descriptorRef>${docker.assemblyDescriptorRef}</descriptorRef>
+                </assembly>
+                <env>
+                  <MAIN>${docker.env.MAIN}</MAIN>
+                  <HTTP_PORT>${http.port}</HTTP_PORT>
+                </env>
+                <ports>
+                  <port>8778</port>
+                  <port>${http.port}</port>
+                </ports>
+              </build>
+            </image>
+          </images>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>io.fabric8.jube</groupId>
+        <artifactId>jube-maven-plugin</artifactId>
+        <version>${jube.version}</version>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <configuration>
+          <mainClass>${docker.env.MAIN}</mainClass>
+          <includePluginDependencies>false</includePluginDependencies>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>docker-build</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.jolokia</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>build</goal>
+                </goals>
+                <phase>package</phase>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    
+    <profile>
+      <id>docker-push</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.jolokia</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>build</goal>
+                  <goal>push</goal>
+                </goals>
+                <phase>package</phase>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    
+    <profile>
+      <id>jube</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>io.fabric8.jube</groupId>
+            <artifactId>jube-maven-plugin</artifactId>
+            <version>${jube.version}</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>build</goal>
+                </goals>
+                <phase>package</phase>
+              </execution>
+            </executions>
+            <dependencies>
+              <dependency>
+                <groupId>io.fabric8.jube.images.fabric8</groupId>
+                <artifactId>java</artifactId>
+                <version>${jube.version}</version>
+                <classifier>image</classifier>
+                <type>zip</type>
+              </dependency>
+            </dependencies>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>docker-public</id>
+      <properties>
+      </properties>
+    </profile>
+  </profiles>
+
+</project>
