@@ -31,7 +31,7 @@
     <fabric8.label.component>ApimanManagerAPI</fabric8.label.component>
     <fabric8.label.group>defaultGatewayGroup</fabric8.label.group>
     <fabric8.label.provider>fabric8</fabric8.label.provider>
-    <fabric8.service.port>8998</fabric8.service.port>
+    <fabric8.service.port>${http.port}</fabric8.service.port>
     <fabric8.service.containerPort>${http.port}</fabric8.service.containerPort>
   </properties>
 
@@ -60,7 +60,21 @@
      <artifactId>javax.servlet-api</artifactId>
      <version>3.1.0</version>
     </dependency>
-
+    <dependency>
+      <groupId>io.apiman</groupId>
+      <artifactId>apiman-gateway-engine-beans</artifactId>
+      <version>${apiman.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.apiman</groupId>
+      <artifactId>apiman-gateway-engine-core</artifactId>
+      <version>${apiman.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.apiman</groupId>
+      <artifactId>apiman-gateway-api-rest</artifactId>
+      <version>${apiman.version}</version>
+    </dependency>
 </dependencies>
 
   <build>
