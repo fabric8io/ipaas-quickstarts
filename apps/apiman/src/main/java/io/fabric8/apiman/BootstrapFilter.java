@@ -30,8 +30,10 @@ import io.apiman.manager.api.core.logging.IApimanLogger;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -78,22 +80,29 @@ public class BootstrapFilter implements Filter {
 			List<PolicyDefinitionBean> policyDefList = mapper.readValue(is, tRef);
 			logger.info("Found " + policyDefList.size() + " policyDefs");
 			//2. Look up the already installed policies
-			Set<String> existingPolicyDefinitions = new HashSet<String>(); 
+			Map<String,PolicyDefinitionSummaryBean> existingPolicyDefinitions = new HashMap<String,PolicyDefinitionSummaryBean>(); 
 			List<PolicyDefinitionSummaryBean> policyDefinitions = storageQuery.listPolicyDefinitions();
 			logger.info("Found " + policyDefinitions.size() + " existing policies");
 			for (PolicyDefinitionSummaryBean policyDefinitionSummaryBean: policyDefinitions) {
-				existingPolicyDefinitions.add(policyDefinitionSummaryBean.getName());
+				existingPolicyDefinitions.put(policyDefinitionSummaryBean.getName(),policyDefinitionSummaryBean);
 			}
 			//3. Store the policies if they are not already installed
 			for (PolicyDefinitionBean policyDefinitionBean : policyDefList) {
 				String policyName = policyDefinitionBean.getName();
-				storage.beginTx();
-				if (! existingPolicyDefinitions.contains(policyName)) {
+				if (policyDefinitionBean.getId() == null || policyDefinitionBean.getId().equals("")) policyDefinitionBean.setId(policyDefinitionBean.getName().replaceAll(" ", ""));
+				if (! existingPolicyDefinitions.containsKey(policyName)) {
+					storage.beginTx();
 					logger.info("Creating Policy " + policyDefinitionBean.getName());
 					storage.createPolicyDefinition(policyDefinitionBean);
 					storage.commitTx();
 				} else {
-					storage.rollbackTx();
+					//update if the policyImpl changed
+					if (existingPolicyDefinitions.get(policyName).getPolicyImpl().length() != policyDefinitionBean.getPolicyImpl().length()) {
+						logger.info("Updating Policy " + policyDefinitionBean.getName());
+						storage.beginTx();
+						storage.updatePolicyDefinition(policyDefinitionBean);
+						storage.commitTx();
+					}
 				}
 			}
 		} catch (StorageException | IOException e) {
