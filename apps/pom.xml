@@ -70,7 +70,6 @@
         <module>fabric8</module>
         <module>elasticsearch</module>
         <module>fabric8-forge</module>
-        <module>fabric8-http-gateway</module>
         <module>fabric8mq</module>
         <module>fabric8mq-controller</module>
         <module>fabric8mq-autoscaler</module>
