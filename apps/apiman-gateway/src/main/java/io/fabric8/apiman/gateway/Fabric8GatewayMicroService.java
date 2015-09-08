@@ -4,6 +4,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 import io.apiman.gateway.platforms.war.micro.GatewayMicroService;
+import io.apiman.gateway.platforms.war.micro.GatewayMicroServicePlatform;
 import io.fabric8.utils.Systems;
 
 public class Fabric8GatewayMicroService extends GatewayMicroService {
@@ -39,6 +40,11 @@ public class Fabric8GatewayMicroService extends GatewayMicroService {
         	System.setProperty("apiman.es.port", hp[1]);
         if (System.getProperty("apiman.es.cluster-name") == null)
         	System.setProperty("apiman.es.cluster-name", "elasticsearch");
+        
+        if (System.getProperty(GatewayMicroServicePlatform.APIMAN_GATEWAY_ENDPOINT) == null) {
+        	String kubernetesDomain = System.getProperty("KUBERNETES_DOMAIN", "vagrant.f8");
+        	System.setProperty(GatewayMicroServicePlatform.APIMAN_GATEWAY_ENDPOINT, "http://apiman-gateway." + kubernetesDomain + "/gateway/");
+        }
      
 	}
 
