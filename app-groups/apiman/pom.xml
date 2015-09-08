@@ -52,7 +52,7 @@
     </dependency>
     <dependency>
       <groupId>io.fabric8.jube.images.fabric8</groupId>
-      <artifactId>fabric8-http-gateway</artifactId>
+      <artifactId>apiman-gateway</artifactId>
       <version>${project.version}</version>
       <classifier>kubernetes</classifier>
       <type>json</type>
