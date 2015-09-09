@@ -152,6 +152,7 @@
       <module>hubot-slack</module>
       <module>image-linker</module>
       <module>jenkins</module>
+      <module>keycloak</module>
       <module>kibana</module>
       <module>kiwi-irc</module>
       <module>letschat</module>
