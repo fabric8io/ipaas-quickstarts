@@ -1,0 +1,434 @@
+<!--
+
+     Copyright 2005-2015 Red Hat, Inc.
+
+     Red Hat licenses this file to you under the Apache License, version
+     2.0 (the "License"); you may not use this file except in compliance
+     with the License.  You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+     implied.  See the License for the specific language governing
+     permissions and limitations under the License.
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+      <groupId>org.sonatype.oss</groupId>
+      <artifactId>oss-parent</artifactId>
+      <version>9</version>
+    </parent>
+
+    <groupId>io.fabric8.apps.devops</groupId>
+    <artifactId>fabric8-devops</artifactId>
+    <version>2.3-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>Fabric8 iPaaS Apps</name>
+
+    <url>http://fabric8.io/</url>
+    <inceptionYear>2015</inceptionYear>
+
+    <organization>
+        <name>Red Hat</name>
+        <url>http://redhat.com</url>
+    </organization>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <prerequisites>
+        <maven>3.2.1</maven>
+    </prerequisites>
+
+    <!-- including A developer as it's required by the maven poms going into central -->
+    <developers>
+        <developer>
+            <id>geeks</id>
+            <name>Fabric8 Development Team</name>
+            <organization>fabric8</organization>
+            <organizationUrl>http://fabric8.io/</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git@github.com:fabric8io/fabric8-ipaas.git</connection>
+        <developerConnection>scm:git:git@github.com:fabric8io/fabric8-ipaas.git</developerConnection>
+        <url>http://github.com/fabric8io/fabric8-ipaas</url>
+        <tag>fabric8-ipaas-2.0.1</tag>
+    </scm>
+
+    <properties>
+        <skipTests>false</skipTests>
+        <skipItests>true</skipItests>
+        <integrationTestPattern>**/*KubernetesTest*.java</integrationTestPattern>
+
+        <jube.plugin.enabled>false</jube.plugin.enabled>
+
+        <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target>
+
+        <arquillian.version>1.1.8.Final</arquillian.version>
+        <commons.beanutils.version>1.9.2</commons.beanutils.version>
+        <docker.assembly.exportBaseDir>false</docker.assembly.exportBaseDir>
+        <!-- TODO this can be removed once we upgrade the docker maven plugin -->
+        <docker.assembly.exportBase>false</docker.assembly.exportBase>
+        <docker.maven.plugin.version>0.13.3</docker.maven.plugin.version>
+        <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>
+        <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
+        <exec-maven-plugin.version>1.2.1</exec-maven-plugin.version>
+        <maven.surefire.plugin.version>2.17</maven.surefire.plugin.version>
+        <jube.version>2.2.0</jube.version>
+        <junit.version>4.12</junit.version>
+        <fabric8.version>2.2.23</fabric8.version>
+        <fabric8.release.version>${fabric8.version}</fabric8.release.version>
+        <maven.require.version>3.1.1</maven.require.version>
+        <maven.enforcer.plugin.version>1.4</maven.enforcer.plugin.version>
+    </properties>
+        
+    <distributionManagement>
+      <repository>
+        <id>oss-sonatype-staging</id>
+        <name>Sonatype Staging Repository</name>
+        <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+      </repository>
+      <snapshotRepository>
+        <id>oss-sonatype-snapshots</id>
+        <name>OSS Sonatype Nexus Snapshots</name>
+        <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+      </snapshotRepository>
+    </distributionManagement>
+
+    <repositories>
+      <repository>
+    			<id>oss-sonatype-snapshots</id>
+    			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+          <name>OSS Sonatype Nexus Snapshots</name>
+    			<releases>
+    				<enabled>false</enabled>
+    			</releases>
+    			<snapshots>
+    				<enabled>true</enabled>
+    			</snapshots>
+    		</repository>
+    </repositories>
+    <pluginRepositories>
+      <pluginRepository>
+        <id>oss-sonatype-snapshots</id>
+        <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        <name>OSS Sonatype Nexus Snapshots</name>
+        <releases>
+          <enabled>false</enabled>
+        </releases>
+        <snapshots>
+          <enabled>true</enabled>
+        </snapshots>
+      </pluginRepository>
+    </pluginRepositories>
+
+    <modules>
+      <module>artifactory</module>
+      <module>brackets</module>
+      <module>chaos-monkey</module>
+      <module>cdelivery</module>
+      <module>elasticsearch</module>
+      <module>fabric8-forge</module>
+      <module>gerrit</module>
+      <module>gogs</module>
+      <module>grafana2</module>
+      <module>hubot-irc</module>
+      <module>hubot-letschat</module>
+      <module>hubot-notifier</module>
+      <module>hubot-slack</module>
+      <module>image-linker</module>
+      <module>jenkins</module>
+      <module>kibana</module>
+      <module>kiwi-irc</module>
+      <module>letschat</module>
+      <module>nexus</module>
+      <module>orion</module>
+      <module>prometheus</module>
+      <module>sonarqube</module>
+      <module>taiga</module>
+    </modules>
+
+    <build>
+      <pluginManagement>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.5</version>
+          </plugin>
+        </plugins>
+      </pluginManagement>
+      <plugins>
+        <!-- generate a .zip with all the quickstarts -->
+        <plugin>
+          <groupId>io.fabric8</groupId>
+          <artifactId>fabric8-maven-plugin</artifactId>
+          <version>${fabric8.version}</version>
+          <executions>
+            <execution>
+              <id>json</id>
+              <phase>generate-resources</phase>
+              <goals>
+                <goal>json</goal>
+              </goals>
+             </execution>
+             <execution>
+              <id>attach</id>
+              <phase>package</phase>
+              <goals>
+                <goal>attach</goal>
+              </goals>
+            </execution>
+          </executions>
+          <configuration>
+            <replaceReadmeLinksPrefix>/apps/</replaceReadmeLinksPrefix>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>2.6</version>
+          <configuration>
+            <nonFilteredFileExtensions>
+              <nonFilteredFileExtension>zip</nonFilteredFileExtension>
+              <nonFilteredFileExtension>gz</nonFilteredFileExtension>
+              <nonFilteredFileExtension>jar</nonFilteredFileExtension>
+            </nonFilteredFileExtensions>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-enforcer-plugin</artifactId>
+          <version>${maven.enforcer.plugin.version}</version>
+          <executions>
+            <execution>
+              <id>enforce-versions</id>
+              <goals>
+                <goal>enforce</goal>
+              </goals>
+              <configuration>
+                <rules>
+                  <requireMavenVersion>
+                    <version>${maven.require.version}</version>
+                  </requireMavenVersion>
+                </rules>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-release-plugin</artifactId>
+          <version>2.5</version>
+          <configuration>
+            <releaseProfiles>docker-push,docker-public</releaseProfiles>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>io.fabric8.jube</groupId>
+          <artifactId>jube-maven-plugin</artifactId>
+          <version>${jube.version}</version>
+        </plugin>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-surefire-plugin</artifactId>
+              <version>2.17</version>
+              <inherited>true</inherited>
+              <configuration>
+                  <skipTests>${skipTests}</skipTests>
+                  <excludes>
+                      <exclude>${integrationTestPattern}</exclude>
+                  </excludes>
+              </configuration>
+              <executions>
+                  <execution>
+                      <id>int-test</id>
+                      <goals>
+                          <goal>test</goal>
+                      </goals>
+                      <phase>integration-test</phase>
+                      <configuration>
+                          <skipTests>${skipItests}</skipTests>
+                          <excludes>
+                              <exclude>none</exclude>
+                          </excludes>
+                          <includes>
+                              <include>${integrationTestPattern}</include>
+                          </includes>
+                      </configuration>
+                  </execution>
+              </executions>
+          </plugin>
+      </plugins>
+    </build>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.fabric8</groupId>
+                <artifactId>fabric8-project</artifactId>
+                <version>${fabric8.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.arquillian.junit</groupId>
+                <artifactId>arquillian-junit-container</artifactId>
+                <version>${arquillian.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.fabric8</groupId>
+                <artifactId>fabric8-arquillian</artifactId>
+                <version>${fabric8.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.fabric8</groupId>
+                <artifactId>kubernetes-assertions</artifactId>
+                <version>${fabric8.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <profiles>
+        <profile>
+          <id>fabric8-snapshot</id>
+          <properties>
+            <fabric8.version>2.3-SNAPSHOT</fabric8.version>
+            <fabric8.release.version>2.2.22</fabric8.release.version>
+            <fabric8.dockerPrefix />
+          </properties>
+        </profile>
+        <profile>
+          <id>jube-snapshot</id>
+          <properties>
+            <jube.version>2.2-SNAPSHOT</jube.version>
+          </properties>
+        </profile>
+
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                  <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <configuration>
+                      <passphrase>${gpg.passphrase}</passphrase>
+                      <useAgent>true</useAgent>
+                    </configuration>
+                  </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-enforcer-plugin</artifactId>
+                        <version>${maven.enforcer.plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>enforce-no-snapshots</id>
+                                <goals>
+                                    <goal>enforce</goal>
+                                </goals>
+                                <configuration>
+                                    <rules>
+                                        <requireReleaseDeps>
+                                            <message>No Snapshots Allowed!</message>
+                                        </requireReleaseDeps>
+                                    </rules>
+                                    <fail>true</fail>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>hawtio-snapshot</id>
+            <properties>
+                <hawtio.version>1.5-SNAPSHOT</hawtio.version>
+            </properties>
+        </profile>
+        <profile>
+            <id>license</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.mycila</groupId>
+                        <artifactId>license-maven-plugin</artifactId>
+                        <version>2.6</version>
+                        <configuration>
+                            <includes>
+                                <include>src/main/java/**</include>
+                                <include>src/test/java/**</include>
+                                <include>pom.xml</include>
+                                <include>**/*.xml</include>
+                                <include>**/*.cfg</include>
+                                <include>**/*.properties</include>
+                            </includes>
+                            <excludes>
+                                <!-- exclude sampel data -->
+                                <exclude>**/src/data/**</exclude>
+                                <exclude>**/resources/data/**</exclude>
+                                <!-- exclude hidden dir -->
+                                <exclude>**/.*/**</exclude>
+                            </excludes>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>docker-build</id>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.jolokia</groupId>
+                            <artifactId>docker-maven-plugin</artifactId>
+                            <version>${docker.maven.plugin.version}</version>
+                            <executions>
+                                <execution>
+                                    <goals>
+                                        <goal>build</goal>
+                                    </goals>
+                                    <phase>package</phase>
+                                </execution>
+                            </executions>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+    </profiles>
+</project>
+

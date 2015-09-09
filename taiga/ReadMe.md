@@ -1,0 +1,1 @@
+Free. Open Source. Powerful. Taiga is a project management platform for startups and agile developers & designers who want a simple, beautiful tool that makes work truly enjoyable.

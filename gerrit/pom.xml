@@ -1,0 +1,123 @@
+<!--
+
+     Copyright 2005-2015 Red Hat, Inc.
+
+     Red Hat licenses this file to you under the Apache License, version
+     2.0 (the "License"); you may not use this file except in compliance
+     with the License.  You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+     implied.  See the License for the specific language governing
+     permissions and limitations under the License.
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>io.fabric8.apps.devops</groupId>
+        <artifactId>fabric8-devops</artifactId>
+        <version>2.3-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>gerrit</artifactId>
+
+    <name>Gerrit</name>
+    <description>
+        [Gerrit](https://code.google.com/p/gerrit/) Web based code review and project management for Git based projects
+    </description>
+
+    <properties>
+
+        <!--Hardcoding the docker image name because we use it directly, we don't generate it
+        from this project-->
+        <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}gerrit</docker.image>
+        <docker.port.container.http>8080</docker.port.container.http>
+
+
+        <!-- General -->
+        <fabric8.imagePullPolicy>IfNotPresent</fabric8.imagePullPolicy>
+        <fabric8.label.component>gerrit</fabric8.label.component>
+        <fabric8.label.provider>fabric8</fabric8.label.provider>
+        <fabric8.serviceAccount>gerrit</fabric8.serviceAccount>
+
+        <!-- to access docker socket lets run in priviledged mode -->
+        <fabric8.containerPrivileged>true</fabric8.containerPrivileged>
+
+        <!--  ReplicationController  -->
+        <fabric8.generateJson>true</fabric8.generateJson>
+
+        <!-- Volume mounted to backup gerrit site -->
+        <fabric8.volume.gerrit-workspace.hostPath>/home/gerrit-site</fabric8.volume.gerrit-workspace.hostPath>
+        <fabric8.volume.gerrit-workspace.mountPath>/home/gerrit/site</fabric8.volume.gerrit-workspace.mountPath>
+
+        <!-- Volume mounted containing Users SSH Public Key (jenkins, sonar, ...) -->
+        <!-- The keys should be imported within the Virtual Box of Vagrant if used -->
+        <!--
+                <fabric8.volume.gerrit-users-ssh-key.hostPath>/home/gerrit/ssh-keys</fabric8.volume.gerrit-users-ssh-key.hostPath>
+                <fabric8.volume.gerrit-users-ssh-key.mountPath>/home/gerrit/ssh-keys</fabric8.volume.gerrit-users-ssh-key.mountPath>
+        -->
+        <fabric8.volume.gerrit-users-ssh-keys.secret>gerrit-users-ssh-keys</fabric8.volume.gerrit-users-ssh-keys.secret>
+        <fabric8.volume.gerrit-users-ssh-keys.mountPath>/home/gerrit/ssh-keys</fabric8.volume.gerrit-users-ssh-keys.mountPath>
+
+        <!-- Volume mounted Containing Private &Public Key to be used to set the Admin User of Gerrit  -->
+        <fabric8.volume.gerrit-admin-ssh-key.secret>gerrit-admin-ssh</fabric8.volume.gerrit-admin-ssh-key.secret>
+        <fabric8.volume.gerrit-admin-ssh-key.mountPath>/root/.ssh</fabric8.volume.gerrit-admin-ssh-key.mountPath>
+<!--
+        <fabric8.volume.gerrit-admin-ssh-private-key.hostPath>/home/gerrit/admin-ssh-key/id_rsa</fabric8.volume.gerrit-admin-ssh-private-key.hostPath>
+        <fabric8.volume.gerrit-admin-ssh-private-key.mountPath>/root/.ssh/id_rsa</fabric8.volume.gerrit-admin-ssh-private-key.mountPath>
+        <fabric8.volume.gerrit-admin-ssh-public-key.hostPath>/home/gerrit/admin-ssh-key/id_rsa.pub</fabric8.volume.gerrit-admin-ssh-public-key.hostPath>
+        <fabric8.volume.gerrit-admin-ssh-public-key.mountPath>/root/.ssh/id_rsa.pub</fabric8.volume.gerrit-admin-ssh-public-key.mountPath>
+-->
+    </properties>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/fabric8</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.jboss.arquillian.junit</groupId>
+            <artifactId>arquillian-junit-container</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>fabric8-arquillian</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>kubernetes-assertions</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>kubernetes-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>kubernetes-generator</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>

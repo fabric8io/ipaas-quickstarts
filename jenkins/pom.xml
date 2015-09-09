@@ -1,0 +1,142 @@
+<!--
+
+     Copyright 2005-2015 Red Hat, Inc.
+
+     Red Hat licenses this file to you under the Apache License, version
+     2.0 (the "License"); you may not use this file except in compliance
+     with the License.  You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+     implied.  See the License for the specific language governing
+     permissions and limitations under the License.
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>io.fabric8.apps.devops</groupId>
+        <artifactId>fabric8-devops</artifactId>
+        <version>2.3-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>jenkins</artifactId>
+
+    <name>Jenkins</name>
+    <description>
+        [Jenkins](http://jenkins-ci.org/) extendable open source continuous integration server
+    </description>
+
+    <properties>
+        <docker.image>fabric8/jenkernetes</docker.image>
+        <docker.port.container.http>8080</docker.port.container.http>
+        <docker.port.container.slave>50000</docker.port.container.slave>
+        <docker.port.container.jolokia />
+
+        <fabric8.service.port>80</fabric8.service.port>
+        <fabric8.service.containerPort>${docker.port.container.http}</fabric8.service.containerPort>
+        <fabric8.service.type>LoadBalancer</fabric8.service.type>
+
+        <fabric8.imagePullPolicy>IfNotPresent</fabric8.imagePullPolicy>
+
+        <fabric8.label.component>jenkins</fabric8.label.component>
+        <fabric8.label.provider>fabric8</fabric8.label.provider>
+
+        <!-- to access docker socket lets run in priviledged mode -->
+        <fabric8.containerPrivileged>true</fabric8.containerPrivileged>
+
+        <fabric8.includePodEnvVar>true</fabric8.includePodEnvVar>
+
+        <fabric8.env.CGO_ENABLED>0</fabric8.env.CGO_ENABLED>
+
+        <fabric8.volume.docker-socket.hostPath>/var/run/docker.sock</fabric8.volume.docker-socket.hostPath>
+        <fabric8.volume.docker-socket.mountPath>/var/run/docker.sock</fabric8.volume.docker-socket.mountPath>
+
+        <fabric8.volume.jenkins-workspace.emptyDir />
+        <fabric8.volume.jenkins-workspace.mountPath>/var/jenkins_home</fabric8.volume.jenkins-workspace.mountPath>
+
+
+        <fabric8.serviceAccount>jenkins</fabric8.serviceAccount>
+
+        <fabric8.volume.jenkins-master-key.secret>jenkins-master-ssh</fabric8.volume.jenkins-master-key.secret>
+        <fabric8.volume.jenkins-master-key.mountPath>/home/jenkins/ssh-keys</fabric8.volume.jenkins-master-key.mountPath>
+        <fabric8.volume.jenkins-master-key.readOnly>false</fabric8.volume.jenkins-master-key.readOnly>
+
+        <fabric8.volume.git-ssh.secret>jenkins-git-ssh</fabric8.volume.git-ssh.secret>
+        <fabric8.volume.git-ssh.mountPath>/var/jenkins/.ssh-git</fabric8.volume.git-ssh.mountPath>
+        <fabric8.volume.git-ssh.readOnly>false</fabric8.volume.git-ssh.readOnly>
+
+        <fabric8.volume.gpg-key.secret>jenkins-release-gpg</fabric8.volume.gpg-key.secret>
+        <fabric8.volume.gpg-key.mountPath>/root/.gnupg</fabric8.volume.gpg-key.mountPath>
+        <fabric8.volume.gpg-key.readOnly>false</fabric8.volume.gpg-key.readOnly>
+
+
+<!--
+        <fabric8.volume.jenkins-jobs.emptyDir></fabric8.volume.jenkins-jobs.emptyDir>
+        <fabric8.volume.jenkins-jobs.mountPath>/var/jenkins_home/jobs</fabric8.volume.jenkins-jobs.mountPath>
+-->
+
+        <fabric8.parameter.SEED_GIT_URL.value>https://github.com/fabric8io/default-jenkins-dsl.git</fabric8.parameter.SEED_GIT_URL.value>
+        <fabric8.parameter.SEED_GIT_URL.description>The git URL of the seed build used to generate builds</fabric8.parameter.SEED_GIT_URL.description>
+
+        <!-- liveness probe -->
+<!--
+        TODO lets disable for now...
+
+        <fabric8.livenessProbe.httpGet.path>/v1/_ping</fabric8.livenessProbe.httpGet.path>
+        <fabric8.livenessProbe.httpGet.port>2375</fabric8.livenessProbe.httpGet.port>
+        <fabric8.livenessProbe.initialDelaySeconds>30</fabric8.livenessProbe.initialDelaySeconds>
+-->
+
+
+    </properties>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/fabric8</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.jboss.arquillian.junit</groupId>
+            <artifactId>arquillian-junit-container</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>fabric8-arquillian</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>kubernetes-assertions</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <profiles>
+        <profile>
+            <id>fabric8-cd</id>
+            <properties>
+                <fabric8.parameter.SEED_GIT_URL.value>https://github.com/fabric8io/jenkins-pipeline-dsl.git</fabric8.parameter.SEED_GIT_URL.value>
+            </properties>
+        </profile>
+    </profiles>
+</project>

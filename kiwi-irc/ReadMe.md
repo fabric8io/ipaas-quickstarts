@@ -1,0 +1,1 @@
+Kiwi IRC is a web IRC client that can not only be used to interact with fabric8 but also receive notifications obout CI and CD piplines.  It also enables collaboration for the cross functional which takes an idea from inceptiion through to design, development, test, operations, approvals and support.

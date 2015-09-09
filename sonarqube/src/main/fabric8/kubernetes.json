@@ -1,0 +1,81 @@
+{
+  "kind": "List",
+  "apiVersion": "v1",
+  "description": "Creates a sonarqube Server",
+  "items": [
+    {
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "sonarqube"
+      },
+      "kind": "Service",
+      "spec": {
+        "ports": [
+          {
+            "port": 8080,
+            "targetPort": 9000
+          }
+        ],
+        "selector": {
+          "name": "sonarqube"
+        }
+      }
+    },
+    {
+      "kind": "ReplicationController",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "sonarqube",
+        "labels": {
+          "name": "sonarqube"
+        }
+      },
+      "spec": {
+        "replicas": 1,
+        "selector": {
+          "name": "sonarqube"
+        },
+        "template": {
+          "metadata": {
+            "name": "sonarqube",
+            "labels": {
+              "name": "sonarqube"
+            }
+          },
+          "spec": {
+            "containers": [
+              {
+                "image": "tpires/sonar-server",
+                "name": "sonarqube-server-container",
+                "env": [
+                  {
+                    "name": "DB_PORT_3306_TCP_ADDR",
+                    "value": "localhost"
+                  }
+                ],
+                "ports": [
+                  {
+                    "containerPort": 9000,
+                    "protocol": "TCP"
+                  }
+                ]
+              },
+              {
+                "name": "sonarqube-database-container",
+                "image": "tpires/sonar-mysql",
+                "env": [
+                ],
+                "ports": [
+                  {
+                    "containerPort": 3306,
+                    "protocol": "TCP"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

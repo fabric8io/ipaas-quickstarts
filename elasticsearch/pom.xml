@@ -1,0 +1,194 @@
+<!--
+
+     Copyright 2005-2015 Red Hat, Inc.
+
+     Red Hat licenses this file to you under the Apache License, version
+     2.0 (the "License"); you may not use this file except in compliance
+     with the License.  You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+     implied.  See the License for the specific language governing
+     permissions and limitations under the License.
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>io.fabric8.apps.devops</groupId>
+    <artifactId>fabric8-devops</artifactId>
+    <version>2.3-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>elasticsearch</artifactId>
+
+  <name>Elasticsearch</name>
+  <description>
+    [elasticsearch](http://elasticsearch.com/) provides distributed RESTful search and analytics
+  </description>
+
+  <properties>
+    <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}elasticsearch-k8s:1.5.2</docker.image>
+    <docker.port.container.http>9200</docker.port.container.http>
+    <docker.port.container.transport>9300</docker.port.container.transport>
+    <docker.port.container.jolokia />
+
+    <fabric8.env.SERVICE_DNS>elasticsearch-cluster</fabric8.env.SERVICE_DNS>
+    <fabric8.env.KUBERNETES_TRUST_CERT>true</fabric8.env.KUBERNETES_TRUST_CERT>
+
+    <fabric8.service.port>9200</fabric8.service.port>
+    <fabric8.service.containerPort>9200</fabric8.service.containerPort>
+    <fabric8.service.type>LoadBalancer</fabric8.service.type>
+
+    <fabric8.label.component>elasticsearch</fabric8.label.component>
+    <fabric8.label.provider>fabric8</fabric8.label.provider>
+
+    <fabric8.volume.elasticsearch-data.emptyDir />
+    <fabric8.volume.elasticsearch-data.mountPath>/usr/share/elasticsearch/data</fabric8.volume.elasticsearch-data.mountPath>
+
+    <fabric8.livenessProbe.port>9300</fabric8.livenessProbe.port>
+    <fabric8.livenessProbe.initialDelaySeconds>60</fabric8.livenessProbe.initialDelaySeconds>
+    <fabric8.readinessProbe.httpGet.path>/_template/logstash</fabric8.readinessProbe.httpGet.path>
+    <fabric8.readinessProbe.httpGet.port>9200</fabric8.readinessProbe.httpGet.port>
+    <fabric8.readinessProbe.initialDelaySeconds>60</fabric8.readinessProbe.initialDelaySeconds>
+  </properties>
+
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/fabric8</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <fork>true</fork>
+          <compilerArgs>
+            <arg>-J-Dproject.version=${project.version}</arg>
+          </compilerArgs>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.jolokia</groupId>
+        <artifactId>docker-maven-plugin</artifactId>
+        <version>${docker.maven.plugin.version}</version>
+        <configuration>
+          <image>fabric8/elasticsearch-logstash-template:${project.version}</image>
+          <images>
+            <image>
+              <name>fabric8/elasticsearch-logstash-template:${project.version}</name>
+              <build>
+                <from>centos:7</from>
+                <assembly>
+                  <basedir>/</basedir>
+                  <inline xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2" xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+                    <id>logstash-template</id>
+                    <fileSets>
+                      <fileSet>
+                        <directory>${basedir}/src/main/resources</directory>
+                        <outputDirectory>/</outputDirectory>
+                        <includes>
+                          <include>*</include>
+                        </includes>
+                      </fileSet>
+                    </fileSets>
+                  </inline>
+                </assembly>
+                <cmd>
+                  <shell>/put-template.sh</shell>
+                </cmd>
+              </build>
+            </image>
+          </images>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-api</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-generator</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jboss.arquillian.junit</groupId>
+      <artifactId>arquillian-junit-container</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>fabric8-arquillian</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-assertions</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <profiles>
+    <profile>
+      <id>docker-build</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.jolokia</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <version>${docker.maven.plugin.version}</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>build</goal>
+                </goals>
+                <phase>package</phase>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>docker-push</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.jolokia</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <version>${docker.maven.plugin.version}</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>build</goal>
+                  <goal>push</goal>
+                </goals>
+                <phase>package</phase>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+</project>

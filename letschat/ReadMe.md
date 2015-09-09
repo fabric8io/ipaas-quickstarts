@@ -1,0 +1,1 @@
+[Let's Chat](https://github.com/sdelements/lets-chat) is an open source chat server. It's designed to be easily deployable and fits well with small, intimate teams
