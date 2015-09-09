@@ -1,1 +1,0 @@
-The <a href="http://brackets.io/" target="brackets">Brackets</a> editor for working with files in a git repository

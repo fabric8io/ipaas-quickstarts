@@ -1,1 +1,0 @@
-[Hubot](https://hubot.github.com/) adapter to use with [Slack](https://slack.com/)

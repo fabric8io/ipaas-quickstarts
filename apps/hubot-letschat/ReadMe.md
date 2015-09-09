@@ -1,1 +1,0 @@
-Chat bot app using [Hubot](https://hubot.github.com/) for [Lets Chat](http://sdelements.github.io/lets-chat/)

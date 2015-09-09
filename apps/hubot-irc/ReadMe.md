@@ -1,1 +1,0 @@
-Chat bot app using [Hubot](https://hubot.github.com/) and an IRC server to communicate with fabric8.

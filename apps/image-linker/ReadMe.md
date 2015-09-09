@@ -1,1 +1,0 @@
-Provides chat friendly links

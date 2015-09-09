@@ -1,1 +1,0 @@
-Hubot IRC chat bot

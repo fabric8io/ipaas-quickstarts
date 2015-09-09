@@ -392,17 +392,6 @@
           </modules>
         </profile>
         <profile>
-          <id>apps</id>
-          <activation>
-            <activeByDefault>true</activeByDefault>
-          </activation>
-          <modules>
-            <module>apps</module>
-            <module>app-groups</module>
-            <module>distro</module>
-          </modules>
-        </profile>
-        <profile>
           <id>quickstarts</id>
           <activation>
             <activeByDefault>true</activeByDefault>

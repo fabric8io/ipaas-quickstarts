@@ -1,1 +1,0 @@
-A hand-crafted IRC client that you can enjoy. Designed to be used easily and freely.

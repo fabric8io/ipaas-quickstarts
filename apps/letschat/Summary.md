@@ -1,1 +1,0 @@
-[Lets Chat](http://sdelements.github.io/lets-chat/) self-hosted chat for small teams

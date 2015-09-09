@@ -1,1 +1,0 @@
-Gerrit review system

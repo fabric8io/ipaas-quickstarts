@@ -1,1 +1,0 @@
-Creates an instance of the <a href="http://fabric8.io/v2/console.html">Fabric8 Console</a> for working with fabric8 and kubernetes.
