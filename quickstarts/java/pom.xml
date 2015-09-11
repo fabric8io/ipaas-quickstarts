@@ -35,7 +35,7 @@
   <modules>
     <module>camel-cdi</module>
     <module>camel-cdi-http</module>
-    <module>camel-cdi-mq</module>
+    <!--<module>camel-cdi-mq</module>-->
     <module>camel-cdi-rest</module>
     <module>camel-spring</module>
     <module>cxf-cdi</module>
