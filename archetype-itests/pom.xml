@@ -146,6 +146,7 @@
                             <type>jar</type>
                             <overWrite>false</overWrite>
                           </artifactItem>
+<!--
                           <artifactItem>
                             <groupId>io.fabric8.archetypes</groupId>
                             <artifactId>java-jgroups-greeter-archetype</artifactId>
@@ -153,6 +154,7 @@
                             <type>jar</type>
                             <overWrite>false</overWrite>
                           </artifactItem>
+-->
                           <artifactItem>
                             <groupId>io.fabric8.archetypes</groupId>
                             <artifactId>java-simple-fatjar-archetype</artifactId>
@@ -262,6 +264,7 @@
                             <overWrite>false</overWrite>
                           </artifactItem>
 
+<!--
                           <artifactItem>
                             <groupId>io.fabric8.archetypes</groupId>
                             <artifactId>spring-boot-activemq-archetype</artifactId>
@@ -269,6 +272,7 @@
                             <type>jar</type>
                             <overWrite>false</overWrite>
                           </artifactItem>
+-->
                           <artifactItem>
                             <groupId>io.fabric8.archetypes</groupId>
                             <artifactId>spring-boot-camel-archetype</artifactId>
@@ -276,6 +280,7 @@
                             <type>jar</type>
                             <overWrite>false</overWrite>
                           </artifactItem>
+<!--
                           <artifactItem>
                             <groupId>io.fabric8.archetypes</groupId>
                             <artifactId>spring-boot-keycloak-archetype</artifactId>
@@ -297,7 +302,9 @@
                             <type>jar</type>
                             <overWrite>false</overWrite>
                           </artifactItem>
+-->
 
+<!--
                           <artifactItem>
                             <groupId>io.fabric8.archetypes</groupId>
                             <artifactId>war-camel-servlet-archetype</artifactId>
@@ -319,6 +326,7 @@
                             <type>jar</type>
                             <overWrite>false</overWrite>
                           </artifactItem>
+-->
 
                         </artifactItems>
                         <outputDirectory>${project.build.directory}/archetypes</outputDirectory>

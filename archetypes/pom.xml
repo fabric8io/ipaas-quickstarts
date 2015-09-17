@@ -47,25 +47,25 @@
     <module>java-camel-cdi-http-archetype</module>
     <!--<module>java-camel-cdi-mq-archetype</module>-->
     <module>java-camel-cdi-rest-archetype</module>
-   	<module>java-camel-spring-archetype</module>
-   	<module>java-cxf-cdi-archetype</module>
-   	<module>java-jgroups-greeter-archetype</module>
-   	<module>java-simple-fatjar-archetype</module>
-   	<module>java-simple-mainclass-archetype</module>
-   	<module>karaf-camel-amq-archetype</module>
+    <module>java-camel-spring-archetype</module>
+    <module>java-cxf-cdi-archetype</module>
+    <!--<module>java-jgroups-greeter-archetype</module>-->
+    <module>java-simple-fatjar-archetype</module>
+    <module>java-simple-mainclass-archetype</module>
+    <module>karaf-camel-amq-archetype</module>
     <module>karaf-camel-log-archetype</module>
-   	<module>karaf-camel-rest-sql-archetype</module>
-   	<module>karaf-cxf-rest-archetype</module>
-    <module>karaf4-camel-log-archetype</module>
-   	<module>spring-boot-activemq-archetype</module>
-   	<module>spring-boot-camel-archetype</module>
-   	<module>spring-boot-keycloak-archetype</module>
-   	<module>spring-boot-webmvc-archetype</module>
-   	<module>spring-boot-webmvc-ip-archetype</module>
-   	<module>war-camel-servlet-archetype</module>
-   	<module>war-cxf-cdi-servlet-archetype</module>
-   	<module>war-rest-archetype</module>
-        <module>war-wildfly-archetype</module>
+    <module>karaf-camel-rest-sql-archetype</module>
+    <module>karaf-cxf-rest-archetype</module>
+    <!--<module>karaf4-camel-log-archetype</module>-->
+    <!--<module>spring-boot-activemq-archetype</module>-->
+    <module>spring-boot-camel-archetype</module>
+    <!--<module>spring-boot-keycloak-archetype</module>-->
+    <!--<module>spring-boot-webmvc-archetype</module>-->
+    <!--<module>spring-boot-webmvc-ip-archetype</module>-->
+    <!--<module>war-camel-servlet-archetype</module>-->
+    <!--<module>war-cxf-cdi-servlet-archetype</module>-->
+    <!--<module>war-rest-archetype</module>-->
+    <!--<module>war-wildfly-archetype</module>-->
   </modules>
 
   <build>
