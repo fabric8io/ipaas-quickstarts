@@ -39,7 +39,7 @@
     <module>camel-cdi-rest</module>
     <module>camel-spring</module>
     <module>cxf-cdi</module>
-    <module>jgroups-greeter</module>
+    <!--<module>jgroups-greeter</module>-->
     <module>simple-fatjar</module>
     <module>simple-mainclass</module>
   </modules>
