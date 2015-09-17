@@ -32,11 +32,11 @@
   <name>Fabric8 :: Quickstarts :: Spring-Boot :: Parent</name>
 
   <modules>
-    <module>webmvc</module>
-    <module>webmvc-ip</module>
+    <!--<module>webmvc</module>-->
+    <!--<module>webmvc-ip</module>-->
     <module>camel</module>
-    <module>activemq</module>
-    <module>keycloak</module>
+    <!--<module>activemq</module>-->
+    <!--<module>keycloak</module>-->
   </modules>
 
 </project>
