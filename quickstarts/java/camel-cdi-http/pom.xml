@@ -23,11 +23,11 @@
   <parent>
     <groupId>io.fabric8.jube.images.fabric8</groupId>
     <artifactId>quickstart-java</artifactId>
-    <version>2.3-SNAPSHOT</version>
+    <version>2.2.0.redhat-621013</version>
   </parent>
 
   <artifactId>quickstart-java-camel-cdi-http</artifactId>
-  <version>2.3-SNAPSHOT</version>
+  <version>2.2.0.redhat-621013</version>
   <packaging>jar</packaging>
 
   <name>Fabric8 :: Quickstarts :: Java :: Camel CDI :: HTTP</name>
@@ -45,7 +45,7 @@
     <integrationTestPattern>**/*KubernetesTest.java</integrationTestPattern>
 
     <!-- the version of the BOM, defining all the dependency versions -->
-    <fabric8.version>2.2.26</fabric8.version>
+    <fabric8.version>2.2.0.redhat-621013</fabric8.version>
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <camel.version>2.15.2</camel.version>
@@ -318,7 +318,7 @@
     <profile>
       <id>fabric8-snapshot</id>
       <properties>
-        <fabric8.version>2.3-SNAPSHOT</fabric8.version>
+        <fabric8.version>2.2.0.redhat-621013</fabric8.version>
       </properties>
     </profile>
     <profile>

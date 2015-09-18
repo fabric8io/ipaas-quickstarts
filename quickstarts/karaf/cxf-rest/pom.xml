@@ -23,11 +23,11 @@
   <parent>
     <groupId>io.fabric8.jube.images.fabric8</groupId>
     <artifactId>quickstart-karaf-quickstarts</artifactId>
-    <version>2.3-SNAPSHOT</version>
+    <version>2.2.0.redhat-621013</version>
   </parent>
 
   <artifactId>quickstart-karaf-cxf-rest</artifactId>
-  <version>2.3-SNAPSHOT</version>
+  <version>2.2.0.redhat-621013</version>
   <packaging>bundle</packaging>
   <name>Fabric8 :: Quickstarts :: Karaf :: CXF RESTful WebService</name>
   <description>RESTful WebService Example using JAX-RS with Karaf</description>
@@ -45,7 +45,7 @@
     <cxf-version-range>[3.0.4,3.0.5)</cxf-version-range>
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
-    <fabric8.version>2.2.26</fabric8.version>
+    <fabric8.version>2.2.0.redhat-621013</fabric8.version>
     <jube.version>2.2.0</jube.version>
     <docker.maven.plugin.version>0.13.3</docker.maven.plugin.version>
     <cxf.version>3.0.4</cxf.version>
@@ -432,7 +432,7 @@
     <profile>
       <id>fabric8-snapshot</id>
       <properties>
-        <fabric8.version>2.3-SNAPSHOT</fabric8.version>
+        <fabric8.version>2.2.0.redhat-621013</fabric8.version>
       </properties>
     </profile>
   </profiles>

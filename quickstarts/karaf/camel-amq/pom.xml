@@ -39,7 +39,7 @@
     <maven.compiler.source>1.7</maven.compiler.source>
 
     <!-- the version of the BOM, defining all the dependency versions -->
-    <fabric8.version>2.2.26</fabric8.version>
+    <fabric8.version>2.2.0.redhat-621013</fabric8.version>
     <!-- need to declare the Camel version as features-maven-plugin needs this property (cannot inherit from BOM in maven plugin) -->
     <activemq.version>5.11.1</activemq.version>
     <camel.version>2.15.2</camel.version>
@@ -300,7 +300,7 @@
     <profile>
       <id>fabric8-snapshot</id>
       <properties>
-        <fabric8.version>2.3-SNAPSHOT</fabric8.version>
+        <fabric8.version>2.2.0.redhat-621013</fabric8.version>
       </properties>
     </profile>
   </profiles>
