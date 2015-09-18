@@ -52,7 +52,7 @@
     <!--<module>java-jgroups-greeter-archetype</module>-->
     <module>java-simple-fatjar-archetype</module>
     <module>java-simple-mainclass-archetype</module>
-    <module>karaf-camel-amq-archetype</module>
+    <!--<module>karaf-camel-amq-archetype</module>-->
     <module>karaf-camel-log-archetype</module>
     <module>karaf-camel-rest-sql-archetype</module>
     <module>karaf-cxf-rest-archetype</module>
