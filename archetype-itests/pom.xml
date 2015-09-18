@@ -206,6 +206,7 @@
                             <overWrite>false</overWrite>
                           </artifactItem>
 
+<!--
                           <artifactItem>
                             <groupId>io.fabric8.archetypes</groupId>
                             <artifactId>karaf-camel-amq-archetype</artifactId>
@@ -213,6 +214,7 @@
                             <type>jar</type>
                             <overWrite>false</overWrite>
                           </artifactItem>
+-->
                           <artifactItem>
                             <groupId>io.fabric8.archetypes</groupId>
                             <artifactId>karaf-camel-rest-sql-archetype</artifactId>
