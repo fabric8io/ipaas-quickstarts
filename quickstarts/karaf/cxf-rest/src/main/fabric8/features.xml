@@ -25,7 +25,7 @@
       <feature version="${cxf-version-range}">cxf-jaxrs</feature>
       <feature version="${project.version}">swagger</feature>
       <bundle start-level="70">mvn:io.fabric8/fabric8-cxf/${fabric8.version}</bundle>
-      <bundle>mvn:io.fabric8.jube.images.fabric8/quickstart-karaf-cxf-rest/${project.version}</bundle>
+      <bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}</bundle>
   </feature>
 
   <feature name="swagger" version="${project.version}" resolver="(obr)">
