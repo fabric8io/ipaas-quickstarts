@@ -66,14 +66,14 @@
 
     <!-- quickstarts -->
     <dependency>
-      <groupId>io.fabric8.jube.images.fabric8</groupId>
+      <groupId>io.fabric8.quickstarts</groupId>
       <artifactId>quickstart-war-camel-servlet</artifactId>
       <version>${project.version}</version>
       <classifier>kubernetes</classifier>
       <type>json</type>
     </dependency>
     <dependency>
-      <groupId>io.fabric8.jube.images.fabric8</groupId>
+      <groupId>io.fabric8.quickstarts</groupId>
       <artifactId>quickstart-war-cxf-cdi-servlet</artifactId>
       <version>${project.version}</version>
       <classifier>kubernetes</classifier>

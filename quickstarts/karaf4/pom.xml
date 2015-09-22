@@ -26,7 +26,6 @@
     <version>2.3-SNAPSHOT</version>
   </parent>
 
-  <groupId>io.fabric8.jube.images.fabric8</groupId>
   <artifactId>quickstart-karaf4-quickstarts</artifactId>
   <version>2.3-SNAPSHOT</version>
   <packaging>pom</packaging>

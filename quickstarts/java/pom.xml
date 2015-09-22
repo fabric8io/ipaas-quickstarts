@@ -26,7 +26,6 @@
     <version>2.2.31-SNAPSHOT</version>
   </parent>
 
-  <groupId>io.fabric8.jube.images.fabric8</groupId>
   <artifactId>quickstart-java</artifactId>
   <version>2.2.31-SNAPSHOT</version>
   <packaging>pom</packaging>

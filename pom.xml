@@ -74,8 +74,6 @@
         <skipItests>true</skipItests>
         <integrationTestPattern>**/*KubernetesTest*.java</integrationTestPattern>
 
-        <jube.plugin.enabled>false</jube.plugin.enabled>
-
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
 
@@ -93,7 +91,6 @@
 -->
         <exec-maven-plugin.version>1.2.1</exec-maven-plugin.version>
         <maven.surefire.plugin.version>2.17</maven.surefire.plugin.version>
-        <jube.version>2.2.0</jube.version>
         <junit.version>4.12</junit.version>
         <fabric8.version>2.2.29</fabric8.version>
         <fabric8.release.version>${fabric8.version}</fabric8.release.version>
@@ -217,11 +214,6 @@
             <releaseProfiles>docker-push,docker-public</releaseProfiles>
           </configuration>
         </plugin>
-        <plugin>
-          <groupId>io.fabric8.jube</groupId>
-          <artifactId>jube-maven-plugin</artifactId>
-          <version>${jube.version}</version>
-        </plugin>
           <plugin>
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-surefire-plugin</artifactId>
@@ -308,12 +300,6 @@
             <fabric8.version>2.3-SNAPSHOT</fabric8.version>
             <fabric8.release.version>2.2.22</fabric8.release.version>
             <fabric8.dockerPrefix />
-          </properties>
-        </profile>
-        <profile>
-          <id>jube-snapshot</id>
-          <properties>
-            <jube.version>2.2-SNAPSHOT</jube.version>
           </properties>
         </profile>
 

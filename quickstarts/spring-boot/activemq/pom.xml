@@ -21,7 +21,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>io.fabric8.jube.images.fabric8</groupId>
+    <groupId>io.fabric8.quickstarts</groupId>
     <artifactId>springboot-quickstarts</artifactId>
     <version>2.2.31-SNAPSHOT</version>
   </parent>
@@ -42,7 +42,6 @@
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <fabric8.version>2.2.28</fabric8.version>
-    <jube.version>2.2.0</jube.version>
     <docker.maven.plugin.version>0.13.3</docker.maven.plugin.version>
 
     <spring-boot.version>1.2.6.RELEASE</spring-boot.version>
@@ -249,33 +248,6 @@
         </plugins>
       </build>
     </profile>
-
-<!--
-    <profile>
-      <id>jube</id>
-      <activation>
-                <property>           <name>jube.plugin.enabled</name>           <value>true</value>         </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>io.fabric8.jube</groupId>
-            <artifactId>jube-maven-plugin</artifactId>
-            <version>${jube.version}</version>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>build</goal>
-                </goals>
-                <phase>verify</phase>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
--->
-
 
     <profile>
       <id>fabric8-snapshot</id>
