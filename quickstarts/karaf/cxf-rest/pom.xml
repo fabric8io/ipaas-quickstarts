@@ -46,10 +46,11 @@
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <jube.version>2.2.0</jube.version>
     <docker.maven.plugin.version>0.13.3</docker.maven.plugin.version>
-    <cxf.version>3.0.4</cxf.version>
+    <cxf.version>3.1.2</cxf.version>
     <camel.version>2.15.2</camel.version>
-    <karaf.version>2.4.2</karaf.version>
-    <karaf.plugin.version>2.4.0</karaf.plugin.version>
+    <karaf.version>2.4.3</karaf.version>
+    <karaf.plugin.version>4.0.1</karaf.plugin.version>
+    <maven-install-plugin.version>2.5.2</maven-install-plugin.version>
 
     <jackson2-version>2.4.1</jackson2-version>
     <swagger-version>1.3.2_1</swagger-version>
@@ -60,7 +61,7 @@
     <jackson-module-scala-version>2.1.5_2</jackson-module-scala-version>
     <swagger-scala-version>2.10.2</swagger-scala-version>
 
-    <docker.from>docker.io/fabric8/karaf-2.4:1.0.0</docker.from>
+    <docker.from>docker.io/fabric8/sti-karaf:latest</docker.from>
 
     <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
@@ -98,6 +99,7 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
+      <scope>provided</scope>
     </dependency>
 
     <!-- Test Dependencies -->
@@ -138,12 +140,39 @@
           <artifactId>jsr311-api</artifactId>
         </exclusion>
       </exclusions>
+      <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-rt-frontend-jaxrs</artifactId>
+      <version>${cxf.version}</version>
     </dependency>
+
+    <!-- Karaf microcontainer dependencies -->
+    <dependency>
+      <!-- scope is compile so all features (there is only one) are installed into startup.properties,
+      and the feature repo itself is not added in etc/org.apache.karaf.features.cfg file -->
+      <groupId>org.apache.karaf.features</groupId>
+      <artifactId>static</artifactId>
+      <version>${karaf.plugin.version}</version>
+      <type>kar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.karaf.assemblies.features</groupId>
+      <artifactId>standard</artifactId>
+      <version>${karaf.version}</version>
+      <classifier>features</classifier>
+      <type>xml</type>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.cxf.karaf</groupId>
+      <artifactId>apache-cxf</artifactId>
+      <version>${cxf.version}</version>
+      <classifier>features</classifier>
+      <type>xml</type>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -227,7 +256,7 @@
               com.fasterxml.jackson.annotation, com.fasterxml.jackson.core, com.fasterxml.jackson.databind,
               com.fasterxml.jackson.jaxrs.json, *
             </Import-Package>
-            <Import-Service>org.apache.cxf.transport.http.DestinationRegistry</Import-Service>
+            <!--<Import-Service>org.apache.cxf.transport.http.DestinationRegistry</Import-Service>-->
             <Export-Package>
               io.fabric8.quickstarts.rest
             </Export-Package>
@@ -283,41 +312,107 @@
         </executions>
       </plugin>
 
+      <!-- plugin goals have to be executed in order -->
+      <!-- 1. install the bundle -->
       <plugin>
-        <groupId>org.apache.karaf.tooling</groupId>
-        <artifactId>features-maven-plugin</artifactId>
-        <version>${karaf.plugin.version}</version>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-install-plugin</artifactId>
+        <version>${maven-install-plugin.version}</version>
         <executions>
           <execution>
-            <id>add-features-to-repo</id>
-            <phase>package</phase>
+            <id>install-bundle</id>
             <goals>
-              <goal>add-features-to-repo</goal>
+              <goal>install</goal>
             </goals>
-            <!-- We populate the offline repository -->
-            <configuration>
-              <descriptors>
-                <descriptor>file://${project.build.directory}/fabric8/features.xml</descriptor>
-              </descriptors>
-              <repository>target/fabric8/repository/</repository>
-              <addTransitiveFeatures>true</addTransitiveFeatures>
-              <features>
-                <feature>${project.artifactId}</feature>
-              </features>
-            </configuration>
-          </execution>
-          <execution>
-            <id>create-kar</id>
-            <phase>package</phase>
-            <goals>
-              <goal>create-kar</goal>
-            </goals>
-            <configuration>
-              <featuresFile>${project.build.directory}/fabric8/features.xml</featuresFile>
-            </configuration>
           </execution>
         </executions>
       </plugin>
+
+      <!-- 2. create karaf assembly -->
+      <!-- karaf-maven-plugin creates custom microservice distribution -->
+      <plugin>
+        <groupId>org.apache.karaf.tooling</groupId>
+        <artifactId>karaf-maven-plugin</artifactId>
+        <version>${karaf.plugin.version}</version>
+        <extensions>true</extensions>
+        <executions>
+          <execution>
+            <id>karaf-assembly</id>
+            <goals>
+              <goal>assembly</goal>
+            </goals>
+            <phase>install</phase>
+          </execution>
+          <execution>
+            <id>karaf-archive</id>
+            <goals>
+              <goal>archive</goal>
+            </goals>
+            <phase>install</phase>
+          </execution>
+        </executions>
+        <configuration>
+          <!-- do not include build output directory -->
+          <includeBuildOutputDirectory>false</includeBuildOutputDirectory>
+          <!-- no startupFeatures -->
+          <startupFeatures>
+<!--
+            <feature>wrap</feature>
+            <feature>shell</feature>
+            <feature>shell-compat</feature>
+            <feature>feature</feature>
+            <feature>ssh</feature>
+            <feature>bundle</feature>
+            <feature>config</feature>
+            <feature>deployer</feature>
+            <feature>diagnostic</feature>
+            <feature>feature</feature>
+            <feature>instance</feature>
+            <feature>kar</feature>
+            <feature>package</feature>
+            <feature>service</feature>
+-->
+            <feature>karaf-framework</feature>
+            <feature>jaas</feature>
+            <!--<feature>management</feature>-->
+            <feature>aries-blueprint</feature>
+
+            <feature>cxf-core</feature>
+            <feature>cxf-jaxrs</feature>
+            <feature>cxf-http-jetty</feature>
+
+            <!-- swagger -->
+            <feature>http</feature>
+            <feature>cxf-specs</feature>
+          </startupFeatures>
+          <startupBundles>
+            <bundle>mvn:io.fabric8/fabric8-cxf/${fabric8.version}</bundle>
+            <bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}</bundle>
+
+            <!-- swagger -->
+            <bundle dependency='true'>mvn:org.scala-lang/scala-library/${swagger-scala-version}</bundle>
+            <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.javassist/3.12.1.GA_3</bundle>
+            <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.jackson-module-scala/${jackson-module-scala-version}</bundle>
+            <bundle>mvn:javax.validation/validation-api/${validation-api-version}</bundle>
+            <bundle>mvn:com.fasterxml.jackson.core/jackson-core/${jackson2-version}</bundle>
+            <bundle>mvn:com.fasterxml.jackson.core/jackson-annotations/${jackson2-version}</bundle>
+            <bundle>mvn:com.fasterxml.jackson.core/jackson-databind/${jackson2-version}</bundle>
+            <bundle>mvn:com.fasterxml.jackson.jaxrs/jackson-jaxrs-base/${jackson2-version}</bundle>
+            <bundle>mvn:com.fasterxml.jackson.jaxrs/jackson-jaxrs-json-provider/${jackson2-version}</bundle>
+            <bundle>mvn:com.fasterxml.jackson.module/jackson-module-jaxb-annotations/${jackson2-version}</bundle>
+            <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.swagger-annotations/${swagger-version}</bundle>
+            <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.swagger-core/${swagger-version}</bundle>
+            <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.swagger-jaxrs/${swagger-jaxrs-version}</bundle>
+            <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.reflections/${reflections-version}</bundle>
+            <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.json4s/${json4s-version}</bundle>
+          </startupBundles>
+          <libraries>
+            <library>mvn:org.apache.karaf.jaas/org.apache.karaf.jaas.boot/${karaf.version};type:=boot;export:=true;delegate:=true</library>
+          </libraries>
+        </configuration>
+      </plugin>
+
+      <!-- 3. create docker image -->
       <plugin>
         <groupId>org.jolokia</groupId>
         <artifactId>docker-maven-plugin</artifactId>
@@ -328,11 +423,24 @@
               <name>${docker.image}</name>
               <build>
                 <from>${docker.from}</from>
+                <env>
+                  <DEPLOY_DIR>/opt/jboss/deploy</DEPLOY_DIR>
+                </env>
                 <assembly>
-                  <descriptor>${docker.assemblyDescriptor}</descriptor>
                   <basedir>/opt/jboss/deploy/</basedir>
+                  <user>jboss:jboss:jboss</user>
+                  <inline xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2" xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+                    <id>${project.artifactId}</id>
+                    <files>
+                      <!-- copy karaf archive -->
+                      <file>
+                        <source>${project.build.directory}/${project.artifactId}-${project.version}.tar.gz</source>
+                        <outputDirectory>/</outputDirectory>
+                      </file>
+                    </files>
+                  </inline>
                 </assembly>
-                <cmd><shell>/usr/bin/deploy-and-start</shell></cmd>
+                <cmd><shell>/opt/karaf/bin/deploy-and-run.sh</shell></cmd>
               </build>
             </image>
           </images>
