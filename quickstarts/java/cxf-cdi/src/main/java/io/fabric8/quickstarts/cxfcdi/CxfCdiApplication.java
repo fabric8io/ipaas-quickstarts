@@ -31,7 +31,7 @@ import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
 import org.apache.cxf.feature.LoggingFeature;
-import org.apache.cxf.jaxrs.swagger.Swagger2Feature;
+import org.apache.cxf.jaxrs.swagger.SwaggerFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,13 +44,13 @@ public class CxfCdiApplication extends Application {
     @Produces private JacksonJsonProvider jacksonJsonProvider = new JacksonJsonProvider();
     
     private static final Logger LOG = LoggerFactory.getLogger(CustomerService.class);
-    private static Swagger2Feature swaggerFeature;
+    private static SwaggerFeature swaggerFeature;
     
     @Override
     public Set<Object> getSingletons() {
     	
     	if (swaggerFeature == null) {
-    		swaggerFeature = new Swagger2Feature();
+            swaggerFeature = new SwaggerFeature();
 			try {
 				Manifest manifest = Manifests.getManifestFromCurrentJar(getClass());
 				Map<Manifests.Attribute,String> projectInfo = Manifests.getManifestEntryMap(manifest, Manifests.PROJECT_ATTRIBUTES.class);
