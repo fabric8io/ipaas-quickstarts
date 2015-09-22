@@ -310,6 +310,27 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>io.fabric8</groupId>
+        <artifactId>fabric8-maven-plugin</artifactId>
+        <version>${fabric8.version}</version>
+        <executions>
+          <execution>
+            <id>json</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>json</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>attach</id>
+            <phase>package</phase>
+            <goals>
+              <goal>attach</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
 
       <!-- plugin goals have to be executed in order -->
       <!-- 1. install the bundle -->
