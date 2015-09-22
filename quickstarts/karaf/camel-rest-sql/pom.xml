@@ -18,15 +18,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <parent>
-    <groupId>io.fabric8.jube.images.fabric8</groupId>
+    <groupId>io.fabric8.quickstarts</groupId>
     <artifactId>quickstart-karaf-quickstarts</artifactId>
-    <version>2.3-SNAPSHOT</version>
+    <version>2.2.31-SNAPSHOT</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>quickstart-karaf-camelrest</artifactId>
-  <version>2.3-SNAPSHOT</version>
+  <version>2.2.31-SNAPSHOT</version>
   <packaging>bundle</packaging>
   <name>Fabric8 :: Quickstarts :: Karaf :: Camel Rest using SQL</name>
   <description>Camel Example using Rest DSL with SQL Database</description>
@@ -39,15 +39,17 @@
     <maven.compiler.source>1.7</maven.compiler.source>
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
-    <fabric8.version>2.2.26</fabric8.version>
-    <jube.version>2.2.0</jube.version>
+    <fabric8.version>2.2.28</fabric8.version>
     <docker.maven.plugin.version>0.13.3</docker.maven.plugin.version>
     <derby.version>10.10.2.0</derby.version>
     <camel.version>2.15.2</camel.version>
-    <karaf.version>2.4.2</karaf.version>
-    <karaf.plugin.version>2.4.0</karaf.plugin.version>
+    <karaf.version>2.4.3</karaf.version>
+    <spring.features.version>3.0.4</spring.features.version>
+    <karaf.plugin.version>4.0.1</karaf.plugin.version>
+    <spring.tx.feature.version>3.2.11.RELEASE_1</spring.tx.feature.version>
+    <maven-install-plugin.version>2.5.2</maven-install-plugin.version>
 
-    <docker.from>docker.io/fabric8/karaf-2.4:1.0.0</docker.from>
+    <docker.from>docker.io/fabric8/sti-karaf:latest</docker.from>
 
     <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
@@ -56,7 +58,7 @@
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
     <docker.port.container.http>8181</docker.port.container.http>
 
-    <fabric8.service.name>quickstart-camel-rest-sql</fabric8.service.name>
+    <fabric8.service.name>qs-camel-rest-sql</fabric8.service.name>
     <fabric8.service.port>9411</fabric8.service.port>
     <fabric8.service.containerPort>8181</fabric8.service.containerPort>
 
@@ -85,6 +87,7 @@
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-blueprint</artifactId>
+      <scope>runtime</scope>
     </dependency>
 
     <dependency>
@@ -123,6 +126,37 @@
       <groupId>commons-dbcp</groupId>
       <artifactId>commons-dbcp</artifactId>
       <version>1.4</version>
+    </dependency>
+
+    <!-- Karaf microcontainer dependencies -->
+    <dependency>
+      <!-- scope is compile so all features (there is only one) are installed into startup.properties,
+      and the feature repo itself is not added in etc/org.apache.karaf.features.cfg file -->
+      <groupId>org.apache.karaf.features</groupId>
+      <artifactId>static</artifactId>
+      <version>${karaf.plugin.version}</version>
+      <type>kar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.karaf.assemblies.features</groupId>
+      <artifactId>standard</artifactId>
+      <version>${karaf.version}</version>
+      <classifier>features</classifier>
+      <type>xml</type>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.camel.karaf</groupId>
+      <artifactId>apache-camel</artifactId>
+      <version>${camel.version}</version>
+      <classifier>features</classifier>
+      <type>xml</type>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.karaf.features</groupId>
+      <artifactId>spring</artifactId>
+      <version>${spring.features.version}</version>
+      <classifier>features</classifier>
+      <type>xml</type>
     </dependency>
 
   </dependencies>
@@ -212,41 +246,96 @@
             </execution>
           </executions>
         </plugin>
+      <!-- plugin goals have to be executed in order -->
+      <!-- 1. install the bundle -->
       <plugin>
-        <groupId>org.apache.karaf.tooling</groupId>
-        <artifactId>features-maven-plugin</artifactId>
-        <version>${karaf.plugin.version}</version>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-install-plugin</artifactId>
+        <version>${maven-install-plugin.version}</version>
         <executions>
           <execution>
-            <id>add-features-to-repo</id>
-            <phase>package</phase>
+            <id>install-bundle</id>
             <goals>
-              <goal>add-features-to-repo</goal>
+              <goal>install</goal>
             </goals>
-            <!-- We populate the offline repository -->
-            <configuration>
-              <descriptors>
-                <descriptor>file://${project.build.directory}/fabric8/features.xml</descriptor>
-              </descriptors>
-              <repository>target/fabric8/repository/</repository>
-              <addTransitiveFeatures>true</addTransitiveFeatures>
-              <features>
-                <feature>${project.artifactId}</feature>
-              </features>
-            </configuration>
-          </execution>
-          <execution>
-            <id>create-kar</id>
-            <phase>package</phase>
-            <goals>
-              <goal>create-kar</goal>
-            </goals>
-            <configuration>
-              <featuresFile>${project.build.directory}/fabric8/features.xml</featuresFile>
-            </configuration>
           </execution>
         </executions>
       </plugin>
+
+      <!-- 2. create karaf assembly -->
+      <!-- karaf-maven-plugin creates custom microservice distribution -->
+      <plugin>
+        <groupId>org.apache.karaf.tooling</groupId>
+        <artifactId>karaf-maven-plugin</artifactId>
+        <version>${karaf.plugin.version}</version>
+        <extensions>true</extensions>
+        <executions>
+          <execution>
+            <id>karaf-assembly</id>
+            <goals>
+              <goal>assembly</goal>
+            </goals>
+            <phase>install</phase>
+          </execution>
+          <execution>
+            <id>karaf-archive</id>
+            <goals>
+              <goal>archive</goal>
+            </goals>
+            <phase>install</phase>
+          </execution>
+        </executions>
+        <configuration>
+          <!-- do not include build output directory -->
+          <includeBuildOutputDirectory>false</includeBuildOutputDirectory>
+          <!-- no startupFeatures -->
+          <startupFeatures>
+<!--
+            <feature>wrap</feature>
+            <feature>shell-compat</feature>
+            <feature>feature</feature>
+            <feature>ssh</feature>
+            <feature>bundle</feature>
+            <feature>config</feature>
+            <feature>deployer</feature>
+            <feature>diagnostic</feature>
+            <feature>feature</feature>
+            <feature>instance</feature>
+            <feature>kar</feature>
+            <feature>package</feature>
+            <feature>service</feature>
+            <feature>log</feature>
+-->
+            <feature>karaf-framework</feature>
+            <feature>shell</feature>
+            <feature>jaas</feature>
+            <feature>management</feature>
+            <feature>aries-blueprint</feature>
+            <feature>camel-core</feature>
+            <feature>camel-blueprint</feature>
+            <feature>camel-servlet</feature>
+            <feature>camel-jms</feature>
+            <feature>camel-sql</feature>
+            <feature>camel-jackson</feature>
+            <feature>spring-tx/${spring.tx.feature.version}</feature>
+          </startupFeatures>
+          <startupBundles>
+<!--
+            <bundle>mvn:org.apache.camel/camel-core/${camel.version}</bundle>
+            <bundle>mvn:org.apache.camel/camel-blueprint/${camel.version}</bundle>
+-->
+            <bundle start-level="8">mvn:org.ops4j.pax.logging/pax-logging-api/1.8.3</bundle>
+            <bundle start-level="8">mvn:org.ops4j.pax.logging/pax-logging-service/1.8.3</bundle>
+
+            <bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}</bundle>
+          </startupBundles>
+          <libraries>
+            <library>mvn:org.apache.karaf.jaas/org.apache.karaf.jaas.boot/${karaf.version};type:=boot;export:=true;delegate:=true</library>
+          </libraries>
+        </configuration>
+      </plugin>
+
+      <!-- 3. create docker image -->
       <plugin>
         <groupId>org.jolokia</groupId>
         <artifactId>docker-maven-plugin</artifactId>
@@ -257,11 +346,24 @@
               <name>${docker.image}</name>
               <build>
                 <from>${docker.from}</from>
+                <env>
+                  <DEPLOY_DIR>/opt/jboss/deploy</DEPLOY_DIR>
+                </env>
                 <assembly>
-                  <descriptor>${docker.assemblyDescriptor}</descriptor>
                   <basedir>/opt/jboss/deploy/</basedir>
+                  <user>jboss:jboss:jboss</user>
+                  <inline xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2" xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+                    <id>${project.artifactId}</id>
+                    <files>
+                      <!-- copy karaf archive -->
+                      <file>
+                        <source>${project.build.directory}/${project.artifactId}-${project.version}.tar.gz</source>
+                        <outputDirectory>/</outputDirectory>
+                      </file>
+                    </files>
+                  </inline>
                 </assembly>
-                <cmd><shell>/usr/bin/deploy-and-start</shell></cmd>
+                <cmd><shell>/opt/karaf/bin/deploy-and-run.sh</shell></cmd>
               </build>
             </image>
           </images>
@@ -312,36 +414,6 @@
          </plugins>
        </build>
      </profile>
-     <profile>
-      <id>jube</id>
-      <activation>
-        <property>
-          <name>jube.plugin.enabled</name>
-          <value>true</value>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>io.fabric8.jube</groupId>
-            <artifactId>jube-maven-plugin</artifactId>
-            <version>${jube.version}</version>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>build</goal>
-                </goals>
-                <phase>package</phase>
-              </execution>
-            </executions>
-            <configuration>
-              <exportDir>/</exportDir>
-              <assemblyDescriptor>${project.build.directory}/fabric8/assembly.xml</assemblyDescriptor>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
 
     <profile>
       <id>fabric8-snapshot</id>

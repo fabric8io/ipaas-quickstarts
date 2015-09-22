@@ -21,13 +21,10 @@ If you omit the profiles then it builds everything.
 
 #### Docker and/or Jube profiles 
 
-This build is designed so that it can be used with docker images and/or jube images. So by default jube images are created unless you specify other profiles. Docker only runs on certain platforms so we've disabled the docker build by default less enabled via a maven profile.
-
-The following maven profiles can be used to enable/disable parts of the build. Note that **jube** is enabled by default until you specify other profiles:
+This build is designed so that it can be used with docker images. Docker only runs on certain platforms so we've disabled the docker build by default less enabled via a maven profile.
 
 * **docker-build** builds docker images locally
 * **docker-push** pushes docker images (i.e. when releasing to the public docker registry or a local registry of **$DOCKER_REGISTRY** is defined to point to a local docker registry
-* **jube** creates a jube image zip as part of the build (which is active by default)
 * **ts.kube** enables the kubernetes integration tests
 
 #### Building docker images

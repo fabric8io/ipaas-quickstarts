@@ -100,7 +100,6 @@
         <module>registry</module>
         <module>sonarqube</module>
         <module>taiga</module>
-        <module>templates</module>
         <module>zookeeper</module>
     </modules>
 

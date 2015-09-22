@@ -23,7 +23,7 @@
   <parent>
     <groupId>io.fabric8.quickstarts</groupId>
     <artifactId>project</artifactId>
-    <version>2.3-SNAPSHOT</version>
+    <version>2.2.31-SNAPSHOT</version>
   </parent>
 
   <artifactId>fabric8-quickstarts-parent</artifactId>
@@ -54,6 +54,15 @@
     <!--<module>war</module>-->
   </modules>
 
+  <developers>
+    <developer>
+      <name>Fabric8</name>
+      <id>Fabric8</id>
+      <email>fabric8@googlegroups.com</email>
+      <organization>Red Hat</organization>
+    </developer>
+  </developers>
+
   <build>
     <defaultGoal>install</defaultGoal>
 
@@ -72,6 +81,27 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+     <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.6</version>
+        <configuration>
+          <archive>
+            <index>true</index>
+            <manifest>
+              <addClasspath>false</addClasspath>
+            </manifest>
+            <manifestEntries>
+              <Project-Description>${project.description}</Project-Description>
+              <Project-Title>${project.artifactId}</Project-Title>
+              <Project-Version>${project.version}</Project-Version>
+              <Project-Contact>${project.developers[0].name}, ${project.developers[0].email}</Project-Contact>
+              <Project-License>${project.licenses[0].name}</Project-License>
+              <Project-LicenseUrl>${project.licenses[0].url}</Project-LicenseUrl>
+            </manifestEntries>
+          </archive>
+        </configuration>
       </plugin>
     </plugins>
     <pluginManagement>

@@ -26,13 +26,14 @@
 
     <groupId>io.fabric8.quickstarts</groupId>
     <artifactId>project</artifactId>
-    <version>2.3-SNAPSHOT</version>
+    <version>2.2.31-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Fabric8 Quickstarts</name>
+    <description>Quickstart applications for working with Fabric8</description>
 
-    <url>http://fabric8.io/</url>
-    <inceptionYear>2011</inceptionYear>
+    <url>http://fabric8.io/v2/quickstarts.html</url>
+    <inceptionYear>2014</inceptionYear>
 
     <organization>
         <name>Red Hat</name>
@@ -73,8 +74,6 @@
         <skipItests>true</skipItests>
         <integrationTestPattern>**/*KubernetesTest*.java</integrationTestPattern>
 
-        <jube.plugin.enabled>false</jube.plugin.enabled>
-
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
 
@@ -92,9 +91,8 @@
 -->
         <exec-maven-plugin.version>1.2.1</exec-maven-plugin.version>
         <maven.surefire.plugin.version>2.17</maven.surefire.plugin.version>
-        <jube.version>2.2.0</jube.version>
         <junit.version>4.12</junit.version>
-        <fabric8.version>2.2.26</fabric8.version>
+        <fabric8.version>2.2.29</fabric8.version>
         <fabric8.release.version>${fabric8.version}</fabric8.release.version>
         <maven.require.version>3.1.1</maven.require.version>
         <maven.enforcer.plugin.version>1.4</maven.enforcer.plugin.version>
@@ -216,11 +214,6 @@
             <releaseProfiles>docker-push,docker-public</releaseProfiles>
           </configuration>
         </plugin>
-        <plugin>
-          <groupId>io.fabric8.jube</groupId>
-          <artifactId>jube-maven-plugin</artifactId>
-          <version>${jube.version}</version>
-        </plugin>
           <plugin>
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-surefire-plugin</artifactId>
@@ -307,12 +300,6 @@
             <fabric8.version>2.3-SNAPSHOT</fabric8.version>
             <fabric8.release.version>2.2.22</fabric8.release.version>
             <fabric8.dockerPrefix />
-          </properties>
-        </profile>
-        <profile>
-          <id>jube-snapshot</id>
-          <properties>
-            <jube.version>2.2-SNAPSHOT</jube.version>
           </properties>
         </profile>
 
