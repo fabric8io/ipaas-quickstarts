@@ -27,6 +27,7 @@
   </parent>
 
   <artifactId>quickstart-karaf-cxf-rest</artifactId>
+  <version>2.3-SNAPSHOT</version>
   <packaging>bundle</packaging>
   <name>Fabric8 :: Quickstarts :: Karaf :: CXF RESTful WebService</name>
   <description>RESTful WebService Example using JAX-RS with Karaf</description>
@@ -129,8 +130,9 @@
     </dependency>
 
     <dependency>
-      <groupId>io.swagger</groupId>
-      <artifactId>swagger-jaxrs</artifactId>
+      <groupId>com.wordnik</groupId>
+      <artifactId>swagger-jaxrs_2.10</artifactId>
+      <version>1.3.0</version>
       <optional>true</optional>
       <exclusions>
         <!-- avoid this old dependency which breaks CXF -->
@@ -247,9 +249,9 @@
               javax.ws.rs.ext;version="[2, 3)",
               javax.xml.bind.annotation,
               org.osgi.service.blueprint,
-              io.swagger.jaxrs.config,
-              io.swagger.jaxrs.listing,
-              io.swagger.annotations,
+              com.wordnik.swagger.jaxrs.config,
+              com.wordnik.swagger.jaxrs.listing,
+              com.wordnik.swagger.annotations,
               org.apache.cxf.transport.http,
               io.fabric8.cxf.endpoint,
               com.fasterxml.jackson.annotation, com.fasterxml.jackson.core, com.fasterxml.jackson.databind,
