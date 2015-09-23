@@ -457,7 +457,16 @@
             <module>quickstarts</module>
           </modules>
         </profile>
+        <profile>
+          <id>archetypes</id>
+          <activation>
+            <activeByDefault>true</activeByDefault>
+          </activation>
+          <modules>
+            <module>archetypes-catalog</module>
+            <module>archetypes</module>
+          </modules>
+        </profile>
     </profiles>
 
 </project>
-
