@@ -27,7 +27,7 @@
   </parent>
 
   <artifactId>quickstart-karaf-cxf-rest</artifactId>
-  <version>2.3-SNAPSHOT</version>
+  <version>2.2.31-SNAPSHOT</version>
   <packaging>bundle</packaging>
   <name>Fabric8 :: Quickstarts :: Karaf :: CXF RESTful WebService</name>
   <description>RESTful WebService Example using JAX-RS with Karaf</description>
