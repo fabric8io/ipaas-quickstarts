@@ -35,19 +35,9 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <version.compiler.plugin>2.3.1</version.compiler.plugin>
-    <version.maven-bundle-plugin>2.3.7</version.maven-bundle-plugin>
-    <maven.compiler.target>1.7</maven.compiler.target>
-    <maven.compiler.source>1.7</maven.compiler.source>
-    <maven.surefire.plugin.version>2.17</maven.surefire.plugin.version>
-
-    <skipTests>false</skipTests>
-    <integrationTestPattern>**/*KubernetesTest.java</integrationTestPattern>
 
     <!-- the version of the BOM, defining all the dependency versions -->
     <fabric8.version>2.2.34</fabric8.version>
-
-    <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <camel.version>2.15.2</camel.version>
     <docker.maven.plugin.version>0.13.3</docker.maven.plugin.version>
 
@@ -159,25 +149,24 @@
       <!-- Compiler plugin enforces Java 1.7 compatibility and activates annotation processors -->
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>${version.compiler.plugin}</version>
+        <version>2.3.1</version>
         <configuration>
-          <source>${maven.compiler.source}</source>
-          <target>${maven.compiler.target}</target>
+          <source>1.7</source>
+          <target>1.7</target>
         </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>${maven.surefire.plugin.version}</version>
+        <version>2.17</version>
         <inherited>true</inherited>
         <configuration>
-          <skipTests>${skipTests}</skipTests>
           <excludes>
-            <exclude>${integrationTestPattern}</exclude>
+            <exclude>**/*KubernetesTest.java</exclude>
           </excludes>
         </configuration>
       </plugin>
-
+      
       <plugin>
         <groupId>io.fabric8</groupId>
         <artifactId>fabric8-maven-plugin</artifactId>
