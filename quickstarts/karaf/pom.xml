@@ -26,7 +26,7 @@
     <version>2.2.35-SNAPSHOT</version>
   </parent>
 
-  <artifactId>quickstart-karaf-quickstarts</artifactId>
+  <artifactId>quickstarts-karaf</artifactId>
   <version>2.2.35-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Fabric8 :: Quickstarts :: Karaf :: Parent</name>
