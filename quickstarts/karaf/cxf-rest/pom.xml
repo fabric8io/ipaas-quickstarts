@@ -373,25 +373,8 @@
           <includeBuildOutputDirectory>false</includeBuildOutputDirectory>
           <!-- no startupFeatures -->
           <startupFeatures>
-<!--
-            <feature>wrap</feature>
-            <feature>shell</feature>
-            <feature>shell-compat</feature>
-            <feature>feature</feature>
-            <feature>ssh</feature>
-            <feature>bundle</feature>
-            <feature>config</feature>
-            <feature>deployer</feature>
-            <feature>diagnostic</feature>
-            <feature>feature</feature>
-            <feature>instance</feature>
-            <feature>kar</feature>
-            <feature>package</feature>
-            <feature>service</feature>
--->
             <feature>karaf-framework</feature>
             <feature>jaas</feature>
-            <!--<feature>management</feature>-->
             <feature>aries-blueprint</feature>
 
             <feature>cxf-core</feature>
