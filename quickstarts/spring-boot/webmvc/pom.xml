@@ -35,7 +35,7 @@
     <maven.surefire.plugin.version>2.17</maven.surefire.plugin.version>
 
     <skipTests>false</skipTests>
-    <integrationTestPattern>**/*KubernetesTest.java</integrationTestPattern>
+    <integrationTestPattern>**/*KT.java</integrationTestPattern>
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <fabric8.version>2.2.34</fabric8.version>

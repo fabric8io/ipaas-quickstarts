@@ -144,7 +144,7 @@
         <inherited>true</inherited>
         <configuration>
           <excludes>
-            <exclude>**/*KubernetesTest.java</exclude>
+            <exclude>**/*KT.java</exclude>
           </excludes>
         </configuration>
       </plugin>
