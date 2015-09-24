@@ -127,7 +127,7 @@
         <configuration>
           <forkMode>perTest</forkMode>
           <excludes>
-            <exclude>**/*KubernetesTest.java</exclude>
+            <exclude>**/*KT.java</exclude>
           </excludes>
         </configuration>
       </plugin>

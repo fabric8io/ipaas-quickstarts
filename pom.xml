@@ -72,7 +72,7 @@
     <properties>
         <skipTests>false</skipTests>
         <skipItests>true</skipItests>
-        <integrationTestPattern>**/*KubernetesTest*.java</integrationTestPattern>
+        <integrationTestPattern>**/*KT*.java</integrationTestPattern>
 
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
