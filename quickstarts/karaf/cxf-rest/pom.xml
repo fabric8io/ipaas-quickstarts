@@ -44,7 +44,6 @@
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <docker.maven.plugin.version>0.13.3</docker.maven.plugin.version>
     <cxf.version>3.1.2</cxf.version>
-    <camel.version>2.15.2</camel.version>
     <karaf.version>2.4.3</karaf.version>
     <karaf.plugin.version>4.0.1</karaf.plugin.version>
     <maven-install-plugin.version>2.5.2</maven-install-plugin.version>
@@ -371,6 +370,9 @@
           </execution>
         </executions>
         <configuration>
+          <!-- we are using karaf 2.4.x -->
+          <karafVersion>v24</karafVersion>
+          <useReferenceUrls>true</useReferenceUrls>
           <!-- do not include build output directory -->
           <includeBuildOutputDirectory>false</includeBuildOutputDirectory>
           <!-- no startupFeatures -->

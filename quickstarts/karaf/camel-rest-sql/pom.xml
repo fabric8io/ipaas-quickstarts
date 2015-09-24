@@ -37,9 +37,9 @@
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <fabric8.version>2.2.34</fabric8.version>
+    <camel.version>2.15.3</camel.version>
     <docker.maven.plugin.version>0.13.3</docker.maven.plugin.version>
     <derby.version>10.10.2.0</derby.version>
-    <camel.version>2.15.2</camel.version>
     <karaf.version>2.4.3</karaf.version>
     <spring.features.version>3.0.4</spring.features.version>
     <karaf.plugin.version>4.0.1</karaf.plugin.version>
@@ -144,7 +144,6 @@
     <dependency>
       <groupId>org.apache.camel.karaf</groupId>
       <artifactId>apache-camel</artifactId>
-      <version>${camel.version}</version>
       <classifier>features</classifier>
       <type>xml</type>
     </dependency>
@@ -283,6 +282,9 @@
           </execution>
         </executions>
         <configuration>
+          <!-- we are using karaf 2.4.x -->
+          <karafVersion>v24</karafVersion>
+          <useReferenceUrls>true</useReferenceUrls>
           <!-- do not include build output directory -->
           <includeBuildOutputDirectory>false</includeBuildOutputDirectory>
           <!-- no startupFeatures -->
@@ -291,7 +293,6 @@
             <feature>shell</feature>
             <feature>jaas</feature>
             <feature>aries-blueprint</feature>
-            <feature>camel-core</feature>
             <feature>camel-blueprint</feature>
             <feature>camel-servlet</feature>
             <feature>camel-jms</feature>

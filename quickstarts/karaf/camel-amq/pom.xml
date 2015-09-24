@@ -39,7 +39,7 @@
     <fabric8.version>2.2.34</fabric8.version>
     <!-- need to declare the Camel version as features-maven-plugin needs this property (cannot inherit from BOM in maven plugin) -->
     <activemq.version>5.11.1</activemq.version>
-    <camel.version>2.15.2</camel.version>
+    <camel.version>2.15.3</camel.version>
     <karaf.version>2.4.2</karaf.version>
     <karaf.plugin.version>2.4.0</karaf.plugin.version>
     <docker.maven.plugin.version>0.13.3</docker.maven.plugin.version>

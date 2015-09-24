@@ -44,7 +44,6 @@
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <fabric8.version>2.2.34</fabric8.version>
     <docker.maven.plugin.version>0.13.3</docker.maven.plugin.version>
-    <camel.version>2.15.2</camel.version>
     <cxf.version>3.0.4</cxf.version>
 
     <docker.from>docker.io/fabric8/tomcat-8.0</docker.from>
