@@ -21,7 +21,7 @@
 
   <parent>
     <groupId>io.fabric8.quickstarts</groupId>
-    <artifactId>quickstart-java</artifactId>
+    <artifactId>quickstarts-java</artifactId>
     <version>2.2.35-SNAPSHOT</version>
   </parent>
 
