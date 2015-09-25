@@ -1,0 +1,380 @@
+<!--
+
+     Copyright 2005-2015 Red Hat, Inc.
+
+     Red Hat licenses this file to you under the Apache License, version
+     2.0 (the "License"); you may not use this file except in compliance
+     with the License.  You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+     implied.  See the License for the specific language governing
+     permissions and limitations under the License.
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>io.fabric8.quickstarts</groupId>
+    <artifactId>quickstart-war</artifactId>
+    <version>2.2.36-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>quickstart-war-cxf-cdi-servlet</artifactId>
+  <packaging>war</packaging>
+  <name>Fabric8 :: Quickstarts :: War :: CXF JAX-RS with CDI Servlet</name>
+  <description>CXF JAX-RS using CDI deployed as WAR</description>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <version.maven-surefire-plugin>2.15</version.maven-surefire-plugin>
+    <version.maven-bundle-plugin>2.3.7</version.maven-bundle-plugin>
+    <maven-resources-plugin.version>2.6</maven-resources-plugin.version>
+    <skipTests>true</skipTests>
+
+    <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
+    <cxf.version>3.0.4</cxf.version>
+    <org.eclipse.jetty.version>9.2.10.v20150310</org.eclipse.jetty.version>
+    <docker.maven.plugin.version>0.13.3</docker.maven.plugin.version>
+ 
+    <docker.from>docker.io/fabric8/tomcat-8.0</docker.from>
+
+    <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>
+    <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
+    <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
+    <docker.assemblyDescriptorRef>rootWar</docker.assemblyDescriptorRef>
+    <docker.port.container.jolokia>8778</docker.port.container.jolokia>
+    <docker.port.container.http>8080</docker.port.container.http>
+
+    <fabric8.service.name>quickstart-cxf-cdi</fabric8.service.name>
+    <fabric8.service.port>9102</fabric8.service.port>
+    <fabric8.service.containerPort>8080</fabric8.service.containerPort>
+
+    <fabric8.label.component>${project.artifactId}</fabric8.label.component>
+    <fabric8.label.container>tomcat</fabric8.label.container>
+    <fabric8.label.group>quickstarts</fabric8.label.group>
+    <fabric8.iconRef>tomcat</fabric8.iconRef>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>fabric8-project</artifactId>
+        <version>${fabric8.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  
+
+  <dependencies>
+
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>fabric8-cxf</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.cxf</groupId>
+          <artifactId>cxf-bundle</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.geronimo.specs</groupId>
+          <artifactId>geronimo-servlet_3.0_spec</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-rs-service-description</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-integration-cdi</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-frontend-jaxrs</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-transports-http</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-management</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jboss.weld.servlet</groupId>
+      <artifactId>weld-servlet</artifactId>
+      <version>2.2.4.Final</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.weld</groupId>
+      <artifactId>weld-core</artifactId>
+      <version>2.2.4.Final</version>
+    </dependency>
+
+
+    <!--
+        We are also building a small Java client application that we can use to test our web web services.
+        For performing the HTTP requests, we are using Apache Commons HttpClient.
+    -->
+    <dependency>
+      <groupId>commons-httpclient</groupId>
+      <artifactId>commons-httpclient</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.wordnik</groupId>
+      <artifactId>swagger-jaxrs_2.10</artifactId>
+      <optional>true</optional>
+      <exclusions>
+        <!-- avoid this old dependency which breaks CXF -->
+        <exclusion>
+          <groupId>javax.ws.rs</groupId>
+          <artifactId>jsr311-api</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <finalName>${project.artifactId}</finalName>
+
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+
+    <plugins>
+      <!-- Skip Test by default and enable them only in Test profile -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${version.maven-surefire-plugin}</version>
+        <configuration>
+          <skipTests>${skipTests}</skipTests>
+        </configuration>
+      </plugin>
+      <!-- Compiler plugin enforces Java 1.7 compatibility and activates annotation processors -->
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.3.1</version>
+        <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>${maven-resources-plugin.version}</version>
+        <executions>
+          <execution>
+            <id>filter</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>resources</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-java2wadl-plugin</artifactId>
+        <version>${cxf.version}</version>
+        <executions>
+          <execution>
+            <id>process-classes</id>
+            <phase>process-classes</phase>
+            <goals>
+              <goal>java2wadl</goal>
+            </goals>
+            <configuration>
+              <classResourceNames>
+                <classResourceName>io.fabric8.quickstarts.cxfcdi.CustomerService</classResourceName>
+              </classResourceNames>
+              <attachWadl>false</attachWadl>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>io.fabric8</groupId>
+        <artifactId>fabric8-maven-plugin</artifactId>
+        <version>${fabric8.version}</version>
+        <executions>
+          <execution>
+            <id>json</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>json</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>attach</id>
+            <phase>package</phase>
+            <goals>
+              <goal>attach</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.jolokia</groupId>
+        <artifactId>docker-maven-plugin</artifactId>
+        <version>${docker.maven.plugin.version}</version>
+        <configuration>
+          <images>
+            <image>
+              <name>${docker.image}</name>
+              <build>
+                <from>${docker.from}</from>
+                <assembly>
+                  <descriptorRef>${docker.assemblyDescriptorRef}</descriptorRef>
+                </assembly>
+                <env>
+                  <CATALINA_OPTS>-javaagent:/opt/tomcat/jolokia-agent.jar=host=0.0.0.0,port=8778</CATALINA_OPTS>
+                </env>
+              </build>
+            </image>
+          </images>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.tomcat.maven</groupId>
+        <artifactId>tomcat7-maven-plugin</artifactId>
+        <version>2.1</version>
+        <configuration>
+          <port>9901</port>
+          <path>/</path>
+          <systemProperties>
+          </systemProperties>
+          <useTestClasspath>false</useTestClasspath>
+        </configuration>
+      </plugin>
+
+    </plugins>
+  </build>
+
+  <profiles>
+
+    <profile>
+      <id>test</id>
+      <properties>
+        <skipTests>false</skipTests>
+      </properties>
+      <build>
+        <defaultGoal>verify</defaultGoal>
+      </build>
+    </profile>
+
+    <profile>
+      <id>docker-build</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.jolokia</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <version>${docker.maven.plugin.version}</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>build</goal>
+                </goals>
+                <phase>package</phase>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>docker-push</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.jolokia</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <version>${docker.maven.plugin.version}</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>build</goal>
+                  <goal>push</goal>
+                </goals>
+                <phase>package</phase>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>fabric8-snapshot</id>
+      <properties>
+        <fabric8.version>2.3-SNAPSHOT</fabric8.version>
+      </properties>
+    </profile>
+  </profiles>
+
+  <repositories>
+    <repository>
+      <releases>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>jboss.ea</id>
+      <name>JBoss Community Early Access Release Repository</name>
+      <url>http://origin-repository.jboss.org/nexus/content/groups/ea</url>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <releases>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>jboss.ea</id>
+      <name>JBoss Community Early Access Release Repository</name>
+      <url>http://origin-repository.jboss.org/nexus/content/groups/ea</url>
+    </pluginRepository>
+  </pluginRepositories>
+    
+</project>

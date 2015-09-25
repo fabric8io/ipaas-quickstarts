@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+     Copyright 2005-2015 Red Hat, Inc.
+
+     Red Hat licenses this file to you under the Apache License, version
+     2.0 (the "License"); you may not use this file except in compliance
+     with the License.  You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+     implied.  See the License for the specific language governing
+     permissions and limitations under the License.
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>io.fabric8.quickstarts</groupId>
+		<artifactId>quickstart-war</artifactId>
+		<version>2.2.36-SNAPSHOT</version>
+    </parent>
+	
+	<artifactId>quickstart-wildfly</artifactId>
+	<packaging>war</packaging>
+	<version>2.2.36-SNAPSHOT</version>
+	<name>Fabric8 :: Quickstarts :: War :: Wildfly</name>
+	<description>Simple Wildfly Application deployed as war</description>
+
+	<properties>
+		<failOnMissingWebXml>false</failOnMissingWebXml>
+		<fabric8.version>2.2.35</fabric8.version>
+
+		<docker.from>jboss/wildfly:9.0.1.Final</docker.from>
+		<docker.maven.plugin.version>0.13.3</docker.maven.plugin.version>
+		<docker.assemblyDescriptorRef>artifact</docker.assemblyDescriptorRef>
+
+
+		<fabric8.service.name>quickstart-wildfly</fabric8.service.name>
+		<fabric8.service.port>9101</fabric8.service.port>
+		<fabric8.service.containerPort>8080</fabric8.service.containerPort>
+
+		<fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>
+		<fabric8.dockerUser>fabric8/</fabric8.dockerUser>
+		<docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
+		<fabric8.label.component>${project.artifactId}</fabric8.label.component>
+		<fabric8.label.container>wildfly</fabric8.label.container>
+		<fabric8.label.group>quickstarts</fabric8.label.group>
+		<fabric8.imagePullPolicy>IfNotPresent</fabric8.imagePullPolicy>
+		<fabric8.iconRef>java</fabric8.iconRef>
+	</properties>
+
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<distribution>repo</distribution>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+		</license>
+	</licenses>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>io.fabric8</groupId>
+				<artifactId>fabric8-project</artifactId>
+				<version>${fabric8.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-api</artifactId>
+			<version>7.0</version>
+			<scope>provided</scope>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<finalName>wildfly-fabric8</finalName>
+		<plugins>
+            <plugin>
+              <artifactId>maven-compiler-plugin</artifactId>
+              <version>2.3.1</version>
+              <configuration>
+                <source>1.7</source>
+                <target>1.7</target>
+              </configuration>
+            </plugin>
+			<plugin>
+				<groupId>org.jolokia</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>${docker.maven.plugin.version}</version>
+				<configuration>
+					<images>
+						<image>
+							<name>${docker.image}</name>
+							<build>
+								<from>${docker.from}</from>
+								<assembly>
+									<inline>
+										<dependencySets>
+											<dependencySet>
+												<includes>
+													<include>${project.groupId}:${project.artifactId}</include>
+												</includes>
+												<outputFileNameMapping>test.war</outputFileNameMapping>
+											</dependencySet>
+										</dependencySets>
+									</inline>
+									<user>jboss:jboss:jboss</user>
+									<basedir>/opt/jboss/wildfly/standalone/deployments</basedir>
+								</assembly>
+							</build>
+						</image>
+					</images>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>fabric8-maven-plugin</artifactId>
+				<version>${fabric8.version}</version>
+				<executions>
+					<execution>
+						<id>json</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>json</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>attach</id>
+						<phase>package</phase>
+						<goals>
+							<goal>attach</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	<profiles>
+		<profile>
+			<id>docker-build</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.jolokia</groupId>
+						<artifactId>docker-maven-plugin</artifactId>
+						<version>${docker.maven.plugin.version}</version>
+						<executions>
+							<execution>
+								<goals>
+									<goal>build</goal>
+								</goals>
+								<phase>package</phase>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>docker-push</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.jolokia</groupId>
+						<artifactId>docker-maven-plugin</artifactId>
+						<version>${docker.maven.plugin.version}</version>
+						<executions>
+							<execution>
+								<goals>
+									<goal>build</goal>
+									<goal>push</goal>
+								</goals>
+								<phase>package</phase>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<profile>
+			<id>fabric8-snapshot</id>
+			<properties>
+				<fabric8.version>2.3-SNAPSHOT</fabric8.version>
+			</properties>
+		</profile>
+	</profiles>
+
+  <repositories>
+    <repository>
+      <releases>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>jboss.ea</id>
+      <name>JBoss Community Early Access Release Repository</name>
+      <url>http://origin-repository.jboss.org/nexus/content/groups/ea</url>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <releases>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>jboss.ea</id>
+      <name>JBoss Community Early Access Release Repository</name>
+      <url>http://origin-repository.jboss.org/nexus/content/groups/ea</url>
+    </pluginRepository>
+  </pluginRepositories>
+  	
+</project>

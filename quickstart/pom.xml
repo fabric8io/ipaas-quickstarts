@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+     Copyright 2005-2015 Red Hat, Inc.
+
+     Red Hat licenses this file to you under the Apache License, version
+     2.0 (the "License"); you may not use this file except in compliance
+     with the License.  You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+     implied.  See the License for the specific language governing
+     permissions and limitations under the License.
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>io.fabric8.quickstarts</groupId>
+    <artifactId>project</artifactId>
+    <version>2.2.36-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>fabric8-quickstart-parent</artifactId>
+  <packaging>pom</packaging>
+  <name>Fabric8 :: Quickstarts :: Parent</name>
+
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <distribution>repo</distribution>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+    </license>
+  </licenses>
+
+  <properties>
+    <maven.compiler.target>1.7</maven.compiler.target>
+    <maven.compiler.source>1.7</maven.compiler.source>
+    <maven-javadoc-plugin.version>2.9.1</maven-javadoc-plugin.version>
+    <docker.maven.plugin.version>0.13.3</docker.maven.plugin.version>
+    <docker.port.container.jolokia>8778</docker.port.container.jolokia>
+  </properties>
+
+  <modules>
+    <module>java</module>
+    <module>karaf</module>
+    <module>cdi</module>
+    <module>spring-boot</module>
+    <!--<module>war</module>-->
+  </modules>
+
+  <developers>
+    <developer>
+      <name>Fabric8</name>
+      <id>Fabric8</id>
+      <email>fabric8@googlegroups.com</email>
+      <organization>Red Hat</organization>
+    </developer>
+  </developers>
+
+  <build>
+    <defaultGoal>install</defaultGoal>
+
+    <plugins>
+      <!-- generate a .zip with all the quickstarts -->
+      <plugin>
+        <groupId>io.fabric8</groupId>
+        <artifactId>fabric8-maven-plugin</artifactId>
+        <version>${fabric8.version}</version>
+        <executions>
+          <execution>
+            <id>attach</id>
+            <phase>package</phase>
+            <goals>
+              <goal>attach</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+     <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.6</version>
+        <configuration>
+          <archive>
+            <index>true</index>
+            <manifest>
+              <addClasspath>false</addClasspath>
+            </manifest>
+            <manifestEntries>
+              <Project-Description>${project.description}</Project-Description>
+              <Project-Title>${project.artifactId}</Project-Title>
+              <Project-Version>${project.version}</Project-Version>
+              <Project-Contact>${project.developers[0].name}, ${project.developers[0].email}</Project-Contact>
+              <Project-License>${project.licenses[0].name}</Project-License>
+              <Project-LicenseUrl>${project.licenses[0].url}</Project-LicenseUrl>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+    <pluginManagement>
+      <plugins>
+        <!-- to avoid java8 javadoc being very strict issue during compiling -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>${maven-javadoc-plugin.version}</version>
+          <configuration>
+            <failOnError>false</failOnError>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
+  <profiles>
+    <!-- lets disable the tests for quickstarts on release build as the double-resting loop in mvn release plugin seems to bork things -->
+    <profile>
+      <id>release</id>
+      <properties>
+        <skipTests>true</skipTests>
+      </properties>
+    </profile>
+  </profiles>
+</project>

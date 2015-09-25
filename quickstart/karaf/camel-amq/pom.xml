@@ -1,0 +1,302 @@
+<!--
+
+     Copyright 2005-2015 Red Hat, Inc.
+
+     Red Hat licenses this file to you under the Apache License, version
+     2.0 (the "License"); you may not use this file except in compliance
+     with the License.  You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+     implied.  See the License for the specific language governing
+     permissions and limitations under the License.
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <parent>
+    <groupId>io.fabric8.quickstarts</groupId>
+    <artifactId>quickstart-karaf</artifactId>
+    <version>2.2.36-SNAPSHOT</version>
+  </parent>
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>quickstart-karaf-camel-amq</artifactId>
+  <version>2.2.36-SNAPSHOT</version>
+  <packaging>bundle</packaging>
+  <name>Fabric8 :: Quickstarts :: Karaf :: Camel using ActiveMQ</name>
+  <description>ActiveMQ and Camel Example</description>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <version.maven-bundle-plugin>2.3.7</version.maven-bundle-plugin>
+
+    <!-- the version of the BOM, defining all the dependency versions -->
+    <fabric8.version>2.2.35</fabric8.version>
+    <!-- need to declare the Camel version as features-maven-plugin needs this property (cannot inherit from BOM in maven plugin) -->
+    <activemq.version>5.11.1</activemq.version>
+    <camel.version>2.15.3</camel.version>
+    <karaf.version>2.4.2</karaf.version>
+    <karaf.plugin.version>2.4.0</karaf.plugin.version>
+    <docker.maven.plugin.version>0.13.3</docker.maven.plugin.version>
+    <docker.from>docker.io/fabric8/karaf-2.4:1.0.0</docker.from>
+
+    <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>
+    <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
+    <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
+    <docker.assemblyDescriptor>${basedir}/src/main/fabric8/assembly.xml</docker.assemblyDescriptor>
+    <docker.port.container.jolokia>8778</docker.port.container.jolokia>
+    <docker.port.container.http>8181</docker.port.container.http>
+    <fabric8.env.AMQ_SERVICE_ID>FABRIC8MQ</fabric8.env.AMQ_SERVICE_ID>
+
+    <fabric8.label.component>${project.artifactId}</fabric8.label.component>
+    <fabric8.label.container>karaf</fabric8.label.container>
+    <fabric8.label.group>quickstarts</fabric8.label.group>
+    <fabric8.iconRef>camel</fabric8.iconRef>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>fabric8-project</artifactId>
+        <version>${fabric8.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <!--
+      For this example, we will be using the OSGi Blueprint XML syntax for Apache Camel.
+    -->
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-blueprint</artifactId>
+    </dependency>
+
+    <dependency>
+        <groupId>io.fabric8.mq</groupId>
+        <artifactId>camel-amq</artifactId>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <finalName>${project.artifactId}</finalName>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+    <plugins>
+      <!-- Compiler plugin enforces Java 1.7 compatibility and activates annotation processors -->
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.3.1</version>
+        <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <version>${version.maven-bundle-plugin}</version>
+        <extensions>true</extensions>
+          <configuration>
+              <instructions>
+                  <Import-Package>
+                      io.fabric8.mq.core,
+                      io.fabric8.mq.camel,
+                      org.apache.activemq.pool,
+                      *
+                  </Import-Package>
+              </instructions>
+          </configuration>
+      </plugin>
+        <plugin>
+            <artifactId>maven-resources-plugin</artifactId>
+            <executions>
+                <execution>
+                    <id>filter-extra-resources</id>
+                    <goals>
+                        <goal>copy-resources</goal>
+                    </goals>
+                    <phase>process-resources</phase>
+                    <configuration>
+                        <outputDirectory>${project.build.directory}/fabric8</outputDirectory>
+                        <resources>
+                            <resource>
+                                <directory>src/main/fabric8</directory>
+                                <filtering>true</filtering>
+                            </resource>
+                        </resources>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
+        <plugin>
+            <groupId>io.fabric8</groupId>
+            <artifactId>fabric8-maven-plugin</artifactId>
+            <version>${fabric8.version}</version>
+            <executions>
+                <execution>
+                    <id>json</id>
+                    <phase>generate-resources</phase>
+                    <goals>
+                        <goal>json</goal>
+                    </goals>
+                </execution>
+                <execution>
+                    <id>attach</id>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>attach</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+      <plugin>
+        <groupId>org.apache.karaf.tooling</groupId>
+        <artifactId>features-maven-plugin</artifactId>
+        <version>${karaf.plugin.version}</version>
+        <executions>
+          <execution>
+            <id>add-features-to-repo</id>
+            <phase>package</phase>
+            <goals>
+              <goal>add-features-to-repo</goal>
+            </goals>
+            <!-- We populate the offline repository -->
+            <configuration>
+              <descriptors>
+                <descriptor>file://${project.build.directory}/fabric8/features.xml</descriptor>
+              </descriptors>
+              <repository>target/fabric8/repository/</repository>
+              <addTransitiveFeatures>true</addTransitiveFeatures>
+              <features>
+                <feature>${project.artifactId}</feature>
+              </features>
+            </configuration>
+          </execution>
+          <execution>
+            <id>create-kar</id>
+            <phase>package</phase>
+            <goals>
+              <goal>create-kar</goal>
+            </goals>
+            <configuration>
+              <featuresFile>${project.build.directory}/fabric8/features.xml</featuresFile>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.jolokia</groupId>
+        <artifactId>docker-maven-plugin</artifactId>
+        <version>${docker.maven.plugin.version}</version>
+        <configuration>
+          <images>
+            <image>
+              <name>${docker.image}</name>
+              <build>
+                <from>${docker.from}</from>
+                <assembly>
+                  <descriptor>${docker.assemblyDescriptor}</descriptor>
+                  <basedir>/opt/jboss/deploy/</basedir>
+                </assembly>
+                <cmd><shell>/usr/bin/deploy-and-start</shell></cmd>
+              </build>
+            </image>
+          </images>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+   <profiles>
+     <profile>
+       <id>docker-build</id>
+       <build>
+         <plugins>
+           <plugin>
+             <groupId>org.jolokia</groupId>
+             <artifactId>docker-maven-plugin</artifactId>
+             <version>${docker.maven.plugin.version}</version>
+             <executions>
+               <execution>
+                 <goals>
+                   <goal>build</goal>
+                 </goals>
+                 <phase>package</phase>
+               </execution>
+             </executions>
+           </plugin>
+         </plugins>
+       </build>
+     </profile>
+     <profile>
+       <id>docker-push</id>
+       <build>
+         <plugins>
+           <plugin>
+             <groupId>org.jolokia</groupId>
+             <artifactId>docker-maven-plugin</artifactId>
+             <version>${docker.maven.plugin.version}</version>
+             <executions>
+               <execution>
+                 <goals>
+                   <goal>build</goal>
+                   <goal>push</goal>
+                 </goals>
+                 <phase>package</phase>
+               </execution>
+             </executions>
+           </plugin>
+         </plugins>
+       </build>
+     </profile>
+
+    <profile>
+      <id>fabric8-snapshot</id>
+      <properties>
+        <fabric8.version>2.3-SNAPSHOT</fabric8.version>
+      </properties>
+    </profile>
+  </profiles>
+
+  <repositories>
+    <repository>
+      <releases>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>jboss.ea</id>
+      <name>JBoss Community Early Access Release Repository</name>
+      <url>http://origin-repository.jboss.org/nexus/content/groups/ea</url>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <releases>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>jboss.ea</id>
+      <name>JBoss Community Early Access Release Repository</name>
+      <url>http://origin-repository.jboss.org/nexus/content/groups/ea</url>
+    </pluginRepository>
+  </pluginRepositories>
+
+</project>
