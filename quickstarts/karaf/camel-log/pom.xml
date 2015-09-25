@@ -39,8 +39,8 @@
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <fabric8.version>2.2.34</fabric8.version>
     <docker.maven.plugin.version>0.13.3</docker.maven.plugin.version>
-    <karaf.version>2.4.3</karaf.version>
-    <karaf.plugin.version>4.0.1</karaf.plugin.version>
+    <fuse.version>6.2.1.redhat-040</fuse.version>
+    <karaf.plugin.version>4.0.2.redhat-621030</karaf.plugin.version>
     <maven-install-plugin.version>2.5.2</maven-install-plugin.version>
 
     <docker.from>docker.io/fabric8/sti-karaf:latest</docker.from>
@@ -84,23 +84,10 @@
     <dependency>
       <!-- scope is compile so all features (there is only one) are installed into startup.properties,
       and the feature repo itself is not added in etc/org.apache.karaf.features.cfg file -->
-      <groupId>org.apache.karaf.features</groupId>
-      <artifactId>static</artifactId>
-      <version>${karaf.plugin.version}</version>
+      <groupId>org.jboss.fuse</groupId>
+      <artifactId>fuse-karaf-framework</artifactId>
+      <version>${fuse.version}</version>
       <type>kar</type>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.karaf.assemblies.features</groupId>
-      <artifactId>standard</artifactId>
-      <version>${karaf.version}</version>
-      <classifier>features</classifier>
-      <type>xml</type>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.camel.karaf</groupId>
-      <artifactId>apache-camel</artifactId>
-      <classifier>features</classifier>
-      <type>xml</type>
     </dependency>
   </dependencies>
 
@@ -221,13 +208,12 @@
             <feature>jaas</feature>
             <feature>aries-blueprint</feature>
             <feature>camel-blueprint</feature>
+            <!-- TODO remove after camel-commands are made optional under camel-core -->
+            <feature>shell</feature>
           </startupFeatures>
           <startupBundles>
             <bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}</bundle>
           </startupBundles>
-          <libraries>
-            <library>mvn:org.apache.karaf.jaas/org.apache.karaf.jaas.boot/${karaf.version};type:=boot;export:=true;delegate:=true</library>
-          </libraries>
         </configuration>
       </plugin>
 

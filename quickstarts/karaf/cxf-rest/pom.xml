@@ -43,8 +43,8 @@
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <docker.maven.plugin.version>0.13.3</docker.maven.plugin.version>
     <cxf.version>3.1.2</cxf.version>
-    <karaf.version>2.4.3</karaf.version>
-    <karaf.plugin.version>4.0.1</karaf.plugin.version>
+    <fuse.version>6.2.1.redhat-040</fuse.version>
+    <karaf.plugin.version>4.0.2.redhat-621030</karaf.plugin.version>
     <maven-install-plugin.version>2.5.2</maven-install-plugin.version>
 
     <jackson2-version>2.4.1</jackson2-version>
@@ -149,17 +149,10 @@
     <dependency>
       <!-- scope is compile so all features (there is only one) are installed into startup.properties,
       and the feature repo itself is not added in etc/org.apache.karaf.features.cfg file -->
-      <groupId>org.apache.karaf.features</groupId>
-      <artifactId>static</artifactId>
-      <version>${karaf.plugin.version}</version>
+      <groupId>org.jboss.fuse</groupId>
+      <artifactId>fuse-karaf-framework</artifactId>
+      <version>${fuse.version}</version>
       <type>kar</type>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.karaf.assemblies.features</groupId>
-      <artifactId>standard</artifactId>
-      <version>${karaf.version}</version>
-      <classifier>features</classifier>
-      <type>xml</type>
     </dependency>
     <dependency>
       <groupId>org.apache.cxf.karaf</groupId>
@@ -168,7 +161,6 @@
       <classifier>features</classifier>
       <type>xml</type>
     </dependency>
-
   </dependencies>
 
   <build>
@@ -409,9 +401,6 @@
             <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.reflections/${reflections-version}</bundle>
             <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.json4s/${json4s-version}</bundle>
           </startupBundles>
-          <libraries>
-            <library>mvn:org.apache.karaf.jaas/org.apache.karaf.jaas.boot/${karaf.version};type:=boot;export:=true;delegate:=true</library>
-          </libraries>
         </configuration>
       </plugin>
 
