@@ -43,7 +43,7 @@
     <integrationTestPattern>**/*KT.java</integrationTestPattern>
 
     <!-- the version of the BOM, defining all the dependency versions -->
-    <fabric8.version>2.2.34</fabric8.version>
+    <fabric8.version>2.2.35</fabric8.version>
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <docker.maven.plugin.version>0.13.3</docker.maven.plugin.version>

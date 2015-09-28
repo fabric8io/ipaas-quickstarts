@@ -37,7 +37,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <!-- the version of the BOM, defining all the dependency versions -->
-    <fabric8.version>2.2.34</fabric8.version>
+    <fabric8.version>2.2.35</fabric8.version>
 
     <!-- maven plugin versions -->
     <camel.version>2.15.3</camel.version>
