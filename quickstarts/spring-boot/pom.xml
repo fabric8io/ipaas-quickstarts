@@ -27,16 +27,13 @@
   </parent>
 
   <groupId>io.fabric8.quickstarts</groupId>
-  <artifactId>springboot-quickstarts</artifactId>
+  <artifactId>quickstarts-springboot</artifactId>
   <packaging>pom</packaging>
   <name>Fabric8 :: Quickstarts :: Spring-Boot :: Parent</name>
 
   <modules>
     <module>webmvc</module>
-    <module>webmvc-ip</module>
     <module>camel</module>
-    <module>activemq</module>
-    <module>keycloak</module>
   </modules>
 
 </project>

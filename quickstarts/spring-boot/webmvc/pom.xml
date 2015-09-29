@@ -22,11 +22,11 @@
 
   <parent>
     <groupId>io.fabric8.quickstarts</groupId>
-    <artifactId>springboot-quickstarts</artifactId>
+    <artifactId>quickstarts-springboot</artifactId>
     <version>2.2.36-SNAPSHOT</version>
   </parent>
 
-  <artifactId>springboot-webmvc</artifactId>
+  <artifactId>quickstart-springboot-webmvc</artifactId>
   <name>Fabric8 :: Quickstarts :: Spring-Boot :: WebMVC</name>
   <description>Shows how to use Spring Boot with WebMVC in the Java Container</description>
 
@@ -44,19 +44,14 @@
     <spring-boot-plugin.version>1.2.6.RELEASE</spring-boot-plugin.version>
     <spring-boot.version>1.2.6.RELEASE</spring-boot.version>
 
-    <!-- fabric8 configuration -->
-    <docker.from>docker.io/fabric8/java</docker.from>
-
+    <!-- Docker & Fabric8 Configs -->
+    <docker.from>fabric8/java-jboss-openjdk8-jdk:1.0.2</docker.from>
     <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
-    <docker.assemblyDescriptorRef>artifact</docker.assemblyDescriptorRef>
-    <docker.env.JAR>${project.artifactId}-${project.version}.jar</docker.env.JAR>
-    <docker.port.container.http>8080</docker.port.container.http>
-    <docker.port.container.jolokia>8778</docker.port.container.jolokia>
 
-    <fabric8.service.name>quickstart-webmvc-ip</fabric8.service.name>
-    <fabric8.service.port>9011</fabric8.service.port>
+    <fabric8.service.name>springboot-webmvc</fabric8.service.name>
+    <fabric8.service.port>80</fabric8.service.port>
     <fabric8.service.containerPort>8080</fabric8.service.containerPort>
 
     <fabric8.label.component>${project.artifactId}</fabric8.label.component>
@@ -187,7 +182,7 @@
         </executions>
       </plugin>
 
-      <plugin>
+<plugin>
         <groupId>org.jolokia</groupId>
         <artifactId>docker-maven-plugin</artifactId>
         <version>${docker.maven.plugin.version}</version>
@@ -198,10 +193,11 @@
               <build>
                 <from>${docker.from}</from>
                 <assembly>
-                  <descriptorRef>${docker.assemblyDescriptorRef}</descriptorRef>
+                  <basedir>/app</basedir>
+                  <descriptorRef>artifact</descriptorRef>
                 </assembly>
                 <env>
-                  <JAR>${docker.env.JAR}</JAR>
+                  <JAVA_APP_JAR>${project.build.finalName}.jar</JAVA_APP_JAR>
                 </env>
               </build>
             </image>

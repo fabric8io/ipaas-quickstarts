@@ -22,11 +22,11 @@
 
   <parent>
     <groupId>io.fabric8.quickstarts</groupId>
-    <artifactId>springboot-quickstarts</artifactId>
+    <artifactId>quickstarts-springboot</artifactId>
     <version>2.2.36-SNAPSHOT</version>
   </parent>
 
-  <artifactId>springboot-camel</artifactId>
+  <artifactId>quickstart-springboot-camel</artifactId>
   <name>Fabric8 :: Quickstarts :: Spring-Boot :: Camel</name>
   <description>Shows how to use Camel with Spring Boot in the Java Container</description>
 
@@ -39,20 +39,17 @@
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <fabric8.version>2.2.35</fabric8.version>
-    <docker.maven.plugin.version>0.13.3</docker.maven.plugin.version>
+    <docker.maven.plugin.version>0.13.5</docker.maven.plugin.version>
 
     <spring-boot-plugin.version>1.2.6.RELEASE</spring-boot-plugin.version>
     <spring-boot.version>1.2.6.RELEASE</spring-boot.version>
 
-    <docker.from>docker.io/fabric8/java</docker.from>
-
+    <!-- Docker & Fabric8 Configs -->
+    <docker.from>fabric8/java-jboss-openjdk8-jdk:1.0.2</docker.from>
     <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
-    <docker.assemblyDescriptorRef>artifact</docker.assemblyDescriptorRef>
-    <docker.env.JAR>${project.artifactId}-${project.version}.jar</docker.env.JAR>
-    <docker.port.container.jolokia>8778</docker.port.container.jolokia>
-    
+
     <fabric8.label.component>${project.artifactId}</fabric8.label.component>
     <fabric8.label.container>spring-boot</fabric8.label.container>
     <fabric8.label.group>quickstarts</fabric8.label.group>
@@ -199,16 +196,18 @@
               <build>
                 <from>${docker.from}</from>
                 <assembly>
-                  <descriptorRef>${docker.assemblyDescriptorRef}</descriptorRef>
+                  <basedir>/app</basedir>
+                  <descriptorRef>artifact</descriptorRef>
                 </assembly>
                 <env>
-                  <JAR>${docker.env.JAR}</JAR>
+                  <JAVA_APP_JAR>${project.build.finalName}.jar</JAVA_APP_JAR>
                 </env>
               </build>
             </image>
           </images>
         </configuration>
       </plugin>
+
     </plugins>
   </build>
 

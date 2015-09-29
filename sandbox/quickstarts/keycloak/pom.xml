@@ -26,9 +26,9 @@
     <version>2.2.36-SNAPSHOT</version>
   </parent>
 
-  <artifactId>springboot-webmvc-ip</artifactId>
-  <name>Fabric8 :: Quickstarts :: Spring-Boot :: WebMVC IP</name>
-  <description>Returns IP address to show service load-balancing</description>
+  <artifactId>springboot-keycloak</artifactId>
+  <name>Fabric8 :: Quickstarts :: Spring-Boot :: Keycloak</name>
+  <description>Shows how to use Spring Boot with Keycloak</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -39,24 +39,21 @@
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <fabric8.version>2.2.35</fabric8.version>
-    <docker.maven.plugin.version>0.13.3</docker.maven.plugin.version>
+    <docker.maven.plugin.version>0.13.5</docker.maven.plugin.version>
 
     <spring-boot-plugin.version>1.2.6.RELEASE</spring-boot-plugin.version>
     <spring-boot.version>1.2.6.RELEASE</spring-boot.version>
 
-    <!-- fabric8 configuration -->
-    <docker.from>docker.io/fabric8/java</docker.from>
+    <keycloak.version>1.1.0.Beta2</keycloak.version>
 
+    <!-- Docker & Fabric8 Configs -->
+    <docker.from>fabric8/java-jboss-openjdk8-jdk:1.0.2</docker.from>
     <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
-    <docker.assemblyDescriptorRef>artifact</docker.assemblyDescriptorRef>
-    <docker.env.JAR>${project.artifactId}-${project.version}.jar</docker.env.JAR>
-    <docker.port.container.http>8080</docker.port.container.http>
-    <docker.port.container.jolokia>8778</docker.port.container.jolokia>
 
-    <fabric8.service.name>quickstart-webmvc-ip</fabric8.service.name>
-    <fabric8.service.port>9012</fabric8.service.port>
+    <fabric8.service.name>springboot-keycloak</fabric8.service.name>
+    <fabric8.service.port>80</fabric8.service.port>
     <fabric8.service.containerPort>8080</fabric8.service.containerPort>
 
     <fabric8.label.component>${project.artifactId}</fabric8.label.component>
@@ -86,14 +83,16 @@
   </dependencyManagement>
 
   <dependencies>
+    <dependency>
+      <groupId>org.keycloak</groupId>
+      <artifactId>keycloak-tomcat8-adapter</artifactId>
+      <version>${keycloak.version}</version>
+    </dependency>
+
     <!-- Spring -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-actuator</artifactId>
     </dependency>
 
     <!-- Testing -->
@@ -143,7 +142,7 @@
         <artifactId>spring-boot-maven-plugin</artifactId>
         <version>${spring-boot-plugin.version}</version>
         <configuration>
-          <mainClass>${docker.env.MAIN}</mainClass>
+          <mainClass>io.fabric8.quickstarts.springbootkeycloak.App</mainClass>
         </configuration>
         <executions>
           <execution>
@@ -176,7 +175,7 @@
         </executions>
       </plugin>
 
-      <plugin>
+<plugin>
         <groupId>org.jolokia</groupId>
         <artifactId>docker-maven-plugin</artifactId>
         <version>${docker.maven.plugin.version}</version>
@@ -187,11 +186,15 @@
               <build>
                 <from>${docker.from}</from>
                 <assembly>
-                  <descriptorRef>${docker.assemblyDescriptorRef}</descriptorRef>
+                  <basedir>/app</basedir>
+                  <descriptorRef>artifact</descriptorRef>
                 </assembly>
                 <env>
-                  <JAR>${docker.env.JAR}</JAR>
+                  <JAVA_APP_JAR>${project.build.finalName}.jar</JAVA_APP_JAR>
                 </env>
+                <ports>
+                  <port>8080</port>
+                </ports>
               </build>
             </image>
           </images>

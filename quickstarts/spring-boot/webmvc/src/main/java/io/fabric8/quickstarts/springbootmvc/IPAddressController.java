@@ -13,8 +13,9 @@
  *  implied.  See the License for the specific language governing
  *  permissions and limitations under the License.
  */
-package io.fabric8.quickstarts.springbootwebmvcip;
+package io.fabric8.quickstarts.springbootmvc;
 
+import io.fabric8.quickstarts.springbootmvc.domain.IPAddress;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,7 +28,7 @@ import java.util.concurrent.atomic.AtomicLong;
 public class IPAddressController {
     private final AtomicLong counter = new AtomicLong();
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "/ip", method = RequestMethod.GET)
     public IPAddress ipaddress() throws UnknownHostException {
         return new IPAddress(counter.incrementAndGet(), InetAddress.getLocalHost().getHostAddress());
     }

@@ -20,7 +20,7 @@ To try the example you do not need to build from source first. Although building
 To build and run from the source code:
 
 1. Change your working directory to `quickstarts/spring-boot/keycloak` directory.
-1. Run `./build-and-run.sh` to build and run the quickstart.
+1. Run `mvn clean install docker:build fabric8:apply -Dfabric8.recreate` to build and run the quickstart.
 
 
 ### Using the web console

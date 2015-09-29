@@ -13,16 +13,24 @@
  *  implied.  See the License for the specific language governing
  *  permissions and limitations under the License.
  */
-package io.fabric8.quickstarts.springbootwebmvcip;
+package io.fabric8.quickstarts.springbootmvc.domain;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+public class IPAddress {
 
-@SpringBootApplication
-public class App {
+    private final long id;
 
-    public static void main(String[] args) {
-        new SpringApplication(args).run();
+    private final String ipAddress;
+
+    public IPAddress(long id, String ipAddress) {
+        this.id = id;
+        this.ipAddress = ipAddress;
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public String getIpAddress() {
+        return ipAddress;
+    }
 }

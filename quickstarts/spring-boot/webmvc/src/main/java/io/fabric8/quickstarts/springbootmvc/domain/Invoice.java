@@ -34,7 +34,6 @@ import static javax.persistence.GenerationType.AUTO;
 public class Invoice {
 
     // Members
-
     @Id
     @GeneratedValue(strategy = AUTO)
     private long id;
