@@ -74,7 +74,7 @@
                   </systemProperty>
                   <systemProperty>
                       <key>sourcedir</key>
-                      <value>${basedir}/../quickstarts</value>
+                      <value>${basedir}/../quickstart</value>
                   </systemProperty>
               </systemProperties>
           </configuration>

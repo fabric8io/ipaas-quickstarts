@@ -454,7 +454,7 @@
           <modules>
             <module>archetypes-catalog</module>
             <module>archetypes</module>
-            <module>quickstarts</module>
+            <module>quickstart</module>
           </modules>
         </profile>
         <profile>

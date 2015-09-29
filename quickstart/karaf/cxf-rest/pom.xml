@@ -1,0 +1,543 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+     Copyright 2005-2015 Red Hat, Inc.
+
+     Red Hat licenses this file to you under the Apache License, version
+     2.0 (the "License"); you may not use this file except in compliance
+     with the License.  You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+     implied.  See the License for the specific language governing
+     permissions and limitations under the License.
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>io.fabric8.quickstarts</groupId>
+    <artifactId>quickstart-karaf</artifactId>
+    <version>2.2.36-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>quickstart-karaf-cxf-rest</artifactId>
+  <packaging>bundle</packaging>
+  <name>Fabric8 :: Quickstarts :: Karaf :: CXF RESTful WebService</name>
+  <description>RESTful WebService Example using JAX-RS with Karaf</description>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <version.maven-surefire-plugin>2.15</version.maven-surefire-plugin>
+    <version.maven-bundle-plugin>2.3.7</version.maven-bundle-plugin>
+    <maven-resources-plugin.version>2.6</maven-resources-plugin.version>
+    <build-helper-maven-plugin.version>1.9.1</build-helper-maven-plugin.version>
+    <skipTests>true</skipTests>
+    <cxf-version-range>[3.0.4,3.0.5)</cxf-version-range>
+
+    <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
+    <docker.maven.plugin.version>0.13.3</docker.maven.plugin.version>
+    <cxf.version>3.1.2</cxf.version>
+    <karaf.version>2.4.3</karaf.version>
+    <karaf.plugin.version>4.0.1</karaf.plugin.version>
+    <maven-install-plugin.version>2.5.2</maven-install-plugin.version>
+
+    <jackson2-version>2.4.1</jackson2-version>
+    <swagger-version>1.3.2_1</swagger-version>
+    <swagger-jaxrs-version>1.3.2_2</swagger-jaxrs-version>
+    <validation-api-version>1.1.0.Final</validation-api-version>
+    <json4s-version>3.2.4_1</json4s-version>
+    <reflections-version>0.9.8_1</reflections-version>
+    <jackson-module-scala-version>2.1.5_2</jackson-module-scala-version>
+    <swagger-scala-version>2.10.2</swagger-scala-version>
+
+    <docker.from>docker.io/fabric8/sti-karaf:latest</docker.from>
+
+    <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>
+    <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
+    <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
+    <docker.assemblyDescriptor>${basedir}/src/main/fabric8/assembly.xml</docker.assemblyDescriptor>
+    <docker.port.container.jolokia>8778</docker.port.container.jolokia>
+    <docker.port.container.http>8181</docker.port.container.http>
+
+    <fabric8.service.name>quickstart-cxf-rest</fabric8.service.name>
+    <fabric8.service.port>9412</fabric8.service.port>
+    <fabric8.service.containerPort>8181</fabric8.service.containerPort>
+
+    <fabric8.label.component>${project.artifactId}</fabric8.label.component>
+    <fabric8.label.container>karaf</fabric8.label.container>
+    <fabric8.label.group>quickstarts</fabric8.label.group>
+    <fabric8.iconRef>karaf</fabric8.iconRef>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>fabric8-project</artifactId>
+        <version>${fabric8.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <!--
+        For logging, we will use SLF4J, which is also available in the container by default.
+      -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- Test Dependencies -->
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <!--
+        We are also building a small Java client application that we can use to test our web web services.
+        For performing the HTTP requests, we are using Apache Commons HttpClient.
+    -->
+    <dependency>
+      <groupId>commons-httpclient</groupId>
+      <artifactId>commons-httpclient</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <!--
+      Add the slf4j-log4j12 dependency jar for testing
+    -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>io.swagger</groupId>
+      <artifactId>swagger-jaxrs</artifactId>
+      <optional>true</optional>
+      <exclusions>
+        <!-- avoid this old dependency which breaks CXF -->
+        <exclusion>
+          <groupId>javax.ws.rs</groupId>
+          <artifactId>jsr311-api</artifactId>
+        </exclusion>
+      </exclusions>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-frontend-jaxrs</artifactId>
+      <version>${cxf.version}</version>
+    </dependency>
+
+    <!-- Karaf microcontainer dependencies -->
+    <dependency>
+      <!-- scope is compile so all features (there is only one) are installed into startup.properties,
+      and the feature repo itself is not added in etc/org.apache.karaf.features.cfg file -->
+      <groupId>org.apache.karaf.features</groupId>
+      <artifactId>static</artifactId>
+      <version>${karaf.plugin.version}</version>
+      <type>kar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.karaf.assemblies.features</groupId>
+      <artifactId>standard</artifactId>
+      <version>${karaf.version}</version>
+      <classifier>features</classifier>
+      <type>xml</type>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.cxf.karaf</groupId>
+      <artifactId>apache-cxf</artifactId>
+      <version>${cxf.version}</version>
+      <classifier>features</classifier>
+      <type>xml</type>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <finalName>${project.artifactId}</finalName>
+
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+
+    <plugins>
+      <!-- Skip Test by default and enable them only in Test profile -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${version.maven-surefire-plugin}</version>
+        <configuration>
+          <skipTests>${skipTests}</skipTests>
+        </configuration>
+      </plugin>
+      <!-- Compiler plugin enforces Java 1.7 compatibility and activates annotation processors -->
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.3.1</version>
+        <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>filter-extra-resources</id>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <phase>process-resources</phase>
+            <configuration>
+              <outputDirectory>${project.build.directory}/fabric8</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>src/main/fabric8</directory>
+                  <filtering>true</filtering>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+          <execution>
+            <id>filter</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>resources</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Need to setup the OSGi meta information here -->
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <version>${version.maven-bundle-plugin}</version>
+        <extensions>true</extensions>
+        <configuration>
+          <instructions>
+            <Import-Package>
+              javax.ws.rs;version="[2, 3)",
+              javax.ws.rs.core;version="[2, 3)",
+              javax.ws.rs.ext;version="[2, 3)",
+              javax.xml.bind.annotation,
+              org.osgi.service.blueprint,
+              io.swagger.jaxrs.config,
+              io.swagger.jaxrs.listing,
+              io.swagger.annotations,
+              org.apache.cxf.transport.http,
+              io.fabric8.cxf.endpoint,
+              com.fasterxml.jackson.annotation, com.fasterxml.jackson.core, com.fasterxml.jackson.databind,
+              com.fasterxml.jackson.jaxrs.json, *
+            </Import-Package>
+            <!--<Import-Service>org.apache.cxf.transport.http.DestinationRegistry</Import-Service>-->
+            <Export-Package>
+              io.fabric8.quickstarts.rest
+            </Export-Package>
+          </instructions>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-java2wadl-plugin</artifactId>
+        <version>3.0.1</version>
+        <executions>
+          <execution>
+            <id>parsejavadoc</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>parsejavadoc</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>process-classes</id>
+            <phase>process-classes</phase>
+            <goals>
+              <goal>java2wadl</goal>
+            </goals>
+            <configuration>
+              <classResourceNames>
+                <classResourceName>io.fabric8.quickstarts.rest.CustomerService</classResourceName>
+              </classResourceNames>
+              <docProvider>org.apache.cxf.maven_plugin.javatowadl.ResourceMapJavaDocProvider</docProvider>
+              <attachWadl>false</attachWadl>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>io.fabric8</groupId>
+        <artifactId>fabric8-cxf-plugins</artifactId>
+        <version>${fabric8.version}</version>
+        <executions>
+          <execution>
+            <id>process-classes</id>
+            <phase>process-classes</phase>
+            <goals>
+              <goal>java2swagger</goal>
+            </goals>
+            <configuration>
+              <classResourceNames>
+                <classResourceName>io.fabric8.quickstarts.rest.CustomerService</classResourceName>
+              </classResourceNames>
+              <attachSwagger>false</attachSwagger>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>io.fabric8</groupId>
+        <artifactId>fabric8-maven-plugin</artifactId>
+        <version>${fabric8.version}</version>
+        <executions>
+          <execution>
+            <id>json</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>json</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>attach</id>
+            <phase>package</phase>
+            <goals>
+              <goal>attach</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- plugin goals have to be executed in order -->
+      <!-- 1. install the bundle -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-install-plugin</artifactId>
+        <version>${maven-install-plugin.version}</version>
+        <executions>
+          <execution>
+            <id>install-bundle</id>
+            <goals>
+              <goal>install</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- 2. create karaf assembly -->
+      <!-- karaf-maven-plugin creates custom microservice distribution -->
+      <plugin>
+        <groupId>org.apache.karaf.tooling</groupId>
+        <artifactId>karaf-maven-plugin</artifactId>
+        <version>${karaf.plugin.version}</version>
+        <extensions>true</extensions>
+        <executions>
+          <execution>
+            <id>karaf-assembly</id>
+            <goals>
+              <goal>assembly</goal>
+            </goals>
+            <phase>install</phase>
+          </execution>
+          <execution>
+            <id>karaf-archive</id>
+            <goals>
+              <goal>archive</goal>
+            </goals>
+            <phase>install</phase>
+          </execution>
+        </executions>
+        <configuration>
+          <!-- we are using karaf 2.4.x -->
+          <karafVersion>v24</karafVersion>
+          <useReferenceUrls>true</useReferenceUrls>
+          <!-- do not include build output directory -->
+          <includeBuildOutputDirectory>false</includeBuildOutputDirectory>
+          <!-- no startupFeatures -->
+          <startupFeatures>
+            <feature>karaf-framework</feature>
+            <feature>jaas</feature>
+            <feature>aries-blueprint</feature>
+
+            <feature>cxf-core</feature>
+            <feature>cxf-jaxrs</feature>
+            <feature>cxf-http-jetty</feature>
+
+            <!-- swagger -->
+            <feature>http</feature>
+            <feature>cxf-specs</feature>
+          </startupFeatures>
+          <startupBundles>
+            <bundle>mvn:io.fabric8/fabric8-cxf/${fabric8.version}</bundle>
+            <bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}</bundle>
+
+            <!-- swagger -->
+            <bundle dependency='true'>mvn:org.scala-lang/scala-library/${swagger-scala-version}</bundle>
+            <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.javassist/3.12.1.GA_3</bundle>
+            <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.jackson-module-scala/${jackson-module-scala-version}</bundle>
+            <bundle>mvn:javax.validation/validation-api/${validation-api-version}</bundle>
+            <bundle>mvn:com.fasterxml.jackson.core/jackson-core/${jackson2-version}</bundle>
+            <bundle>mvn:com.fasterxml.jackson.core/jackson-annotations/${jackson2-version}</bundle>
+            <bundle>mvn:com.fasterxml.jackson.core/jackson-databind/${jackson2-version}</bundle>
+            <bundle>mvn:com.fasterxml.jackson.jaxrs/jackson-jaxrs-base/${jackson2-version}</bundle>
+            <bundle>mvn:com.fasterxml.jackson.jaxrs/jackson-jaxrs-json-provider/${jackson2-version}</bundle>
+            <bundle>mvn:com.fasterxml.jackson.module/jackson-module-jaxb-annotations/${jackson2-version}</bundle>
+            <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.swagger-annotations/${swagger-version}</bundle>
+            <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.swagger-core/${swagger-version}</bundle>
+            <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.swagger-jaxrs/${swagger-jaxrs-version}</bundle>
+            <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.reflections/${reflections-version}</bundle>
+            <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.json4s/${json4s-version}</bundle>
+          </startupBundles>
+          <libraries>
+            <library>mvn:org.apache.karaf.jaas/org.apache.karaf.jaas.boot/${karaf.version};type:=boot;export:=true;delegate:=true</library>
+          </libraries>
+        </configuration>
+      </plugin>
+
+      <!-- 3. create docker image -->
+      <plugin>
+        <groupId>org.jolokia</groupId>
+        <artifactId>docker-maven-plugin</artifactId>
+        <version>${docker.maven.plugin.version}</version>
+        <configuration>
+          <images>
+            <image>
+              <name>${docker.image}</name>
+              <build>
+                <from>${docker.from}</from>
+                <env>
+                  <DEPLOY_DIR>/opt/jboss/deploy</DEPLOY_DIR>
+                </env>
+                <assembly>
+                  <basedir>/opt/jboss/deploy/</basedir>
+                  <user>jboss:jboss:jboss</user>
+                  <inline xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2" xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+                    <id>${project.artifactId}</id>
+                    <files>
+                      <!-- copy karaf archive -->
+                      <file>
+                        <source>${project.build.directory}/${project.artifactId}-${project.version}.tar.gz</source>
+                        <outputDirectory>/</outputDirectory>
+                      </file>
+                    </files>
+                  </inline>
+                </assembly>
+                <cmd><shell>/opt/karaf/bin/deploy-and-run.sh</shell></cmd>
+              </build>
+            </image>
+          </images>
+        </configuration>
+      </plugin>
+
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>test</id>
+      <properties>
+        <skipTests>false</skipTests>
+      </properties>
+      <build>
+        <defaultGoal>verify</defaultGoal>
+      </build>
+    </profile>
+
+    <profile>
+      <id>docker-build</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.jolokia</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <version>${docker.maven.plugin.version}</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>build</goal>
+                </goals>
+                <phase>package</phase>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>docker-push</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.jolokia</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <version>${docker.maven.plugin.version}</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>build</goal>
+                  <goal>push</goal>
+                </goals>
+                <phase>package</phase>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>fabric8-snapshot</id>
+      <properties>
+        <fabric8.version>2.3-SNAPSHOT</fabric8.version>
+      </properties>
+    </profile>
+  </profiles>
+
+  <repositories>
+    <repository>
+      <releases>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>jboss.ea</id>
+      <name>JBoss Community Early Access Release Repository</name>
+      <url>http://origin-repository.jboss.org/nexus/content/groups/ea</url>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <releases>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>jboss.ea</id>
+      <name>JBoss Community Early Access Release Repository</name>
+      <url>http://origin-repository.jboss.org/nexus/content/groups/ea</url>
+    </pluginRepository>
+  </pluginRepositories>
+
+</project>
