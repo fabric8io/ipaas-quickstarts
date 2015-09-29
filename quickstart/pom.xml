@@ -50,7 +50,6 @@
     <module>java</module>
     <module>karaf</module>
     <module>cdi</module>
-    <!--<module>karaf4</module>-->
     <module>spring-boot</module>
     <module>war</module>
   </modules>
