@@ -35,7 +35,6 @@
   <modules>
     <module>camel-servlet</module>
     <module>cxf-cdi-servlet</module>
-    <module>rest</module>
     <module>wildfly</module>
   </modules>
 
