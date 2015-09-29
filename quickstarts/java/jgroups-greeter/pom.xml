@@ -37,18 +37,14 @@
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <fabric8.version>2.2.35</fabric8.version>
-    <docker.maven.plugin.version>0.13.3</docker.maven.plugin.version>
+    <docker.maven.plugin.version>0.13.5</docker.maven.plugin.version>
 
-    <docker.from>docker.io/fabric8/java</docker.from>
-
+    <!-- Docker & Fabric8 Configs -->
+    <docker.from>fabric8/java-jboss-openjdk8-jdk:1.0.2</docker.from>
     <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
-    <docker.assemblyDescriptorRef>artifact-with-dependencies</docker.assemblyDescriptorRef>
-    <docker.port.container.jolokia>8778</docker.port.container.jolokia>
-    <docker.port.container.jgroups>7800</docker.port.container.jgroups>
-    <docker.env.MAIN>io.fabric8.quickstarts.jgroups.greeter.Main</docker.env.MAIN>
-    <docker.env.JAVA_OPTIONS>-Djava.net.preferIPv4Stack=true</docker.env.JAVA_OPTIONS>
+    <jgroups.port>7800</jgroups.port>
 
     <fabric8.label.component>${project.artifactId}</fabric8.label.component>
     <fabric8.label.container>java</fabric8.label.container>
@@ -154,6 +150,26 @@
         </executions>
       </plugin>
 
+            <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.10</version>
+        <executions>
+          <execution>
+            <id>add-classpath</id>
+            <phase>package</phase>
+            <goals>
+              <goal>build-classpath</goal>
+            </goals>
+            <configuration>
+              <prefix>.</prefix>
+              <includeScope>runtime</includeScope>
+              <outputFile>${project.build.directory}/classpath</outputFile>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
       <plugin>
         <groupId>org.jolokia</groupId>
         <artifactId>docker-maven-plugin</artifactId>
@@ -165,15 +181,17 @@
               <build>
                 <from>${docker.from}</from>
                 <assembly>
-                  <descriptorRef>${docker.assemblyDescriptorRef}</descriptorRef>
+                  <basedir>/app</basedir>
+                  <descriptorRef>artifact-with-dependencies</descriptorRef>
                 </assembly>
                 <env>
-                  <MAIN>${docker.env.MAIN}</MAIN>
-                  <JGROUPS_PORT>${docker.port.container.jgroups}</JGROUPS_PORT>
-                  <JAVA_OPTIONS>${docker.env.JAVA_OPTIONS}</JAVA_OPTIONS>
+                  <JAVA_APP_JAR>${project.build.finalName}.jar</JAVA_APP_JAR>
+                  <JAVA_MAIN_CLASS>io.fabric8.quickstarts.jgroups.greeter.Main</JAVA_MAIN_CLASS>
+                  <JGROUPS_PORT>${jgroups.port}</JGROUPS_PORT>
+                  <JAVA_OPTIONS>-Djava.net.preferIPv4Stack=true</JAVA_OPTIONS>
                 </env>
                 <ports>
-                  <port>${docker.port.container.jgroups}</port>
+                  <port>${jgroups.port}</port>
                 </ports>
               </build>
             </image>

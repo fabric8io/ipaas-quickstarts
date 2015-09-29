@@ -38,17 +38,14 @@
 
     <!-- the version of the BOM, defining all the dependency versions -->
     <fabric8.version>2.2.35</fabric8.version>
-    <docker.maven.plugin.version>0.13.3</docker.maven.plugin.version>
+    <docker.maven.plugin.version>0.13.5</docker.maven.plugin.version>
 
-    <docker.from>docker.io/fabric8/java</docker.from>
-
+    <!-- Docker & Fabric8 Configs -->
+    <docker.from>fabric8/java-jboss-openjdk8-jdk:1.0.2</docker.from>
     <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
-    <docker.assemblyDescriptorRef>artifact-with-dependencies</docker.assemblyDescriptorRef>
-    <docker.port.container.jolokia>8778</docker.port.container.jolokia>
-    <docker.env.MAIN>org.apache.camel.cdi.Main</docker.env.MAIN>
- 
+
     <fabric8.label.component>${project.artifactId}</fabric8.label.component>
     <fabric8.label.container>java</fabric8.label.container>
     <fabric8.label.group>quickstarts</fabric8.label.group>
@@ -190,6 +187,26 @@
       </plugin>
 
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.10</version>
+        <executions>
+          <execution>
+            <id>add-classpath</id>
+            <phase>package</phase>
+            <goals>
+              <goal>build-classpath</goal>
+            </goals>
+            <configuration>
+              <prefix>.</prefix>
+              <includeScope>runtime</includeScope>
+              <outputFile>${project.build.directory}/classpath</outputFile>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
         <groupId>org.jolokia</groupId>
         <artifactId>docker-maven-plugin</artifactId>
         <version>${docker.maven.plugin.version}</version>
@@ -200,10 +217,12 @@
               <build>
                 <from>${docker.from}</from>
                 <assembly>
-                  <descriptorRef>${docker.assemblyDescriptorRef}</descriptorRef>
+                  <basedir>/app</basedir>
+                  <descriptorRef>artifact-with-dependencies</descriptorRef>
                 </assembly>
                 <env>
-                  <MAIN>${docker.env.MAIN}</MAIN>
+                  <JAVA_APP_JAR>${project.build.finalName}.jar</JAVA_APP_JAR>
+                  <JAVA_MAIN_CLASS>org.apache.camel.cdi.Main</JAVA_MAIN_CLASS>
                 </env>
               </build>
             </image>

@@ -42,24 +42,19 @@
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <cxf.version>3.0.4</cxf.version>
-    <docker.maven.plugin.version>0.13.3</docker.maven.plugin.version>
+    <docker.maven.plugin.version>0.13.5</docker.maven.plugin.version>
     <org.eclipse.jetty.version>9.2.10.v20150310</org.eclipse.jetty.version>
 
     <http.port>9092</http.port>
 
-    <docker.from>docker.io/fabric8/java</docker.from>
-
+    <!-- Docker & Fabric8 Configs -->
+    <docker.from>fabric8/java-jboss-openjdk8-jdk:1.0.2</docker.from>
     <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
-    <docker.assemblyDescriptorRef>artifact-with-dependencies</docker.assemblyDescriptorRef>
-    <docker.env.MAIN>io.fabric8.quickstarts.cxfcdi.ApplicationStarter</docker.env.MAIN>
-    <docker.port.container.http>${http.port}</docker.port.container.http>
-    <docker.port.container.jolokia>8778</docker.port.container.jolokia>
-    <docker.port.container.metrics>9779</docker.port.container.metrics>
 
     <fabric8.service.name>quickstart-java-cxf-cdi</fabric8.service.name>
-    <fabric8.service.port>9002</fabric8.service.port>
+    <fabric8.service.port>80</fabric8.service.port>
     <fabric8.service.containerPort>${http.port}</fabric8.service.containerPort>
     <fabric8.annotations.service.servicePath>quickstart-java-cxf-cdi/cxfcdi</fabric8.annotations.service.servicePath>
     <fabric8.annotations.service.protocol>REST</fabric8.annotations.service.protocol>
@@ -322,6 +317,26 @@
       </plugin>
 
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.10</version>
+        <executions>
+          <execution>
+            <id>add-classpath</id>
+            <phase>package</phase>
+            <goals>
+              <goal>build-classpath</goal>
+            </goals>
+            <configuration>
+              <prefix>.</prefix>
+              <includeScope>runtime</includeScope>
+              <outputFile>${project.build.directory}/classpath</outputFile>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
         <groupId>org.jolokia</groupId>
         <artifactId>docker-maven-plugin</artifactId>
         <version>${docker.maven.plugin.version}</version>
@@ -332,14 +347,15 @@
               <build>
                 <from>${docker.from}</from>
                 <assembly>
-                  <descriptorRef>${docker.assemblyDescriptorRef}</descriptorRef>
+                  <basedir>/app</basedir>
+                  <descriptorRef>artifact-with-dependencies</descriptorRef>
                 </assembly>
                 <env>
-                  <MAIN>${docker.env.MAIN}</MAIN>
+                  <JAVA_APP_JAR>${project.build.finalName}.jar</JAVA_APP_JAR>
+                  <JAVA_MAIN_CLASS>io.fabric8.quickstarts.cxfcdi.ApplicationStarter</JAVA_MAIN_CLASS>
                   <HTTP_PORT>${http.port}</HTTP_PORT>
                 </env>
                 <ports>
-                  <port>8778</port>
                   <port>${http.port}</port>
                 </ports>
               </build>

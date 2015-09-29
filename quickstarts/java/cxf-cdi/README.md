@@ -23,19 +23,20 @@ To use the application be sure to have deployed the quickstart in fabric8 as des
 
 You can use any browser to perform a HTTP GET.  This allows you to very easily test a few of the RESTful services we defined:
 
-Notice: As fabric8 assigns a free dynamic port to the Java container, the port number may vary on your system.
+Notice: As it depends on your OpenShift setup, the hostname (route) might vary. Verify with `oc get routes` which 
+hostname is valid for you
 
 Use this URL to display the root of the REST service, which also allows to access the WADL of the service:
 
-    http://localhost:8080/cxfcdi
+    http://quickstart-java-cxf-cdi.vagrant.f8/cxfcdi
 
 Use this URL to display the XML representation for customer 123:
 
-    http://localhost:8080/cxfcdi/cxfcdi/customerservice/customers/123
+    http://quickstart-java-cxf-cdi.vagrant.f8/cxfcdi/customerservice/customers/123
 
 You can also access the XML representation for order 223 ...
 
-    http://localhost:8080/rest/cxf/customerservice/orders/223
+    http://quickstart-java-cxf-cdi.vagrant.f8/rest/cxf/customerservice/customers/123
 
 **Note:** if you use Safari, you will only see the text elements but not the XML tags - you can view the entire document with 'View Source'
 
@@ -49,7 +50,7 @@ You can use a command-line utility, such as cURL or wget, to perform the HTTP re
     
     * Create a customer
  
-            curl -X POST -T src/test/resources/add_customer.xml -H "Content-Type: text/xml" http://localhost:8080/cxfcdi/cxfcdi/customerservice/customers
+            curl -X POST -T src/test/resources/add_customer.xml -H "Content-Type: text/xml" http://quickstart-java-cxf-cdi.vagrant.f8/cxfcdi/customerservice/customers
   
     * Retrieve the customer instance with id 123
     
@@ -57,11 +58,11 @@ You can use a command-line utility, such as cURL or wget, to perform the HTTP re
 
     * Update the customer instance with id 123
   
-            curl -X PUT -T src/test/resources/update_customer.xml -H "Content-Type: text/xml" http://localhost:8080/cxfcdi/cxfcdi/customerservice/customers
+            curl -X PUT -T src/test/resources/update_customer.xml -H "Content-Type: text/xml" http://quickstart-java-cxf-cdi.vagrant.f8/cxfcdi/customerservice/customers
 
     * Delete the customer instance with id 123
   
-             curl -X DELETE http://localhost:8080/cxfcdi/cxfcdi/customerservice/customers/123
+             curl -X DELETE http://quickstart-java-cxf-cdi.vagrant.f8/cxfcdi/customerservice/customers/123
 
 
 

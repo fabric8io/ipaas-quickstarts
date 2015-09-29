@@ -45,16 +45,8 @@ public class ApplicationStarter {
             port = "8586";
         }
         Integer num = Integer.parseInt(port);
-        String service = Systems.getEnvVarOrSystemProperty("WEB_CONTEXT_PATH", "WEB_CONTEXT_PATH", "quickstart-java-cxf-cdi");
-        if (service == null) {
-            // and fallback to use environment variable
-            service = System.getenv("SERVICE");
-        }
-        if (service == null) {
-            // and use 'quickstart-java-cxf-cdi' by default
-            service = "quickstart-java-cxf-cdi";
-        }
-        String servicesPath = "/cxf/servicesList";
+        String service = Systems.getEnvVarOrSystemProperty("WEB_CONTEXT_PATH", "WEB_CONTEXT_PATH", "");
+        String servicesPath = "/servicesList";
 
         String servletContextPath = "/" + service;
         ManagedApi.setSingletonCxfServletContext(servletContextPath);
@@ -63,17 +55,7 @@ public class ApplicationStarter {
         System.out.println("View the services at:            http://localhost:" + port + servletContextPath + servicesPath);
         System.out.println("View an example REST service at: http://localhost:" + port + servletContextPath + "/cxfcdi/customerservice/customers/123");
         System.out.println();
-        String url = "http://localhost:" + port + servletContextPath;
-        if (!url.endsWith("/")) {
-           url += "/";
-        }
 
-/*
-        Map<String, String> env = System.getenv();
-        for (String envName : env.keySet()) {
-            System.out.format("%s=%s%n", envName, env.get(envName));
-        }
-*/
         final Server server = new Server(num);
 
         // Register and map the dispatcher servlet
