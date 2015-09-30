@@ -138,6 +138,7 @@
         <inherited>true</inherited>
         <configuration>
           <skipTests>${skipTests}</skipTests>
+          <argLine>-Djava.security.egd=file:/dev/urandom</argLine>
           <excludes>
             <exclude>${integrationTestPattern}</exclude>
           </excludes>
