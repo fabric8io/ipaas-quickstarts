@@ -15,7 +15,8 @@
      permissions and limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
 
@@ -33,7 +34,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    
+
     <!-- the version of the BOM, defining all the dependency versions -->
     <fabric8.version>2.2.35</fabric8.version>
 
@@ -58,7 +59,8 @@
     <fabric8.service.containerPort>${http.port}</fabric8.service.containerPort>
     <fabric8.annotations.service.servicePath>quickstart-java-cxf-cdi/cxfcdi</fabric8.annotations.service.servicePath>
     <fabric8.annotations.service.protocol>REST</fabric8.annotations.service.protocol>
-    <fabric8.annotations.service.descriptionPath>quickstart-java-cxf-cdi/cxfcdi/swagger.json</fabric8.annotations.service.descriptionPath>
+    <fabric8.annotations.service.descriptionPath>quickstart-java-cxf-cdi/cxfcdi/swagger.json
+    </fabric8.annotations.service.descriptionPath>
     <fabric8.annotations.service.descriptionType>SwaggerJSON</fabric8.annotations.service.descriptionType>
 
     <fabric8.metrics.scrape>true</fabric8.metrics.scrape>
@@ -95,7 +97,7 @@
         </exclusion>
       </exclusions>
     </dependency>
-     <dependency>
+    <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>fabric8-utils</artifactId>
     </dependency>
@@ -472,5 +474,5 @@
       <url>http://origin-repository.jboss.org/nexus/content/groups/ea</url>
     </pluginRepository>
   </pluginRepositories>
-    
+
 </project>
