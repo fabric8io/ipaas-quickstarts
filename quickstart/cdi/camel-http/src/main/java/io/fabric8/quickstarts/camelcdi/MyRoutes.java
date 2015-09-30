@@ -31,8 +31,7 @@ public class MyRoutes extends RouteBuilder {
     @Inject @Uri("timer:foo?period=5000")
     private Endpoint inputEndpoint;
 
-    // TODO: use quickstart-camelservlet when upgrading to Camel 2.15.3+
-    @Inject @Uri("netty4-http:http://{{service:QUICKSTART_CAMELSERVLET}}/camel/hello?keepAlive=false&disconnect=true")
+    @Inject @Uri("netty4-http:http://{{service:quickstart-camelservlet}}/camel/hello?keepAlive=false&disconnect=true")
     private Endpoint httpEndpoint;
 
     @Inject @Uri("log:output?showExchangePattern=false&showBodyType=false&showStreams=true")
