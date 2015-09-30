@@ -79,11 +79,7 @@
   <dependencies>
     <dependency>
       <groupId>org.apache.camel</groupId>
-      <artifactId>camel-spring</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.camel</groupId>
-      <artifactId>camel-spring-javaconfig</artifactId>
+      <artifactId>camel-spring-boot</artifactId>
     </dependency>
     <dependency>
       <groupId>org.apache.camel</groupId>
@@ -152,7 +148,7 @@
         <artifactId>spring-boot-maven-plugin</artifactId>
         <version>${spring-boot-plugin.version}</version>
         <configuration>
-          <mainClass>io.fabric8.quickstarts.camel.App</mainClass>
+          <mainClass>io.fabric8.quickstarts.camel.MyCamelRoute</mainClass>
         </configuration>
         <executions>
           <execution>
