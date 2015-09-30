@@ -34,7 +34,6 @@
   <modules>
     <module>camel</module>
     <module>camel-http</module>
-    <module>camel-rest</module>
     <module>cxf</module>
   </modules>
 
