@@ -1,1 +1,0 @@
-Provides the [Console](http://fabric8.io/guide/console.html) for working with Kubernetes and Fabric8

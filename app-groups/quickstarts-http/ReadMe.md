@@ -1,1 +1,0 @@
-Provides a HTTP quickstart to easily try fabric8 with Camel and Tomcat with HTTP that are easily installable from the [web-console](http://fabric8.io/guide/console.html).
