@@ -25,7 +25,7 @@
 		<version>2.2.36-SNAPSHOT</version>
     </parent>
 	
-	<artifactId>quickstart-wildfly</artifactId>
+	<artifactId>quickstart-war-wildfly</artifactId>
 	<packaging>war</packaging>
 	<version>2.2.36-SNAPSHOT</version>
 	<name>Fabric8 :: Quickstarts :: War :: Wildfly</name>
