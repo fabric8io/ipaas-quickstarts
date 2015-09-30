@@ -37,7 +37,7 @@
     <version.maven-bundle-plugin>2.3.7</version.maven-bundle-plugin>
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
-    <fabric8.version>2.2.36</fabric8.version>
+    <fabric8.version>2.2.37</fabric8.version>
     <docker.maven.plugin.version>0.13.3</docker.maven.plugin.version>
     <karaf.version>2.4.3</karaf.version>
     <karaf.plugin.version>4.0.1</karaf.plugin.version>
