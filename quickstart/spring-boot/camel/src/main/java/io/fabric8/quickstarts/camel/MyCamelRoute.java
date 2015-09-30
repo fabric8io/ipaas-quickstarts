@@ -15,12 +15,19 @@
  */
 package io.fabric8.quickstarts.camel;
 
-import org.springframework.boot.SpringApplication;
+import org.apache.camel.spring.boot.FatJarRouter;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-public class App {
+/**
+ * A spring-boot application that includes a Camel route builder to setup the Camel routes
+ */
+@SpringBootApplication
+public class MyCamelRoute extends FatJarRouter {
 
-    public static void main(String[] args) {
-        new SpringApplication(args).run();
+    @Override
+    public void configure() throws Exception {
+        from("timer://foo?period=5000")
+            .setBody().constant("Hello World")
+            .log(">>> ${body}");
     }
-
 }
