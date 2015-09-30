@@ -25,7 +25,7 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>quickstart-karaf-camel-rest</artifactId>
+  <artifactId>quickstart-karaf-camel-rest-sql</artifactId>
   <version>2.2.36-SNAPSHOT</version>
   <packaging>bundle</packaging>
   <name>Fabric8 :: Quickstarts :: Karaf :: Camel Rest using SQL</name>
