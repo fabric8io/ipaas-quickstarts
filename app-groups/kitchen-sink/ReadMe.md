@@ -1,1 +1,0 @@
-Provides all the main Fabric8 Apps together in one easy install

@@ -1,1 +1,0 @@
-Provides an [Integration Platform As A Service](http://fabric8.io/guide/ipaas.html) with API Management, Integration and Messaging
