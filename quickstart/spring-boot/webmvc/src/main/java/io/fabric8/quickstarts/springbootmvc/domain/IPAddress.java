@@ -18,7 +18,6 @@ package io.fabric8.quickstarts.springbootmvc.domain;
 public class IPAddress {
 
     private final long id;
-
     private final String ipAddress;
 
     public IPAddress(long id, String ipAddress) {

@@ -16,11 +16,13 @@
 package io.fabric8.quickstarts.springbootmvc;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 
+@EnableAutoConfiguration
 public class App {
 
     public static void main(String[] args) {
-        new SpringApplication(args).run();
+        SpringApplication.run(App.class, args);
     }
 
 }
