@@ -46,7 +46,7 @@
     <docker.maven.plugin.version>0.13.5</docker.maven.plugin.version>
 
     <!-- Docker & Fabric8 Configs -->
-    <docker.from>fabric8/java-jboss-openjdk8-jdk:1.0.2</docker.from>
+    <docker.from>fabric8/java-jboss-openjdk8-jdk:latest</docker.from>
     <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
