@@ -15,21 +15,19 @@
  */
 package io.fabric8.quickstarts.springbootmvc;
 
+import java.net.InetAddress;
+
 import io.fabric8.quickstarts.springbootmvc.domain.IPAddress;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.concurrent.atomic.AtomicLong;
-
 @RestController
 public class IPAddressController {
-    private final AtomicLong counter = new AtomicLong();
+    private int counter;
 
     @RequestMapping(value = "/ip", method = RequestMethod.GET)
-    public IPAddress ipaddress() throws UnknownHostException {
-        return new IPAddress(counter.incrementAndGet(), InetAddress.getLocalHost().getHostAddress());
+    public IPAddress ipaddress() throws Exception {
+        return new IPAddress(++counter, InetAddress.getLocalHost().getHostAddress());
     }
 }
