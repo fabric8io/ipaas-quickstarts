@@ -15,16 +15,17 @@
  */
 package io.fabric8.quickstarts.cxfcdi;
 
+import java.util.HashMap;
+import java.util.Map;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 /**
  * The Order class is not only a plain old java object, with a few properties and getters and setters, but it also defines
  * a sub-resource for the Order returned by CustomerService.
