@@ -1,5 +1,3 @@
-Note that these instructions are out of date for v2. We need to update these soon.
-
 # REST with CXF and CDI QuickStart
 
 This quick start demonstrates how to create a RESTful (JAX-RS) web service using Apache CXF and expose it using CDI running in a Java standalone container.
@@ -17,7 +15,11 @@ When the application is deployed, you can access the REST service using a web br
 
 ### How to try this example
 
-To use the application be sure to have deployed the quickstart in fabric8 as described above. 
+To use the application be sure to have deployed the quickstart in fabric8.
+
+Notice the example can also be run locally using the following Maven goal:
+
+    mvn clean install exec:java
 
 ### Access services using a web browser
 

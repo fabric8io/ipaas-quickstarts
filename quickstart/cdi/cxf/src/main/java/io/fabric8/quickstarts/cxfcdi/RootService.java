@@ -16,17 +16,15 @@
 package io.fabric8.quickstarts.cxfcdi;
 
 
-import io.fabric8.utils.IOHelpers;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import io.fabric8.utils.IOHelpers;
 import io.swagger.annotations.Api;
 
 /**
@@ -60,16 +58,15 @@ public class RootService {
     public String indexHtml() throws IOException {
         return index();
     }
-    
+
     public RootService() {
     }
-    
+
     @GET
     @Path("_ping")
     public String ping() {
         return "true";
     }
 
-  
 
 }
