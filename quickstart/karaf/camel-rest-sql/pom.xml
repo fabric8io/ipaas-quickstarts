@@ -40,9 +40,9 @@
     <camel.version>2.15.3</camel.version>
     <docker.maven.plugin.version>0.13.3</docker.maven.plugin.version>
     <derby.version>10.10.2.0</derby.version>
-    <karaf.version>2.4.3</karaf.version>
+    <fuse.version>6.2.1.redhat-040</fuse.version>
     <spring.features.version>3.0.4</spring.features.version>
-    <karaf.plugin.version>4.0.1</karaf.plugin.version>
+    <karaf.plugin.version>4.0.2.redhat-621030</karaf.plugin.version>
     <spring.tx.feature.version>3.2.11.RELEASE_1</spring.tx.feature.version>
     <maven-install-plugin.version>2.5.2</maven-install-plugin.version>
 
@@ -131,24 +131,12 @@
     <dependency>
       <!-- scope is compile so all features (there is only one) are installed into startup.properties,
       and the feature repo itself is not added in etc/org.apache.karaf.features.cfg file -->
-      <groupId>org.apache.karaf.features</groupId>
-      <artifactId>static</artifactId>
-      <version>${karaf.plugin.version}</version>
+      <groupId>org.jboss.fuse</groupId>
+      <artifactId>fuse-karaf-framework</artifactId>
+      <version>${fuse.version}</version>
       <type>kar</type>
     </dependency>
-    <dependency>
-      <groupId>org.apache.karaf.assemblies.features</groupId>
-      <artifactId>standard</artifactId>
-      <version>${karaf.version}</version>
-      <classifier>features</classifier>
-      <type>xml</type>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.camel.karaf</groupId>
-      <artifactId>apache-camel</artifactId>
-      <classifier>features</classifier>
-      <type>xml</type>
-    </dependency>
+<!--
     <dependency>
       <groupId>org.apache.karaf.features</groupId>
       <artifactId>spring</artifactId>
@@ -156,6 +144,7 @@
       <classifier>features</classifier>
       <type>xml</type>
     </dependency>
+-->
 
   </dependencies>
 
@@ -300,16 +289,13 @@
             <feature>camel-jms</feature>
             <feature>camel-sql</feature>
             <feature>camel-jackson</feature>
+            <!-- TODO remove after camel-commands are made optional under camel-core -->
+            <feature>shell</feature>
           </startupFeatures>
           <startupBundles>
-            <bundle start-level="8">mvn:org.ops4j.pax.logging/pax-logging-api/1.8.3</bundle>
-            <bundle start-level="8">mvn:org.ops4j.pax.logging/pax-logging-service/1.8.3</bundle>
             <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-dbcp/1.4_3</bundle>
             <bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}</bundle>
           </startupBundles>
-          <libraries>
-            <library>mvn:org.apache.karaf.jaas/org.apache.karaf.jaas.boot/${karaf.version};type:=boot;export:=true;delegate:=true</library>
-          </libraries>
         </configuration>
       </plugin>
 

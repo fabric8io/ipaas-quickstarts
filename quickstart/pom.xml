@@ -51,7 +51,7 @@
     <module>karaf</module>
     <module>cdi</module>
     <module>spring-boot</module>
-    <module>war</module>
+    <!--<module>war</module>-->
   </modules>
 
   <developers>

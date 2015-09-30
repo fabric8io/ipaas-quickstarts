@@ -36,7 +36,7 @@
   </properties>
 
   <modules>
-    <module>camel-amq</module>
+    <!--<module>camel-amq</module>-->
     <module>camel-log</module>
     <module>camel-rest-sql</module>
     <module>cxf-rest</module>

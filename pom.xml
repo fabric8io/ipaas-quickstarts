@@ -319,6 +319,7 @@
                             </execution>
                         </executions>
                     </plugin>
+<!--
                     <plugin>
                         <groupId>org.jolokia</groupId>
                         <artifactId>docker-maven-plugin</artifactId>
@@ -332,6 +333,7 @@
                             </execution>
                         </executions>
                     </plugin>
+-->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
@@ -418,9 +420,11 @@
               <module>archetype-itests</module>
             </modules>
         </profile>
+<!--
         <profile>
           <id>canary</id>
         </profile>
+-->
         <profile>
           <id>quickstarts</id>
           <activation>

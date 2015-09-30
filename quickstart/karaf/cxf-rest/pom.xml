@@ -44,8 +44,8 @@
     <fabric8.version>2.2.37</fabric8.version>
     <docker.maven.plugin.version>0.13.3</docker.maven.plugin.version>
     <cxf.version>3.1.2</cxf.version>
-    <karaf.version>2.4.3</karaf.version>
-    <karaf.plugin.version>4.0.1</karaf.plugin.version>
+    <fuse.version>6.2.1.redhat-040</fuse.version>
+    <karaf.plugin.version>4.0.2.redhat-621030</karaf.plugin.version>
     <maven-install-plugin.version>2.5.2</maven-install-plugin.version>
 
     <jackson2-version>2.4.1</jackson2-version>
@@ -126,8 +126,9 @@
     </dependency>
 
     <dependency>
-      <groupId>io.swagger</groupId>
-      <artifactId>swagger-jaxrs</artifactId>
+      <groupId>com.wordnik</groupId>
+      <artifactId>swagger-jaxrs_2.10</artifactId>
+      <version>1.3.0</version>
       <optional>true</optional>
       <exclusions>
         <!-- avoid this old dependency which breaks CXF -->
@@ -149,17 +150,10 @@
     <dependency>
       <!-- scope is compile so all features (there is only one) are installed into startup.properties,
       and the feature repo itself is not added in etc/org.apache.karaf.features.cfg file -->
-      <groupId>org.apache.karaf.features</groupId>
-      <artifactId>static</artifactId>
-      <version>${karaf.plugin.version}</version>
+      <groupId>org.jboss.fuse</groupId>
+      <artifactId>fuse-karaf-framework</artifactId>
+      <version>${fuse.version}</version>
       <type>kar</type>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.karaf.assemblies.features</groupId>
-      <artifactId>standard</artifactId>
-      <version>${karaf.version}</version>
-      <classifier>features</classifier>
-      <type>xml</type>
     </dependency>
     <dependency>
       <groupId>org.apache.cxf.karaf</groupId>
@@ -168,7 +162,6 @@
       <classifier>features</classifier>
       <type>xml</type>
     </dependency>
-
   </dependencies>
 
   <build>
@@ -244,9 +237,9 @@
               javax.ws.rs.ext;version="[2, 3)",
               javax.xml.bind.annotation,
               org.osgi.service.blueprint,
-              io.swagger.jaxrs.config,
-              io.swagger.jaxrs.listing,
-              io.swagger.annotations,
+              com.wordnik.swagger.jaxrs.config,
+              com.wordnik.swagger.jaxrs.listing,
+              com.wordnik.swagger.annotations,
               org.apache.cxf.transport.http,
               io.fabric8.cxf.endpoint,
               com.fasterxml.jackson.annotation, com.fasterxml.jackson.core, com.fasterxml.jackson.databind,
@@ -409,9 +402,6 @@
             <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.reflections/${reflections-version}</bundle>
             <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.json4s/${json4s-version}</bundle>
           </startupBundles>
-          <libraries>
-            <library>mvn:org.apache.karaf.jaas/org.apache.karaf.jaas.boot/${karaf.version};type:=boot;export:=true;delegate:=true</library>
-          </libraries>
         </configuration>
       </plugin>
 
