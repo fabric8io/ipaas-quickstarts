@@ -16,14 +16,15 @@
      permissions and limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
     <groupId>io.fabric8.quickstarts</groupId>
     <artifactId>quickstart-springboot</artifactId>
-    <version>2.2.36-SNAPSHOT</version>
+    <version>2.2.38-SNAPSHOT</version>
   </parent>
 
   <artifactId>quickstart-springboot-webmvc</artifactId>
@@ -38,14 +39,14 @@
     <integrationTestPattern>**/*KT.java</integrationTestPattern>
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
-    <fabric8.version>2.2.35</fabric8.version>
+    <fabric8.version>2.2.37</fabric8.version>
     <docker.maven.plugin.version>0.13.3</docker.maven.plugin.version>
 
     <spring-boot-plugin.version>1.2.6.RELEASE</spring-boot-plugin.version>
     <spring-boot.version>1.2.6.RELEASE</spring-boot.version>
 
     <!-- Docker & Fabric8 Configs -->
-    <docker.from>fabric8/java-jboss-openjdk8-jdk:1.0.2</docker.from>
+    <docker.from>fabric8/java-jboss-openjdk8-jdk:latest</docker.from>
     <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
@@ -85,21 +86,7 @@
     <!-- Spring -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-data-jpa</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.data</groupId>
-      <artifactId>spring-data-rest-webmvc</artifactId>
-    </dependency>
-
-    <!-- Database driver -->
-    <dependency>
-      <groupId>com.h2database</groupId>
-      <artifactId>h2</artifactId>
     </dependency>
 
     <!-- Testing -->
@@ -138,6 +125,7 @@
         <inherited>true</inherited>
         <configuration>
           <skipTests>${skipTests}</skipTests>
+          <argLine>-Djava.security.egd=file:/dev/./urandom</argLine>
           <excludes>
             <exclude>${integrationTestPattern}</exclude>
           </excludes>
@@ -182,7 +170,7 @@
         </executions>
       </plugin>
 
-<plugin>
+      <plugin>
         <groupId>org.jolokia</groupId>
         <artifactId>docker-maven-plugin</artifactId>
         <version>${docker.maven.plugin.version}</version>
@@ -252,12 +240,6 @@
     </profile>
 
     <profile>
-      <id>fabric8-snapshot</id>
-      <properties>
-        <fabric8.version>2.3-SNAPSHOT</fabric8.version>
-      </properties>
-    </profile>
-    <profile>
       <id>ts.kube</id>
       <properties>
         <skipItests>false</skipItests>
@@ -265,31 +247,4 @@
     </profile>
   </profiles>
 
-  <repositories>
-    <repository>
-      <releases>
-        <updatePolicy>never</updatePolicy>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <id>jboss.ea</id>
-      <name>JBoss Community Early Access Release Repository</name>
-      <url>http://origin-repository.jboss.org/nexus/content/groups/ea</url>
-    </repository>
-  </repositories>
-  <pluginRepositories>
-    <pluginRepository>
-      <releases>
-        <updatePolicy>never</updatePolicy>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <id>jboss.ea</id>
-      <name>JBoss Community Early Access Release Repository</name>
-      <url>http://origin-repository.jboss.org/nexus/content/groups/ea</url>
-    </pluginRepository>
-  </pluginRepositories>
-  
 </project>

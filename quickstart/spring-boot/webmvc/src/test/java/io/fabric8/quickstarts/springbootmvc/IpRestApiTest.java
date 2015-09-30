@@ -15,8 +15,6 @@
  */
 package io.fabric8.quickstarts.springbootmvc;
 
-import io.fabric8.quickstarts.springbootmvc.domain.Invoice;
-import io.fabric8.quickstarts.springbootmvc.repository.InvoiceRepository;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,11 +30,11 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.client.RestTemplate;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = {InvoicingRestApiTest.class, InvoicingConfiguration.class})
-@IntegrationTest("server.port:0")
+@SpringApplicationConfiguration(classes = {IpRestApiTest.class, App.class})
 @WebAppConfiguration
+@IntegrationTest("server.port:0")
 @EnableAutoConfiguration
-public class InvoicingRestApiTest extends Assert {
+public class IpRestApiTest extends Assert {
 
     RestTemplate rest = new TestRestTemplate();
 
@@ -44,11 +42,7 @@ public class InvoicingRestApiTest extends Assert {
     EmbeddedWebApplicationContext tomcat;
 
     int port;
-
     String baseUri;
-
-    @Autowired
-    InvoiceRepository invoiceRepository;
 
     @Before
     public void before() {
@@ -56,30 +50,16 @@ public class InvoicingRestApiTest extends Assert {
         baseUri = "http://localhost:" + port;
     }
 
-    // Tests
-
     @Test
-    public void shouldExposeInvoicingApi() throws InterruptedException {
-        // When
-        String apiResponse = rest.getForObject(baseUri, String.class);
+    public void shouldExposeIpApi() throws InterruptedException {
+        String ip = rest.getForObject(baseUri + "/ip", String.class);
+        assertNotNull(ip);
 
-        // Then
-        assertTrue(apiResponse.contains(baseUri + "/invoice"));
-    }
+        String ip2 = rest.getForObject(baseUri + "/ip", String.class);
+        assertNotNull(ip2);
 
-    @Test
-    public void shouldReadInvoice() throws InterruptedException {
-        // Given
-        Invoice invoice = new Invoice().invoiceId("INV-2014-01-01");
-        invoice = invoiceRepository.save(invoice);
-
-        String invoiceUri = baseUri + "/invoice/" + invoice.id();
-
-        // When
-        Invoice receivedInvoice = rest.getForObject(invoiceUri, Invoice.class);
-
-        // Then
-        assertEquals(invoice.invoiceId(), receivedInvoice.invoiceId());
+        // should not be same as there is a counter in the response
+        assertNotSame(ip, ip2);
     }
 
 }

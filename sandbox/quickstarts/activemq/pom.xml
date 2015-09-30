@@ -38,14 +38,14 @@
     <integrationTestPattern>**/*KT.java</integrationTestPattern>
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
-    <fabric8.version>2.2.35</fabric8.version>
+    <fabric8.version>2.2.37</fabric8.version>
     <docker.maven.plugin.version>0.13.3</docker.maven.plugin.version>
 
     <spring-boot.version>1.2.6.RELEASE</spring-boot.version>
     <spring-boot-plugin.version>1.2.6.RELEASE</spring-boot-plugin.version>
 
     <!-- Docker & Fabric8 Configs -->
-    <docker.from>fabric8/java-jboss-openjdk8-jdk:1.0.2</docker.from>
+    <docker.from>fabric8/java-jboss-openjdk8-jdk:latest</docker.from>
     <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
@@ -245,12 +245,6 @@
     </profile>
 
     <profile>
-      <id>fabric8-snapshot</id>
-      <properties>
-        <fabric8.version>2.3-SNAPSHOT</fabric8.version>
-      </properties>
-    </profile>
-    <profile>
       <id>ts.kube</id>
       <properties>
         <skipItests>false</skipItests>
@@ -258,31 +252,4 @@
     </profile>
   </profiles>
 
-  <repositories>
-    <repository>
-      <releases>
-        <updatePolicy>never</updatePolicy>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <id>jboss.ea</id>
-      <name>JBoss Community Early Access Release Repository</name>
-      <url>http://origin-repository.jboss.org/nexus/content/groups/ea</url>
-    </repository>
-  </repositories>
-  <pluginRepositories>
-    <pluginRepository>
-      <releases>
-        <updatePolicy>never</updatePolicy>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <id>jboss.ea</id>
-      <name>JBoss Community Early Access Release Repository</name>
-      <url>http://origin-repository.jboss.org/nexus/content/groups/ea</url>
-    </pluginRepository>
-  </pluginRepositories>
-  
 </project>

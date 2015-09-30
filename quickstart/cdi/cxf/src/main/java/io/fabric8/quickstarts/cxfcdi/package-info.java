@@ -13,6 +13,5 @@
  *  implied.  See the License for the specific language governing
  *  permissions and limitations under the License.
  */
-@javax.xml.bind.annotation.XmlSchema(namespace = "http://cxfcdi.fabric.quickstarts.fabric8.io/", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
-package io.fabric8.quickstarts.cxfcdi;
+@javax.xml.bind.annotation.XmlSchema(namespace = "http://cxfcdi.fabric.quickstarts.fabric8.io/", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED) package io.fabric8.quickstarts.cxfcdi;
 
