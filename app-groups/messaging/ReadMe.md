@@ -1,1 +1,0 @@
-Provides _Messaging as a Service_ based on [Apache ActiveMQ](http://activemq.apache.org/)

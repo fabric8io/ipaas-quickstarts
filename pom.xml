@@ -442,9 +442,6 @@
         </profile>
         <profile>
           <id>canary</id>
-          <modules>
-            <module>app-groups</module>
-          </modules>
         </profile>
         <profile>
           <id>quickstarts</id>
