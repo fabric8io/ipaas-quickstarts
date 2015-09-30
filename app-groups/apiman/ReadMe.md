@@ -1,1 +1,0 @@
-Provides API Management via [apiman](http://www.apiman.io/)
