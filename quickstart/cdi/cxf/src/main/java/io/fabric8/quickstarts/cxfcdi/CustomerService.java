@@ -15,7 +15,8 @@
  */
 package io.fabric8.quickstarts.cxfcdi;
 
-
+import java.util.HashMap;
+import java.util.Map;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -30,15 +31,11 @@ import javax.ws.rs.core.Response;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.ApiResponse;
-
+import io.swagger.annotations.ApiResponses;
 import org.apache.cxf.jaxrs.ext.MessageContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This Java class with be hosted in the URI path defined by the @Path annotation. @Path annotations on the methods
@@ -59,7 +56,7 @@ public class CustomerService {
     Map<Long, Order> orders = new HashMap<Long, Order>();
     private MessageContext jaxrsContext;
 
-    
+
     public CustomerService() {
         init();
     }
@@ -78,8 +75,8 @@ public class CustomerService {
     @Produces("application/xml")
     @ApiOperation(value = "Find Customer by ID", notes = "More notes about this method", response = Customer.class)
     @ApiResponses(value = {
-      @ApiResponse(code = 500, message = "Invalid ID supplied"),
-      @ApiResponse(code = 204, message = "Customer not found") 
+            @ApiResponse(code = 500, message = "Invalid ID supplied"),
+            @ApiResponse(code = 204, message = "Customer not found")
     })
     public Customer getCustomer(@ApiParam(value = "ID of Customer to fetch", required = true) @PathParam("id") String id) {
         LOG.info("Invoking getCustomer, Customer id is: {}", id);
@@ -101,12 +98,12 @@ public class CustomerService {
      */
     @PUT
     @Path("/customers/")
-    @Consumes({"application/xml", "application/json" })
+    @Consumes({"application/xml", "application/json"})
     @ApiOperation(value = "Update an existing Customer")
     @ApiResponses(value = {
-                           @ApiResponse(code = 500, message = "Invalid ID supplied"),
-                           @ApiResponse(code = 204, message = "Customer not found") 
-                         })
+            @ApiResponse(code = 500, message = "Invalid ID supplied"),
+            @ApiResponse(code = 204, message = "Customer not found")
+    })
 
     public Response updateCustomer(@ApiParam(value = "Customer object that needs to be updated", required = true) Customer customer) {
         LOG.info("Invoking updateCustomer, Customer name is: {}", customer.getName());
@@ -137,9 +134,9 @@ public class CustomerService {
      */
     @POST
     @Path("/customers/")
-    @Consumes({"application/xml", "application/json" })
+    @Consumes({"application/xml", "application/json"})
     @ApiOperation(value = "Add a new Customer")
-    @ApiResponses(value = { @ApiResponse(code = 500, message = "Invalid ID supplied"), })
+    @ApiResponses(value = {@ApiResponse(code = 500, message = "Invalid ID supplied"),})
     public Response addCustomer(@ApiParam(value = "Customer object that needs to be updated", required = true)
                                 Customer customer) {
         LOG.info("Invoking addCustomer, Customer name is: {}", customer.getName());
@@ -164,9 +161,9 @@ public class CustomerService {
     @Path("/customers/{id}/")
     @ApiOperation(value = "Delete Customer")
     @ApiResponses(value = {
-                           @ApiResponse(code = 500, message = "Invalid ID supplied"),
-                           @ApiResponse(code = 204, message = "Customer not found") 
-                         })
+            @ApiResponse(code = 500, message = "Invalid ID supplied"),
+            @ApiResponse(code = 204, message = "Customer not found")
+    })
     public Response deleteCustomer(@ApiParam(value = "ID of Customer to delete", required = true) @PathParam("id") String id) {
         LOG.info("Invoking deleteCustomer, Customer id is: {}", id);
         long idNumber = Long.parseLong(id);
@@ -215,7 +212,7 @@ public class CustomerService {
         o.setId(223);
         orders.put(o.getId(), o);
     }
-    
+
     @Context
     public void setMessageContext(MessageContext messageContext) {
         this.jaxrsContext = messageContext;

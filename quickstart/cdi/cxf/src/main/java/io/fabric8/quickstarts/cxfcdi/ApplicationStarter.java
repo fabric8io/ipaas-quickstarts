@@ -18,7 +18,6 @@ package io.fabric8.quickstarts.cxfcdi;
 import io.fabric8.cxf.endpoint.ManagedApi;
 import io.fabric8.utils.Strings;
 import io.fabric8.utils.Systems;
-
 import org.apache.cxf.cdi.CXFCdiServlet;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -27,11 +26,11 @@ import org.jboss.weld.environment.servlet.BeanManagerResourceBindingListener;
 import org.jboss.weld.environment.servlet.Listener;
 
 public class ApplicationStarter {
-	
-	public static void main(final String[] args) throws Exception {
-		startServer().join();
-	}
-	
+
+    public static void main(final String[] args) throws Exception {
+        startServer().join();
+    }
+
     public static Server startServer() throws Exception {
 
         // use system property first
@@ -51,16 +50,16 @@ public class ApplicationStarter {
         String servletContextPath = "/" + service;
         ManagedApi.setSingletonCxfServletContext(servletContextPath);
 
-        System.out.println("Starting REST server at:         http://localhost:" + port + servletContextPath + "/");
+        System.out.println("Starting REST server at:         http://localhost:" + port + servletContextPath);
         System.out.println("View the services at:            http://localhost:" + port + servletContextPath + servicesPath);
-        System.out.println("View an example REST service at: http://localhost:" + port + servletContextPath + "/cxfcdi/customerservice/customers/123");
+        System.out.println("View an example REST service at: http://localhost:" + port + servletContextPath + "cxfcdi/customerservice/customers/123");
         System.out.println();
 
         final Server server = new Server(num);
 
         // Register and map the dispatcher servlet
         final ServletHolder servletHolder = new ServletHolder(new CXFCdiServlet());
-        
+
         // change default service list URI
         servletHolder.setInitParameter("service-list-path", servicesPath);
 
@@ -68,13 +67,13 @@ public class ApplicationStarter {
         context.setContextPath("/");
         context.addEventListener(new Listener());
         context.addEventListener(new BeanManagerResourceBindingListener());
-        
+
         String servletPath = "/*";
         if (Strings.isNotBlank(service)) {
-         servletPath = servletContextPath + "/*";
+            servletPath = servletContextPath + "/*";
         }
         context.addServlet(servletHolder, servletPath);
-        
+
         server.setHandler(context);
         server.start();
         return server;
