@@ -310,12 +310,6 @@
     </profile>
 
     <profile>
-      <id>fabric8-snapshot</id>
-      <properties>
-        <fabric8.version>2.3-SNAPSHOT</fabric8.version>
-      </properties>
-    </profile>
-    <profile>
       <id>ts.kube</id>
       <properties>
         <skipItests>false</skipItests>
