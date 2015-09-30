@@ -13,3 +13,9 @@ have a [Vagrant setup](http://fabric8.io/guide/getStarted/vagrant.html) you can 
 
 The URL `http://springboot-webmvc.vagrant.f8/ip` can be used to obtain the IP address to show service load-balancing 
 when running with multiple pods.
+
+You can also run this example locally using the spring-boot Maven goal:
+
+    mvn spring-boot:run
+
+    
