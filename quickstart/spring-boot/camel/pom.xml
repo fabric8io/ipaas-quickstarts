@@ -147,9 +147,6 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
         <version>${spring-boot-plugin.version}</version>
-        <configuration>
-          <mainClass>io.fabric8.quickstarts.camel.MyCamelRoute</mainClass>
-        </configuration>
         <executions>
           <execution>
             <goals>
