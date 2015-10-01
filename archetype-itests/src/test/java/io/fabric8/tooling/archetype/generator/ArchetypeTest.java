@@ -140,8 +140,10 @@ public class ArchetypeTest {
             @Override
             public void run() {
                 System.out.println("Invoking projects in " + outDir);
+                System.setProperty("maven.multiModuleProjectDirectory", "$M2_HOME");
                 MavenCli maven = new MavenCli();
-                resultPointer[0] = maven.doMain(new String[] { "clean", "package", "-f", "archetypes-test-pom.xml" }, outDir, System.out, System.out);
+                // Dmaven.multiModuleProjectDirectory
+                resultPointer[0] = maven.doMain(new String[] { "clean", "package", "-f", "archetypes-test-pom.xml"}, outDir, System.out, System.out);
                 System.out.println("result: " + resultPointer[0]);
             }
         });
