@@ -43,7 +43,8 @@
     <fabric8.label.group>quickstarts</fabric8.label.group>
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
-    <cxf.version>3.0.4</cxf.version>
+    <cxf.version>3.1.2</cxf.version>
+    <cxf.plugin.version>3.0.6</cxf.plugin.version>
     <docker.maven.plugin.version>0.13.5</docker.maven.plugin.version>
     <org.eclipse.jetty.version>9.2.10.v20150310</org.eclipse.jetty.version>
 
@@ -280,7 +281,7 @@
       <plugin>
         <groupId>org.apache.cxf</groupId>
         <artifactId>cxf-java2wadl-plugin</artifactId>
-        <version>${cxf.version}</version>
+        <version>${cxf.plugin.version}</version>
         <executions>
           <execution>
             <id>process-classes</id>
