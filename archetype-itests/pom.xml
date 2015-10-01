@@ -79,6 +79,28 @@
       <scope>test</scope>
     </dependency>
 
+    <!-- these dependencies are for being able to download dependencies over HTTP from maven central -->
+    <dependency>
+      <groupId>org.eclipse.aether</groupId>
+      <artifactId>aether-connector-basic</artifactId>
+      <version>1.0.2.v20150114</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.aether</groupId>
+      <artifactId>aether-transport-wagon</artifactId>
+      <version>1.0.2.v20150114</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.wagon</groupId>
+      <artifactId>wagon-http</artifactId>
+      <version>2.8</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.wagon</groupId>
+      <artifactId>wagon-provider-api</artifactId>
+      <version>2.8</version>
+    </dependency>
+
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -201,7 +223,7 @@
                   <overWrite>false</overWrite>
                 </artifactItem>
 
-                <!-- spring-boot archetypes -->
+                 <!--spring-boot archetypes -->
                 <artifactItem>
                   <groupId>io.fabric8.archetypes</groupId>
                   <artifactId>spring-boot-camel-archetype</artifactId>
