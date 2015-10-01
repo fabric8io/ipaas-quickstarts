@@ -21,15 +21,18 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>io.fabric8</groupId>
-        <artifactId>tooling</artifactId>
+    <!--<parent>-->
+        <!--<groupId>io.fabric8.quickstarts</groupId>-->
+        <!--<artifactId>archetype-itests</artifactId>-->
         <!-- filtered by Maven to align with Fabric8 version -->
-        <version>${project.version}</version>
-    </parent>
+        <!--<version>${project.version}</version>-->
+    <!--</parent>-->
 
+    <groupId>io.fabric8.quickstarts</groupId>
     <artifactId>archetype-itests-parent</artifactId>
-    <name>Fabric8 :: Tooling :: Archetype Integration Tests :: Parent for quickstarts</name>
+    <version>${project.version}</version>
+
+    <name>Fabric8 :: Archetype Integration Tests :: Parent for quickstarts</name>
     <packaging>pom</packaging>
 
     <modules>
