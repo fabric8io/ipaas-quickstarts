@@ -25,7 +25,7 @@ import org.apache.camel.cdi.Uri;
 /**
  * Configures all our Camel routes, components, endpoints and beans
  */
-@ContextName("myCdiCamelContext")
+@ContextName("myCamel")
 public class MyRoutes extends RouteBuilder {
 
     @Inject
