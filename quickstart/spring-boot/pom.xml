@@ -32,7 +32,7 @@
   <name>Fabric8 :: Quickstarts :: Spring-Boot :: Parent</name>
 
   <modules>
-    <module>webmvc</module>
+    <!--<module>webmvc</module>-->
     <module>camel</module>
   </modules>
 

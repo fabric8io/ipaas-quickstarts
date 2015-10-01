@@ -194,6 +194,7 @@
                 </artifactItem>
 
                 <!-- karaf archetypes -->
+<!--
                 <artifactItem>
                   <groupId>io.fabric8.archetypes</groupId>
                   <artifactId>karaf-camel-amq-archetype</artifactId>
@@ -201,6 +202,7 @@
                   <type>jar</type>
                   <overWrite>false</overWrite>
                 </artifactItem>
+-->
                 <artifactItem>
                   <groupId>io.fabric8.archetypes</groupId>
                   <artifactId>karaf-camel-log-archetype</artifactId>
@@ -231,6 +233,7 @@
                   <type>jar</type>
                   <overWrite>false</overWrite>
                 </artifactItem>
+<!--
                 <artifactItem>
                   <groupId>io.fabric8.archetypes</groupId>
                   <artifactId>spring-boot-webmvc-archetype</artifactId>
@@ -238,8 +241,10 @@
                   <type>jar</type>
                   <overWrite>false</overWrite>
                 </artifactItem>
+-->
 
                 <!-- war archetypes -->
+<!--
                 <artifactItem>
                   <groupId>io.fabric8.archetypes</groupId>
                   <artifactId>war-camel-servlet-archetype</artifactId>
@@ -261,6 +266,7 @@
                   <type>jar</type>
                   <overWrite>false</overWrite>
                 </artifactItem>
+-->
 
               </artifactItems>
               <outputDirectory>${project.build.directory}/archetypes</outputDirectory>
