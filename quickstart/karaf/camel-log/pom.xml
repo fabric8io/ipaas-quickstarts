@@ -38,7 +38,7 @@
     <maven-resources-plugin.version>2.6</maven-resources-plugin.version>
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
-    <fabric8.version>2.2.37</fabric8.version>
+    <fabric8.version>2.2.38</fabric8.version>
     <docker.maven.plugin.version>0.13.3</docker.maven.plugin.version>
     <fuse.version>6.2.1.redhat-040</fuse.version>
     <karaf.plugin.version>4.0.2.redhat-621030</karaf.plugin.version>
