@@ -25,13 +25,13 @@ import org.apache.camel.cdi.Uri;
 /**
  * Configures all our Camel routes, components, endpoints and beans
  */
-@ContextName("myCdiCamelContext")
+@ContextName("myCamel")
 public class MyRoutes extends RouteBuilder {
 
     @Inject @Uri("timer:foo?period=5000")
     private Endpoint inputEndpoint;
 
-    @Inject @Uri("netty4-http:http://{{service:quickstart-camelservlet}}/camel/hello?keepAlive=false&disconnect=true")
+    @Inject @Uri("netty4-http:http://{{service:quickstart-camelservlet:localhost:8080}}/camel/hello?keepAlive=false&disconnect=true")
     private Endpoint httpEndpoint;
 
     @Inject @Uri("log:output?showExchangePattern=false&showBodyType=false&showStreams=true")

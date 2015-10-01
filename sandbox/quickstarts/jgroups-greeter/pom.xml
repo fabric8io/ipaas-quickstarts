@@ -36,7 +36,7 @@
     <fabric8.generateJson>false</fabric8.generateJson>
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
-    <fabric8.version>2.2.37</fabric8.version>
+    <fabric8.version>2.2.38</fabric8.version>
     <docker.maven.plugin.version>0.13.5</docker.maven.plugin.version>
 
     <!-- Docker & Fabric8 Configs -->
@@ -266,33 +266,5 @@
     </profile>
 
   </profiles>
-
-  <repositories>
-    <repository>
-      <releases>
-        <updatePolicy>never</updatePolicy>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <id>jboss.ea</id>
-      <name>JBoss Community Early Access Release Repository</name>
-      <url>http://origin-repository.jboss.org/nexus/content/groups/ea</url>
-    </repository>
-  </repositories>
-  <pluginRepositories>
-    <pluginRepository>
-      <releases>
-        <updatePolicy>never</updatePolicy>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <id>jboss.ea</id>
-      <name>JBoss Community Early Access Release Repository</name>
-      <url>http://origin-repository.jboss.org/nexus/content/groups/ea</url>
-    </pluginRepository>
-  </pluginRepositories>
-  
 
 </project>
