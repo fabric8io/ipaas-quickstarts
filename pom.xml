@@ -121,6 +121,17 @@
     			<enabled>true</enabled>
     		</snapshots>
     	</repository>
+      <repository>
+        <releases>
+          <updatePolicy>never</updatePolicy>
+        </releases>
+        <snapshots>
+          <enabled>false</enabled>
+        </snapshots>
+        <id>jboss.ea</id>
+        <name>JBoss Community Early Access Release Repository</name>
+        <url>http://origin-repository.jboss.org/nexus/content/groups/ea</url>
+      </repository>
     </repositories>
     <pluginRepositories>
       <pluginRepository>
@@ -133,6 +144,17 @@
         <snapshots>
           <enabled>true</enabled>
         </snapshots>
+      </pluginRepository>
+      <pluginRepository>
+        <releases>
+          <updatePolicy>never</updatePolicy>
+        </releases>
+        <snapshots>
+          <enabled>false</enabled>
+        </snapshots>
+        <id>jboss.ea</id>
+        <name>JBoss Community Early Access Release Repository</name>
+        <url>http://origin-repository.jboss.org/nexus/content/groups/ea</url>
       </pluginRepository>
     </pluginRepositories>
 
@@ -406,17 +428,7 @@
                 <skipItests>false</skipItests>
             </properties>
         </profile>
-        <profile>
-            <id>ts.archetype</id>
-            <modules>
-              <module>archetype-itests</module>
-            </modules>
-        </profile>
-<!--
-        <profile>
-          <id>canary</id>
-        </profile>
--->
+
         <profile>
           <id>quickstarts</id>
           <activation>

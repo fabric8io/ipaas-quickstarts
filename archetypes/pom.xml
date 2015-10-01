@@ -45,11 +45,11 @@
   <modules>
     <module>cdi-camel-archetype</module>
     <module>cdi-camel-http-archetype</module>
-    <module>cdi-cxf-archetype</module>
+   	<module>cdi-cxf-archetype</module>
     <module>java-camel-spring-archetype</module>
-    <module>java-simple-fatjar-archetype</module>
-    <module>java-simple-mainclass-archetype</module>
-    <!--<module>karaf-camel-amq-archetype</module>-->
+   	<module>java-simple-fatjar-archetype</module>
+   	<module>java-simple-mainclass-archetype</module>
+   	<!--<module>karaf-camel-amq-archetype</module>-->
     <module>karaf-camel-log-archetype</module>
     <module>karaf-camel-rest-sql-archetype</module>
     <module>karaf-cxf-rest-archetype</module>
