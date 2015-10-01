@@ -34,6 +34,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven-resources-plugin.version>2.6</maven-resources-plugin.version>
 
     <!-- the version of the BOM, defining all the dependency versions -->
     <fabric8.version>2.2.37</fabric8.version>
@@ -266,7 +267,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
-        <version>2.6</version>
+        <version>${maven-resources-plugin.version}</version>
         <executions>
           <execution>
             <id>filter</id>
