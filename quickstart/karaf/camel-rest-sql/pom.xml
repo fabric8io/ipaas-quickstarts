@@ -34,6 +34,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <version.maven-bundle-plugin>2.3.7</version.maven-bundle-plugin>
+    <maven-resources-plugin.version>2.6</maven-resources-plugin.version>
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <fabric8.version>2.2.37</fabric8.version>
@@ -193,6 +194,7 @@
       </plugin>
         <plugin>
             <artifactId>maven-resources-plugin</artifactId>
+            <version>${maven-resources-plugin.version}</version>
             <executions>
                 <execution>
                     <id>filter-extra-resources</id>
