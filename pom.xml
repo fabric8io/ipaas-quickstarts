@@ -365,12 +365,6 @@
             </build>
         </profile>
         <profile>
-            <id>hawtio-snapshot</id>
-            <properties>
-                <hawtio.version>1.5-SNAPSHOT</hawtio.version>
-            </properties>
-        </profile>
-        <profile>
             <id>license</id>
             <build>
                 <plugins>
@@ -412,15 +406,7 @@
                 <skipItests>false</skipItests>
             </properties>
         </profile>
-        <profile>
-            <id>ts.archetype</id>
-            <modules>
-              <module>archetype-itests</module>
-            </modules>
-        </profile>
-        <profile>
-          <id>canary</id>
-        </profile>
+
         <profile>
           <id>quickstarts</id>
           <activation>
@@ -429,19 +415,11 @@
           <modules>
             <module>archetypes-catalog</module>
             <module>archetypes</module>
+            <module>archetype-itests</module>
             <module>quickstart</module>
           </modules>
         </profile>
-        <profile>
-          <id>archetypes</id>
-          <activation>
-            <activeByDefault>true</activeByDefault>
-          </activation>
-          <modules>
-            <module>archetypes-catalog</module>
-            <module>archetypes</module>
-          </modules>
-        </profile>
+
     </profiles>
 
 </project>
