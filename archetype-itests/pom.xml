@@ -28,7 +28,7 @@
   </parent>
 
   <artifactId>archetype-itests</artifactId>
-  <name>Fabric8 :: Archetype Integration Tests</name>
+  <name>Fabric8 :: Archetypes :: Integration Tests</name>
   <packaging>jar</packaging>
 
   <dependencyManagement>
