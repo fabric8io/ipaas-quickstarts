@@ -37,7 +37,7 @@
     <maven-resources-plugin.version>2.6</maven-resources-plugin.version>
 
     <!-- the version of the BOM, defining all the dependency versions -->
-    <fabric8.version>2.2.39</fabric8.version>
+    <fabric8.version>2.2.40</fabric8.version>
 
     <fabric8.label.container>java</fabric8.label.container>
     <fabric8.label.group>quickstarts</fabric8.label.group>
