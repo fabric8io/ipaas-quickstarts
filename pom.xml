@@ -281,6 +281,11 @@
 
         <profile>
             <id>release</id>
+            <modules>
+              <module>archetypes-catalog</module>
+              <module>archetypes</module>
+              <module>archetype-itests</module>
+            </modules>
             <build>
                 <plugins>
                     <plugin>
