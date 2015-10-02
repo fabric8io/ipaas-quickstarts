@@ -1,1 +1,0 @@
-# Camel CDI ActiveMQ QuickStart
