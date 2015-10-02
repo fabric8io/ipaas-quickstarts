@@ -37,7 +37,7 @@
     <maven-resources-plugin.version>2.6</maven-resources-plugin.version>
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
-    <fabric8.version>2.2.38</fabric8.version>
+    <fabric8.version>2.2.39</fabric8.version>
     <camel.version>2.15.3</camel.version>
     <docker.maven.plugin.version>0.13.3</docker.maven.plugin.version>
     <derby.version>10.10.2.0</derby.version>
