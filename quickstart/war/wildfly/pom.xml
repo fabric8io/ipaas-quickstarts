@@ -33,7 +33,7 @@
 
 	<properties>
 		<failOnMissingWebXml>false</failOnMissingWebXml>
-		<fabric8.version>2.2.38</fabric8.version>
+		<fabric8.version>2.2.39</fabric8.version>
 
 		<docker.from>jboss/wildfly:9.0.1.Final</docker.from>
 		<docker.maven.plugin.version>0.13.3</docker.maven.plugin.version>
