@@ -55,6 +55,9 @@
     <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
+    <docker.port.container.http>${http.port}</docker.port.container.http>
+    <docker.port.container.jolokia>8778</docker.port.container.jolokia>
+    <docker.port.container.metrics>9779</docker.port.container.metrics>
 
     <fabric8.service.name>quickstart-java-cxf-cdi</fabric8.service.name>
     <fabric8.service.port>80</fabric8.service.port>
