@@ -43,7 +43,7 @@
     <camel.version>2.15.3</camel.version>
     <karaf.version>2.4.2</karaf.version>
     <karaf.plugin.version>2.4.0</karaf.plugin.version>
-    <docker.maven.plugin.version>0.13.3</docker.maven.plugin.version>
+    <docker.maven.plugin.version>0.13.5</docker.maven.plugin.version>
     <docker.from>docker.io/fabric8/karaf-2.4:1.0.0</docker.from>
 
     <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>
