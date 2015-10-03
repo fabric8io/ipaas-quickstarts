@@ -36,7 +36,7 @@
 		<fabric8.version>2.2.40</fabric8.version>
 
 		<docker.from>jboss/wildfly:9.0.1.Final</docker.from>
-		<docker.maven.plugin.version>0.13.3</docker.maven.plugin.version>
+		<docker.maven.plugin.version>0.13.5</docker.maven.plugin.version>
 		<docker.assemblyDescriptorRef>artifact</docker.assemblyDescriptorRef>
 
 

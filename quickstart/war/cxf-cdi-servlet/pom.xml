@@ -46,7 +46,7 @@
     <org.eclipse.jetty.version>9.2.10.v20150310</org.eclipse.jetty.version>
 
     <docker.from>docker.io/fabric8/tomcat-8.0</docker.from>
-    <docker.maven.plugin.version>0.13.3</docker.maven.plugin.version>
+    <docker.maven.plugin.version>0.13.5</docker.maven.plugin.version>
 
     <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
