@@ -15,7 +15,8 @@
      permissions and limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <parent>
     <groupId>io.fabric8.quickstarts</groupId>
@@ -51,7 +52,8 @@
 
     <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
-    <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}quickstart-karaf-camelrest:${project.version}</docker.image>
+    <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}quickstart-karaf-camelrest:${project.version}
+    </docker.image>
     <docker.assemblyDescriptor>${basedir}/src/main/fabric8/assembly.xml</docker.assemblyDescriptor>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
     <docker.port.container.http>8181</docker.port.container.http>
@@ -120,13 +122,13 @@
       <artifactId>commons-pool</artifactId>
       <version>1.6</version>
     </dependency>
-<!-- used when testing locally with mvn camel:run instead of servlet, interferes with karaf-maven-plugin
-    <dependency>
-      <groupId>commons-dbcp</groupId>
-      <artifactId>commons-dbcp</artifactId>
-      <version>1.4</version>
-    </dependency>
--->
+    <!-- used when testing locally with mvn camel:run instead of servlet, interferes with karaf-maven-plugin
+        <dependency>
+          <groupId>commons-dbcp</groupId>
+          <artifactId>commons-dbcp</artifactId>
+          <version>1.4</version>
+        </dependency>
+    -->
 
     <!-- Karaf microcontainer dependencies -->
     <dependency>
@@ -185,56 +187,56 @@
         <artifactId>maven-bundle-plugin</artifactId>
         <version>${version.maven-bundle-plugin}</version>
         <extensions>true</extensions>
-          <configuration>
-              <instructions>
-                <!-- dynamic import for the Derby JDBC driver -->
-                <DynamicImport-Package>*</DynamicImport-Package>
-              </instructions>
-          </configuration>
+        <configuration>
+          <instructions>
+            <!-- dynamic import for the Derby JDBC driver -->
+            <DynamicImport-Package>*</DynamicImport-Package>
+          </instructions>
+        </configuration>
       </plugin>
-        <plugin>
-            <artifactId>maven-resources-plugin</artifactId>
-            <version>${maven-resources-plugin.version}</version>
-            <executions>
-                <execution>
-                    <id>filter-extra-resources</id>
-                    <goals>
-                        <goal>copy-resources</goal>
-                    </goals>
-                    <phase>process-resources</phase>
-                    <configuration>
-                        <outputDirectory>${project.build.directory}/fabric8</outputDirectory>
-                        <resources>
-                            <resource>
-                                <directory>src/main/fabric8</directory>
-                                <filtering>true</filtering>
-                            </resource>
-                        </resources>
-                    </configuration>
-                </execution>
-            </executions>
-        </plugin>
-        <plugin>
-          <groupId>io.fabric8</groupId>
-          <artifactId>fabric8-maven-plugin</artifactId>
-          <version>${fabric8.version}</version>
-          <executions>
-            <execution>
-              <id>json</id>
-              <phase>generate-resources</phase>
-              <goals>
-                <goal>json</goal>
-              </goals>
-            </execution>
-            <execution>
-              <id>attach</id>
-              <phase>package</phase>
-              <goals>
-                <goal>attach</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>${maven-resources-plugin.version}</version>
+        <executions>
+          <execution>
+            <id>filter-extra-resources</id>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <phase>process-resources</phase>
+            <configuration>
+              <outputDirectory>${project.build.directory}/fabric8</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>src/main/fabric8</directory>
+                  <filtering>true</filtering>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>io.fabric8</groupId>
+        <artifactId>fabric8-maven-plugin</artifactId>
+        <version>${fabric8.version}</version>
+        <executions>
+          <execution>
+            <id>json</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>json</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>attach</id>
+            <phase>package</phase>
+            <goals>
+              <goal>attach</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
       <!-- plugin goals have to be executed in order -->
       <!-- 1. install the bundle -->
       <plugin>
@@ -318,7 +320,8 @@
                 <assembly>
                   <basedir>/opt/jboss/deploy/</basedir>
                   <user>jboss:jboss:jboss</user>
-                  <inline xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2" xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+                  <inline xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+                          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
                     <id>${project.artifactId}</id>
                     <files>
                       <!-- copy karaf archive -->
@@ -329,7 +332,9 @@
                     </files>
                   </inline>
                 </assembly>
-                <cmd><shell>/opt/karaf/bin/deploy-and-run.sh</shell></cmd>
+                <cmd>
+                  <shell>/opt/karaf/bin/deploy-and-run.sh</shell>
+                </cmd>
               </build>
             </image>
           </images>
@@ -338,48 +343,48 @@
     </plugins>
   </build>
 
-   <profiles>
-     <profile>
-       <id>docker-build</id>
-       <build>
-         <plugins>
-           <plugin>
-             <groupId>org.jolokia</groupId>
-             <artifactId>docker-maven-plugin</artifactId>
-             <version>${docker.maven.plugin.version}</version>
-             <executions>
-               <execution>
-                 <goals>
-                   <goal>build</goal>
-                 </goals>
-                 <phase>package</phase>
-               </execution>
-             </executions>
-           </plugin>
-         </plugins>
-       </build>
-     </profile>
-     <profile>
-       <id>docker-push</id>
-       <build>
-         <plugins>
-           <plugin>
-             <groupId>org.jolokia</groupId>
-             <artifactId>docker-maven-plugin</artifactId>
-             <version>${docker.maven.plugin.version}</version>
-             <executions>
-               <execution>
-                 <goals>
-                   <goal>build</goal>
-                   <goal>push</goal>
-                 </goals>
-                 <phase>package</phase>
-               </execution>
-             </executions>
-           </plugin>
-         </plugins>
-       </build>
-     </profile>
+  <profiles>
+    <profile>
+      <id>docker-build</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.jolokia</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <version>${docker.maven.plugin.version}</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>build</goal>
+                </goals>
+                <phase>package</phase>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>docker-push</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.jolokia</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <version>${docker.maven.plugin.version}</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>build</goal>
+                  <goal>push</goal>
+                </goals>
+                <phase>package</phase>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
   </profiles>
 
   <repositories>

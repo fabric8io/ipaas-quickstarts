@@ -38,7 +38,4 @@
     <module>cxf</module>
   </modules>
 
-  <build>
-    <defaultGoal>install</defaultGoal>
-  </build>
 </project>
