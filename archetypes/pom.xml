@@ -16,7 +16,8 @@
      permissions and limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
 
@@ -31,21 +32,14 @@
   <packaging>pom</packaging>
   <name>Fabric8 :: Archetypes :: Parent</name>
 
-  <licenses>
-    <license>
-      <name>Apache License, Version 2.0</name>
-      <distribution>repo</distribution>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
-    </license>
-  </licenses>
-
   <properties>
   </properties>
 
   <modules>
     <module>cdi-camel-archetype</module>
+    <module>cdi-camel-cdi-mq-archetype</module>
     <module>cdi-camel-http-archetype</module>
-   	<module>cdi-cxf-archetype</module>
+    <module>cdi-cxf-archetype</module>
     <module>java-camel-spring-archetype</module>
    	<module>java-simple-fatjar-archetype</module>
    	<module>java-simple-mainclass-archetype</module>
@@ -66,9 +60,10 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-archetype-plugin</artifactId>
-          <version>2.2</version>
+          <version>2.4</version>
         </plugin>
       </plugins>
     </pluginManagement>
   </build>
+
 </project>

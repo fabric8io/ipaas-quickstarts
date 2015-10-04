@@ -16,7 +16,8 @@
      permissions and limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
 
@@ -30,78 +31,71 @@
   <artifactId>archetypes-catalog</artifactId>
   <name>Fabric8 :: Archetypes :: Generate</name>
 
-  <licenses>
-    <license>
-      <name>Apache License, Version 2.0</name>
-      <distribution>repo</distribution>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
-    </license>
-  </licenses>
-
   <build>
     <plugins>
       <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>exec-maven-plugin</artifactId>
-          <version>1.1.1</version>
-          <dependencies>
-            <dependency>
-              <groupId>io.fabric8</groupId>
-              <artifactId>archetype-builder</artifactId>
-              <version>${fabric8.version}</version>
-            </dependency>
-          </dependencies>
-          <executions>
-              <execution>
-                  <goals>
-                      <goal>java</goal>
-                  </goals>
-                  <phase>test-compile</phase>
-              </execution>
-          </executions>
-          <configuration>
-              <mainClass>io.fabric8.tooling.archetype.builder.Main</mainClass>
-              <classpathScope>test</classpathScope>
-              <includePluginDependencies>true</includePluginDependencies>
-              <systemProperties>
-                  <systemProperty>
-                      <key>basedir</key>
-                      <value>${basedir}</value>
-                  </systemProperty>
-                  <systemProperty>
-                      <key>outputdir</key>
-                      <value>${basedir}/../archetypes</value>
-                  </systemProperty>
-                  <systemProperty>
-                      <key>sourcedir</key>
-                      <value>${basedir}/../quickstart</value>
-                  </systemProperty>
-              </systemProperties>
-          </configuration>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.4.0</version>
+        <dependencies>
+          <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>archetype-builder</artifactId>
+            <version>${fabric8.version}</version>
+          </dependency>
+        </dependencies>
+        <executions>
+          <execution>
+            <goals>
+              <goal>java</goal>
+            </goals>
+            <phase>test-compile</phase>
+          </execution>
+        </executions>
+        <configuration>
+          <mainClass>io.fabric8.tooling.archetype.builder.Main</mainClass>
+          <classpathScope>test</classpathScope>
+          <includePluginDependencies>true</includePluginDependencies>
+          <systemProperties>
+            <systemProperty>
+              <key>basedir</key>
+              <value>${basedir}</value>
+            </systemProperty>
+            <systemProperty>
+              <key>outputdir</key>
+              <value>${basedir}/../archetypes</value>
+            </systemProperty>
+            <systemProperty>
+              <key>sourcedir</key>
+              <value>${basedir}/../quickstart</value>
+            </systemProperty>
+          </systemProperties>
+        </configuration>
       </plugin>
       <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>build-helper-maven-plugin</artifactId>
-          <version>1.9.1</version>
-          <executions>
-              <execution>
-                  <id>attach-artifacts</id>
-                  <phase>prepare-package</phase>
-                  <goals>
-                      <goal>attach-artifact</goal>
-                  </goals>
-                  <configuration>
-                      <artifacts>
-                          <artifact>
-                              <file>target/classes/archetype-catalog.xml</file>
-                              <type>xml</type>
-                              <classifier>archetype-catalog</classifier>
-                          </artifact>
-                      </artifacts>
-                  </configuration>
-              </execution>
-          </executions>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>1.9.1</version>
+        <executions>
+          <execution>
+            <id>attach-artifacts</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>attach-artifact</goal>
+            </goals>
+            <configuration>
+              <artifacts>
+                <artifact>
+                  <file>target/classes/archetype-catalog.xml</file>
+                  <type>xml</type>
+                  <classifier>archetype-catalog</classifier>
+                </artifact>
+              </artifacts>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
+
 </project>

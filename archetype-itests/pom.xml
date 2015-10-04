@@ -225,7 +225,7 @@
                   <overWrite>false</overWrite>
                 </artifactItem>
 
-                 <!--spring-boot archetypes -->
+                <!--spring-boot archetypes -->
                 <artifactItem>
                   <groupId>io.fabric8.archetypes</groupId>
                   <artifactId>spring-boot-camel-archetype</artifactId>
