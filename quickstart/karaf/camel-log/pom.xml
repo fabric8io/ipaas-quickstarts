@@ -31,7 +31,7 @@
   <version>2.2.41-SNAPSHOT</version>
   <packaging>bundle</packaging>
   <name>Fabric8 :: Quickstarts :: Karaf :: Camel Log</name>
-  <description>Camel Log Example</description>
+  <description>A simple Camel route in Karaf container</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

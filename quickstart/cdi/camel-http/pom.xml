@@ -31,9 +31,8 @@
   <version>2.2.41-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>Fabric8 :: Quickstarts :: CDI :: Camel :: HTTP</name>
-  <description>Camel route using CDI in a standalone Java Container calling the remote camel-servlet quickstart
-  </description>
+  <name>Fabric8 :: Quickstarts :: CDI :: Camel with HTTP</name>
+  <description>Camel route using CDI in a standalone Java Container calling the remote camel-servlet quickstart</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

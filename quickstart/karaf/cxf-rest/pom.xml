@@ -29,8 +29,8 @@
 
   <artifactId>quickstart-karaf-cxf-rest</artifactId>
   <packaging>bundle</packaging>
-  <name>Fabric8 :: Quickstarts :: Karaf :: CXF RESTful WebService</name>
-  <description>RESTful WebService Example using JAX-RS with Karaf</description>
+  <name>Fabric8 :: Quickstarts :: Karaf :: CXF REST</name>
+  <description>REST example using CXF in Karaf container</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

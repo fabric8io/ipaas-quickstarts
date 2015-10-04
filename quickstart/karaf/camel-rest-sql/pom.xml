@@ -30,7 +30,7 @@
   <version>2.2.41-SNAPSHOT</version>
   <packaging>bundle</packaging>
   <name>Fabric8 :: Quickstarts :: Karaf :: Camel Rest using SQL</name>
-  <description>Camel Example using Rest DSL with SQL Database</description>
+  <description>Camel Example using Rest DSL with SQL Database in Karaf container</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
