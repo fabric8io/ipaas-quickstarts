@@ -22,11 +22,11 @@
     <parent>
         <groupId>io.fabric8.archetypes</groupId>
         <artifactId>archetypes</artifactId>
-        <version>2.2.41-SNAPSHOT</version>
+        <version>2.3-SNAPSHOT</version>
     </parent>
 
-    <artifactId>cdi-camel-cdi-mq-archetype</artifactId>
-    <name>Fabric8 :: Archetypes :: Java :: Camel CDI and ActiveMQ</name>
+    <artifactId>cdi-camel-mq-archetype</artifactId>
+    <name>Fabric8 :: Archetypes :: CDI :: Camel and ActiveMQ</name>
     <packaging>maven-archetype</packaging>
 
     <description>Creates a new Camel route using CDI and ActiveMQ in a standalone Java Container</description>
