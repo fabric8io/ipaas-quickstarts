@@ -33,7 +33,7 @@
 
   <modules>
     <module>camel</module>
-    <module>camel-cdi-mq</module>
+    <module>camel-mq</module>
     <module>camel-http</module>
     <module>cxf</module>
   </modules>
