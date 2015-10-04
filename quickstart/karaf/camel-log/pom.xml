@@ -16,7 +16,8 @@
      permissions and limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
 
@@ -48,7 +49,8 @@
 
     <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
-    <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}quickstart-karaf-camellog:${project.version}</docker.image>
+    <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}quickstart-karaf-camellog:${project.version}
+    </docker.image>
     <docker.assemblyDescriptor>${basedir}/src/main/fabric8/assembly.xml</docker.assemblyDescriptor>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
     <docker.port.container.http>8181</docker.port.container.http>
@@ -228,7 +230,9 @@
             <bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}</bundle>
           </startupBundles>
           <libraries>
-            <library>mvn:org.apache.karaf.jaas/org.apache.karaf.jaas.boot/${karaf.version};type:=boot;export:=true;delegate:=true</library>
+            <library>
+              mvn:org.apache.karaf.jaas/org.apache.karaf.jaas.boot/${karaf.version};type:=boot;export:=true;delegate:=true
+            </library>
           </libraries>
         </configuration>
       </plugin>
@@ -250,7 +254,8 @@
                 <assembly>
                   <basedir>/opt/jboss/deploy/</basedir>
                   <user>jboss:jboss:jboss</user>
-                  <inline xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2" xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+                  <inline xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+                          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
                     <id>${project.artifactId}</id>
                     <files>
                       <!-- copy karaf archive -->
@@ -261,7 +266,9 @@
                     </files>
                   </inline>
                 </assembly>
-                <cmd><shell>/opt/karaf/bin/deploy-and-run.sh</shell></cmd>
+                <cmd>
+                  <shell>/opt/karaf/bin/deploy-and-run.sh</shell>
+                </cmd>
               </build>
             </image>
           </images>

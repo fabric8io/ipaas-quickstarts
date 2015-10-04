@@ -64,8 +64,7 @@
     <fabric8.service.containerPort>${http.port}</fabric8.service.containerPort>
     <fabric8.annotations.service.servicePath>quickstart-java-cxf-cdi/cxfcdi</fabric8.annotations.service.servicePath>
     <fabric8.annotations.service.protocol>REST</fabric8.annotations.service.protocol>
-    <fabric8.annotations.service.descriptionPath>quickstart-java-cxf-cdi/cxfcdi/swagger.json
-    </fabric8.annotations.service.descriptionPath>
+    <fabric8.annotations.service.descriptionPath>quickstart-java-cxf-cdi/cxfcdi/swagger.json</fabric8.annotations.service.descriptionPath>
     <fabric8.annotations.service.descriptionType>SwaggerJSON</fabric8.annotations.service.descriptionType>
 
     <fabric8.metrics.scrape>true</fabric8.metrics.scrape>
