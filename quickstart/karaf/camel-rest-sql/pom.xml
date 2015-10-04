@@ -20,13 +20,13 @@
   <parent>
     <groupId>io.fabric8.quickstarts</groupId>
     <artifactId>quickstart-karaf</artifactId>
-    <version>2.2.39-SNAPSHOT</version>
+    <version>2.2.0.redhat-034</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>quickstart-karaf-camel-rest-sql</artifactId>
-  <version>2.2.39-SNAPSHOT</version>
+  <version>2.2.0.redhat-034</version>
   <packaging>bundle</packaging>
   <name>Fabric8 :: Quickstarts :: Karaf :: Camel Rest using SQL</name>
   <description>Camel Example using Rest DSL with SQL Database</description>
@@ -37,13 +37,13 @@
     <maven-resources-plugin.version>2.6</maven-resources-plugin.version>
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
-    <fabric8.version>2.2.38</fabric8.version>
+    <fabric8.version>2.2.0.redhat-034</fabric8.version>
     <camel.version>2.15.3</camel.version>
     <docker.maven.plugin.version>0.13.3</docker.maven.plugin.version>
     <derby.version>10.10.2.0</derby.version>
     <fuse.version>6.2.1.redhat-040</fuse.version>
     <spring.features.version>3.0.4</spring.features.version>
-    <karaf.plugin.version>4.0.2.redhat-621030</karaf.plugin.version>
+    <karaf.plugin.version>4.0.2.redhat-621034</karaf.plugin.version>
     <spring.tx.feature.version>3.2.11.RELEASE_1</spring.tx.feature.version>
     <maven-install-plugin.version>2.5.2</maven-install-plugin.version>
 
