@@ -25,12 +25,12 @@
     <version>2.2.41-SNAPSHOT</version>
   </parent>
 
-  <artifactId>quickstart-java-camel-cdi-mq</artifactId>
+  <artifactId>quickstart-cdi-camel-cdi-mq</artifactId>
   <version>2.2.41-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>Fabric8 :: Quickstarts :: Java :: Camel CDI and ActiveMQ</name>
-  <description>Camel route using CDI and ActiveMQ in a standalone Java Container</description>
+  <name>Fabric8 :: Quickstarts :: CDI :: Camel and ActiveMQ</name>
+  <description>Camel route using CDI and ActiveMQ in a standalone CDI Container</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
