@@ -44,8 +44,7 @@
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <fabric8.version>2.2.41</fabric8.version>
     <docker.maven.plugin.version>0.13.5</docker.maven.plugin.version>
-    <cxf.version>3.1.2</cxf.version>
-    <cxf.plugin.version>3.0.6</cxf.plugin.version>
+    <cxf.version>3.0.4</cxf.version>
     <fuse.version>6.2.1.redhat-040</fuse.version>
     <karaf.plugin.version>4.0.2.redhat-621030</karaf.plugin.version>
     <maven-install-plugin.version>2.5.2</maven-install-plugin.version>
@@ -257,7 +256,7 @@
       <plugin>
         <groupId>org.apache.cxf</groupId>
         <artifactId>cxf-java2wadl-plugin</artifactId>
-        <version>${cxf.plugin.version}</version>
+        <version>${cxf.version}</version>
         <executions>
           <execution>
             <id>parsejavadoc</id>
@@ -509,4 +508,32 @@
       </build>
     </profile>
   </profiles>
+
+  <repositories>
+    <repository>
+      <releases>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>jboss.ea</id>
+      <name>JBoss Community Early Access Release Repository</name>
+      <url>http://origin-repository.jboss.org/nexus/content/groups/ea</url>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <releases>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>jboss.ea</id>
+      <name>JBoss Community Early Access Release Repository</name>
+      <url>http://origin-repository.jboss.org/nexus/content/groups/ea</url>
+    </pluginRepository>
+  </pluginRepositories>
+
 </project>

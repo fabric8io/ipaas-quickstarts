@@ -122,6 +122,17 @@
         <enabled>true</enabled>
       </snapshots>
     </repository>
+    <repository>
+      <releases>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>jboss.ea</id>
+      <name>JBoss Community Early Access Release Repository</name>
+      <url>http://origin-repository.jboss.org/nexus/content/groups/ea</url>
+    </repository>
   </repositories>
   <pluginRepositories>
     <pluginRepository>
@@ -134,6 +145,17 @@
       <snapshots>
         <enabled>true</enabled>
       </snapshots>
+    </pluginRepository>
+    <pluginRepository>
+      <releases>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>jboss.ea</id>
+      <name>JBoss Community Early Access Release Repository</name>
+      <url>http://origin-repository.jboss.org/nexus/content/groups/ea</url>
     </pluginRepository>
   </pluginRepositories>
 
@@ -401,211 +423,29 @@
               </execution>
             </executions>
           </plugin>
-      </plugins>
-    </build>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>ts.kube</id>
+      <properties>
+        <skipItests>false</skipItests>
+      </properties>
+    </profile>
 
-    <dependencyManagement>
-        <dependencies>
+    <profile>
+      <id>quickstarts</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+        <module>archetypes-catalog</module>
+        <module>archetypes</module>
+        <module>archetype-itests</module>
+        <module>quickstart</module>
+      </modules>
+    </profile>
 
-            <dependency>
-                <groupId>io.fabric8</groupId>
-                <artifactId>fabric8-cdi</artifactId>
-                <version>${fabric8.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>io.fabric8</groupId>
-                <artifactId>fabric8-cdi</artifactId>
-                <version>${fabric8.version}</version>
-                <type>test-jar</type>
-            </dependency>
-
-            <dependency>
-                <groupId>org.jboss.arquillian.junit</groupId>
-                <artifactId>arquillian-junit-container</artifactId>
-                <version>${arquillian.version}</version>
-                <scope>test</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>io.fabric8</groupId>
-                <artifactId>fabric8-arquillian</artifactId>
-                <version>${fabric8.version}</version>
-                <scope>test</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>io.fabric8</groupId>
-                <artifactId>kubernetes-assertions</artifactId>
-                <version>${fabric8.version}</version>
-                <scope>test</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>${junit.version}</version>
-                <scope>test</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
-    <profiles>
-        <profile>
-          <id>fabric8-snapshot</id>
-          <properties>
-            <fabric8.version>2.2.41-SNAPSHOT</fabric8.version>
-            <fabric8.release.version>2.2.22</fabric8.release.version>
-            <fabric8.dockerPrefix />
-          </properties>
-        </profile>
-
-        <profile>
-            <id>release</id>
-            <modules>
-              <module>archetypes-catalog</module>
-              <module>archetypes</module>
-              <module>archetype-itests</module>
-            </modules>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-enforcer-plugin</artifactId>
-                        <version>${maven.enforcer.plugin.version}</version>
-                        <executions>
-                            <execution>
-                                <id>enforce-no-snapshots</id>
-                                <goals>
-                                    <goal>enforce</goal>
-                                </goals>
-                                <configuration>
-                                    <rules>
-                                        <requireReleaseDeps>
-                                            <message>No Snapshots Allowed!</message>
-                                        </requireReleaseDeps>
-                                    </rules>
-                                    <fail>true</fail>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-<!--
-                    <plugin>
-                        <groupId>org.jolokia</groupId>
-                        <artifactId>docker-maven-plugin</artifactId>
-                        <version>${docker.maven.plugin.version}</version>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>build</goal>
-                                </goals>
-                                <phase>package</phase>
-                            </execution>
-                        </executions>
-                    </plugin>
--->
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>2.10.3</version>
-                        <configuration>
-                            <additionalparam>${javadoc.opts}</additionalparam>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>attach-javadocs</id>
-                                <goals>
-                                    <goal>jar</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-source-plugin</artifactId>
-                        <version>2.4</version>
-                        <executions>
-                            <execution>
-                                <id>attach-sources</id>
-                                <goals>
-                                    <goal>jar</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>license</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>com.mycila</groupId>
-                        <artifactId>license-maven-plugin</artifactId>
-                        <version>2.6</version>
-                        <configuration>
-                            <includes>
-                                <include>src/main/java/**</include>
-                                <include>src/test/java/**</include>
-                                <include>pom.xml</include>
-                                <include>**/*.xml</include>
-                                <include>**/*.cfg</include>
-                                <include>**/*.properties</include>
-                            </includes>
-                            <excludes>
-                                <!-- exclude sampel data -->
-                                <exclude>**/src/data/**</exclude>
-                                <exclude>**/resources/data/**</exclude>
-                                <!-- exclude hidden dir -->
-                                <exclude>**/.*/**</exclude>
-                            </excludes>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>check</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>ts.kube</id>
-            <properties>
-                <skipItests>false</skipItests>
-            </properties>
-        </profile>
-
-        <profile>
-          <id>quickstarts</id>
-          <activation>
-            <activeByDefault>true</activeByDefault>
-          </activation>
-          <modules>
-            <module>archetypes-catalog</module>
-            <module>archetypes</module>
-            <module>archetype-itests</module>
-            <module>quickstart</module>
-          </modules>
-        </profile>
-
-    </profiles>
+  </profiles>
 
 </project>

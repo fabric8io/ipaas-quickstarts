@@ -43,8 +43,7 @@
     <fabric8.label.group>quickstarts</fabric8.label.group>
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
-    <cxf.version>3.1.2</cxf.version>
-    <cxf.plugin.version>3.0.6</cxf.plugin.version>
+    <cxf.version>3.0.4</cxf.version>
     <docker.maven.plugin.version>0.13.5</docker.maven.plugin.version>
     <org.eclipse.jetty.version>9.2.10.v20150310</org.eclipse.jetty.version>
 
@@ -283,7 +282,7 @@
       <plugin>
         <groupId>org.apache.cxf</groupId>
         <artifactId>cxf-java2wadl-plugin</artifactId>
-        <version>${cxf.plugin.version}</version>
+        <version>${cxf.version}</version>
         <executions>
           <execution>
             <id>process-classes</id>
@@ -445,5 +444,32 @@
       </properties>
     </profile>
   </profiles>
+
+  <repositories>
+    <repository>
+      <releases>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>jboss.ea</id>
+      <name>JBoss Community Early Access Release Repository</name>
+      <url>http://origin-repository.jboss.org/nexus/content/groups/ea</url>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <releases>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>jboss.ea</id>
+      <name>JBoss Community Early Access Release Repository</name>
+      <url>http://origin-repository.jboss.org/nexus/content/groups/ea</url>
+    </pluginRepository>
+  </pluginRepositories>
 
 </project>
