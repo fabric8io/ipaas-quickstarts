@@ -176,10 +176,12 @@
             <id>add-classpath</id>
             <phase>package</phase>
             <goals>
+              <!--  create target/classpath for docker-maven-plugin's assembly to pick up  -->
               <goal>build-classpath</goal>
             </goals>
             <configuration>
               <prefix>.</prefix>
+              <pathSeparator>:</pathSeparator>
               <includeScope>runtime</includeScope>
               <outputFile>${project.build.directory}/classpath</outputFile>
             </configuration>
@@ -200,7 +202,6 @@
             </goals>
           </execution>
           <execution>
-            <!--  Attach the dependency classpath to the artefact (with an classified 'classpath') -->
             <id>attach</id>
             <phase>package</phase>
             <goals>
