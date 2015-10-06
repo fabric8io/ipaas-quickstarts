@@ -40,7 +40,7 @@
     <docker.maven.plugin.version>0.13.5</docker.maven.plugin.version>
     <cxf.version>3.1.2</cxf.version>
     <cxf.plugin.version>3.0.6</cxf.plugin.version>
-    <org.eclipse.jetty.version>9.2.10.v20150310</org.eclipse.jetty.version>
+    <jetty-version>9.2.10.v20150310</jetty-version>
 
     <http.port>9092</http.port>
 
@@ -141,51 +141,42 @@
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-server</artifactId>
-      <version>${org.eclipse.jetty.version}</version>
+      <version>${jetty-version}</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-servlet</artifactId>
-      <version>${org.eclipse.jetty.version}</version>
+      <version>${jetty-version}</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-jndi</artifactId>
-      <version>${org.eclipse.jetty.version}</version>
+      <version>${jetty-version}</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-jsp</artifactId>
-      <version>${org.eclipse.jetty.version}</version>
+      <version>${jetty-version}</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-http</artifactId>
-      <version>${org.eclipse.jetty.version}</version>
+      <version>${jetty-version}</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-io</artifactId>
-      <version>${org.eclipse.jetty.version}</version>
+      <version>${jetty-version}</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-util</artifactId>
-      <version>${org.eclipse.jetty.version}</version>
+      <version>${jetty-version}</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-security</artifactId>
-      <version>${org.eclipse.jetty.version}</version>
-    </dependency>
-
-    <!--
-        We are also building a small Java client application that we can use to test our web web services.
-        For performing the HTTP requests, we are using Apache Commons HttpClient.
-    -->
-    <dependency>
-      <groupId>commons-httpclient</groupId>
-      <artifactId>commons-httpclient</artifactId>
+      <version>${jetty-version}</version>
     </dependency>
 
     <dependency>

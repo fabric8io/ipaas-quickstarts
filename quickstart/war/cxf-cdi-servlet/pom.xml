@@ -121,16 +121,6 @@
       <version>2.2.4.Final</version>
     </dependency>
 
-
-    <!--
-        We are also building a small Java client application that we can use to test our web web services.
-        For performing the HTTP requests, we are using Apache Commons HttpClient.
-    -->
-    <dependency>
-      <groupId>commons-httpclient</groupId>
-      <artifactId>commons-httpclient</artifactId>
-    </dependency>
-
     <dependency>
       <groupId>io.swagger</groupId>
       <artifactId>swagger-jaxrs</artifactId>
