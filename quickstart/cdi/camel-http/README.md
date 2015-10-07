@@ -6,23 +6,24 @@ endpoints and beans.
 This quickstart is the client side which embeds a Camel route that triggers every 5th second,
 and calls a remote HTTP service and logs the response.
 
-The remote HTTP service is the camel-servlet-quickstart which must be up and running.
+The remote HTTP service is the `quickstart-war-camel-servlet` quicstart which must be up and running.
 
 ## Calling the remote service from a shell script
 
-You can also call the remote HTTP service from a shell script. We have provided a script named `hitme-f8.sh` (no script for windows)
-which will call the service once per second. 
+You can also call the remote HTTP service from a shell script. We have provided a script named `src/test/resources/hitme-f8.sh` (no script for windows)
+in the source code for the quickstart, not in the docker image, which will call the service once per second.
 
 You may need to add execution permission to the script before you can execute it
 
-    chmod +x hitme-f8.sh
+    chmod +x src/test/resources/hitme-f8.sh
 
 And then run the script
 
-    ./hitme-f8
+    .src/test/resources/hitme-f8.sh
 
 While the script runs, you can try to scale up or down the number of pods on the remote HTTP service using either the fabric8 web console,
 or from the command line using the openshift client
 
     oc scale --replicas=3 replicationcontrollers quickstart-war-camel-servlet
+
 
