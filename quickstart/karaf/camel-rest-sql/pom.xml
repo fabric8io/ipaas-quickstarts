@@ -83,28 +83,33 @@
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-blueprint</artifactId>
+      <version>${camel.version}</version>
       <scope>runtime</scope>
     </dependency>
 
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-sql</artifactId>
+      <version>${camel.version}</version>
     </dependency>
 
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-jackson</artifactId>
+      <version>${camel.version}</version>
     </dependency>
 
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-servlet</artifactId>
+      <version>${camel.version}</version>
     </dependency>
 
     <!-- used when testing locally with mvn camel:run instead of servlet
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-jetty</artifactId>
+      <version>${camel.version}</version>
     </dependency> -->
 
     <!-- jdbc -->

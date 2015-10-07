@@ -80,6 +80,7 @@
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-blueprint</artifactId>
+      <version>${camel.version}</version>
     </dependency>
 
     <dependency>
