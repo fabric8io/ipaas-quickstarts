@@ -86,6 +86,10 @@
     <camel-version>2.15.1.redhat-621047</camel-version>
     <cxf-version>3.0.4.redhat-621047</cxf-version>
 
+    <!-- TODO use fuse version of fabric8 -->
+    <fabric8.version>2.2.43</fabric8.version>
+    <fabric8.release.version>${fabric8.version}</fabric8.release.version>
+
     <arquillian.version>1.1.8.Final</arquillian.version>
     <docker.maven.plugin.version>0.13.5</docker.maven.plugin.version>
     <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>
@@ -97,8 +101,6 @@
     <maven.surefire.plugin.version>2.17</maven.surefire.plugin.version>
     <maven-resources-plugin.version>2.6</maven-resources-plugin.version>
     <junit.version>4.12</junit.version>
-    <fabric8.version>2.2.43</fabric8.version>
-    <fabric8.release.version>${fabric8.version}</fabric8.release.version>
     <maven.require.version>3.1.1</maven.require.version>
     <maven.enforcer.plugin.version>1.4</maven.enforcer.plugin.version>
   </properties>
