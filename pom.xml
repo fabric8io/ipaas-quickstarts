@@ -80,6 +80,12 @@
 
     <docker.source.dir>${basedir}/src/main/docker</docker.source.dir>
 
+    <!-- use fuse versions -->
+    <fuse-version>6.2.1.redhat-047</fuse-version>
+    <activemq-version>5.11.0.redhat-621047</activemq-version>
+    <camel-version>2.15.1.redhat-621047</camel-version>
+    <cxf-version>3.0.4.redhat-621047</cxf-version>
+
     <arquillian.version>1.1.8.Final</arquillian.version>
     <docker.maven.plugin.version>0.13.5</docker.maven.plugin.version>
     <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>

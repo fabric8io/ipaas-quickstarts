@@ -39,10 +39,9 @@
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <fabric8.version>2.2.43</fabric8.version>
-    <camel.version>2.15.3</camel.version>
+    <camel.version>2.15.1.redhat-621047</camel.version>
     <docker.maven.plugin.version>0.13.5</docker.maven.plugin.version>
     <derby.version>10.10.2.0</derby.version>
-    <fuse.version>6.2.1.redhat-047</fuse.version>
     <spring.features.version>3.0.4</spring.features.version>
     <karaf.plugin.version>4.0.2.redhat-621030</karaf.plugin.version>
     <spring.tx.feature.version>3.2.11.RELEASE_1</spring.tx.feature.version>
@@ -136,7 +135,7 @@
       and the feature repo itself is not added in etc/org.apache.karaf.features.cfg file -->
       <groupId>org.jboss.fuse</groupId>
       <artifactId>fuse-karaf-framework</artifactId>
-      <version>${fuse.version}</version>
+      <version>${fuse-version}</version>
       <type>kar</type>
     </dependency>
 <!--
