@@ -34,12 +34,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <version.maven-surefire-plugin>2.15</version.maven-surefire-plugin>
     <version.maven-bundle-plugin>2.3.7</version.maven-bundle-plugin>
-    <maven-resources-plugin.version>2.6</maven-resources-plugin.version>
-    <build-helper-maven-plugin.version>1.9.1</build-helper-maven-plugin.version>
-    <skipTests>true</skipTests>
-    <cxf-version-range>[3,4)</cxf-version-range>
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <fabric8.version>2.2.43</fabric8.version>
@@ -174,15 +169,6 @@
     </resources>
 
     <plugins>
-      <!-- Skip Test by default and enable them only in Test profile -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>${version.maven-surefire-plugin}</version>
-        <configuration>
-          <skipTests>${skipTests}</skipTests>
-        </configuration>
-      </plugin>
       <!-- Compiler plugin enforces Java 1.7 compatibility and activates annotation processors -->
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -191,6 +177,11 @@
           <source>1.7</source>
           <target>1.7</target>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.18.1</version>
       </plugin>
 
       <plugin>
@@ -326,7 +317,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-install-plugin</artifactId>
-        <version>${maven-install-plugin.version}</version>
+        <version>2.5.2</version>
         <executions>
           <execution>
             <id>install-bundle</id>
