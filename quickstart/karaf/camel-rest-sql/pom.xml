@@ -35,7 +35,6 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <version.maven-bundle-plugin>2.3.7</version.maven-bundle-plugin>
-    <maven-resources-plugin.version>2.6</maven-resources-plugin.version>
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <fabric8.version>2.2.43</fabric8.version>
@@ -46,14 +45,11 @@
     <spring.features.version>3.0.4</spring.features.version>
     <karaf.plugin.version>4.0.1</karaf.plugin.version>
     <spring.tx.feature.version>3.2.11.RELEASE_1</spring.tx.feature.version>
-    <maven-install-plugin.version>2.5.2</maven-install-plugin.version>
 
     <docker.from>docker.io/fabric8/sti-karaf:latest</docker.from>
-
     <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
-    <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}quickstart-karaf-camelrest:${project.version}
-    </docker.image>
+    <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}quickstart-karaf-camelrest:${project.version}</docker.image>
     <docker.assemblyDescriptor>${basedir}/src/main/fabric8/assembly.xml</docker.assemblyDescriptor>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
     <docker.port.container.http>8181</docker.port.container.http>
@@ -192,7 +188,7 @@
       <!-- Compiler plugin enforces Java 1.7 compatibility and activates annotation processors -->
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.3.1</version>
+        <version>3.3</version>
         <configuration>
           <source>1.7</source>
           <target>1.7</target>
@@ -212,7 +208,7 @@
       </plugin>
       <plugin>
         <artifactId>maven-resources-plugin</artifactId>
-        <version>${maven-resources-plugin.version}</version>
+        <version>2.7</version>
         <executions>
           <execution>
             <id>filter-extra-resources</id>
@@ -258,7 +254,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-install-plugin</artifactId>
-        <version>${maven-install-plugin.version}</version>
+        <version>2.5.2</version>
         <executions>
           <execution>
             <id>install-bundle</id>
