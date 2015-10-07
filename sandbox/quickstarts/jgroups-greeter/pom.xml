@@ -36,7 +36,7 @@
     <fabric8.generateJson>false</fabric8.generateJson>
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
-    <fabric8.version>2.2.41</fabric8.version>
+    <fabric8.version>2.2.43</fabric8.version>
     <docker.maven.plugin.version>0.13.5</docker.maven.plugin.version>
 
     <!-- Docker & Fabric8 Configs -->
