@@ -36,13 +36,10 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <version.maven-bundle-plugin>2.3.7</version.maven-bundle-plugin>
 
-    <cxf-version-range>[3,4)</cxf-version-range>
-
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <fabric8.version>2.2.43</fabric8.version>
     <docker.maven.plugin.version>0.13.5</docker.maven.plugin.version>
     <cxf.version>3.0.4.redhat-621047</cxf.version>
-    <fuse.version>6.2.1.redhat-047</fuse.version>
     <karaf.plugin.version>4.0.2.redhat-621030</karaf.plugin.version>
 
     <jackson2-version>2.4.1</jackson2-version>

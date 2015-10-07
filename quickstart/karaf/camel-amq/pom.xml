@@ -39,11 +39,10 @@
     <!-- the version of the BOM, defining all the dependency versions -->
     <fabric8.version>2.2.43</fabric8.version>
     <docker.maven.plugin.version>0.13.5</docker.maven.plugin.version>
-
-    <activemq.version>5.11.1</activemq.version>
-    <camel.version>2.15.3</camel.version>
-    <karaf.version>2.4.2</karaf.version>
-    <karaf.plugin.version>2.4.0</karaf.plugin.version>
+    <karaf.plugin.version>4.0.2.redhat-621030</karaf.plugin.version>
+    <activemq.version>5.11.0.redhat-621047</activemq.version>
+    <camel.version>2.15.1.redhat-621047</camel.version>
+    <cxf.version>3.0.4.redhat-621047</cxf.version>
 
     <docker.from>docker.io/fabric8/karaf-2.4:1.0.0</docker.from>
     <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>
@@ -59,6 +58,8 @@
     <fabric8.label.group>quickstarts</fabric8.label.group>
     <fabric8.iconRef>camel</fabric8.iconRef>
   </properties>
+
+  <!-- TODO: make it karaf 4 stuff -->
 
   <dependencyManagement>
     <dependencies>

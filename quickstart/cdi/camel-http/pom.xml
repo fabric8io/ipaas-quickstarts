@@ -40,6 +40,7 @@
     <!-- the version of the BOM, defining all the dependency versions -->
     <fabric8.version>2.2.43</fabric8.version>
     <docker.maven.plugin.version>0.13.5</docker.maven.plugin.version>
+    <camel.version>2.15.1.redhat-621047</camel.version>
 
     <!-- Docker & Fabric8 Configs -->
     <docker.from>fabric8/java-jboss-openjdk8-jdk:latest</docker.from>

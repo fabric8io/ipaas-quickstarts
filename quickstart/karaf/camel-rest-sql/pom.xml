@@ -38,20 +38,18 @@
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <fabric8.version>2.2.43</fabric8.version>
-    <camel.version>2.15.1.redhat-621047</camel.version>
     <docker.maven.plugin.version>0.13.5</docker.maven.plugin.version>
+    <camel.version>2.15.1.redhat-621047</camel.version>
+    <karaf.plugin.version>4.0.2.redhat-621030</karaf.plugin.version>
+
     <derby.version>10.10.2.0</derby.version>
     <spring.features.version>3.0.4</spring.features.version>
-    <karaf.plugin.version>4.0.2.redhat-621030</karaf.plugin.version>
     <spring.tx.feature.version>3.2.11.RELEASE_1</spring.tx.feature.version>
-    <maven-install-plugin.version>2.5.2</maven-install-plugin.version>
 
     <docker.from>docker.io/fabric8/sti-karaf:latest</docker.from>
-
     <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
-    <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}quickstart-karaf-camelrest:${project.version}
-    </docker.image>
+    <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}quickstart-karaf-camelrest:${project.version}</docker.image>
     <docker.assemblyDescriptor>${basedir}/src/main/fabric8/assembly.xml</docker.assemblyDescriptor>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
     <docker.port.container.http>8181</docker.port.container.http>
@@ -134,7 +132,7 @@
       and the feature repo itself is not added in etc/org.apache.karaf.features.cfg file -->
       <groupId>org.jboss.fuse</groupId>
       <artifactId>fuse-karaf-framework</artifactId>
-      <version>${fuse-version}</version>
+      <version>${fuse.version}</version>
       <type>kar</type>
     </dependency>
 <!--
@@ -240,7 +238,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-install-plugin</artifactId>
-        <version>${maven-install-plugin.version}</version>
+        <version>2.5.2</version>
         <executions>
           <execution>
             <id>install-bundle</id>
