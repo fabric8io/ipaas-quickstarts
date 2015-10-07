@@ -10,7 +10,13 @@ This project contains the following [fabric8](http://fabric8.io/) parts:
 The build requires Maven version 3.2.5 or later.
 
     mvn install
+
+#### Bulding from Early Access     
     
+The build requires Maven version 3.2.5 or later, and to download EA artifacts from EA maven repositories. The following goal can be used to build the project:
+
+    mvn clean install -Dorg.ops4j.pax.url.mvn.repositories="+http://origin-repository.jboss.org/nexus/content/groups/ea@id=fuse.ea, http://repository.jboss.org/nexus/content/groups/ea@id=jboss.ea"
+
 #### Docker and/or Jube profiles 
 
 This build is designed so that it can be used with docker images. Docker only runs on certain platforms so we've disabled the docker build by default less enabled via a maven profile.
