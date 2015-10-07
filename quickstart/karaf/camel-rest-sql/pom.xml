@@ -77,6 +77,14 @@
   </dependencyManagement>
 
   <dependencies>
+
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-core</artifactId>
+      <version>${camel.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+
     <!--
       For this example, we will be using the OSGi Blueprint XML syntax for Apache Camel.
     -->
@@ -102,6 +110,11 @@
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-servlet</artifactId>
+      <version>${camel.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-http</artifactId>
       <version>${camel.version}</version>
     </dependency>
 
