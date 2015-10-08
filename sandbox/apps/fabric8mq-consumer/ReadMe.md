@@ -1,1 +1,0 @@
-Consumes messages via [Apache Camel](http://camel.apache.org/) from a queue on [Apache ActiveMQ](http://activemq.apache.org/). Communicates with the broker using a [kubernetes service](http://fabric8.io/v2/services.html).
