@@ -101,6 +101,8 @@
     <maven.surefire.plugin.version>2.17</maven.surefire.plugin.version>
     <maven-resources-plugin.version>2.6</maven-resources-plugin.version>
     <junit.version>4.12</junit.version>
+    <fabric8.version>2.2.45</fabric8.version>
+    <fabric8.release.version>${fabric8.version}</fabric8.release.version>
     <maven.require.version>3.1.1</maven.require.version>
     <maven.enforcer.plugin.version>1.4</maven.enforcer.plugin.version>
   </properties>
@@ -130,17 +132,6 @@
         <enabled>true</enabled>
       </snapshots>
     </repository>
-    <repository>
-      <releases>
-        <updatePolicy>never</updatePolicy>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <id>jboss.ea</id>
-      <name>JBoss Community Early Access Release Repository</name>
-      <url>http://origin-repository.jboss.org/nexus/content/groups/ea</url>
-    </repository>
   </repositories>
   <pluginRepositories>
     <pluginRepository>
@@ -153,17 +144,6 @@
       <snapshots>
         <enabled>true</enabled>
       </snapshots>
-    </pluginRepository>
-    <pluginRepository>
-      <releases>
-        <updatePolicy>never</updatePolicy>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <id>jboss.ea</id>
-      <name>JBoss Community Early Access Release Repository</name>
-      <url>http://origin-repository.jboss.org/nexus/content/groups/ea</url>
     </pluginRepository>
   </pluginRepositories>
 
