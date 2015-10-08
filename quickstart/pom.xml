@@ -51,8 +51,10 @@
     <module>java</module>
     <module>karaf</module>
     <module>cdi</module>
+    <!-- spring-boot and war is disabled and not supported 
     <module>spring-boot</module>
-    <!--<module>war</module>-->
+    <module>war</module>
+    -->
   </modules>
 
   <developers>
