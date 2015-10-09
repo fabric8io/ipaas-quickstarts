@@ -123,6 +123,19 @@
   </build>
 
   <profiles>
+
+    <!-- TODO: remove when the karaf maven plugin dont need this anymore -->
+    <profile>
+      <id>redhat-karaf-fix</id>
+       <activation>
+         <activeByDefault>true</activeByDefault>
+         <property>
+           <name>org.ops4j.pax.url.mvn.repositories</name>
+           <value>+http://origin-repository.jboss.org/nexus/content/groups/ea@id=fuse.ea, http://repository.jboss.org/nexus/content/groups/ea@id=jboss.ea</value>
+        </property>
+      </activation>
+    </profile>
+
     <!-- lets disable the tests for quickstarts on release build as the double-resting loop in mvn release plugin seems to bork things -->
     <profile>
       <id>release</id>
