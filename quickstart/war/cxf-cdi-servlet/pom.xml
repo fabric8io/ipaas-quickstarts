@@ -41,7 +41,7 @@
     <cxf.plugin.version>3.0.6</cxf.plugin.version>
     <org.eclipse.jetty.version>9.2.10.v20150310</org.eclipse.jetty.version>
 
-    <docker.from>docker.io/fabric8/tomcat-8.0</docker.from>
+    <docker.from>fabric8/tomcat-8.0</docker.from>
     <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
@@ -253,48 +253,4 @@
     </plugins>
   </build>
 
-  <profiles>
-
-    <profile>
-      <id>docker-build</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.jolokia</groupId>
-            <artifactId>docker-maven-plugin</artifactId>
-            <version>${docker.maven.plugin.version}</version>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>build</goal>
-                </goals>
-                <phase>package</phase>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>docker-push</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.jolokia</groupId>
-            <artifactId>docker-maven-plugin</artifactId>
-            <version>${docker.maven.plugin.version}</version>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>build</goal>
-                  <goal>push</goal>
-                </goals>
-                <phase>package</phase>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 </project>
