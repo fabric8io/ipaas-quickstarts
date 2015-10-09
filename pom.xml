@@ -295,7 +295,9 @@
       <modules>
         <module>archetypes-catalog</module>
         <module>archetypes</module>
+        <!-- TODO: skip itests due EA repos and download JARs dont work well
         <module>archetype-itests</module>
+        -->
       </modules>
       <build>
         <plugins>
@@ -416,7 +418,9 @@
       <modules>
         <module>archetypes-catalog</module>
         <module>archetypes</module>
+        <!-- TODO: skip itests due EA repos and download JARs dont work well
         <module>archetype-itests</module>
+        -->
         <module>quickstart</module>
       </modules>
     </profile>
