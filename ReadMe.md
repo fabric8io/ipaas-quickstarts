@@ -2,8 +2,8 @@
 
 This project contains the following [fabric8](http://fabric8.io/) parts: 
 
-* [Archetypes](archetypes) for creating new Java project using Maven Archetypes which are based on the [Quickstarts](quickstarts)
-* [Quickstarts](quickstarts) for developing Java apps on the [iPaaS](http://fabric8.io/guide/ipaas.html) 
+* [Archetypes](archetypes) for creating new Java project using Maven Archetypes which are based on the [Quickstarts](quickstart)
+* [Quickstarts](quickstart) for developing Java apps on the [iPaaS](http://fabric8.io/guide/ipaas.html) 
 
 ### Building
 
