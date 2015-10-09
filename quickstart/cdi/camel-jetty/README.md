@@ -1,4 +1,4 @@
-# Camel CDI Jetty Server QuickStart
+# Camel CDI Jetty QuickStart
 
 This example shows how to work with Camel in the Java Container using CDI to configure components,
 endpoints and beans.
@@ -42,11 +42,11 @@ You may need to add execution permission to the script before you can execute it
 
 And then run the script
 
-    .src/test/resources/hitme-f8.sh
+    src/test/resources/hitme-f8.sh
 
 While the script runs, you can try to scale up or down the number of pods on the Jetty HTTP service using either the fabric8 web console,
 or from the command line using the openshift client
 
-    oc scale --replicas=3 replicationcontrollers quickstart-cdi-camel-jetty-server
+    oc scale --replicas=3 replicationcontrollers quickstart-cdi-camel-jetty
 
 
