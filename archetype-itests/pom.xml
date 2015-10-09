@@ -178,6 +178,7 @@
                   <type>jar</type>
                   <overWrite>false</overWrite>
                 </artifactItem>
+<!--
                 <artifactItem>
                   <groupId>io.fabric8.archetypes</groupId>
                   <artifactId>java-simple-fatjar-archetype</artifactId>
@@ -185,6 +186,7 @@
                   <type>jar</type>
                   <overWrite>false</overWrite>
                 </artifactItem>
+-->
                 <artifactItem>
                   <groupId>io.fabric8.archetypes</groupId>
                   <artifactId>java-simple-mainclass-archetype</artifactId>
