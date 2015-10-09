@@ -25,7 +25,7 @@
         <version>2.2.44-SNAPSHOT</version>
     </parent>
 
-    <artifactId>cdi-camel-jetty-server-archetype</artifactId>
+    <artifactId>cdi-camel-jetty-archetype</artifactId>
     <name>Fabric8 :: Archetypes :: CDI :: Camel with Jetty as HTTP server</name>
     <packaging>maven-archetype</packaging>
 
