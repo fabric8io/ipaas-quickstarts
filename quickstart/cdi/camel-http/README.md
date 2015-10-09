@@ -8,6 +8,18 @@ and calls a remote HTTP service and logs the response.
 
 The server side provides the remote HTTP service is the `quickstart-cdi-camel-jetty-server` quicstart which must be up and running.
 
+## Running the example in fabric8
+
+It is assumed a running Kubernetes platform is already running. If not you can find details how to [get started](http://fabric8.io/guide/getStarted/index.html).
+
+The example must be built first using
+
+    mvn clean install docker:build
+
+Then the example can be deployed using:
+
+    mvn fabric8:json fabric8:apply
+
 ## Calling the remote service from a shell script
 
 You can also call the remote HTTP service from a shell script. We have provided a script named `src/test/resources/hitme-f8.sh` (no script for windows)

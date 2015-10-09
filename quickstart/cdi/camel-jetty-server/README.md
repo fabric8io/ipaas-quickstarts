@@ -9,6 +9,28 @@ exposes a HTTP service.
 The `quickstart-cdi-camel-http` is the client to this quickstart that can be started which will call this
 Jetty HTTP server every 5 second.
 
+## Running the example locally
+
+This example can run locally from Maven using:
+
+    mvn compile exec:java
+
+And you can access the HTTP service using a web browser on url:
+
+    http://localhost:8080/camel/hello
+
+## Running the example in fabric8
+
+It is assumed a running Kubernetes platform is already running. If not you can find details how to [get started](http://fabric8.io/guide/getStarted/index.html).
+
+The example must be built first using
+
+    mvn clean install docker:build
+
+Then the example can be deployed using:
+
+    mvn fabric8:json fabric8:apply
+
 ## Calling the HTTP service from a shell script
 
 You can also call the remote HTTP service from a shell script. We have provided a script named `src/test/resources/hitme-f8.sh` (no script for windows)
