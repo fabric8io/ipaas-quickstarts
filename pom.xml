@@ -27,7 +27,7 @@
 
   <groupId>io.fabric8.quickstarts</groupId>
   <artifactId>project</artifactId>
-  <version>2.2.44-SNAPSHOT</version>
+  <version>2.2.0.redhat-038</version>
   <packaging>pom</packaging>
 
   <name>Fabric8 Quickstarts</name>
@@ -88,7 +88,7 @@
     <cxf.version>3.0.4.redhat-621047</cxf.version>
 
     <!-- TODO use fuse version of fabric8 -->
-    <fabric8.version>2.2.43</fabric8.version>
+    <fabric8.version>2.2.0.redhat-038</fabric8.version>
     <fabric8.release.version>${fabric8.version}</fabric8.release.version>
 
     <arquillian.version>1.1.8.Final</arquillian.version>
@@ -102,7 +102,7 @@
     <maven.surefire.plugin.version>2.17</maven.surefire.plugin.version>
     <maven-resources-plugin.version>2.6</maven-resources-plugin.version>
     <junit.version>4.12</junit.version>
-    <fabric8.version>2.2.45</fabric8.version>
+    <fabric8.version>2.2.0.redhat-038</fabric8.version>
     <fabric8.release.version>${fabric8.version}</fabric8.release.version>
     <maven.require.version>3.1.1</maven.require.version>
     <maven.enforcer.plugin.version>1.4</maven.enforcer.plugin.version>
@@ -293,7 +293,7 @@
     <profile>
       <id>fabric8-snapshot</id>
       <properties>
-        <fabric8.version>2.2.44-SNAPSHOT</fabric8.version>
+        <fabric8.version>2.2.0.redhat-038</fabric8.version>
         <fabric8.release.version>2.2.40</fabric8.release.version>
         <fabric8.dockerPrefix/>
       </properties>

@@ -45,7 +45,7 @@
     <!-- the version of the BOM, defining all the dependency versions -->
     <hawtio.version>1.4.50</hawtio.version>
     <jgit.version>3.4.1.201406201815-r</jgit.version>
-    <cxf.version>3.0.4</cxf.version>
+    <cxf.version>3.0.4.redhat-621047</cxf.version>
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <org.eclipse.jetty.version>9.2.10.v20150310</org.eclipse.jetty.version>
