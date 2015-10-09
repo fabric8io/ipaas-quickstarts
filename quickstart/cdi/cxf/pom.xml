@@ -56,10 +56,10 @@
     <fabric8.service.name>quickstart-java-cxf-cdi</fabric8.service.name>
     <fabric8.service.port>80</fabric8.service.port>
     <fabric8.service.containerPort>${http.port}</fabric8.service.containerPort>
-    <fabric8.annotations.service.servicePath>quickstart-java-cxf-cdi/cxfcdi</fabric8.annotations.service.servicePath>
-    <fabric8.annotations.service.protocol>REST</fabric8.annotations.service.protocol>
-    <fabric8.annotations.service.descriptionPath>quickstart-java-cxf-cdi/cxfcdi/swagger.json</fabric8.annotations.service.descriptionPath>
-    <fabric8.annotations.service.descriptionType>SwaggerJSON</fabric8.annotations.service.descriptionType>
+    <fabric8.annotations.service.apiman.io.servicePath>cxfcdi</fabric8.annotations.service.apiman.io.servicePath>
+    <fabric8.annotations.service.apiman.io.serviceType>REST</fabric8.annotations.service.apiman.io.serviceType>
+    <fabric8.annotations.service.apiman.io.descriptionPath>cxfcdi/swagger.json</fabric8.annotations.service.apiman.io.descriptionPath>
+    <fabric8.annotations.service.apiman.io.descriptionType>SwaggerJSON</fabric8.annotations.service.apiman.io.descriptionType>
 
     <fabric8.label.container>java</fabric8.label.container>
     <fabric8.label.group>quickstarts</fabric8.label.group>
