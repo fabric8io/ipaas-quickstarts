@@ -39,4 +39,4 @@ If you wish to push docker images to a private or public registry you will need 
   </servers>
 ```
 
-For more details [see the docker maven plugin docs](https://github.com/rhuss/docker-maven-plugin/blob/master/doc/manual.md#authentication)
+For more details [see the docker maven plugin docs](https://github.com/rhuss/docker-maven-plugin/blob/master/doc/manual/authentication.md)
