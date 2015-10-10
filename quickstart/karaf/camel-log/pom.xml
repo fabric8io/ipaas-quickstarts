@@ -24,11 +24,11 @@
   <parent>
     <groupId>io.fabric8.quickstarts</groupId>
     <artifactId>quickstart-karaf</artifactId>
-    <version>2.2.45-SNAPSHOT</version>
+    <version>2.2.45</version>
   </parent>
 
   <artifactId>quickstart-karaf-camel-log</artifactId>
-  <version>2.2.45-SNAPSHOT</version>
+  <version>2.2.45</version>
   <packaging>bundle</packaging>
   <name>Fabric8 :: Quickstarts :: Karaf :: Camel Log</name>
   <description>A simple Camel route in Karaf container</description>
