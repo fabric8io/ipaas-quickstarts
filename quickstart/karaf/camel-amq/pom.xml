@@ -41,7 +41,7 @@
     <docker.maven.plugin.version>0.13.5</docker.maven.plugin.version>
     <!-- need to declare the Camel version as features-maven-plugin needs this property (cannot inherit from BOM in maven plugin) -->
     <activemq.version>5.12.0</activemq.version>
-    <camel.version>2.15.3</camel.version>
+    <camel.version>2.16.0</camel.version>
     <karaf.version>2.4.2</karaf.version>
     <karaf.plugin.version>2.4.0</karaf.plugin.version>
 
