@@ -112,11 +112,6 @@
       <artifactId>camel-servlet</artifactId>
       <version>${camel.version}</version>
     </dependency>
-    <dependency>
-      <groupId>org.apache.camel</groupId>
-      <artifactId>camel-http</artifactId>
-      <version>${camel.version}</version>
-    </dependency>
 
     <!-- used when testing locally with mvn camel:run instead of servlet
     <dependency>
@@ -124,7 +119,6 @@
       <artifactId>camel-jetty</artifactId>
       <version>${camel.version}</version>
     </dependency> -->
-
     <!-- jdbc -->
     <dependency>
       <groupId>org.apache.derby</groupId>
