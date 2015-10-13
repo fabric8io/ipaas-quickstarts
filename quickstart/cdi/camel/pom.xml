@@ -38,13 +38,13 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <!-- the version of the BOM, defining all the dependency versions -->
-    <fabric8.version>2.2.45</fabric8.version>
-    <docker.maven.plugin.version>0.13.5</docker.maven.plugin.version>
+    <fabric8.version>2.2.48</fabric8.version>
+    <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
     <camel.version>2.15.1.redhat-621047</camel.version>
     <hawt-app.maven.plugin.version>${fabric8.version}</hawt-app.maven.plugin.version>
 
     <!-- Docker & Fabric8 Configs -->
-    <docker.from>fabric8/java-jboss-openjdk8-jdk:latest</docker.from>
+    <docker.from>fabric8/sti-java-jboss-jdk8:latest</docker.from>
     <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>

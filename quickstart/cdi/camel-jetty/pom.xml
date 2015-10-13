@@ -196,23 +196,13 @@
       </plugin>
 
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <version>2.10</version>
+        <groupId>io.fabric8</groupId>
+        <artifactId>hawt-app-maven-plugin</artifactId>
+        <version>${hawtapp.version}</version>
         <executions>
           <execution>
-            <id>add-classpath</id>
-            <phase>package</phase>
-            <goals>
-              <!--  create target/classpath for docker-maven-plugin's assembly to pick up  -->
-              <goal>build-classpath</goal>
-            </goals>
-            <configuration>
-              <prefix>.</prefix>
-              <pathSeparator>:</pathSeparator>
-              <includeScope>runtime</includeScope>
-              <outputFile>${project.build.directory}/classpath</outputFile>
-            </configuration>
+            <id>hawt-app</id>
+            <goals><goal>build</goal></goals>
           </execution>
         </executions>
       </plugin>
@@ -228,13 +218,16 @@
               <build>
                 <from>${docker.from}</from>
                 <assembly>
-                  <basedir>/app</basedir>
-                  <descriptorRef>artifact-with-dependencies</descriptorRef>
+                  <basedir>/deployments/hawt-app</basedir>
+                  <descriptorRef>hawt-app</descriptorRef>
                 </assembly>
                 <env>
                   <JAVA_APP_JAR>${project.build.finalName}.jar</JAVA_APP_JAR>
                   <JAVA_MAIN_CLASS>org.apache.camel.cdi.Main</JAVA_MAIN_CLASS>
                 </env>
+                <cmd>
+                  <shell>/usr/local/s2i/run</shell>
+                </cmd>
               </build>
             </image>
           </images>
@@ -254,50 +247,5 @@
 
     </plugins>
   </build>
-
-  <profiles>
-    <profile>
-      <id>docker-build</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.jolokia</groupId>
-            <artifactId>docker-maven-plugin</artifactId>
-            <version>${docker.maven.plugin.version}</version>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>build</goal>
-                </goals>
-                <phase>package</phase>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>docker-push</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.jolokia</groupId>
-            <artifactId>docker-maven-plugin</artifactId>
-            <version>${docker.maven.plugin.version}</version>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>build</goal>
-                  <goal>push</goal>
-                </goals>
-                <phase>package</phase>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-  </profiles>
 
 </project>

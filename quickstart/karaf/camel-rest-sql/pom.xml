@@ -21,13 +21,13 @@
   <parent>
     <groupId>io.fabric8.quickstarts</groupId>
     <artifactId>quickstart-karaf</artifactId>
-    <version>2.2.47-SNAPSHOT</version>
+    <version>2.2.48-SNAPSHOT</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>quickstart-karaf-camel-rest-sql</artifactId>
-  <version>2.2.47-SNAPSHOT</version>
+  <version>2.2.48-SNAPSHOT</version>
   <packaging>bundle</packaging>
   <name>Fabric8 :: Quickstarts :: Karaf :: Camel Rest using SQL</name>
   <description>Camel Example using Rest DSL with SQL Database in Karaf container</description>
@@ -37,8 +37,8 @@
     <version.maven-bundle-plugin>2.3.7</version.maven-bundle-plugin>
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
-    <fabric8.version>2.2.45</fabric8.version>
-    <docker.maven.plugin.version>0.13.5</docker.maven.plugin.version>
+    <fabric8.version>2.2.48</fabric8.version>
+    <docker.maven.plugin.version>0.13.6-SNAPSHOT</docker.maven.plugin.version>
     <camel.version>2.15.1.redhat-621047</camel.version>
     <karaf.plugin.version>4.0.2.redhat-621030</karaf.plugin.version>
 
@@ -112,11 +112,6 @@
       <artifactId>camel-servlet</artifactId>
       <version>${camel.version}</version>
     </dependency>
-    <dependency>
-      <groupId>org.apache.camel</groupId>
-      <artifactId>camel-http</artifactId>
-      <version>${camel.version}</version>
-    </dependency>
 
     <!-- used when testing locally with mvn camel:run instead of servlet
     <dependency>
@@ -124,7 +119,6 @@
       <artifactId>camel-jetty</artifactId>
       <version>${camel.version}</version>
     </dependency> -->
-
     <!-- jdbc -->
     <dependency>
       <groupId>org.apache.derby</groupId>
@@ -148,12 +142,24 @@
     <dependency>
       <!-- scope is compile so all features (there is only one) are installed into startup.properties,
       and the feature repo itself is not added in etc/org.apache.karaf.features.cfg file -->
-      <groupId>org.jboss.fuse</groupId>
-      <artifactId>fuse-karaf-framework</artifactId>
-      <version>${fuse.version}</version>
+      <groupId>org.apache.karaf.features</groupId>
+      <artifactId>static</artifactId>
+      <version>${karaf.plugin.version}</version>
       <type>kar</type>
     </dependency>
-<!--
+    <dependency>
+      <groupId>org.apache.karaf.assemblies.features</groupId>
+      <artifactId>standard</artifactId>
+      <version>${karaf.version}</version>
+      <classifier>features</classifier>
+      <type>xml</type>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.camel.karaf</groupId>
+      <artifactId>apache-camel</artifactId>
+      <classifier>features</classifier>
+      <type>xml</type>
+    </dependency>
     <dependency>
       <groupId>org.apache.karaf.features</groupId>
       <artifactId>spring</artifactId>
@@ -161,7 +167,6 @@
       <classifier>features</classifier>
       <type>xml</type>
     </dependency>
--->
 
   </dependencies>
 
