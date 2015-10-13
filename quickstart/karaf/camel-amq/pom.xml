@@ -38,7 +38,7 @@
 
     <!-- the version of the BOM, defining all the dependency versions -->
     <fabric8.version>2.2.48</fabric8.version>
-    <docker.maven.plugin.version>0.13.5</docker.maven.plugin.version>
+    <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
     <!-- need to declare the Camel version as features-maven-plugin needs this property (cannot inherit from BOM in maven plugin) -->
     <activemq.version>5.12.0</activemq.version>
     <camel.version>2.16.0</camel.version>
