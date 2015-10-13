@@ -234,9 +234,6 @@
                   <JAVA_APP_JAR>${project.build.finalName}.jar</JAVA_APP_JAR>
                   <JAVA_MAIN_CLASS>org.apache.camel.cdi.Main</JAVA_MAIN_CLASS>
                 </env>
-                <cmd>
-                  <shell>/usr/local/s2i/run</shell>
-                </cmd>
               </build>
             </image>
           </images>

@@ -44,7 +44,7 @@
     <camel.version>2.16.0</camel.version>
 
     <!-- Docker & Fabric8 Configs -->
-    <docker.from>fabric8/sti-java-jboss-jdk8:latest</docker.from>
+    <docker.from>fabric8/sti-java-jboss-jdk8:1.0.14</docker.from>
     <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
@@ -231,9 +231,6 @@
                   <JAVA_APP_JAR>${project.build.finalName}.jar</JAVA_APP_JAR>
                   <JAVA_MAIN_CLASS>org.apache.camel.cdi.Main</JAVA_MAIN_CLASS>
                 </env>
-                <cmd>
-                  <shell>/usr/local/s2i/run</shell>
-                </cmd>
               </build>
             </image>
           </images>
@@ -252,4 +249,17 @@
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <id>fabric8</id>
+
+      <properties>
+        <fabric8.recreate>true</fabric8.recreate>
+      </properties>
+      <build>
+        <defaultGoal>clean install docker:build fabric8:json fabric8:apply</defaultGoal>
+      </build>
+    </profile>
+  </profiles>
 </project>
