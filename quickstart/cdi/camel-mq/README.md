@@ -1,4 +1,4 @@
-# Camel CDI ActiveMQ QuickStart
+# CDI Camel MQ QuickStart
 
 This example shows how to use Camel in the Java Container using CDI to connect to an ActiveMQ broker hosted in Kubernetes.
 

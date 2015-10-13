@@ -152,6 +152,19 @@
           </images>
         </configuration>
       </plugin>
+
+      <!-- allows the route to be ran via 'mvn exec:java' -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.4.0</version>
+        <configuration>
+          <mainClass>io.fabric8.quickstarts.java.simple.fatjar.Main</mainClass>
+          <includePluginDependencies>false</includePluginDependencies>
+        </configuration>
+      </plugin>
+
     </plugins>
   </build>
+
 </project>
