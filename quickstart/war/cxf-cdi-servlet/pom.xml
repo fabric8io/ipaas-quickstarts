@@ -115,6 +115,20 @@
       <version>${cxf.version}</version>
     </dependency>
 
+    <!-- needed for running locally with jetty:run -->
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-servlet</artifactId>
+      <version>${org.eclipse.jetty.version}</version>
+      <scope>optional</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-transports-http-jetty</artifactId>
+      <version>${cxf.version}</version>
+      <scope>optional</scope>
+    </dependency>
+
     <dependency>
       <groupId>org.jboss.weld.servlet</groupId>
       <artifactId>weld-servlet</artifactId>
@@ -250,7 +264,18 @@
         </configuration>
       </plugin>
 
+      <!-- so we can run mvn jetty:run -->
+      <plugin>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <version>${org.eclipse.jetty.version}</version>
+        <configuration>
+          <httpConnector>
+            <port>8080</port>
+          </httpConnector>
+        </configuration>
+      </plugin>
+
     </plugins>
   </build>
-
 </project>
