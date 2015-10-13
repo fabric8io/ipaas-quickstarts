@@ -40,6 +40,7 @@
     <fabric8.version>2.2.48</fabric8.version>
     <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
     <camel.version>2.16.0</camel.version>
+    <jetty.plugin.version>9.2.11.v20150529</jetty.plugin.version>
 
     <docker.from>fabric8/tomcat-8.0</docker.from>
     <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>
@@ -168,6 +169,19 @@
           </execution>
         </executions>
       </plugin>
+
+      <!-- so we can run mvn jetty:run -->
+      <plugin>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <version>${jetty.plugin.version}</version>
+        <configuration>
+          <httpConnector>
+            <port>8080</port>
+          </httpConnector>
+        </configuration>
+      </plugin>
+
     </plugins>
   </build>
 </project>

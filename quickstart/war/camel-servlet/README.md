@@ -1,141 +1,65 @@
-# Camel Servlet QuickStart
+# War Camel Servlet QuickStart
 
 This example demonstrates how you can use Servlet to expose a http
 service in a Camel route, and run that in a servlet container such as
 Apache Tomcat. 
 
-The Camel route is illustrated in the figure below. The
-`servlet:hello` endpoint is listening for HTTP requests, and being
-routed using the Content Based Router.
 
-![Camel Servlet diagram](images/camel-servlet-diagram.jpg)
+### Building
 
-The request is being routed whether or not there is a HTTP query
-parameter with the name `name`. This is best illustrated as in the
-figure below, where we are running this quickstart. The first attempt
-there is no `name` parameter, and Camel returns a message that
-explains to the user, to add the parameter. In the send attempt we
-provide `?name=fabric` in the HTTP url, and Camel responses with a
-greeting message. 
+The example can be built with
 
-![Camel Servlet try](images/camel-servlet-try-quickstart.jpg)
+    mvn clean install
 
 
-# Building this example
+### Running the example locally
 
-Building and running this quickstart consists of three steps:
+The example can be run locally using the following Maven goal:
 
-## Building
+    mvn clean install jetty:run
 
-First you compile and package the WAR as usual with 
+Then you can access the service from a web browser using the following url:
 
-```bash
- # Change in this quickstart's directory if not already
- cd quickstarts/war/camel-servlet
-        
- # Build WAR
- mvn clean install
-```
+    http://localhost:8080/
 
-This copies the WAR into you local Maven repository
-(`~/.m2/repository`). This will not only build the war file, but also
-already creates the JSON descriptor for a Kubernetes deployment. 
-   
-### Create and push Docker image
 
-Next you need to create a Docker image. This is done with help of the
-[docker-maven-plugin](https://github.com/rhuss/docker-maven-plugin/blob/master/doc/manual.md). For
-this to work, the environment variable `DOCKER\_HOST` must be set or,
-alternatively, given on the command line with the option `docker.host`
-(e.g. `-Ddocker.host=tcp://docker.host:2375`)
+### Running the example in fabric8
 
-Now you can
+It is assumed a running Kubernetes platform is already running. If not you can find details how to [get started](http://fabric8.io/guide/getStarted/index.html).
 
-```bash
- # Package and build the container. Note that 'package' is required
- # here
- mvn package docker:build
-```
-     
-After the image has been build it needs to be pushed to a Docker
-registry from where Kubernetes can pick it up when it builds up its
-pods. This registry must be provided on the commandline, and if
-required, a username and password must be provided, too. You can put
-the credentials into `~/.m2/settings.xml`, too. See the section on
-[Authentication](https://github.com/rhuss/docker-maven-plugin/blob/master/doc/manual.md#authentication)
-in the docker-maven-plugin manual for details. 
+The example must be built first using
 
-```bash
- # Push to the registry
- mvn docker:push \
-     -Ddocker.registry=172.30.13.165:5000 \
-     -Ddocker.username=admin \
-     -Ddocker.password=admin
-```
+    mvn clean install docker:build
 
-### Create and apply Kubernetes configuration
+Then the example can be deployed using:
 
-The final step is to apply and send the Kubernetes descriptor to the
-Kubernetes installation. You will need to set the variable
-`KUBERNETES_MASTER` to the URL how to reach Kubernetes
-(e.g. `https://172.28.128.4:8443`). You can also select the Kubernetes
-namespace with the environment variable `KUBERNETES_NAMESPACE` (Note
-for OpenShift V3 users: You should use the namespace `default` for the
-moment, but this will be fixed in a future release of the
-fabric8-maven-plugin)
+    mvn fabric8:json fabric8:apply
 
-You can set this variables also with system properties, more
-information can be found in the documentation to
-[fabric8:apply](http://fabric8.io/guide/mavenFabric8Apply.html). 
+When the example runs in fabric8, you can use the OpenShift client tool to inspect the status
 
-```bash
- # Apply generated Kubernetes JSON to the Kubernetes Master, which
- # then in turn will create a pod and pulls our Docker images which
- # has just been pushed from the registry.
- mvn fabric8:apply
-```
+To list all the running pods:
 
-This will generate a POD with associated replication controller and a
-service. 
+    oc get pods
 
-If you are using OpenShift, you can verify this by calling
+Then find the name of the pod that runs this quickstart, and output the logs from the running pods with:
 
-```bash
- # Get all pods
- oc get pods
- 
- # ... and services
- oc get services
- 
- # ... and replication controllers
- oc get rc
-```
+    oc logs <name of pod>
 
-Finally, you can setup routes within OpenShift so that you can use a
-fixed address to reach the application. If you used the `fabric8:apply` 
-above it the routes has been created automatically. You can recreate 
-the route anytime with:
+You can also use the fabric8 [web console](http://fabric8.io/guide/console.html) to manage the
+running pods, and view logs and much more.
 
-```bash
- # Creates routes for all services which doesn't have one yet
- mvn fabric8:create-routes
-```
 
-Now you can access the example with the URL
-`https://quickstart-camelservlet.vagrant.f8` (assuming that your
-Kubernetes domain is `vagrant.f8` and this host can be resolved to
-the IP of the Kubernetes master).
+### Access services using a web browser
 
-### How to try this example
+When the application is running, you can use a web browser to access the HTTP service. Assuming that you
+have a [Vagrant setup](http://fabric8.io/guide/getStarted/vagrant.html) you can access the REST service with
+`http://quickstart-camelservlet.vagrant.f8/`.
 
-To use the application be sure to have deployed the quickstart in
-fabric8 as described above. You probably have to wait a bit until the
-pods are in state `running`. If you are on OpenShift, you can use `oc
-get pods` to check the status of all pods.
+Notice: As it depends on your OpenShift setup, the hostname (route) might vary. Verify with `oc get routes` which
+hostname is valid for you.
 
-If you set up the OpenShift routes, you can simply go to
-`http://quickstart-camelservlet.vagrant.f8`. Otherwise, you should
-check for the service IP (on OpenShift with `oc get services`) and
-use this. 
 
-Follow the instruction from here to test this super-simple example.
+### More details
+
+You can find more details about running the quickstart [examples](http://fabric8.io/guide/getStarted/example.html) on the website.
+
