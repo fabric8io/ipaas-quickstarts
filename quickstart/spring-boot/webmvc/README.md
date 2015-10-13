@@ -22,6 +22,7 @@ Then you can access the service using the following url from a web browser:
 
     http://localhost:8080/ip
 
+
 ### Running the example in fabric8
 
 It is assumed a running Kubernetes platform is already running. If not you can find details how to [get started](http://fabric8.io/guide/getStarted/index.html).
@@ -55,7 +56,7 @@ have a [Vagrant setup](http://fabric8.io/guide/getStarted/vagrant.html) you can 
 `http://springboot-webmvc.vagrant.f8/`.
 
 Notice: As it depends on your OpenShift setup, the hostname (route) might vary. Verify with `oc get routes` which
-hostname is valid for you
+hostname is valid for you.
 
 The URL `http://springboot-webmvc.vagrant.f8/ip` can be used to obtain the IP address to show service load-balancing
 when running with multiple pods.
