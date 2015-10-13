@@ -39,6 +39,7 @@
 
     <!-- the version of the BOM, defining all the dependency versions -->
     <fabric8.version>2.2.48</fabric8.version>
+    <hawtapp.version>${fabric8.version}</hawtapp.version>
     <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
     <camel.version>2.15.1.redhat-621047</camel.version>
     <hawt-app.maven.plugin.version>${fabric8.version}</hawt-app.maven.plugin.version>

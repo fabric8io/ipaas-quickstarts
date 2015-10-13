@@ -39,7 +39,8 @@
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <fabric8.version>2.2.48</fabric8.version>
-    <docker.maven.plugin.version>0.13.5</docker.maven.plugin.version>
+    <hawtapp.version>${fabric8.version}</hawtapp.version>
+    <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
 
     <!-- Docker & Fabric8 Configs -->
     <docker.from>fabric8/sti-java-jboss-jdk8:latest</docker.from>
