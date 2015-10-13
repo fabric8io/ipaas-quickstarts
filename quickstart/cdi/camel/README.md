@@ -1,9 +1,10 @@
-# Camel CDI QuickStart
+# CDI Camel QuickStart
 
 This example shows how to work with Camel in the Java Container using CDI to configure components,
 endpoints and beans.
 
 This example is implemented using Java code with CDI injected resources such as Camel endpoints and Java beans.
+
 
 ### Building
 
@@ -11,11 +12,13 @@ The example can be built with
 
     mvn clean install
 
+
 ### Running the example locally
 
 The example can be run locally using the following Maven goal:
 
     mvn clean install exec:java
+
 
 ### Running the example in fabric8
 
