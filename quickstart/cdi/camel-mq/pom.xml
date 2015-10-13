@@ -42,7 +42,7 @@
     <fabric8.version>2.2.48</fabric8.version>
     <fabric8.version>2.2.47</fabric8.version>
     <hawtapp.version>${fabric8.version}</hawtapp.version>
-    <docker.maven.plugin.version>0.13.6-SNAPSHOT</docker.maven.plugin.version>
+    <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
     <camel.version>2.16.0</camel.version>
     <activemq.version>5.12.0</activemq.version>
 
@@ -214,8 +214,10 @@
         <executions>
           <execution>
             <id>hawt-app</id>
-            <phase>package</phase>
             <goals><goal>build</goal></goals>
+            <configuration>
+              <javaMainClass>org.apache.camel.cdi.Main</javaMainClass>
+            </configuration>
           </execution>
         </executions>
       </plugin>

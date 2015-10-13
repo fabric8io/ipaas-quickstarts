@@ -177,8 +177,10 @@
         <executions>
           <execution>
             <id>hawt-app</id>
-            <phase>package</phase>
             <goals><goal>build</goal></goals>
+            <configuration>
+              <javaMainClass>org.apache.camel.spring.Main</javaMainClass>
+            </configuration>
           </execution>
         </executions>
       </plugin>

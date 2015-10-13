@@ -369,8 +369,10 @@
         <executions>
           <execution>
             <id>hawt-app</id>
-            <phase>package</phase>
             <goals><goal>build</goal></goals>
+            <configuration>
+              <javaMainClass>io.fabric8.quickstarts.cxfcdi.ApplicationStarter</javaMainClass>
+            </configuration>
           </execution>
         </executions>
       </plugin>
