@@ -24,7 +24,7 @@
   <parent>
     <groupId>io.fabric8.quickstarts</groupId>
     <artifactId>project</artifactId>
-    <version>2.2.47-SNAPSHOT</version>
+    <version>2.2.48</version>
   </parent>
 
   <groupId>io.fabric8.archetypes</groupId>
@@ -38,8 +38,8 @@
   <modules>
     <module>cdi-camel-archetype</module>
     <module>cdi-camel-http-archetype</module>
-    <module>cdi-camel-jetty-archetype</module>
     <!--<module>cdi-camel-mq-archetype</module>-->
+    <module>cdi-camel-jetty-archetype</module>
     <module>cdi-cxf-archetype</module>
     <module>java-camel-spring-archetype</module>
     <!--<module>java-simple-fatjar-archetype</module>-->
