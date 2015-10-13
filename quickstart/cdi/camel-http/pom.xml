@@ -50,6 +50,19 @@
     <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
 
+    <!--
+      Start Prometheus metrics stuff.
+
+      This headless service is used to collect application level metrics
+      for ingestion into Prometheus.
+    -->
+    <fabric8.service.name>qs-java-camel-http</fabric8.service.name>
+    <fabric8.service.headless>true</fabric8.service.headless>
+
+    <fabric8.metrics.scrape>true</fabric8.metrics.scrape>
+    <fabric8.metrics.port>9779</fabric8.metrics.port>
+    <!-- End Prometheus metrics stuff -->
+
     <fabric8.label.component>${project.artifactId}</fabric8.label.component>
     <fabric8.label.container>java</fabric8.label.container>
     <fabric8.label.group>quickstarts</fabric8.label.group>

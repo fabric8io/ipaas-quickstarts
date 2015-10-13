@@ -55,6 +55,11 @@
     <fabric8.service.port>9102</fabric8.service.port>
     <fabric8.service.containerPort>8080</fabric8.service.containerPort>
 
+    <!-- Start Prometheus metrics stuff. -->
+    <fabric8.metrics.scrape>true</fabric8.metrics.scrape>
+    <fabric8.metrics.port>9779</fabric8.metrics.port>
+    <!-- End Prometheus metrics stuff -->
+
     <fabric8.label.component>${project.artifactId}</fabric8.label.component>
     <fabric8.label.container>java</fabric8.label.container>
     <fabric8.label.group>quickstarts</fabric8.label.group>
