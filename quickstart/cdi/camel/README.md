@@ -3,39 +3,47 @@
 This example shows how to work with Camel in the Java Container using CDI to configure components,
 endpoints and beans.
 
-This example is implemented using Java code with CDI injected resources.
-The source code is provided in the following java file `src/main/java/io/fabric8/quickstarts/camelcdi/MyRoute.java`,
-which can be viewed from [github](https://github.com/fabric8io/quickstarts/blob/master/quickstarts/java/camel-cdi/src/main/java/io/fabric8/quickstarts/camelcdi/MyRoute.java).
+This example is implemented using Java code with CDI injected resources such as Camel endpoints and Java beans.
 
-This example pickup incoming files, calls a Java bean `SomeBean` to transform the message, and writes the output to a file.
+### Building
+
+The example can be built with
+
+    mvn clean install
+
+### Running the example locally
 
 The example can be run locally using the following Maven goal:
 
     mvn clean install exec:java
 
-# Docker Image configuration
+### Running the example in fabric8
 
-This example specifies an image for the user **fabric8**, using the default registry (`index.docker.io`). Obviously 
-won't be able to push this image to `index.docker.io` because this must be done with permissions for the account `fabric8`. 
+It is assumed a running Kubernetes platform is already running. If not you can find details how to [get started](http://fabric8.io/guide/getStarted/index.html).
 
-If you want to push the image to you own account on Docker hub, use the option `-Dfabric8.dockerUser` to specify your
-account:
+The example must be built first using
 
-    mvn clean install docker:build docker:push -Dfabric8.dockerUser=morlock
+    mvn clean install docker:build
 
-Authentication for this user *morlock* must be done as described in the 
-[manual for the docker-maven-plugin](https://github.com/rhuss/docker-maven-plugin). E.g. you can use `-Ddocker.username` 
-and `-Ddocker.password` for specifying the credentials.
+Then the example can be deployed using:
 
-Alternatively you can push the image also to another registry, like the OpenShift internal registry. Assuming that
-you use the [fabric8 Vagrant image](http://fabric8.io/guide/getStarted/vagrant.html) and have set up the routes properly, 
-the OpenShift registry is available as `docker-registry.vagrant.f8:80`. If your OpenShift user is authenticated 
-against Docker as desribed in the [OpenShift Documentation](https://docs.openshift.com/enterprise/3.0/install_config/install/docker_registry.html#access)
-and a project **fabric8** exists (`oc new-project fabric8` if required), then you can push to this registry with
+    mvn fabric8:json fabric8:apply
 
-    mvn clean install docker:build docker:push -Dfabric8.dockerPrefix="docker-registry.vagrant.f8:80/" \
-                                               -Ddocker.username=$(oc whoami) \
-                                               -Ddocker.password=$(oc whoami -t)
+When the example runs in fabric8, you can use the OpenShift client tool to inspect the status
 
-Please note the trailing `/` at the end of the prefix. This is mandatory.
- 
+To list all the running pods:
+
+    oc get pods
+
+Then find the name of the pod that runs this quickstart, and output the logs from the running pods with:
+
+    oc logs <name of pod>
+
+You can also use the fabric8 [web console](http://fabric8.io/guide/console.html) to manage the
+running pods, and view logs and much more.
+
+
+### More details
+
+You can find more details about running the quickstart [examples](http://fabric8.io/guide/getStarted/example.html) on the website.
+
