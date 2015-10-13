@@ -38,7 +38,7 @@
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <fabric8.version>2.2.48</fabric8.version>
-    <docker.maven.plugin.version>0.13.6-SNAPSHOT</docker.maven.plugin.version>
+    <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
     <camel.version>2.15.1.redhat-621047</camel.version>
     <karaf.plugin.version>4.0.2.redhat-621030</karaf.plugin.version>
 

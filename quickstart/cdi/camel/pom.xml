@@ -195,8 +195,10 @@
         <executions>
           <execution>
             <id>hawt-app</id>
-            <phase>package</phase>
             <goals><goal>build</goal></goals>
+            <configuration>
+              <javaMainClass>org.apache.camel.cdi.Main</javaMainClass>
+            </configuration>
           </execution>
         </executions>
       </plugin>
