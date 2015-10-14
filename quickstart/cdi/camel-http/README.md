@@ -29,7 +29,7 @@ It is assumed a running Kubernetes platform is already running. If not you can f
 
 The example must be built first using
 
-    mvn clean install docker:build
+    mvn clean install docker:build docker:push
 
 Then the example can be deployed using:
 
@@ -47,8 +47,7 @@ Then find the name of the pod that runs this quickstart, and output the logs fro
 
 You can also use the fabric8 [web console](http://fabric8.io/guide/console.html) to manage the
 running pods, and view logs and much more.
-
-
+    
 ## Calling the remote service from a shell script
 
 You can also call the remote HTTP service from a shell script. We have provided a script named `src/test/resources/hitme-f8.sh` (no script for windows)
