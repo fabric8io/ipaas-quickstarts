@@ -41,7 +41,8 @@
     <fabric8.version>2.2.48</fabric8.version>
     <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
     <camel.version>2.15.1.redhat-621047</camel.version>
-    <karaf.version>2.4.3</karaf.version>
+    <fuse.version>6.2.1.redhat-050</fuse.version>
+    <karaf.version>2.4.0.redhat-621047</karaf.version>
     <karaf.plugin.version>4.0.2.redhat-621030</karaf.plugin.version>
 
     <docker.from>docker.io/fabric8/sti-karaf:latest</docker.from>

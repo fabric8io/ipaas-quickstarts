@@ -41,8 +41,10 @@
     <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
     <activemq.version>5.11.0.redhat-621047</activemq.version>
     <camel.version>2.15.1.redhat-621047</camel.version>
-    <karaf.plugin.version>4.0.2.redhat-621030</karaf.plugin.version>
     <cxf.version>3.0.4.redhat-621047</cxf.version>
+    <fuse.version>6.2.1.redhat-050</fuse.version>
+    <karaf.version>2.4.0.redhat-621047</karaf.version>
+    <karaf.plugin.version>4.0.2.redhat-621030</karaf.plugin.version>
 
     <docker.from>docker.io/fabric8/karaf-2.4:1.0.0</docker.from>
     <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>

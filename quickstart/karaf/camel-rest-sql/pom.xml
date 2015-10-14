@@ -40,6 +40,8 @@
     <fabric8.version>2.2.48</fabric8.version>
     <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
     <camel.version>2.15.1.redhat-621047</camel.version>
+    <fuse.version>6.2.1.redhat-050</fuse.version>
+    <karaf.version>2.4.0.redhat-621047</karaf.version>
     <karaf.plugin.version>4.0.2.redhat-621030</karaf.plugin.version>
 
     <derby.version>10.10.2.0</derby.version>
@@ -142,17 +144,10 @@
     <dependency>
       <!-- scope is compile so all features (there is only one) are installed into startup.properties,
       and the feature repo itself is not added in etc/org.apache.karaf.features.cfg file -->
-      <groupId>org.apache.karaf.features</groupId>
-      <artifactId>static</artifactId>
-      <version>${karaf.plugin.version}</version>
+      <groupId>org.jboss.fuse</groupId>
+      <artifactId>fuse-karaf-framework</artifactId>
+      <version>${fuse.version}</version>
       <type>kar</type>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.karaf.assemblies.features</groupId>
-      <artifactId>standard</artifactId>
-      <version>${karaf.version}</version>
-      <classifier>features</classifier>
-      <type>xml</type>
     </dependency>
     <dependency>
       <groupId>org.apache.camel.karaf</groupId>
