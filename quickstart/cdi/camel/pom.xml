@@ -255,7 +255,7 @@
 
   mvn -Pf8-build         ... build Docker images and create OpenShift deployment configs
   mvn -Pf8-deploy        ... f8-build + push to Docker registry + applying deployment config to OpenShift
-  mvn -Pf8-single-deploy ... deployment for a single node setup without pushing to a registry
+  mvn -Pf8-local-deploy ... deployment for a single node setup without pushing to a registry
 
   For individual goal usage please consult the fabric8 documentation
   -->
@@ -276,7 +276,7 @@
       </build>
     </profile>
     <profile>
-      <id>f8-single-deploy</id>
+      <id>f8-local-deploy</id>
       <properties>
         <fabric8.recreate>true</fabric8.recreate>
       </properties>
