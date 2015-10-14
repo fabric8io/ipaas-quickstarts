@@ -45,6 +45,7 @@
     <karaf.version>2.4.0.redhat-621050</karaf.version>
     <karaf.plugin.version>4.0.2.redhat-621038</karaf.plugin.version>
 
+    <spring.features.version>3.0.4</spring.features.version>
     <jackson2-version>2.4.1</jackson2-version>
     <swagger-version>1.3.2_1</swagger-version>
     <swagger-jaxrs-version>1.3.2_2</swagger-jaxrs-version>
@@ -168,6 +169,14 @@
       <classifier>features</classifier>
       <type>xml</type>
     </dependency>
+    <dependency>
+      <groupId>org.apache.karaf.features</groupId>
+      <artifactId>spring</artifactId>
+      <version>${spring.features.version}</version>
+      <classifier>features</classifier>
+      <type>xml</type>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -372,6 +381,7 @@
           <!-- no startupFeatures -->
           <startupFeatures>
             <feature>karaf-framework</feature>
+            <feature>shell</feature>
             <feature>jaas</feature>
             <feature>aries-blueprint</feature>
 
@@ -412,11 +422,6 @@
             </bundle>
             <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.json4s/${json4s-version}</bundle>
           </startupBundles>
-          <libraries>
-            <library>
-              mvn:org.apache.karaf.jaas/org.apache.karaf.jaas.boot/${karaf.version};type:=boot;export:=true;delegate:=true
-            </library>
-          </libraries>
         </configuration>
       </plugin>
 
