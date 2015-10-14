@@ -221,7 +221,7 @@
                   <descriptorRef>hawt-app</descriptorRef>
                 </assembly>
                 <env>
-                  <JAVA_APP_JAR>${project.build.finalName}.jar</JAVA_APP_JAR>
+                  <JAVA_LIB_DIR>/deployments/hawt-app/lib</JAVA_LIB_DIR>
                   <JAVA_MAIN_CLASS>org.apache.camel.cdi.Main</JAVA_MAIN_CLASS>
                 </env>
               </build>
