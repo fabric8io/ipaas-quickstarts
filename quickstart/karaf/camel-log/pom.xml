@@ -43,7 +43,7 @@
     <camel.version>2.15.1.redhat-621050</camel.version>
     <fuse.version>6.2.1.redhat-050</fuse.version>
     <karaf.version>2.4.0.redhat-621050</karaf.version>
-    <karaf.plugin.version>4.0.2.redhat-621030</karaf.plugin.version>
+    <karaf.plugin.version>4.0.2.redhat-621038</karaf.plugin.version>
 
     <docker.from>docker.io/fabric8/sti-karaf:latest</docker.from>
     <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>
