@@ -40,7 +40,9 @@
     <!--<module>camel-amq</module>-->
     <module>camel-log</module>
     <module>camel-rest-sql</module>
+    <!-- TODO: disabled until next fabric8 release
     <module>cxf-rest</module>
+    -->
   </modules>
 
 </project>
