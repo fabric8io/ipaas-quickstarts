@@ -39,7 +39,6 @@
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <fabric8.version>2.2.48</fabric8.version>
-    <hawtapp.version>${fabric8.version}</hawtapp.version>
     <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
 
     <!-- Docker & Fabric8 Configs -->
@@ -113,7 +112,7 @@
       <plugin>
         <groupId>io.fabric8</groupId>
         <artifactId>hawt-app-maven-plugin</artifactId>
-        <version>${hawtapp.version}</version>
+        <version>${fabric8.version}</version>
         <executions>
           <execution>
             <id>hawt-app</id>
