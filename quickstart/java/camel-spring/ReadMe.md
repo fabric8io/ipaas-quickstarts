@@ -21,7 +21,7 @@ The example can be built with
 
 The example can be run locally using the following Maven goal:
 
-    mvn camel:run
+    mvn clean install exec:java
 
 
 ### Running the example in fabric8
