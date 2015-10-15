@@ -231,7 +231,6 @@
         <version>1.4.0</version>
         <configuration>
           <mainClass>${docker.mainClass}</mainClass>
-          <includePluginDependencies>false</includePluginDependencies>
         </configuration>
       </plugin>
     </plugins>
