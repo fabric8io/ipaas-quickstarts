@@ -47,6 +47,7 @@
     <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
+    <docker.mainClass>org.apache.camel.cdi.Main</docker.mainClass>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
     <docker.port.container.http>8080</docker.port.container.http>
 
@@ -209,7 +210,7 @@
             <id>hawt-app</id>
             <goals><goal>build</goal></goals>
             <configuration>
-              <javaMainClass>org.apache.camel.cdi.Main</javaMainClass>
+              <javaMainClass>${docker.mainClass}</javaMainClass>
             </configuration>
           </execution>
         </executions>
@@ -231,7 +232,7 @@
                 </assembly>
                 <env>
                   <JAVA_LIB_DIR>/deployments/hawt-app/lib</JAVA_LIB_DIR>
-                  <JAVA_MAIN_CLASS>org.apache.camel.cdi.Main</JAVA_MAIN_CLASS>
+                  <JAVA_MAIN_CLASS>${docker.mainClass}</JAVA_MAIN_CLASS>
                 </env>
               </build>
             </image>
@@ -245,7 +246,7 @@
         <artifactId>exec-maven-plugin</artifactId>
         <version>1.4.0</version>
         <configuration>
-          <mainClass>org.apache.camel.cdi.Main</mainClass>
+          <mainClass>${docker.mainClass}</mainClass>
           <includePluginDependencies>false</includePluginDependencies>
         </configuration>
       </plugin>

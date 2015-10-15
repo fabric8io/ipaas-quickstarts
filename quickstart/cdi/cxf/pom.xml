@@ -49,6 +49,7 @@
     <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
+    <docker.mainClass>io.fabric8.quickstarts.cxfcdi.ApplicationStarter</docker.mainClass>
     <docker.port.container.http>${http.port}</docker.port.container.http>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
     <docker.port.container.metrics>9779</docker.port.container.metrics>
@@ -371,7 +372,7 @@
             <id>hawt-app</id>
             <goals><goal>build</goal></goals>
             <configuration>
-              <javaMainClass>io.fabric8.quickstarts.cxfcdi.ApplicationStarter</javaMainClass>
+              <javaMainClass>${docker.mainClass}</javaMainClass>
             </configuration>
           </execution>
         </executions>
@@ -393,7 +394,7 @@
                 </assembly>
                 <env>
                   <JAVA_LIB_DIR>/deployments/hawt-app/lib</JAVA_LIB_DIR>
-                  <JAVA_MAIN_CLASS>io.fabric8.quickstarts.cxfcdi.ApplicationStarter</JAVA_MAIN_CLASS>
+                  <JAVA_MAIN_CLASS>${docker.mainClass}</JAVA_MAIN_CLASS>
                   <HTTP_PORT>${http.port}</HTTP_PORT>
                 </env>
                 <ports>
@@ -411,7 +412,7 @@
         <artifactId>exec-maven-plugin</artifactId>
         <version>1.4.0</version>
         <configuration>
-          <mainClass>io.fabric8.quickstarts.cxfcdi.ApplicationStarter</mainClass>
+          <mainClass>${docker.mainClass}</mainClass>
           <includePluginDependencies>false</includePluginDependencies>
         </configuration>
       </plugin>
