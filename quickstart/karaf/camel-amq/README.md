@@ -8,6 +8,8 @@ This quickstarts requires the ActiveMQ broker has been deployed and running firs
 
 To install this quickstart from the command line type
 
-    mvn clean install docker:build fabric8:apply
+The example can be built and deployed using a single goal:
+
+    mvn -Pf8-local-deploy
 
 This requires you have [setup your local computer](http://fabric8.io/guide/getStarted/develop.html) to work with docker and kubernetes.

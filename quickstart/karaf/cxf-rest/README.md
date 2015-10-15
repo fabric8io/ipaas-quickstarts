@@ -24,13 +24,9 @@ The example can be built with
 
 It is assumed a running Kubernetes platform is already running. If not you can find details how to [get started](http://fabric8.io/guide/getStarted/index.html).
 
-The example must be built first using
+The example can be built and deployed using a single goal:
 
-    mvn clean install docker:build
-
-Then the example can be deployed using:
-
-    mvn fabric8:json fabric8:apply
+    mvn -Pf8-local-deploy
 
 When the example runs in fabric8, you can use the OpenShift client tool to inspect the status
 
