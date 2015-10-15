@@ -75,6 +75,8 @@
     </dependencies>
   </dependencyManagement>
 
+  <!-- TODO: update to karaf 4 -->
+
   <dependencies>
     <!--
       For this example, we will be using the OSGi Blueprint XML syntax for Apache Camel.
