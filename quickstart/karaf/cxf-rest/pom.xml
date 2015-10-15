@@ -503,6 +503,7 @@
     <profile>
       <id>f8-deploy</id>
       <properties>
+        <fabric8.imagePullPolicySnapshot>Always</fabric8.imagePullPolicySnapshot>
         <fabric8.recreate>true</fabric8.recreate>
       </properties>
       <build>

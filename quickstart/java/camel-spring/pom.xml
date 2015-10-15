@@ -232,7 +232,8 @@
     <profile>
       <id>f8-deploy</id>
       <properties>
-        <fabric8.recreate>true</fabric8.recreate>
+        <fabric8.imagePullPolicySnapshot>Always</fabric8.imagePullPolicySnapshot>
+       <fabric8.recreate>true</fabric8.recreate>
       </properties>
       <build>
         <defaultGoal>clean install docker:build docker:push fabric8:json fabric8:apply</defaultGoal>
