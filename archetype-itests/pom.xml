@@ -201,13 +201,14 @@
                 </artifactItem>
 
                 <!-- karaf archetypes -->
-                <artifactItem>
+                <!-- commented out as karaf-amq is commented see https://github.com/fabric8io/fabric8/issues/5002 -->
+                <!-- <artifactItem>
                   <groupId>io.fabric8.archetypes</groupId>
                   <artifactId>karaf-camel-amq-archetype</artifactId>
                   <version>${project.version}</version>
                   <type>jar</type>
                   <overWrite>false</overWrite>
-                </artifactItem>
+                </artifactItem> -->
                 <artifactItem>
                   <groupId>io.fabric8.archetypes</groupId>
                   <artifactId>karaf-camel-log-archetype</artifactId>
