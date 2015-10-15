@@ -44,4 +44,4 @@ hostname is valid for you.
 
 ### More details
 
-You can find more details about running the quickstart [examples](http://fabric8.io/guide/getStarted/example.html) on the website.
+You can find more details about running this [quickstart](http://fabric8.io/guide/quickstarts/running.html) on the website. This also includes instructions how to change the Docker image user and registry.

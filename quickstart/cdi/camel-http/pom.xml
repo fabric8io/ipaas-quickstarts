@@ -256,7 +256,7 @@
     </plugins>
   </build>
 
-    <!--
+  <!--
   Default sample commands:
 
   mvn -Pf8-build         ... build Docker images and create OpenShift deployment configs
@@ -275,6 +275,7 @@
     <profile>
       <id>f8-deploy</id>
       <properties>
+        <fabric8.imagePullPolicySnapshot>Always</fabric8.imagePullPolicySnapshot>
         <fabric8.recreate>true</fabric8.recreate>
       </properties>
       <build>
