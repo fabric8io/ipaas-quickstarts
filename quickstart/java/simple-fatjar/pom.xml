@@ -46,7 +46,6 @@
     <docker.from>fabric8/java-jboss-openjdk8-jdk:latest</docker.from>
     <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
-    <docker.mainClass>io.fabric8.quickstarts.java.simple.fatjar.Main</docker.mainClass>
     <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
 
     <fabric8.label.component>${project.artifactId}</fabric8.label.component>
@@ -103,7 +102,7 @@
               <createDependencyReducedPom>false</createDependencyReducedPom>
               <transformers>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                  <mainClass>${docker.mainClass}</mainClass>
+                  <mainClass>io.fabric8.quickstarts.java.simple.fatjar.Main</mainClass>
                 </transformer>
               </transformers>
             </configuration>
@@ -162,7 +161,7 @@
         <artifactId>exec-maven-plugin</artifactId>
         <version>1.4.0</version>
         <configuration>
-          <mainClass>${docker.mainClass}</mainClass>
+          <mainClass>io.fabric8.quickstarts.java.simple.fatjar.Main</mainClass>
         </configuration>
       </plugin>
 

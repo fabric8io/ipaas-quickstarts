@@ -20,7 +20,7 @@ The example can be built with
 
 The example can be run locally using the following Maven goal:
 
-    mvn clean install exec:java
+    mvn exec:java
 
 
 ### Running the example in fabric8
