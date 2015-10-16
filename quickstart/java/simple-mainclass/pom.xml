@@ -46,7 +46,6 @@
     <docker.from>fabric8/sti-java-jboss-jdk8:1.0.14</docker.from>
     <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
-    <docker.mainClass>io.fabric8.quickstarts.java.simple.Main</docker.mainClass>
     <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
 
@@ -121,7 +120,7 @@
             <id>hawt-app</id>
             <goals><goal>build</goal></goals>
             <configuration>
-              <javaMainClass>${docker.mainClass}</javaMainClass>
+              <javaMainClass>io.fabric8.quickstarts.java.simple.Main</javaMainClass>
             </configuration>
           </execution>
         </executions>
@@ -143,7 +142,7 @@
                 </assembly>
                 <env>
                   <JAVA_LIB_DIR>/deployments/hawt-app/lib</JAVA_LIB_DIR>
-                  <JAVA_MAIN_CLASS>${docker.mainClass}</JAVA_MAIN_CLASS>
+                  <JAVA_MAIN_CLASS>io.fabric8.quickstarts.java.simple.Main</JAVA_MAIN_CLASS>
                 </env>
               </build>
             </image>

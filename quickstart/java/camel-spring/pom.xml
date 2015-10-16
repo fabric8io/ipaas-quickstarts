@@ -48,7 +48,6 @@
     <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
-    <docker.mainClass>org.apache.camel.spring.Main</docker.mainClass>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
 
     <fabric8.label.component>${project.artifactId}</fabric8.label.component>
@@ -144,6 +143,13 @@
         </configuration>
       </plugin>
 
+      <!-- allows the route to be ran via 'mvn camel:run' -->
+      <plugin>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-maven-plugin</artifactId>
+        <version>${camel.version}</version>
+      </plugin>
+
       <plugin>
         <groupId>io.fabric8</groupId>
         <artifactId>fabric8-maven-plugin</artifactId>
@@ -175,7 +181,7 @@
             <id>hawt-app</id>
             <goals><goal>build</goal></goals>
             <configuration>
-              <javaMainClass>${docker.mainClass}</javaMainClass>
+              <javaMainClass>org.apache.camel.spring.Main</javaMainClass>
             </configuration>
           </execution>
         </executions>
@@ -197,7 +203,7 @@
                 </assembly>
                 <env>
                   <JAVA_LIB_DIR>/deployments/hawt-app/lib</JAVA_LIB_DIR>
-                  <JAVA_MAIN_CLASS>${docker.mainClass}</JAVA_MAIN_CLASS>
+                  <JAVA_MAIN_CLASS>org.apache.camel.spring.Main</JAVA_MAIN_CLASS>
                 </env>
               </build>
             </image>
