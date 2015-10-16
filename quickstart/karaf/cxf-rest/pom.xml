@@ -55,7 +55,7 @@
     <jackson-module-scala-version>2.1.5_2</jackson-module-scala-version>
     <swagger-scala-version>2.10.2</swagger-scala-version>
 
-    <docker.from>docker.io/fabric8/sti-karaf:latest</docker.from>
+    <docker.from>fabric8/s2i-karaf:1.1.0</docker.from>
     <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>

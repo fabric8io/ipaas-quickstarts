@@ -221,11 +221,11 @@
               <build>
                 <from>${docker.from}</from>
                 <assembly>
-                  <basedir>/deployments/hawt-app</basedir>
+                  <basedir>/deployments</basedir>
                   <descriptorRef>hawt-app</descriptorRef>
                 </assembly>
                 <env>
-                  <JAVA_LIB_DIR>/deployments/hawt-app/lib</JAVA_LIB_DIR>
+                  <JAVA_LIB_DIR>/deployments/lib</JAVA_LIB_DIR>
                   <JAVA_MAIN_CLASS>org.apache.camel.cdi.Main</JAVA_MAIN_CLASS>
                 </env>
               </build>
