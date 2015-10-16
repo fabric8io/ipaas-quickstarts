@@ -39,10 +39,10 @@
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <fabric8.version>2.2.51</fabric8.version>
     <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
-    <cxf.version>3.0.4.redhat-621050</cxf.version>
-    <cxf.plugin.version>3.0.4.redhat-621050</cxf.plugin.version>
-    <fuse.version>6.2.1.redhat-050</fuse.version>
-    <karaf.version>2.4.0.redhat-621050</karaf.version>
+    <cxf.version>3.0.4.redhat-621053</cxf.version>
+    <cxf.plugin.version>3.0.4.redhat-621053</cxf.plugin.version>
+    <fuse.version>6.2.1.redhat-053</fuse.version>
+    <karaf.version>2.4.0.redhat-621053</karaf.version>
     <karaf.plugin.version>4.0.2.redhat-621038</karaf.plugin.version>
 
     <spring.features.version>3.0.4</spring.features.version>
