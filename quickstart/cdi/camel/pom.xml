@@ -135,6 +135,13 @@
       <artifactId>shrinkwrap-resolver-impl-maven</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+      <!-- TODO we can remove the version after 2.2.52 -->
+      <version>3.0.22</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
 
