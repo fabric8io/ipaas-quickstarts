@@ -45,7 +45,7 @@
     <http.port>9092</http.port>
 
     <!-- Docker & Fabric8 Configs -->
-    <docker.from>fabric8/s2i-java:1.1.0</docker.from>
+    <docker.from>fabric8/s2i-java:1.1.1</docker.from>
     <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
@@ -64,6 +64,7 @@
     <fabric8.metrics.scrape>true</fabric8.metrics.scrape>
     <fabric8.metrics.port>9779</fabric8.metrics.port>
 
+    <fabric8.env.AB_JOLOKIA_AUTH_OPENSHIFT>true</fabric8.env.AB_JOLOKIA_AUTH_OPENSHIFT>
     <fabric8.label.container>java</fabric8.label.container>
     <fabric8.label.group>quickstarts</fabric8.label.group>
     <fabric8.label.component>${project.artifactId}</fabric8.label.component>
