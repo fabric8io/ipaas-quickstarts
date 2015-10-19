@@ -45,7 +45,7 @@
     <karaf.version>2.4.0.redhat-621054</karaf.version>
     <karaf.plugin.version>4.0.2.redhat-621038</karaf.plugin.version>
 
-    <docker.from>fabric8/s2i-karaf:1.1.0</docker.from>
+    <docker.from>fabric8/s2i-karaf:1.1.1</docker.from>
     <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}quickstart-karaf-camellog:${project.version}</docker.image>
@@ -53,6 +53,7 @@
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
     <docker.port.container.http>8181</docker.port.container.http>
 
+    <fabric8.env.AB_JOLOKIA_AUTH_OPENSHIFT>true</fabric8.env.AB_JOLOKIA_AUTH_OPENSHIFT>
     <fabric8.label.component>${project.artifactId}</fabric8.label.component>
     <fabric8.label.container>karaf</fabric8.label.container>
     <fabric8.label.group>quickstarts</fabric8.label.group>

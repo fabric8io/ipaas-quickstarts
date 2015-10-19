@@ -55,6 +55,7 @@
     <docker.port.container.http>8181</docker.port.container.http>
     <fabric8.env.AMQ_SERVICE_ID>FABRIC8MQ</fabric8.env.AMQ_SERVICE_ID>
 
+    <fabric8.env.AB_JOLOKIA_AUTH_OPENSHIFT>true</fabric8.env.AB_JOLOKIA_AUTH_OPENSHIFT>
     <fabric8.label.component>${project.artifactId}</fabric8.label.component>
     <fabric8.label.container>karaf</fabric8.label.container>
     <fabric8.label.group>quickstarts</fabric8.label.group>
