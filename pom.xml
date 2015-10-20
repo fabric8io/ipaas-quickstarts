@@ -279,7 +279,7 @@
     <profile>
       <id>fabric8-snapshot</id>
       <properties>
-        <fabric8.version>2.2.53-SNAPSHOT</fabric8.version>
+        <fabric8.version>2.2.54-SNAPSHOT</fabric8.version>
         <fabric8.release.version>2.2.40</fabric8.release.version>
         <fabric8.dockerPrefix/>
       </properties>
