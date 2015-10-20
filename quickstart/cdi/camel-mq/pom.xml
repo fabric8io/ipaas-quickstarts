@@ -39,7 +39,7 @@
 
 
     <!-- the version of the BOM, defining all the dependency versions -->
-    <fabric8.version>2.2.53</fabric8.version>
+    <fabric8.version>2.2.54</fabric8.version>
     <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
     <camel.version>2.16.0</camel.version>
     <activemq.version>5.12.0</activemq.version>
