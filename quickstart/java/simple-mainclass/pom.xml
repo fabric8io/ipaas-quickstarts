@@ -157,7 +157,7 @@
         <artifactId>exec-maven-plugin</artifactId>
         <version>1.4.0</version>
         <configuration>
-          <mainClass>org.apache.camel.spring.Main</mainClass>
+          <mainClass>io.fabric8.quickstarts.java.simple.Main</mainClass>
         </configuration>
       </plugin>
     </plugins>
