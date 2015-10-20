@@ -38,8 +38,8 @@
     <!-- the version of the BOM, defining all the dependency versions -->
     <fabric8.version>2.2.53</fabric8.version>
     <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
-    <cxf.version>3.1.2</cxf.version>
-    <cxf.plugin.version>3.0.6</cxf.plugin.version>
+    <cxf.version>3.1.3</cxf.version>
+    <cxf.plugin.version>3.1.3</cxf.plugin.version>
     <jetty-version>9.2.10.v20150310</jetty-version>
 
     <http.port>9092</http.port>
