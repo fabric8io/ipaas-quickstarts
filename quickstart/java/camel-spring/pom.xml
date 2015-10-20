@@ -231,7 +231,7 @@
         <artifactId>exec-maven-plugin</artifactId>
         <version>1.4.0</version>
         <configuration>
-          <mainClass>${docker.mainClass}</mainClass>
+          <mainClass>org.apache.camel.spring.Main</mainClass>
         </configuration>
       </plugin>
     </plugins>
