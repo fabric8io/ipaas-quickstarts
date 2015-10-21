@@ -40,6 +40,9 @@
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <fabric8.version>2.2.54</fabric8.version>
     <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
+
+
+
     <camel.version>2.15.1.redhat-621054</camel.version>
     <fuse.version>6.2.1.redhat-050</fuse.version>
     <karaf.version>2.4.0.redhat-621054</karaf.version>
@@ -77,7 +80,6 @@
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-core</artifactId>
-      <version>${camel.version}</version>
       <scope>runtime</scope>
     </dependency>
 
@@ -87,7 +89,6 @@
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-blueprint</artifactId>
-      <version>${camel.version}</version>
       <scope>runtime</scope>
     </dependency>
 
@@ -110,6 +111,7 @@
         <filtering>true</filtering>
       </resource>
     </resources>
+
     <plugins>
       <!-- Compiler plugin enforces Java 1.7 compatibility and activates annotation processors -->
       <plugin>
@@ -141,6 +143,16 @@
             </configuration>
           </execution>
         </executions>
+      </plugin>
+      <!-- Allows the routes to be run via 'mvn camel:run' -->
+      <plugin>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-maven-plugin</artifactId>
+        <version>${camel.version}</version>
+        <configuration>
+          <!-- Tell camel run plugin to load application from the blueprint file -->
+          <useBlueprint>true</useBlueprint>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.felix</groupId>

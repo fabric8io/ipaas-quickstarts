@@ -39,6 +39,10 @@
     <!-- the version of the BOM, defining all the dependency versions -->
     <fabric8.version>2.2.54</fabric8.version>
     <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
+
+
+
+    <!-- need to declare the Camel version as features-maven-plugin needs this property (cannot inherit from BOM in maven plugin) -->
     <activemq.version>5.11.0.redhat-621054</activemq.version>
     <camel.version>2.15.1.redhat-621054</camel.version>
     <cxf.version>3.0.4.redhat-621054</cxf.version>
@@ -61,8 +65,6 @@
     <fabric8.label.group>quickstarts</fabric8.label.group>
     <fabric8.iconRef>camel</fabric8.iconRef>
   </properties>
-
-  <!-- TODO: make it karaf 4 stuff -->
 
   <dependencyManagement>
     <dependencies>

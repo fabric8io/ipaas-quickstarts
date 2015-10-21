@@ -39,7 +39,6 @@
     <!-- the version of the BOM, defining all the dependency versions -->
     <fabric8.version>2.2.54</fabric8.version>
     <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
-    <camel.version>2.15.1.redhat-621054</camel.version>
     <jetty.plugin.version>9.2.11.v20150529</jetty.plugin.version>
 
     <docker.from>fabric8/tomcat-8.0</docker.from>
@@ -83,12 +82,10 @@
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-spring</artifactId>
-      <version>${camel.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-servlet</artifactId>
-      <version>${camel.version}</version>
     </dependency>
 
     <!-- use log4j as logger -->

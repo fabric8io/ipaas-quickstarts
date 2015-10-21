@@ -37,9 +37,12 @@
     <!-- the version of the BOM, defining all the dependency versions -->
     <fabric8.version>2.2.54</fabric8.version>
     <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
+    <jetty.plugin.version>9.2.11.v20150529</jetty.plugin.version>
+
+
+
     <cxf.version>3.0.4.redhat-621054</cxf.version>
     <cxf.plugin.version>3.0.4.redhat-621054</cxf.plugin.version>
-    <org.eclipse.jetty.version>9.2.10.v20150310</org.eclipse.jetty.version>
 
     <docker.from>fabric8/tomcat-8.0</docker.from>
     <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>
@@ -120,7 +123,7 @@
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-servlet</artifactId>
-      <version>${org.eclipse.jetty.version}</version>
+      <version>${jetty.plugin.version}</version>
       <scope>optional</scope>
     </dependency>
     <dependency>
@@ -269,7 +272,7 @@
       <plugin>
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
-        <version>${org.eclipse.jetty.version}</version>
+        <version>${jetty.plugin.version}</version>
         <configuration>
           <httpConnector>
             <port>8080</port>
