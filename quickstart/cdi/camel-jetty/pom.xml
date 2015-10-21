@@ -40,7 +40,6 @@
     <!-- the version of the BOM, defining all the dependency versions -->
     <fabric8.version>2.2.54</fabric8.version>
     <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
-    <camel.version>2.16.0</camel.version>
 
     <!-- Docker & Fabric8 Configs -->
     <docker.from>fabric8/java-jboss-openjdk8-jdk:latest</docker.from>
@@ -83,19 +82,16 @@
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-core</artifactId>
-      <version>${camel.version}</version>
     </dependency>
 
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-cdi</artifactId>
-      <version>${camel.version}</version>
     </dependency>
 
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-jetty</artifactId>
-      <version>${camel.version}</version>
     </dependency>
 
     <!-- cdi api -->
