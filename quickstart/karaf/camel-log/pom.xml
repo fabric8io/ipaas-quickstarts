@@ -144,16 +144,6 @@
           </execution>
         </executions>
       </plugin>
-      <!-- Allows the routes to be run via 'mvn camel:run' -->
-      <plugin>
-        <groupId>org.apache.camel</groupId>
-        <artifactId>camel-maven-plugin</artifactId>
-        <version>${camel.version}</version>
-        <configuration>
-          <!-- Tell camel run plugin to load application from the blueprint file -->
-          <useBlueprint>true</useBlueprint>
-        </configuration>
-      </plugin>
       <plugin>
         <groupId>org.apache.felix</groupId>
         <artifactId>maven-bundle-plugin</artifactId>

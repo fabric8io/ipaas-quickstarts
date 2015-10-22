@@ -10,13 +10,6 @@ The example can be built with
     mvn clean install
 
 
-### Running the example locally
-
-The example can be run locally using the following Maven goal:
-
-    mvn camel:run
-
-
 ### Running the example in fabric8
 
 It is assumed a running Kubernetes platform is already running. If not you can find details how to [get started](http://fabric8.io/guide/getStarted/index.html).
