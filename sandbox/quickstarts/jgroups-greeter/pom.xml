@@ -65,12 +65,11 @@
   </dependencyManagement>
 
   <dependencies>
+
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>fabric8-jgroups</artifactId>
-      <!-- TODO should not need this as its in the BOM -->
-      <version>${fabric8.version}</version>
-    </dependency>
+   </dependency>
 
     <dependency>
       <groupId>org.jboss.arquillian.junit</groupId>
