@@ -11,20 +11,17 @@ The build requires Maven version 3.2.5 or later.
 
     mvn clean install
     
-#### Docker and/or Jube profiles 
-
-This build is designed so that it can be used with docker images. Docker only runs on certain platforms so we've disabled the docker build by default less enabled via a maven profile.
-
-* **docker-build** builds docker images locally
-* **docker-push** pushes docker images (i.e. when releasing to the public docker registry or a local registry of **$DOCKER_REGISTRY** is defined to point to a local docker registry
-
 #### Building docker images
 
-As described above you need to use the **docker-build** profile or to push the images (when doing a release) you use **docker-push**.
+The docker images can be buily by using the `f8-build` maven profile:
 
-    mvn clean install -Pdocker-build
+    mvn -Pf8-build
 
-### Pushing docker images
+### Pushing docker images 
+
+The docker images can be built and pushed using the following maven command:
+
+   mvn -Pf8-build docker:push
 
 If you wish to push docker images to a private or public registry you will need to add a section to your **~/.m2/settings.xml** file with a login/pwd:
 
