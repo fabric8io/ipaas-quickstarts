@@ -95,17 +95,14 @@
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-sql</artifactId>
-      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-jackson</artifactId>
-      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-servlet</artifactId>
-      <scope>runtime</scope>
     </dependency>
 
     <!-- embedded database -->
@@ -268,6 +265,8 @@
             <feature>camel-jackson</feature>
           </startupFeatures>
           <startupBundles>
+            <bundle>mvn:org.ops4j.pax.logging/pax-logging-api/1.8.4</bundle>
+            <bundle>mvn:org.ops4j.pax.logging/pax-logging-service/1.8.4</bundle>
             <bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}</bundle>
           </startupBundles>
           <libraries>
