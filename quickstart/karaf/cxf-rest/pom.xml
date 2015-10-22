@@ -194,36 +194,6 @@
         <version>2.18.1</version>
       </plugin>
 
-      <plugin>
-        <artifactId>maven-resources-plugin</artifactId>
-        <version>2.7</version>
-        <executions>
-          <execution>
-            <id>filter-extra-resources</id>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <phase>process-resources</phase>
-            <configuration>
-              <outputDirectory>${project.build.directory}/fabric8</outputDirectory>
-              <resources>
-                <resource>
-                  <directory>src/main/fabric8</directory>
-                  <filtering>true</filtering>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
-          <execution>
-            <id>filter</id>
-            <phase>generate-resources</phase>
-            <goals>
-              <goal>resources</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-
       <!-- Need to setup the OSGi meta information here -->
       <plugin>
         <groupId>org.apache.felix</groupId>
