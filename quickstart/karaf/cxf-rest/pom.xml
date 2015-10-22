@@ -87,64 +87,8 @@
   </dependencyManagement>
 
   <dependencies>
-    <!--
-        For logging, we will use SLF4J, which is also available in the container by default.
-      -->
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <scope>provided</scope>
-    </dependency>
 
-    <!-- Test Dependencies -->
-
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <!--
-      Add the slf4j-log4j12 dependency jar for testing
-    -->
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>io.swagger</groupId>
-      <artifactId>swagger-jaxrs</artifactId>
-      <optional>true</optional>
-      <exclusions>
-        <!-- avoid this old dependency which breaks CXF -->
-        <exclusion>
-          <groupId>javax.ws.rs</groupId>
-          <artifactId>jsr311-api</artifactId>
-        </exclusion>
-      </exclusions>
-      <scope>provided</scope>
-    </dependency>
-
-    <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-core</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-annotations</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-databind</artifactId>
-    </dependency>
-
-    <dependency>
-        <groupId>com.fasterxml.jackson.module</groupId>
-        <artifactId>jackson-module-jaxb-annotations</artifactId>
-    </dependency>
-
+    <!-- cxf -->
     <dependency>
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-core</artifactId>
@@ -159,6 +103,39 @@
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-rt-frontend-jaxrs</artifactId>
       <version>${cxf.version}</version>
+    </dependency>
+
+    <!-- swagger -->
+    <dependency>
+      <groupId>io.swagger</groupId>
+      <artifactId>swagger-jaxrs</artifactId>
+      <optional>true</optional>
+      <exclusions>
+        <!-- avoid this old dependency which breaks CXF -->
+        <exclusion>
+          <groupId>javax.ws.rs</groupId>
+          <artifactId>jsr311-api</artifactId>
+        </exclusion>
+      </exclusions>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- jackson needed for swagger -->
+    <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-core</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-annotations</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>com.fasterxml.jackson.module</groupId>
+        <artifactId>jackson-module-jaxb-annotations</artifactId>
     </dependency>
 
     <!-- Karaf microcontainer dependencies -->
@@ -252,9 +229,9 @@
         <configuration>
           <instructions>
             <Import-Package>
-              javax.ws.rs;version="[2, 3)",
-              javax.ws.rs.core;version="[2, 3)",
-              javax.ws.rs.ext;version="[2, 3)",
+              javax.ws.rs;version="[2,3)",
+              javax.ws.rs.core;version="[2,3)",
+              javax.ws.rs.ext;version="[2,3)",
               javax.xml.bind.annotation,
               org.osgi.service.blueprint,
               io.swagger.jaxrs.config,
@@ -262,8 +239,11 @@
               io.swagger.annotations,
               org.apache.cxf.transport.http,
               io.fabric8.cxf.endpoint,
-              com.fasterxml.jackson.annotation, com.fasterxml.jackson.core, com.fasterxml.jackson.databind,
-              com.fasterxml.jackson.jaxrs.json, *
+              com.fasterxml.jackson.annotation,
+              com.fasterxml.jackson.core,
+              com.fasterxml.jackson.databind,
+              com.fasterxml.jackson.jaxrs.json,
+              *
             </Import-Package>
             <Export-Package>
               io.fabric8.quickstarts.rest
@@ -404,6 +384,7 @@
             <bundle>mvn:io.fabric8/fabric8-cxf/${fabric8.version}</bundle>
             <bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}</bundle>
 
+            <!-- TODO: swagger 1.x -->
             <!-- swagger -->
             <bundle dependency='true'>mvn:org.scala-lang/scala-library/${swagger-scala-version}</bundle>
             <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.javassist/3.12.1.GA_3</bundle>
