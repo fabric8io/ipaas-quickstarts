@@ -86,39 +86,25 @@
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-core</artifactId>
-      <scope>runtime</scope>
     </dependency>
-
-    <!--
-      For this example, we will be using the OSGi Blueprint XML syntax for Apache Camel.
-    -->
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-blueprint</artifactId>
-      <scope>runtime</scope>
     </dependency>
-
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-sql</artifactId>
     </dependency>
-
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-jackson</artifactId>
     </dependency>
-
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-servlet</artifactId>
     </dependency>
 
-    <!-- used when testing locally with mvn camel:run instead of servlet
-    <dependency>
-      <groupId>org.apache.camel</groupId>
-      <artifactId>camel-jetty</artifactId>
-    </dependency> -->
-    <!-- jdbc -->
+    <!-- embedded database -->
     <dependency>
       <groupId>org.apache.derby</groupId>
       <artifactId>derby</artifactId>
@@ -129,13 +115,6 @@
       <artifactId>commons-pool</artifactId>
       <version>1.6</version>
     </dependency>
-    <!-- used when testing locally with mvn camel:run instead of servlet, interferes with karaf-maven-plugin
-        <dependency>
-          <groupId>commons-dbcp</groupId>
-          <artifactId>commons-dbcp</artifactId>
-          <version>1.4</version>
-        </dependency>
-    -->
 
     <!-- Karaf microcontainer dependencies -->
     <dependency>

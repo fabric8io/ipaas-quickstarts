@@ -90,42 +90,25 @@
   </dependencyManagement>
 
   <dependencies>
-    <!--
-        For logging, we will use SLF4J, which is also available in the container by default.
-      -->
+
+    <!-- cxf -->
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <scope>provided</scope>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-core</artifactId>
+      <version>${cxf.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-transports-http</artifactId>
+      <version>${cxf.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-frontend-jaxrs</artifactId>
+      <version>${cxf.version}</version>
     </dependency>
 
-    <!-- Test Dependencies -->
-
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <!--
-        We are also building a small Java client application that we can use to test our web web services.
-        For performing the HTTP requests, we are using Apache Commons HttpClient.
-    -->
-    <dependency>
-      <groupId>commons-httpclient</groupId>
-      <artifactId>commons-httpclient</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <!--
-      Add the slf4j-log4j12 dependency jar for testing
-    -->
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-      <scope>test</scope>
-    </dependency>
-
+    <!-- swagger -->
     <dependency>
       <groupId>com.wordnik</groupId>
       <artifactId>swagger-jaxrs_2.10</artifactId>
@@ -141,6 +124,7 @@
       <scope>provided</scope>
     </dependency>
 
+    <!-- jackson needed for swagger -->
     <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-core</artifactId>
@@ -153,26 +137,9 @@
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-databind</artifactId>
     </dependency>
-
     <dependency>
         <groupId>com.fasterxml.jackson.module</groupId>
         <artifactId>jackson-module-jaxb-annotations</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.cxf</groupId>
-      <artifactId>cxf-core</artifactId>
-      <version>${cxf.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.cxf</groupId>
-      <artifactId>cxf-rt-transports-http</artifactId>
-      <version>${cxf.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.cxf</groupId>
-      <artifactId>cxf-rt-frontend-jaxrs</artifactId>
-      <version>${cxf.version}</version>
     </dependency>
 
     <!-- Karaf microcontainer dependencies -->
@@ -266,9 +233,9 @@
         <configuration>
           <instructions>
             <Import-Package>
-              javax.ws.rs;version="[2, 3)",
-              javax.ws.rs.core;version="[2, 3)",
-              javax.ws.rs.ext;version="[2, 3)",
+              javax.ws.rs;version="[2,3)",
+              javax.ws.rs.core;version="[2,3)",
+              javax.ws.rs.ext;version="[2,3)",
               javax.xml.bind.annotation,
               org.osgi.service.blueprint,
               com.wordnik.swagger.jaxrs.config,
@@ -276,8 +243,11 @@
               com.wordnik.swagger.annotations,
               org.apache.cxf.transport.http,
               io.fabric8.cxf.endpoint,
-              com.fasterxml.jackson.annotation, com.fasterxml.jackson.core, com.fasterxml.jackson.databind,
-              com.fasterxml.jackson.jaxrs.json, *
+              com.fasterxml.jackson.annotation,
+              com.fasterxml.jackson.core,
+              com.fasterxml.jackson.databind,
+              com.fasterxml.jackson.jaxrs.json,
+              *
             </Import-Package>
             <Export-Package>
               io.fabric8.quickstarts.rest
@@ -288,7 +258,7 @@
       <plugin>
         <groupId>org.apache.cxf</groupId>
         <artifactId>cxf-java2wadl-plugin</artifactId>
-        <version>${cxf.version}</version>
+        <version>${cxf.plugin.version}</version>
         <executions>
           <execution>
             <id>parsejavadoc</id>
@@ -444,6 +414,11 @@
             </bundle>
             <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.json4s/${json4s-version}</bundle>
           </startupBundles>
+          <libraries>
+            <library>
+              mvn:org.apache.karaf.jaas/org.apache.karaf.jaas.boot/${karaf.version};type:=boot;export:=true;delegate:=true
+            </library>
+          </libraries>
         </configuration>
       </plugin>
 

@@ -80,16 +80,10 @@
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-core</artifactId>
-      <scope>runtime</scope>
     </dependency>
-
-    <!--
-     For this example, we will be using the OSGi Blueprint XML syntax for Apache Camel.
-    -->
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-blueprint</artifactId>
-      <scope>runtime</scope>
     </dependency>
 
     <!-- Karaf microcontainer dependencies -->
