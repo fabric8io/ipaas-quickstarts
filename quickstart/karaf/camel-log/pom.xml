@@ -191,11 +191,10 @@
           <!-- no startupFeatures -->
           <startupFeatures>
             <feature>karaf-framework</feature>
+            <feature>shell</feature>
             <feature>jaas</feature>
             <feature>aries-blueprint</feature>
             <feature>camel-blueprint</feature>
-            <!-- TODO remove after camel-commands are made optional under camel-core -->
-            <feature>shell</feature>
           </startupFeatures>
           <startupBundles>
             <bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}</bundle>

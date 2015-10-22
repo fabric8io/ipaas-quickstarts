@@ -115,6 +115,11 @@
       <artifactId>commons-pool</artifactId>
       <version>1.6</version>
     </dependency>
+    <dependency>
+      <groupId>org.apache.servicemix.bundles</groupId>
+      <artifactId>org.apache.servicemix.bundles.commons-dbcp</artifactId>
+      <version>1.4_3</version>
+    </dependency>
 
     <!-- Karaf microcontainer dependencies -->
     <dependency>
@@ -250,13 +255,15 @@
             <feature>camel-jms</feature>
             <feature>camel-sql</feature>
             <feature>camel-jackson</feature>
-            <!-- TODO remove after camel-commands are made optional under camel-core -->
-            <feature>shell</feature>
           </startupFeatures>
           <startupBundles>
-            <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-dbcp/1.4_3</bundle>
             <bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}</bundle>
           </startupBundles>
+          <libraries>
+            <library>
+              mvn:org.apache.karaf.jaas/org.apache.karaf.jaas.boot/${karaf.version};type:=boot;export:=true;delegate:=true
+            </library>
+          </libraries>
         </configuration>
       </plugin>
 

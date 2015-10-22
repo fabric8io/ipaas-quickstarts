@@ -343,7 +343,6 @@
           <!-- no startupFeatures -->
           <startupFeatures>
             <feature>karaf-framework</feature>
-            <feature>shell</feature>
             <feature>jaas</feature>
             <feature>aries-blueprint</feature>
 
