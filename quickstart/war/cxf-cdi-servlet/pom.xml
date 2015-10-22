@@ -41,8 +41,8 @@
 
 
 
-    <cxf.version>3.0.4.redhat-621054</cxf.version>
-    <cxf.plugin.version>3.0.4.redhat-621054</cxf.plugin.version>
+    <cxf.version>3.0.4.redhat-621069</cxf.version>
+    <cxf.plugin.version>3.0.4.redhat-621069</cxf.plugin.version>
 
     <docker.from>fabric8/tomcat-8.0</docker.from>
     <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>
