@@ -51,15 +51,15 @@ hostname is valid for you
 
 Use this URL to display the root of the REST service, which also allows to access the WADL of the service:
 
-    http://quickstart-cxf-rest.vagrant.f8/crm
+    http://quickstart-cxf-rest.vagrant.f8/cxf/crm
 
 Use this URL to display the XML representation for customer 123:
 
-    http://quickstart-cxf-rest.vagrant.f8/crm/customerservice/customers/123
+    http://quickstart-cxf-rest.vagrant.f8/cxf/crm/customerservice/customers/123
 
 You can also access the XML representation for order 223 ...
 
-    http://quickstart-cxf-rest.f8/crm/customerservice/customers/123
+    http://quickstart-cxf-rest.f8/cxf/crm/customerservice/customers/123
 
 **Note:** if you use Safari, you will only see the text elements but not the XML tags - you can view the entire document with 'View Source'
 
@@ -73,19 +73,19 @@ You can use a command-line utility, such as cURL or wget, to perform the HTTP re
 
     * Create a customer
 
-            curl -X POST -T src/test/resources/add_customer.xml -H "Content-Type: text/xml" http://quickstart-cxf-rest.f8/crm/customerservice/customers
+            curl -X POST -T src/test/resources/add_customer.xml -H "Content-Type: text/xml" http://quickstart-cxf-rest.f8/cxf/crm/customerservice/customers
 
     * Retrieve the customer instance with id 123
 
-            curl http://quickstart-cxf-rest.f8/crm/customerservice/customers/123
+            curl http://quickstart-cxf-rest.f8/cxf/crm/customerservice/customers/123
 
     * Update the customer instance with id 123
 
-            curl -X PUT -T src/test/resources/update_customer.xml -H "Content-Type: text/xml" http://quickstart-cxf-rest.f8/crm/customerservice/customers
+            curl -X PUT -T src/test/resources/update_customer.xml -H "Content-Type: text/xml" http://quickstart-cxf-rest.f8/cxf/crm/customerservice/customers
 
     * Delete the customer instance with id 123
 
-             curl -X DELETE http://quickstart-cxf-rest.f8/crm/customerservice/customers/123
+             curl -X DELETE http://quickstart-cxf-rest.f8/cxf/crm/customerservice/customers/123
 
 
 ### More details
