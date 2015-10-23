@@ -42,9 +42,8 @@
     <jetty.plugin.version>9.2.11.v20150529</jetty.plugin.version>
 
     <docker.from>fabric8/tomcat-8.0</docker.from>
-    <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
-    <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
+    <docker.image>${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
     <docker.assemblyDescriptorRef>rootWar</docker.assemblyDescriptorRef>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
     <docker.port.container.http>8080</docker.port.container.http>
