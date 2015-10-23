@@ -40,7 +40,7 @@
     <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
 
     <!-- Docker & Fabric8 Configs -->
-    <docker.from>fabric8/s2i-java:1.1.1</docker.from>
+    <docker.from>fabric8/s2i-java-rhel:1.1.5</docker.from>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
     <jgroups.port>7800</jgroups.port>
