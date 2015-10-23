@@ -40,9 +40,7 @@
     <!--<module>camel-amq</module>--> <!-- TODO: https://github.com/fabric8io/ipaas-quickstarts/issues/804 -->
     <module>camel-log</module>
     <module>camel-rest-sql</module>
-<!--  
-TODO this was failing on fabric8-cxf-plugins:2.2.0.redhat-044:java2swagger but was fine with 2.2.51
-<module>cxf-rest</module> -->
+    <module>cxf-rest</module>
   </modules>
 
 </project>
