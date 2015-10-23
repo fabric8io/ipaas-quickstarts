@@ -380,6 +380,10 @@
             </bundle>
             <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.json4s/${json4s-version}</bundle>
           </startupBundles>
+          <blacklistedBundles>
+            <bundle>mvn:org.ops4j.pax.logging/pax-logging-api/1.8.4</bundle>
+            <bundle>mvn:org.ops4j.pax.logging/pax-logging-service/1.8.4</bundle>
+          </blacklistedBundles>
           <libraries>
             <library>
               mvn:org.apache.karaf.jaas/org.apache.karaf.jaas.boot/${karaf.version};type:=boot;export:=true;delegate:=true
