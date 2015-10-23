@@ -33,7 +33,7 @@
   </description>
 
   <properties>
-    <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}influxdb:0.8.8</docker.image>
+    <docker.image>${fabric8.dockerUser}influxdb:0.8.8</docker.image>
     <docker.port.container.admin>8083</docker.port.container.admin>
     <docker.port.container.ssl>8084</docker.port.container.ssl>
     <docker.port.container.api>8086</docker.port.container.api>

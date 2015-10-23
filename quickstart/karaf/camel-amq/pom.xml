@@ -51,9 +51,8 @@
     <karaf.plugin.version>4.0.2.redhat-621045</karaf.plugin.version>
 
     <docker.from>docker.io/fabric8/karaf-2.4:1.0.0</docker.from>
-    <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
-    <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
+    <docker.image>${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
     <docker.assemblyDescriptor>${basedir}/src/main/fabric8/assembly.xml</docker.assemblyDescriptor>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
     <docker.port.container.http>8181</docker.port.container.http>

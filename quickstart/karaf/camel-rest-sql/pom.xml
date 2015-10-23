@@ -51,9 +51,8 @@
     <spring.tx.feature.version>3.2.11.RELEASE_1</spring.tx.feature.version>
 
     <docker.from>fabric8/s2i-karaf:1.1.1</docker.from>
-    <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
-    <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}quickstart-karaf-camelrest:${project.version}</docker.image>
+    <docker.image>${fabric8.dockerUser}quickstart-karaf-camelrest:${project.version}</docker.image>
     <docker.assemblyDescriptor>${basedir}/src/main/fabric8/assembly.xml</docker.assemblyDescriptor>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
     <docker.port.container.http>8181</docker.port.container.http>

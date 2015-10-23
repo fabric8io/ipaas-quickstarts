@@ -59,9 +59,8 @@
     <swagger-scala-version>2.10.2</swagger-scala-version>
 
     <docker.from>fabric8/s2i-karaf:1.1.1</docker.from>
-    <fabric8.dockerPrefix>docker.io/</fabric8.dockerPrefix>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
-    <docker.image>${fabric8.dockerPrefix}${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
+    <docker.image>${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
     <docker.assemblyDescriptor>${basedir}/src/main/fabric8/assembly.xml</docker.assemblyDescriptor>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
     <docker.port.container.http>8181</docker.port.container.http>
