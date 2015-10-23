@@ -343,6 +343,7 @@
           <startupFeatures>
             <feature>karaf-framework</feature>
             <feature>jaas</feature>
+            <feature>shell</feature>
             <feature>aries-blueprint</feature>
 
             <feature>cxf-core</feature>
@@ -382,11 +383,6 @@
             </bundle>
             <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.json4s/${json4s-version}</bundle>
           </startupBundles>
-          <libraries>
-            <library>
-              mvn:org.apache.karaf.jaas/org.apache.karaf.jaas.boot/${karaf.version};type:=boot;export:=true;delegate:=true
-            </library>
-          </libraries>
         </configuration>
       </plugin>
 
