@@ -13,7 +13,7 @@ The build requires Maven version 3.2.5 or later.
     
 #### Building docker images
 
-The docker images can be buily by using the `f8-build` maven profile:
+The docker images can be build by using the `f8-build` maven profile:
 
     mvn -Pf8-build
 
