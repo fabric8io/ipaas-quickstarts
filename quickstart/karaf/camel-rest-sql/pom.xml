@@ -45,7 +45,7 @@
     <camel.version>2.15.1.redhat-621069</camel.version>
     <fuse.version>6.2.1.redhat-050</fuse.version>
     <karaf.version>2.4.0.redhat-621069</karaf.version>
-    <karaf.plugin.version>4.0.2.redhat-621045</karaf.plugin.version>
+    <karaf.plugin.version>4.0.2.redhat-621047</karaf.plugin.version>
     <derby.version>10.10.2.0</derby.version>
     <spring.features.version>3.0.4</spring.features.version>
     <spring.tx.feature.version>3.2.11.RELEASE_1</spring.tx.feature.version>
