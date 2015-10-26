@@ -21,7 +21,9 @@ The docker images can be buily by using the `f8-build` maven profile:
 
 The docker images can be built and pushed using the following maven command:
 
-   mvn -Pf8-build docker:push
+    mvn -Pf8-build docker:push
+
+#### Pushing docker images to registry
 
 If you wish to push docker images to a private or public registry you will need to add a section to your **~/.m2/settings.xml** file with a login/pwd:
 
@@ -36,4 +38,4 @@ If you wish to push docker images to a private or public registry you will need 
   </servers>
 ```
 
-For more details [see the docker maven plugin docs](https://github.com/rhuss/docker-maven-plugin/blob/master/doc/manual/authentication.md)
+For more details [see the docker maven plugin docs](http://ro14nd.de/docker-maven-plugin/authentication.html)
