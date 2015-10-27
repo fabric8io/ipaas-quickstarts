@@ -37,15 +37,12 @@ public class MyRoutes extends RouteBuilder {
     @Inject @Uri("log:output?showExchangePattern=false&showBodyType=false&showStreams=true")
     private Endpoint resultEndpoint;
 
-    @Inject
-    private SomeBean someBean;
-
     @Override
     public void configure() throws Exception {
         // you can configure the route rule with Java DSL here
 
         from(inputEndpoint)
-            .setHeader("name", method(someBean))
+            .setHeader("name", method("counterBean"))
             .to(httpEndpoint)
             .to(resultEndpoint);
     }
