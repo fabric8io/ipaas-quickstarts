@@ -69,7 +69,7 @@
     <fabric8.service.port>9412</fabric8.service.port>
     <fabric8.service.containerPort>8181</fabric8.service.containerPort>
 
-    <fabric8.env.AB_JOLOKIA_AUTH_OPENSHIFT>true</fabric8.env.AB_JOLOKIA_AUTH_OPENSHIFT>
+    <!-- fabric8.env.AB_JOLOKIA_AUTH_OPENSHIFT>true</fabric8.env.AB_JOLOKIA_AUTH_OPENSHIFT -->
     <fabric8.label.component>${project.artifactId}</fabric8.label.component>
     <fabric8.label.container>karaf</fabric8.label.container>
     <fabric8.label.group>quickstarts</fabric8.label.group>
