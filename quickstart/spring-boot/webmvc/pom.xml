@@ -24,7 +24,7 @@
   <parent>
     <groupId>io.fabric8.quickstarts</groupId>
     <artifactId>quickstart-springboot</artifactId>
-    <version>2.2.57-SNAPSHOT</version>
+    <version>2.2.0.redhat-053</version>
   </parent>
 
   <artifactId>quickstart-springboot-webmvc</artifactId>
@@ -35,7 +35,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
-    <fabric8.version>2.2.54</fabric8.version>
+    <fabric8.version>2.2.0.redhat-053</fabric8.version>
     <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
     <spring-boot-plugin.version>1.2.7.RELEASE</spring-boot-plugin.version>
     <spring-boot.version>1.2.7.RELEASE</spring-boot.version>

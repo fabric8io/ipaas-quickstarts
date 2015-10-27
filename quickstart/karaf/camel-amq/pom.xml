@@ -37,7 +37,7 @@
     <version.maven-bundle-plugin>2.3.7</version.maven-bundle-plugin>
 
     <!-- the version of the BOM, defining all the dependency versions -->
-    <fabric8.version>2.2.54</fabric8.version>
+    <fabric8.version>2.2.0.redhat-053</fabric8.version>
     <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
 
 
@@ -46,9 +46,9 @@
     <activemq.version>5.11.0.redhat-621070</activemq.version>
     <camel.version>2.15.1.redhat-621070</camel.version>
     <cxf.version>3.0.4.redhat-621070</cxf.version>
-    <fuse.version>6.2.1.redhat-050</fuse.version>
+    <fuse.version>6.2.1.redhat-070</fuse.version>
     <karaf.version>2.4.0.redhat-621070</karaf.version>
-    <karaf.plugin.version>4.0.2.redhat-621052</karaf.plugin.version>
+    <karaf.plugin.version>4.0.2.redhat-621053</karaf.plugin.version>
 
     <docker.from>docker.io/fabric8/karaf-2.4:1.0.0</docker.from>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
