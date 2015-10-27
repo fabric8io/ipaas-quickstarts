@@ -37,7 +37,7 @@
     <version.maven-bundle-plugin>2.3.7</version.maven-bundle-plugin>
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
-    <fabric8.version>2.2.54</fabric8.version>
+    <fabric8.version>2.2.55</fabric8.version>
     <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
 
 
