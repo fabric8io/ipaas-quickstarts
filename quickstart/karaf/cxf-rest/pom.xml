@@ -46,7 +46,7 @@
     <cxf.plugin.version>3.0.4.redhat-621053</cxf.plugin.version>
     <fuse.version>6.2.1.redhat-053</fuse.version>
     <karaf.version>2.4.0.redhat-621053</karaf.version>
-    <karaf.plugin.version>4.0.2.redhat-621047</karaf.plugin.version>
+    <karaf.plugin.version>4.0.2.redhat-621052</karaf.plugin.version>
 
     <spring.features.version>3.0.4</spring.features.version>
     <jackson2-version>2.4.1</jackson2-version>
