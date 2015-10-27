@@ -15,9 +15,11 @@
  */
 package io.fabric8.quickstarts.camelcdi;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 @Singleton
+@Named("counterBean")
 public class SomeBean {
 
     private int counter;
