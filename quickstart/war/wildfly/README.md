@@ -1,6 +1,6 @@
 # War Wildlfy QuickStart
 
-This quickstart exposes a simple application with a simple REST service deployed on top of Wildfly 9.0.1.Final. 
+This quickstart exposes a simple application with a simple REST service deployed on top of Wildfly 9.0.2.Final. 
 This service can be called from the home page of the application.
 
 The example is based on Markus Eisele blog post:
