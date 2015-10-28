@@ -58,7 +58,7 @@
     <jackson-module-scala-version>2.1.5_2</jackson-module-scala-version>
     <swagger-scala-version>2.10.2</swagger-scala-version>
 
-    <docker.from>fabric8/s2i-karaf-rhel:1.1.5</docker.from>
+    <docker.from>fabric8/s2i-karaf-rhel:1.1.6</docker.from>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
     <docker.assemblyDescriptor>${basedir}/src/main/fabric8/assembly.xml</docker.assemblyDescriptor>
@@ -397,11 +397,8 @@
               <name>${docker.image}</name>
               <build>
                 <from>${docker.from}</from>
-                <env>
-                  <DEPLOY_DIR>/opt/jboss/deploy</DEPLOY_DIR>
-                </env>
                 <assembly>
-                  <basedir>/opt/jboss/deploy/</basedir>
+                  <basedir>/deployments</basedir>
                   <user>jboss:jboss:jboss</user>
                   <inline xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
                           xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
@@ -416,7 +413,7 @@
                   </inline>
                 </assembly>
                 <cmd>
-                  <shell>/opt/karaf/bin/deploy-and-run.sh</shell>
+                  <shell>/deployments/deploy-and-run.sh</shell>
                 </cmd>
               </build>
             </image>
