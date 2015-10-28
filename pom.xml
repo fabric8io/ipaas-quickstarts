@@ -421,6 +421,12 @@
       <properties>
           <javadoc.opts>-Xdoclint:none</javadoc.opts>
       </properties>
+      <modules>
+        <module>archetypes-catalog</module>
+        <module>archetypes</module>
+        <module>archetype-itests</module>
+        <module>quickstart</module>
+      </modules>
     </profile>
   </profiles>
 
