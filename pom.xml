@@ -421,12 +421,13 @@
       <properties>
           <javadoc.opts>-Xdoclint:none</javadoc.opts>
       </properties>
-      <modules>
+      <!-- Commented as affectes the fabric8 release, means quickstarts are released when we only want the archetypes -->
+      <!-- <modules>
         <module>archetypes-catalog</module>
         <module>archetypes</module>
         <module>archetype-itests</module>
         <module>quickstart</module>
-      </modules>
+      </modules> -->
     </profile>
   </profiles>
 
