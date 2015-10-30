@@ -52,6 +52,8 @@ The example exposes a service over HTTP which you can find using
 
 This lists all the routes to the services, where you can find the actual HTTP url, which you can use from a web browser.
 
+The Camel route is listening on context-path `camel/hello`, so the actual HTTP url should be prefixed with that.
+For example if the route to the service is listed at `http://qs-cdi-camel-jetty.vagrant.f8` then the actual URL to use should be `http://qs-cdi-camel-jetty.vagrant.f8/camel/hello`
 
 You can also use the fabric8 [web console](http://fabric8.io/guide/console.html) to manage the
 running pods, and view logs and much more.
