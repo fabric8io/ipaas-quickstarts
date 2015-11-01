@@ -23,12 +23,12 @@
   <parent>
     <groupId>io.fabric8.quickstarts</groupId>
     <artifactId>quickstart-war</artifactId>
-    <version>2.2.61-SNAPSHOT</version>
+    <version>2.2.61</version>
   </parent>
 
   <artifactId>quickstart-war-wildfly</artifactId>
   <packaging>war</packaging>
-  <version>2.2.61-SNAPSHOT</version>
+  <version>2.2.61</version>
   <name>Fabric8 :: Quickstarts :: War :: Wildfly</name>
   <description>Simple Wildfly Application deployed as war</description>
 
