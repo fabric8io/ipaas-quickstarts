@@ -32,6 +32,16 @@
       http://cxf.apache.org/blueprint/jaxrs http://cxf.apache.org/schemas/blueprint/jaxrs.xsd
       http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd">
 
+    <!-- JAXRS providers -->
+    <bean id="jsonProvider" class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider" />
+
+    <!-- CXF Swagger2Feature -->
+<!-- TODO: enable feature after patched version of reflections bundle for SM-2718 is released in central
+    <bean id="swagger2Feature" class="org.apache.cxf.jaxrs.swagger.Swagger2Feature">
+      <property name="basePath" value="/cxf/crm"/>
+    </bean>
+-->
+
     <!--
       The <jaxrs:server/> element sets up our JAX-RS services.  It defines:
       - the server's address, '/crm', relative to the default CXF servlet URI
@@ -43,19 +53,27 @@
         <jaxrs:serviceBeans>
             <ref component-id="customerSvc"/>
         </jaxrs:serviceBeans>
-    </jaxrs:server>
- 
-    <cxf:bus>
-        <cxf:features>
-          <cxf:logging />
-        </cxf:features>
-    </cxf:bus>
+        <jaxrs:providers>
+          <ref component-id="jsonProvider" />
+        </jaxrs:providers>
+<!-- TODO: enable feature after patched version of reflections bundle for SM-2718 is released in central
+          <jaxrs:features>
+            <ref component-id="swagger2Feature" />
+          </jaxrs:features>
+-->
+      </jaxrs:server>
+
+      <cxf:bus>
+          <cxf:features>
+            <cxf:logging />
+          </cxf:features>
+      </cxf:bus>
 
 
-    <!--
-      We are using the OSGi Blueprint XML syntax to define a bean that we referred to in our JAX-RS server setup.
-      This bean carries a set of JAX-RS annotations that allow its methods to be mapped to incoming requests.
-    -->
+      <!--
+        We are using the OSGi Blueprint XML syntax to define a bean that we referred to in our JAX-RS server setup.
+        This bean carries a set of JAX-RS annotations that allow its methods to be mapped to incoming requests.
+      -->
     <bean id="customerSvc" class="io.fabric8.quickstarts.rest.CustomerService"/>
 
 </blueprint>
