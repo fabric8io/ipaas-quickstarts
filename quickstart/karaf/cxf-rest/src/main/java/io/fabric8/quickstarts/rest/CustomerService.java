@@ -16,7 +16,8 @@
 package io.fabric8.quickstarts.rest;
 
 
-import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.Map;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -25,21 +26,18 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
-
-import com.wordnik.swagger.annotations.Api;
-import com.wordnik.swagger.annotations.ApiOperation;
-import com.wordnik.swagger.annotations.ApiParam;
-import com.wordnik.swagger.annotations.ApiResponses;
-import com.wordnik.swagger.annotations.ApiResponse;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 import org.apache.cxf.jaxrs.ext.MessageContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This Java class with be hosted in the URI path defined by the @Path annotation. @Path annotations on the methods
@@ -59,7 +57,7 @@ public class CustomerService {
     long currentId = 123;
     Map<Long, Customer> customers = new HashMap<Long, Customer>();
     Map<Long, Order> orders = new HashMap<Long, Order>();
-    private @Resource MessageContext jaxrsContext;
+    private  MessageContext jaxrsContext;
 
     public CustomerService() {
         init();
@@ -216,5 +214,11 @@ public class CustomerService {
         o.setId(223);
         orders.put(o.getId(), o);
     }
+
+    @Context
+    public void setMessageContext(MessageContext messageContext) {
+        this.jaxrsContext = messageContext;
+    }
+
 
 }

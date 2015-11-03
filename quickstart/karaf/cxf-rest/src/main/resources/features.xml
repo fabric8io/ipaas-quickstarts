@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+      Licensed to the Apache Software Foundation (ASF) under one or more
+      contributor license agreements.  See the NOTICE file distributed with
+      this work for additional information regarding copyright ownership.
+      The ASF licenses this file to You under the Apache License, Version 2.0
+      (the "License"); you may not use this file except in compliance with
+      the License.  You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+      Unless required by applicable law or agreed to in writing, software
+      distributed under the License is distributed on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+      See the License for the specific language governing permissions and
+      limitations under the License.
+-->
+<features name="swagger2" xmlns="http://karaf.apache.org/xmlns/features/v1.2.0">
+
+    <feature name="swagger2" version="${project.version}" description="swagger2 necessary bundkles">
+        <!-- swagger -->
+            <bundle start-level="10">mvn:javax.ws.rs/jsr311-api/${jsr311-api-version}</bundle>
+            <bundle start-level="10">mvn:com.fasterxml.jackson.core/jackson-core/${jackson2-version}</bundle>
+            <bundle start-level="10">mvn:com.fasterxml.jackson.core/jackson-databind/${jackson2-version}</bundle>
+            <bundle start-level="10">mvn:com.fasterxml.jackson.core/jackson-annotations/${jackson2-version}</bundle>
+            <bundle start-level="10">mvn:com.fasterxml.jackson.dataformat/jackson-dataformat-xml/${jackson2-version}</bundle>
+            <bundle start-level="10">mvn:com.fasterxml.jackson.dataformat/jackson-dataformat-yaml/${jackson2-version}</bundle>
+            <bundle start-level="10">mvn:com.fasterxml.jackson.module/jackson-module-jaxb-annotations/${jackson2-version}</bundle>
+            <bundle start-level="10">mvn:com.fasterxml.jackson.jaxrs/jackson-jaxrs-base/${jackson2-version}</bundle>
+            <bundle start-level="10">mvn:com.fasterxml.jackson.jaxrs/jackson-jaxrs-json-provider/${jackson2-version}</bundle>
+            <bundle start-level="10">mvn:org.javassist/javassist/${javassist-version}</bundle>
+            <bundle start-level="10">mvn:javax.validation/validation-api/${validation-api-version}</bundle>
+            <bundle start-level="10">mvn:org.apache.commons/commons-lang3/${commons-lang3-version}</bundle>
+            <bundle start-level="10">mvn:com.google.guava/guava/${google-guava-version}</bundle>
+            <bundle start-level="10">mvn:io.swagger/swagger-core/${swagger-version}</bundle>
+            <bundle start-level="10">mvn:io.swagger/swagger-annotations/${swagger-version}</bundle>
+            <bundle start-level="10">mvn:io.swagger/swagger-models/${swagger-version}</bundle>
+            <bundle start-level="10">mvn:io.swagger/swagger-jaxrs/${swagger-version}</bundle>
+            <bundle start-level="10">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.reflections/${reflections-version}</bundle>
+
+    </feature>
+</features>
