@@ -36,11 +36,9 @@
     <bean id="jsonProvider" class="com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider" />
 
     <!-- CXF Swagger2Feature -->
-<!-- TODO: enable feature after patched version of reflections bundle for SM-2718 is released in central
     <bean id="swagger2Feature" class="org.apache.cxf.jaxrs.swagger.Swagger2Feature">
       <property name="basePath" value="/cxf/crm"/>
     </bean>
--->
 
     <!--
       The <jaxrs:server/> element sets up our JAX-RS services.  It defines:
@@ -56,11 +54,9 @@
         <jaxrs:providers>
           <ref component-id="jsonProvider" />
         </jaxrs:providers>
-<!-- TODO: enable feature after patched version of reflections bundle for SM-2718 is released in central
           <jaxrs:features>
             <ref component-id="swagger2Feature" />
           </jaxrs:features>
--->
       </jaxrs:server>
 
       <cxf:bus>
