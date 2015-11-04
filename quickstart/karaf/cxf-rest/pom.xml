@@ -293,15 +293,40 @@
         </executions>
       </plugin>
 
+      <!-- attach feature file to install for karaf assembly -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>1.9.1</version>
+        <executions>
+          <execution>
+            <id>attach-artifacts</id>
+            <phase>package</phase>
+            <goals>
+              <goal>attach-artifact</goal>
+            </goals>
+            <configuration>
+              <artifacts>
+                <artifact>
+                  <file>${project.build.outputDirectory}/features.xml</file>
+                  <classifier>features</classifier>
+                  <type>xml</type>
+                </artifact>
+              </artifacts>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
       <!-- plugin goals have to be executed in order -->
-      <!-- 1. install the bundle -->
+      <!-- 1. install the bundle and features file -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-install-plugin</artifactId>
         <version>2.5.2</version>
         <executions>
           <execution>
-            <id>install-bundle</id>
+            <id>install-artifacts</id>
             <goals>
               <goal>install</goal>
             </goals>
@@ -339,7 +364,7 @@
           <!-- do not include build output directory -->
           <includeBuildOutputDirectory>false</includeBuildOutputDirectory>
           <startupRepositories>
-            <repo>file://${project.build.directory}/classes/features.xml</repo>
+            <repo>mvn:${project.groupId}/${project.artifactId}/${project.version}/xml/features</repo>
           </startupRepositories>
           <!-- no startupFeatures -->
           <startupFeatures>
@@ -355,32 +380,9 @@
             <!-- swagger -->
             <feature>http</feature>
             <feature>cxf-specs</feature>
-<!-- TODO: enable after feature file path issue from OSFUSE-78 is fixed
             <feature>swagger2</feature>
--->
           </startupFeatures>
           <startupBundles>
-            <!-- TODO: remove swagger bundles after feature file path issue from OSFUSE-78 is fixed -->
-            <!-- swagger -->
-            <bundle start-level="10">mvn:javax.ws.rs/jsr311-api/${jsr311-api-version}</bundle>
-            <bundle start-level="10">mvn:com.fasterxml.jackson.core/jackson-core/${jackson2-version}</bundle>
-            <bundle start-level="10">mvn:com.fasterxml.jackson.core/jackson-databind/${jackson2-version}</bundle>
-            <bundle start-level="10">mvn:com.fasterxml.jackson.core/jackson-annotations/${jackson2-version}</bundle>
-            <bundle start-level="10">mvn:com.fasterxml.jackson.dataformat/jackson-dataformat-xml/${jackson2-version}</bundle>
-            <bundle start-level="10">mvn:com.fasterxml.jackson.dataformat/jackson-dataformat-yaml/${jackson2-version}</bundle>
-            <bundle start-level="10">mvn:com.fasterxml.jackson.module/jackson-module-jaxb-annotations/${jackson2-version}</bundle>
-            <bundle start-level="10">mvn:com.fasterxml.jackson.jaxrs/jackson-jaxrs-base/${jackson2-version}</bundle>
-            <bundle start-level="10">mvn:com.fasterxml.jackson.jaxrs/jackson-jaxrs-json-provider/${jackson2-version}</bundle>
-            <bundle start-level="10">mvn:org.javassist/javassist/${javassist-version}</bundle>
-            <bundle start-level="10">mvn:javax.validation/validation-api/${validation-api-version}</bundle>
-            <bundle start-level="10">mvn:org.apache.commons/commons-lang3/${commons-lang3-version}</bundle>
-            <bundle start-level="10">mvn:com.google.guava/guava/${google-guava-version}</bundle>
-            <bundle start-level="10">mvn:io.swagger/swagger-core/${swagger-version}</bundle>
-            <bundle start-level="10">mvn:io.swagger/swagger-annotations/${swagger-version}</bundle>
-            <bundle start-level="10">mvn:io.swagger/swagger-models/${swagger-version}</bundle>
-            <bundle start-level="10">mvn:io.swagger/swagger-jaxrs/${swagger-version}</bundle>
-            <bundle start-level="10">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.reflections/${reflections-version}</bundle>
-
             <bundle>mvn:io.fabric8/fabric8-cxf/${fabric8.version}</bundle>
             <bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}</bundle>
           </startupBundles>
