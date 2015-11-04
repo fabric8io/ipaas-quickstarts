@@ -58,6 +58,7 @@
 
     <fabric8.metrics.scrape>true</fabric8.metrics.scrape>
     <fabric8.metrics.port>9779</fabric8.metrics.port>
+    <fabric8.metrics.scheme>http</fabric8.metrics.scheme>
     <!-- End Prometheus metrics stuff -->
 
     <!-- fabric8.env.AB_JOLOKIA_AUTH_OPENSHIFT>true</fabric8.env.AB_JOLOKIA_AUTH_OPENSHIFT -->
