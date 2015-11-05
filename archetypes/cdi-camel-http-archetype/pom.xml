@@ -29,7 +29,7 @@
     <name>Fabric8 :: Archetypes :: CDI :: Camel HTTP</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new Camel route using CDI in a standalone Java Container calling the remote camel-servlet quickstart</description>
+    <description>Creates a new Camel route using CDI in a standalone Java Container calling the remote cdi-camel-jetty quickstart</description>
 
     <build>
         <extensions>
