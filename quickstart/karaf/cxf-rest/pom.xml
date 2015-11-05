@@ -44,7 +44,7 @@
     <cxf.plugin.version>3.0.4.redhat-621070</cxf.plugin.version>
     <fuse.version>6.2.1.redhat-070</fuse.version>
     <karaf.version>2.4.0.redhat-621070</karaf.version>
-    <karaf.plugin.version>4.0.2.redhat-621053</karaf.plugin.version>
+    <karaf.plugin.version>4.0.2.redhat-621054</karaf.plugin.version>
 
     <jackson2-version>2.6.3</jackson2-version>
     <swagger-version>1.5.4</swagger-version>

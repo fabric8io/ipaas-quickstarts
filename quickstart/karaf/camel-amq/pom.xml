@@ -48,7 +48,7 @@
     <cxf.version>3.0.4.redhat-621070</cxf.version>
     <fuse.version>6.2.1.redhat-070</fuse.version>
     <karaf.version>2.4.0.redhat-621070</karaf.version>
-    <karaf.plugin.version>4.0.2.redhat-621053</karaf.plugin.version>
+    <karaf.plugin.version>4.0.2.redhat-621054</karaf.plugin.version>
 
     <docker.from>docker.io/fabric8/karaf-2.4:1.0.0</docker.from>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
