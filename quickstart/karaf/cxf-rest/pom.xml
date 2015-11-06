@@ -53,10 +53,7 @@
     <google-guava-version>18.0</google-guava-version>
     <json4s-version>3.2.4_1</json4s-version>
     <jsr311-api-version>1.1.1</jsr311-api-version>
-<!-- TODO: replace with patched version for SM-2718 when released in central
-    <reflections-version>0.9.10_3-SNAPSHOT</reflections-version>
--->
-    <reflections-version>0.9.10_2</reflections-version>
+    <reflections-version>0.9.10_3</reflections-version>
     <jackson-module-scala-version>2.1.5_2</jackson-module-scala-version>
     <swagger-scala-version>2.10.2</swagger-scala-version>
     <javassist-version>3.19.0-GA</javassist-version>
