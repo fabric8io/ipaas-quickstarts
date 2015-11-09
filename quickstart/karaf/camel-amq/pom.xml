@@ -18,16 +18,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
+  <modelVersion>4.0.0</modelVersion>
+
   <parent>
     <groupId>io.fabric8.quickstarts</groupId>
     <artifactId>quickstart-karaf</artifactId>
-    <version>2.2.50-SNAPSHOT</version>
+    <version>2.2.60-SNAPSHOT</version>
   </parent>
 
-  <modelVersion>4.0.0</modelVersion>
-
   <artifactId>quickstart-karaf-camel-amq</artifactId>
-  <version>2.2.50-SNAPSHOT</version>
+  <version>2.2.60-SNAPSHOT</version>
   <packaging>bundle</packaging>
   <name>Fabric8 :: Quickstarts :: Karaf :: Camel and ActiveMQ</name>
   <description>Camel route using ActiveMQ in Karaf container</description>
@@ -37,12 +37,9 @@
     <version.maven-bundle-plugin>2.3.7</version.maven-bundle-plugin>
 
     <!-- the version of the BOM, defining all the dependency versions -->
-    <fabric8.version>2.2.56</fabric8.version>
+    <fabric8.version>2.2.0.redhat-055</fabric8.version>
     <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
 
-
-
-    <!-- need to declare the Camel version as features-maven-plugin needs this property (cannot inherit from BOM in maven plugin) -->
     <activemq.version>5.11.0.redhat-621070</activemq.version>
     <camel.version>2.15.1.redhat-621070</camel.version>
     <cxf.version>3.0.4.redhat-621070</cxf.version>
@@ -77,8 +74,6 @@
     </dependencies>
   </dependencyManagement>
 
-  <!-- TODO: update to karaf 4 -->
-
   <dependencies>
     <!--
       For this example, we will be using the OSGi Blueprint XML syntax for Apache Camel.
@@ -89,55 +84,15 @@
       <version>${camel.version}</version>
     </dependency>
 
+    <!-- Karaf microcontainer dependencies -->
     <dependency>
-      <groupId>org.apache.camel</groupId>
-      <artifactId>camel-blueprint</artifactId>
-      <version>${camel.version}</version>
+      <!-- scope is compile so all features (there is only one) are installed into startup.properties,
+      and the feature repo itself is not added in etc/org.apache.karaf.features.cfg file -->
+      <groupId>org.jboss.fuse</groupId>
+      <artifactId>fuse-karaf-framework</artifactId>
+      <version>${fuse.version}</version>
+      <type>kar</type>
     </dependency>
-
-    <dependency>
-      <groupId>org.apache.camel</groupId>
-      <artifactId>camel-spring</artifactId>
-      <version>${camel.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.camel</groupId>
-      <artifactId>camel-jms</artifactId>
-      <version>${camel.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.activemq</groupId>
-      <artifactId>activemq-camel</artifactId>
-      <version>${activemq.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.activemq</groupId>
-      <artifactId>activemq-spring</artifactId>
-      <version>${activemq.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.activemq</groupId>
-      <artifactId>activemq-pool</artifactId>
-      <version>${activemq.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.activemq</groupId>
-      <artifactId>activemq-jms-pool</artifactId>
-      <version>${activemq.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.activemq</groupId>
-      <artifactId>activemq-client</artifactId>
-      <version>${activemq.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>io.fabric8.mq</groupId>
-      <artifactId>camel-amq</artifactId>
-    </dependency>
-
   </dependencies>
 
   <build>
@@ -217,41 +172,75 @@
           </execution>
         </executions>
       </plugin>
+      <!-- plugin goals have to be executed in order -->
+      <!-- 1. install the bundle -->
       <plugin>
-        <groupId>org.apache.karaf.tooling</groupId>
-        <artifactId>features-maven-plugin</artifactId>
-        <version>${karaf.plugin.version}</version>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-install-plugin</artifactId>
+        <version>2.5.2</version>
         <executions>
           <execution>
-            <id>add-features-to-repo</id>
-            <phase>package</phase>
+            <id>install-bundle</id>
             <goals>
-              <goal>add-features-to-repo</goal>
+              <goal>install</goal>
             </goals>
-            <!-- We populate the offline repository -->
-            <configuration>
-              <descriptors>
-                <descriptor>file://${project.build.directory}/fabric8/features.xml</descriptor>
-              </descriptors>
-              <repository>target/fabric8/repository/</repository>
-              <addTransitiveFeatures>true</addTransitiveFeatures>
-              <features>
-                <feature>${project.artifactId}</feature>
-              </features>
-            </configuration>
-          </execution>
-          <execution>
-            <id>create-kar</id>
-            <phase>package</phase>
-            <goals>
-              <goal>create-kar</goal>
-            </goals>
-            <configuration>
-              <featuresFile>${project.build.directory}/fabric8/features.xml</featuresFile>
-            </configuration>
           </execution>
         </executions>
       </plugin>
+
+      <!-- 2. create karaf assembly -->
+      <!-- karaf-maven-plugin creates custom microservice distribution -->
+      <plugin>
+        <groupId>org.apache.karaf.tooling</groupId>
+        <artifactId>karaf-maven-plugin</artifactId>
+        <version>${karaf.plugin.version}</version>
+        <extensions>true</extensions>
+        <executions>
+          <execution>
+            <id>karaf-assembly</id>
+            <goals>
+              <goal>assembly</goal>
+            </goals>
+            <phase>install</phase>
+          </execution>
+          <execution>
+            <id>karaf-archive</id>
+            <goals>
+              <goal>archive</goal>
+            </goals>
+            <phase>install</phase>
+          </execution>
+        </executions>
+        <configuration>
+          <!-- we are using karaf 2.4.x -->
+          <karafVersion>v24</karafVersion>
+          <useReferenceUrls>true</useReferenceUrls>
+          <!-- do not include build output directory -->
+          <includeBuildOutputDirectory>false</includeBuildOutputDirectory>
+          <!-- no startupFeatures -->
+          <startupFeatures>
+            <feature>karaf-framework</feature>
+            <feature>shell</feature>
+            <feature>jaas</feature>
+            <feature>aries-blueprint</feature>
+            <feature>camel-blueprint</feature>
+            <feature>camel-jms</feature>
+            <feature>activemq-client</feature>
+            <feature>camel-blueprint</feature>
+          </startupFeatures>
+          <startupBundles>
+            <bundle>mvn:io.fabric8.mq/camel-amq/${fabric8.version}</bundle>
+            <bundle>mvn:io.fabric8.mq/mq-client/${fabric8.version}</bundle>
+            <bundle>mvn:io.fabric8/fabric8-utils/${fabric8.version}</bundle>
+            <bundle>mvn:org.apache.activemq/activemq-camel/${activemq.version}</bundle>
+            <bundle>mvn:org.apache.activemq/activemq-osgi/${activemq.version}</bundle>
+
+            <bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}</bundle>
+          </startupBundles>
+        </configuration>
+      </plugin>
+
+      <!-- 3. create docker image -->
       <plugin>
         <groupId>org.jolokia</groupId>
         <artifactId>docker-maven-plugin</artifactId>
@@ -263,8 +252,19 @@
               <build>
                 <from>${docker.from}</from>
                 <assembly>
-                  <descriptor>${docker.assemblyDescriptor}</descriptor>
                   <basedir>/deployments</basedir>
+                  <user>jboss:jboss:jboss</user>
+                  <inline xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+                          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+                    <id>${project.artifactId}</id>
+                    <files>
+                      <!-- copy karaf archive -->
+                      <file>
+                        <source>${project.build.directory}/${project.artifactId}-${project.version}.tar.gz</source>
+                        <outputDirectory>/</outputDirectory>
+                      </file>
+                    </files>
+                  </inline>
                 </assembly>
                 <cmd>
                   <shell>/deployments/deploy-and-run.sh</shell>

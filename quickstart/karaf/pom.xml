@@ -37,7 +37,7 @@
   </properties>
 
   <modules>
-    <!--<module>camel-amq</module>--> <!-- TODO: https://github.com/fabric8io/ipaas-quickstarts/issues/804 -->
+    <module>camel-amq</module>
     <module>camel-log</module>
     <module>camel-rest-sql</module>
     <module>cxf-rest</module>
