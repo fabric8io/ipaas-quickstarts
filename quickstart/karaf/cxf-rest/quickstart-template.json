@@ -18,8 +18,7 @@
     },
     {
       "name": "GIT_REPO",
-      "value": "https://github.com/fabric8io/ipaas-quickstarts.git",
-      "description": "Git repository"
+      "description": "Git repository, required"
     },
     {
       "name": "GIT_REF",
@@ -48,12 +47,10 @@
     },
     {
       "name": "MAVEN_EXTRA_ARGS",
-      "value": "-Pquickstarts -am -pl io.fabric8.quickstarts:quickstart-karaf-cxf-rest",
       "description": "Extra arguments passed to mvn, e.g. for multi-module builds"
     },
     {
       "name": "MAVEN_BUILD_DIR",
-      "value": "quickstart/karaf/cxf-rest/target",
       "description": "Maven build directory"
     },
     {
