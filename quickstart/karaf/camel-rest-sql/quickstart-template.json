@@ -1,0 +1,323 @@
+{
+  "apiVersion": "v1",
+  "kind": "Template",
+  "labels": {},
+  "metadata": {
+    "annotations": {
+      "description": "# Karaf Camel Log QuickStart\n\nThis quickstart demonstrates how to use SQL via JDBC along with Camel's REST DSL to expose a RESTful API.\n\n\n### Building\n\nThe example can be built with\n\n    mvn clean install\n\n\n### Running the example in fabric8\n\nIt is assumed a running Kubernetes platform is already running. If not you can find details how to [get started](http://fabric8.io/guide/getStarted/index.html).\n\nThe example can be built and deployed using a single goal:\n\n    mvn -Pf8-local-deploy\n\nWhen the example runs in fabric8, you can use the OpenShift client tool to inspect the status\n\nTo list all the running pods:\n\n    oc get pods\n\nThen find the name of the pod that runs this quickstart, and output the logs from the running pods with:\n\n    oc logs <name of pod>\n\nYou can also use the fabric8 [web console](http://fabric8.io/guide/console.html) to manage the\nrunning pods, and view logs and much more.\n\n\n\n### Accessing the rest service\n\nWhen the example is running, a reset service can be accessed to list available books that can be ordered, and as well order status.\n\nIf you run the example on a local fabric8 installation using vagrant, then the REST service is exposes as\n\n    http://qs-camel-rest-sql.vagrant.f8\n\nThe actual endpoint is using context-path `camel-rest-sql/books` and the REST service provides two services\n\n- books = to list all the available books that can be ordered\n- order/{id} = to output order status for the given order id. The example will automatic create new orders with a running order id starting from 1.\n\nYou can from a web browser then access these services such as:\n\n    http://qs-camel-rest-sql.vagrant.f8/camel-rest-sql/books\n    http://qs-camel-rest-sql.vagrant.f8/camel-rest-sql/books/order/1\n\n\n### More details\n\nYou can find more details about running this [quickstart](http://fabric8.io/guide/quickstarts/running.html) on the website. This also includes instructions how to change the Docker image user and registry.\n\n",
+      "iconClass": "icon-java"
+    },
+    "labels": {},
+    "name": "s2i-quickstart-karaf-camel-rest-sql"
+  },
+  "parameters": [
+    {
+      "name": "APP_NAME",
+      "value": "s2i-quickstart-karaf-camel-rest-sql",
+      "description": "Application Name"
+    },
+    {
+      "name": "GIT_REPO",
+      "value": "https://github.com/fabric8io/ipaas-quickstarts.git",
+      "description": "Git repository"
+    },
+    {
+      "name": "GIT_REF",
+      "value": "master",
+      "description": "Git ref to build"
+    },
+    {
+      "name": "SERVICE_NAME",
+      "value": "s2i-qs-karaf-camel-rest-sql",
+      "description": "Exposed Service name"
+    },
+    {
+      "name": "BUILDER_VERSION",
+      "value": "1.1.6",
+      "description": "Builder version"
+    },
+    {
+      "name": "APP_VERSION",
+      "value": "2.2.62-SNAPSHOT",
+      "description": "Application version"
+    },
+    {
+      "name": "MAVEN_ARGS",
+      "value": "package -DskipTests -e",
+      "description": "Arguments passed to mvn in the build"
+    },
+    {
+      "name": "MAVEN_EXTRA_ARGS",
+      "value": "-Pquickstarts -am -pl io.fabric8.quickstarts:quickstart-karaf-camel-rest-sql",
+      "description": "Extra arguments passed to mvn, e.g. for multi-module builds"
+    },
+    {
+      "name": "MAVEN_BUILD_DIR",
+      "value": "quickstart/karaf/camel-rest-sql/target",
+      "description": "Maven build directory"
+    },
+    {
+      "generate": "expression",
+      "name": "BUILD_SECRET",
+      "description": "The secret needed to trigger a build",
+      "from": "[a-zA-Z0-9]{8}"
+    }
+  ],
+  "objects": [
+    {
+      "apiVersion": "v1",
+      "kind": "Service",
+      "metadata": {
+        "annotations": {
+        },
+        "labels": {
+          "container": "karaf",
+          "component": "${APP_NAME}",
+          "provider": "fabric8",
+          "project": "${APP_NAME}",
+          "version": "${APP_VERSION}",
+          "group": "quickstarts"
+        },
+        "name": "${SERVICE_NAME}"
+      },
+      "spec": {
+        "clusterIP": "None",
+        "deprecatedPublicIPs": [],
+        "ports": [
+          {
+            "port": 9411,
+            "protocol": "TCP",
+            "targetPort": 8181
+          }
+        ],
+        "selector": {
+          "container": "karaf",
+          "project": "${APP_NAME}",
+          "component": "${APP_NAME}",
+          "provider": "fabric8",
+          "group": "quickstarts"
+        }
+      }
+    },
+    {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "s2i-java-${APP_NAME}",
+        "creationTimestamp": null,
+        "labels": {
+          "component": "${APP_NAME}",
+          "container": "karaf",
+          "group": "quickstarts",
+          "project": "${APP_NAME}",
+          "provider": "s2i",
+          "version": "${APP_VERSION}"
+        }
+      },
+      "spec": {
+        "dockerImageRepository": "fabric8/s2i-java:${BUILDER_VERSION}"
+      },
+      "status": {
+        "dockerImageRepository": ""
+      }
+    },
+    {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${APP_NAME}",
+        "creationTimestamp": null,
+        "labels": {
+          "component": "${APP_NAME}",
+          "container": "karaf",
+          "group": "quickstarts",
+          "project": "${APP_NAME}",
+          "provider": "s2i",
+          "version": "${APP_VERSION}"
+        }
+      },
+      "spec": {},
+      "status": {
+        "dockerImageRepository": ""
+      }
+    },
+    {
+      "kind": "BuildConfig",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${APP_NAME}",
+        "creationTimestamp": null,
+        "labels": {
+          "component": "${APP_NAME}",
+          "container": "karaf",
+          "group": "quickstarts",
+          "project": "${APP_NAME}",
+          "provider": "s2i",
+          "version": "${APP_VERSION}"
+        }
+      },
+      "spec": {
+        "triggers": [
+          {
+            "type": "GitHub",
+            "github": {
+              "secret": "${BUILD_SECRET}"
+            }
+          },
+          {
+            "type": "Generic",
+            "generic": {
+              "secret": "${BUILD_SECRET}"
+            }
+          },
+          {
+            "type": "ConfigChange"
+          },
+          {
+            "type": "ImageChange",
+            "imageChange": {}
+          }
+        ],
+        "source": {
+          "type": "Git",
+          "git": {
+            "uri": "${GIT_REPO}",
+            "ref": "${GIT_REF}"
+          }
+        },
+        "strategy": {
+          "type": "Source",
+          "sourceStrategy": {
+            "from": {
+              "kind": "ImageStreamTag",
+              "name": "s2i-java-${APP_NAME}:${BUILDER_VERSION}"
+            },
+            "forcePull": true,
+            "env": [
+              {
+                "name": "BUILD_LOGLEVEL",
+                "value": "5"
+              },
+              {
+                "name": "MAVEN_BUILD_DIR",
+                "value": "${MAVEN_BUILD_DIR}"
+              },
+              {
+                "name": "MAVEN_ARGS",
+                "value": "${MAVEN_ARGS}"
+              },
+              {
+                "name": "MAVEN_EXTRA_ARGS",
+                "value": "${MAVEN_EXTRA_ARGS}"
+              }
+            ]
+          }
+        },
+        "output": {
+          "to": {
+            "kind": "ImageStreamTag",
+            "name": "${APP_NAME}:latest"
+          }
+        },
+        "resources": {}
+      },
+      "status": {
+        "lastVersion": 0
+      }
+    },
+    {
+      "kind": "DeploymentConfig",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${APP_NAME}",
+        "creationTimestamp": null,
+        "labels": {
+          "component": "${APP_NAME}",
+          "container": "karaf",
+          "group": "quickstarts",
+          "project": "${APP_NAME}",
+          "provider": "s2i",
+          "version": "${APP_VERSION}"
+        }
+      },
+      "spec": {
+        "strategy": {
+          "resources": {}
+        },
+        "triggers": [
+          {
+            "type": "ConfigChange"
+          },
+          {
+            "type": "ImageChange",
+            "imageChangeParams": {
+              "automatic": true,
+              "containerNames": [
+                "${APP_NAME}"
+              ],
+              "from": {
+                "kind": "ImageStreamTag",
+                "name": "${APP_NAME}:latest"
+              }
+            }
+          }
+        ],
+        "replicas": 1,
+        "selector": {
+          "component": "${APP_NAME}",
+          "container": "karaf",
+          "deploymentconfig": "${APP_NAME}",
+          "group": "quickstarts",
+          "project": "${APP_NAME}",
+          "provider": "s2i",
+          "version": "${APP_VERSION}"
+        },
+        "template": {
+          "metadata": {
+            "creationTimestamp": null,
+            "labels": {
+              "component": "${APP_NAME}",
+              "container": "karaf",
+              "deploymentconfig": "${APP_NAME}",
+              "group": "quickstarts",
+              "project": "${APP_NAME}",
+              "provider": "s2i",
+              "version": "${APP_VERSION}"
+            }
+          },
+          "spec": {
+            "containers": [
+              {
+                "name": "${APP_NAME}",
+                "image": "library/${APP_NAME}:latest",
+                "readinessProbe": {
+                  "exec": {
+                    "command": [
+                      "/bin/bash",
+                      "-c",
+                      "(curl -f 127.0.0.1:8181) >/dev/null 2>&1; test $? != 7"
+                    ]
+                  },
+                  "initialDelaySeconds": 30,
+                  "timeoutSeconds": 5
+                },
+                "ports": [
+                  {
+                    "containerPort": 8181,
+                    "name": "http"
+                  },
+                  {
+                    "containerPort": 8778,
+                    "name": "jolokia"
+                  }
+                ],
+                "resources": {}
+              }
+            ]
+          }
+        }
+      },
+      "status": {}
+    }
+  ]
+}
