@@ -143,7 +143,8 @@ public class ArchetypeTest {
                 System.setProperty("maven.multiModuleProjectDirectory", "$M2_HOME");
                 MavenCli maven = new MavenCli();
                 // Dmaven.multiModuleProjectDirectory
-                resultPointer[0] = maven.doMain(new String[] { "clean", "package", "-f", "archetypes-test-pom.xml"}, outDir, System.out, System.out);
+                // TODO using an itest settings.xml here, should check for archetypes .m2/settings.xml once the fabric8 archetype-builder is fixed
+                resultPointer[0] = maven.doMain(new String[] { "clean", "package", "-f", "archetypes-test-pom.xml", "-s", "test-classes/settings.xml"}, outDir, System.out, System.out);
                 System.out.println("result: " + resultPointer[0]);
             }
         });
