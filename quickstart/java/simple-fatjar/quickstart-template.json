@@ -22,7 +22,7 @@
     },
     {
       "name": "GIT_REF",
-      "value": "redhat",
+      "value": "master",
       "description": "Git ref to build"
     },
     {
