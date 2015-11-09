@@ -23,7 +23,7 @@
     },
     {
       "name": "GIT_REF",
-      "value": "master",
+      "value": "redhat",
       "description": "Git ref to build"
     },
     {
@@ -38,7 +38,7 @@
     },
     {
       "name": "APP_VERSION",
-      "value": "2.2.62-SNAPSHOT",
+      "value": "2.2.60-SNAPSHOT",
       "description": "Application version"
     },
     {
