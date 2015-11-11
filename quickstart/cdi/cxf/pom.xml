@@ -40,8 +40,8 @@
     <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
 
 
-    <cxf.version>3.0.4.redhat-621070</cxf.version>
-    <cxf.plugin.version>3.0.4.redhat-621070</cxf.plugin.version>
+    <cxf.version>3.0.4.redhat-621071</cxf.version>
+    <cxf.plugin.version>3.0.4.redhat-621071</cxf.plugin.version>
     <jetty-version>9.2.10.v20150310</jetty-version>
 
     <http.port>9092</http.port>

@@ -43,9 +43,9 @@
 
 
 
-    <camel.version>2.15.1.redhat-621070</camel.version>
-    <fuse.version>6.2.1.redhat-070</fuse.version>
-    <karaf.version>2.4.0.redhat-621070</karaf.version>
+    <camel.version>2.15.1.redhat-621071</camel.version>
+    <fuse.version>6.2.1.redhat-071</fuse.version>
+    <karaf.version>2.4.0.redhat-621071</karaf.version>
     <karaf.plugin.version>4.0.2.redhat-621054</karaf.plugin.version>
 
     <docker.from>fabric8/s2i-karaf-rhel:1.2.1</docker.from>
