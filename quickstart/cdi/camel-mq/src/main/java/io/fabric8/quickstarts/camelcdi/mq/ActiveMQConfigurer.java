@@ -13,7 +13,7 @@
  * implied.  See the License for the specific language governing
  * permissions and limitations under the License.
  */
-package io.fabric8.mq;
+package io.fabric8.quickstarts.camelcdi.mq;
 
 import io.fabric8.annotations.Configuration;
 import io.fabric8.annotations.Factory;
