@@ -14,7 +14,7 @@
  * permissions and limitations under the License.
  */
 
-package io.fabric8.apps.mq;
+package io.fabric8.quickstarts.camelcdi.mq;
 
 import io.fabric8.arquillian.kubernetes.Session;
 import io.fabric8.kubernetes.api.model.Pod;
