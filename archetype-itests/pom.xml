@@ -171,6 +171,13 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>io.fabric8.archetypes</groupId>
+                  <artifactId>cdi-camel-mq-archetype</artifactId>
+                  <version>${project.version}</version>
+                  <type>jar</type>
+                  <overWrite>false</overWrite>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>io.fabric8.archetypes</groupId>
                   <artifactId>cdi-cxf-archetype</artifactId>
                   <version>${project.version}</version>
                   <type>jar</type>
@@ -201,14 +208,13 @@
                 </artifactItem>
 
                 <!-- karaf archetypes -->
-                <!-- commented out as karaf-amq is commented see https://github.com/fabric8io/fabric8/issues/5002 -->
-                <!-- <artifactItem>
+                <artifactItem>
                   <groupId>io.fabric8.archetypes</groupId>
                   <artifactId>karaf-camel-amq-archetype</artifactId>
                   <version>${project.version}</version>
                   <type>jar</type>
                   <overWrite>false</overWrite>
-                </artifactItem> -->
+                </artifactItem>
                 <artifactItem>
                   <groupId>io.fabric8.archetypes</groupId>
                   <artifactId>karaf-camel-log-archetype</artifactId>
