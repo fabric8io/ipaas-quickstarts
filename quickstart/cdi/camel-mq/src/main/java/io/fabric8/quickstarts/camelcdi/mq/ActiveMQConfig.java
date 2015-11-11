@@ -13,7 +13,7 @@
  * implied.  See the License for the specific language governing
  * permissions and limitations under the License.
  */
-package io.fabric8.mq;
+package io.fabric8.quickstarts.camelcdi.mq;
 
 import org.apache.deltaspike.core.api.config.ConfigProperty;
 
