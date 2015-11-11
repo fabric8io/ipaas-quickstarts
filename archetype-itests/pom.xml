@@ -169,7 +169,6 @@
                   <type>jar</type>
                   <overWrite>false</overWrite>
                 </artifactItem>
-<!-- Commented out due to archetype deployment and test order issues
                 <artifactItem>
                   <groupId>io.fabric8.archetypes</groupId>
                   <artifactId>cdi-camel-mq-archetype</artifactId>
@@ -177,7 +176,6 @@
                   <type>jar</type>
                   <overWrite>false</overWrite>
                 </artifactItem>
--->
                 <artifactItem>
                   <groupId>io.fabric8.archetypes</groupId>
                   <artifactId>cdi-cxf-archetype</artifactId>
@@ -210,7 +208,6 @@
                 </artifactItem>
 
                 <!-- karaf archetypes -->
-<!-- Commented out due to archetype deployment and test order issues
                 <artifactItem>
                   <groupId>io.fabric8.archetypes</groupId>
                   <artifactId>karaf-camel-amq-archetype</artifactId>
@@ -218,7 +215,6 @@
                   <type>jar</type>
                   <overWrite>false</overWrite>
                 </artifactItem>
--->
                 <artifactItem>
                   <groupId>io.fabric8.archetypes</groupId>
                   <artifactId>karaf-camel-log-archetype</artifactId>

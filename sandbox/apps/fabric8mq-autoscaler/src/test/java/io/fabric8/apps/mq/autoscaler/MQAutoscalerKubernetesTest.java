@@ -14,7 +14,7 @@
  * permissions and limitations under the License.
  */
 
-package io.fabric8.apps.mq.autoscaler;
+package io.fabric8.quickstarts.camelcdi.mq.autoscaler;
 
 import io.fabric8.arquillian.kubernetes.Constants;
 import io.fabric8.arquillian.kubernetes.Session;

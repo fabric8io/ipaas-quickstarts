@@ -13,15 +13,17 @@
  * implied.  See the License for the specific language governing
  * permissions and limitations under the License.
  */
-package io.fabric8.tests.integration;
+package io.fabric8.quickstarts.camelcdi;
+
+import javax.inject.Inject;
 
 import io.fabric8.annotations.ServiceName;
 import io.fabric8.arquillian.kubernetes.Session;
 import io.fabric8.cdi.deltaspike.DeltaspikeTestBase;
-import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.quickstarts.camelcdi.mq.ActiveMQConfigurer;
-import io.fabric8.quickstarts.camelcdi.ActiveMQComponentFactory;
+
 import org.apache.activemq.camel.component.ActiveMQComponent;
 import org.assertj.core.api.Condition;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -30,8 +32,6 @@ import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import javax.inject.Inject;
 
 import static io.fabric8.kubernetes.assertions.Assertions.assertThat;
 
