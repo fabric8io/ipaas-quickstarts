@@ -30,7 +30,7 @@ import org.apache.camel.cdi.ContextName;
 public class MyRoutes extends RouteBuilder {
 
     @Inject
-    @ServiceName("fabric8mq")
+    @ServiceName("amqbroker")
     @Alias("jms")
     ActiveMQComponent activeMQComponent;
 

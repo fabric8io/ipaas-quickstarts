@@ -35,7 +35,7 @@
     <module>camel</module>
     <module>camel-http</module>
     <module>camel-jetty</module>
-    <!--<module>camel-mq</module>-->
+    <module>camel-mq</module>
     <module>cxf</module>
   </modules>
 

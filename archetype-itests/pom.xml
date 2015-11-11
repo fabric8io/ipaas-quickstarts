@@ -171,6 +171,13 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>io.fabric8.archetypes</groupId>
+                  <artifactId>cdi-camel-mq-archetype</artifactId>
+                  <version>${project.version}</version>
+                  <type>jar</type>
+                  <overWrite>false</overWrite>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>io.fabric8.archetypes</groupId>
                   <artifactId>cdi-cxf-archetype</artifactId>
                   <version>${project.version}</version>
                   <type>jar</type>
@@ -203,7 +210,6 @@
                 </artifactItem>
 
                 <!-- karaf archetypes -->
-<!--
                 <artifactItem>
                   <groupId>io.fabric8.archetypes</groupId>
                   <artifactId>karaf-camel-amq-archetype</artifactId>
@@ -232,7 +238,7 @@
                   <type>jar</type>
                   <overWrite>false</overWrite>
                 </artifactItem>
--->
+
                 <!--spring-boot archetypes -->
 <!--
                 <artifactItem>
