@@ -46,7 +46,7 @@
     <derby.version>10.10.2.0</derby.version>
     <karaf.version>2.4.3</karaf.version>
     <spring.features.version>3.0.4</spring.features.version>
-    <karaf.plugin.version>4.0.2</karaf.plugin.version>
+    <karaf.plugin.version>4.0.3</karaf.plugin.version>
     <spring.tx.feature.version>3.2.11.RELEASE_1</spring.tx.feature.version>
 
     <docker.from>fabric8/s2i-karaf:1.2.1</docker.from>

@@ -43,7 +43,7 @@
     <cxf.version>3.1.3</cxf.version>
     <cxf.plugin.version>3.1.3</cxf.plugin.version>
     <karaf.version>2.4.3</karaf.version>
-    <karaf.plugin.version>4.0.2</karaf.plugin.version>
+    <karaf.plugin.version>4.0.3</karaf.plugin.version>
 
     <jackson2-version>2.6.3</jackson2-version>
     <swagger-version>1.5.4</swagger-version>
