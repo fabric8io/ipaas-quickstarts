@@ -38,7 +38,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <!-- the version of the BOM, defining all the dependency versions -->
-    <fabric8.version>2.2.62</fabric8.version>
+    <fabric8.version>2.2.0.redhat-061</fabric8.version>
     <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
     <commons-lang3.version>3.4</commons-lang3.version>
 

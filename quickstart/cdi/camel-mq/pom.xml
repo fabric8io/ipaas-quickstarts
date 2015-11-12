@@ -42,7 +42,7 @@
     <activemq.version>5.11.0.redhat-621072</activemq.version>
     <camel.version>2.15.1.redhat-621072</camel.version>
     <cxf.version>3.0.4.redhat-621072</cxf.version>
-    <fabric8.version>2.2.0.redhat-055</fabric8.version>
+    <fabric8.version>2.2.0.redhat-061</fabric8.version>
     <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
 
     <!-- Docker & Fabric8 Configs -->

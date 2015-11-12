@@ -37,7 +37,7 @@
     <version.maven-bundle-plugin>2.3.7</version.maven-bundle-plugin>
 
     <!-- the version of the BOM, defining all the dependency versions -->
-    <fabric8.version>2.2.0.redhat-055</fabric8.version>
+    <fabric8.version>2.2.0.redhat-061</fabric8.version>
     <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
 
     <activemq.version>5.11.0.redhat-621072</activemq.version>
