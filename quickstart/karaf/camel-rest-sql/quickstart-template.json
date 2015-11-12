@@ -100,7 +100,7 @@
       "kind": "ImageStream",
       "apiVersion": "v1",
       "metadata": {
-        "name": "s2i-java-${APP_NAME}",
+        "name": "s2i-karaf-${APP_NAME}",
         "creationTimestamp": null,
         "labels": {
           "component": "${APP_NAME}",
@@ -112,7 +112,7 @@
         }
       },
       "spec": {
-        "dockerImageRepository": "fabric8/s2i-java:${BUILDER_VERSION}"
+        "dockerImageRepository": "fabric8/s2i-karaf:${BUILDER_VERSION}"
       },
       "status": {
         "dockerImageRepository": ""
@@ -187,7 +187,7 @@
           "sourceStrategy": {
             "from": {
               "kind": "ImageStreamTag",
-              "name": "s2i-java-${APP_NAME}:${BUILDER_VERSION}"
+              "name": "s2i-karaf-${APP_NAME}:${BUILDER_VERSION}"
             },
             "forcePull": true,
             "env": [
