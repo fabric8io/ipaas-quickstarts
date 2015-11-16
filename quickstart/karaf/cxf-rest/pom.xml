@@ -207,7 +207,6 @@
               io.swagger.jaxrs.listing,
               io.swagger.annotations,
               org.apache.cxf.transport.http,
-              io.fabric8.cxf.endpoint,
               com.fasterxml.jackson.annotation,
               com.fasterxml.jackson.core,
               com.fasterxml.jackson.databind,
