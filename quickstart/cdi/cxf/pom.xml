@@ -88,16 +88,6 @@
 
     <dependency>
       <groupId>io.fabric8</groupId>
-      <artifactId>fabric8-cxf</artifactId>
-      <exclusions>
-        <exclusion>
-          <groupId>org.apache.cxf</groupId>
-          <artifactId>cxf-bundle</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
       <artifactId>fabric8-utils</artifactId>
     </dependency>
 

@@ -77,22 +77,7 @@
 
   <dependencies>
 
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>fabric8-cxf</artifactId>
-      <exclusions>
-        <exclusion>
-          <groupId>org.apache.cxf</groupId>
-          <artifactId>cxf-bundle</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.apache.geronimo.specs</groupId>
-          <artifactId>geronimo-servlet_3.0_spec</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-
-    <dependency>
+     <dependency>
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-rt-rs-service-description</artifactId>
       <version>${cxf.version}</version>

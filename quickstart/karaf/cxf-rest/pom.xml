@@ -250,26 +250,6 @@
       </plugin>
       <plugin>
         <groupId>io.fabric8</groupId>
-        <artifactId>fabric8-cxf-plugins</artifactId>
-        <version>${fabric8.version}</version>
-        <executions>
-          <execution>
-            <id>process-classes</id>
-            <phase>process-classes</phase>
-            <goals>
-              <goal>java2swagger</goal>
-            </goals>
-            <configuration>
-              <classResourceNames>
-                <classResourceName>io.fabric8.quickstarts.rest.CustomerService</classResourceName>
-              </classResourceNames>
-              <attachSwagger>false</attachSwagger>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>io.fabric8</groupId>
         <artifactId>fabric8-maven-plugin</artifactId>
         <version>${fabric8.version}</version>
         <executions>
@@ -380,7 +360,6 @@
             <feature>swagger2</feature>
           </startupFeatures>
           <startupBundles>
-            <bundle>mvn:io.fabric8/fabric8-cxf/${fabric8.version}</bundle>
             <bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}</bundle>
           </startupBundles>
         </configuration>
