@@ -15,7 +15,6 @@
  */
 package io.fabric8.quickstarts.cxfcdi;
 
-import io.fabric8.cxf.endpoint.ManagedApi;
 import io.fabric8.utils.Strings;
 import io.fabric8.utils.Systems;
 import org.apache.cxf.cdi.CXFCdiServlet;
@@ -48,7 +47,6 @@ public class ApplicationStarter {
         String servicesPath = "/servicesList";
 
         String servletContextPath = "/" + service;
-        ManagedApi.setSingletonCxfServletContext(servletContextPath);
 
         System.out.println("Starting REST server at:         http://localhost:" + port + servletContextPath);
         System.out.println("View the services at:            http://localhost:" + port + servletContextPath + servicesPath);

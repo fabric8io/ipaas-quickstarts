@@ -27,7 +27,6 @@ import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
-import io.fabric8.cxf.endpoint.EnableJMXFeature;
 import io.fabric8.utils.Manifests;
 import org.apache.cxf.feature.LoggingFeature;
 import org.apache.cxf.jaxrs.swagger.SwaggerFeature;
@@ -64,13 +63,12 @@ public class CxfCdiApplication extends Application {
 				LOG.info("Could not read the project attributes from the Manifest due to " + e.getMessage());
 			}
     	}
-            return new HashSet<Object>(
+        return new HashSet<Object>(
                     Arrays.asList(
                     rootService,
                     customerService,
                     jacksonJsonProvider,
                     swaggerFeature,
-                    new EnableJMXFeature(),
                     new LoggingFeature()
                 )
         );
