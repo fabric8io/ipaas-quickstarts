@@ -53,7 +53,7 @@
     <docker.assemblyDescriptor>${basedir}/src/main/fabric8/assembly.xml</docker.assemblyDescriptor>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
     <docker.port.container.http>8181</docker.port.container.http>
-    <fabric8.env.AMQ_SERVICE_ID>FABRIC8MQ</fabric8.env.AMQ_SERVICE_ID>
+    <fabric8.env.FABRIC8MQ_SERVICE_NAME>FABRIC8MQ</fabric8.env.FABRIC8MQ_SERVICE_NAME>
 
     <!-- fabric8.env.AB_JOLOKIA_AUTH_OPENSHIFT>true</fabric8.env.AB_JOLOKIA_AUTH_OPENSHIFT -->
     <fabric8.label.component>${project.artifactId}</fabric8.label.component>
