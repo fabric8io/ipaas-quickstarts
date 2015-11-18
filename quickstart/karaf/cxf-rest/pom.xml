@@ -152,6 +152,13 @@
       <artifactId>fuse-karaf-framework</artifactId>
       <version>${fuse.version}</version>
       <type>kar</type>
+      <!-- no need to download kar dependencies -->
+      <exclusions>
+        <exclusion>
+          <groupId>*</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.apache.cxf.karaf</groupId>
