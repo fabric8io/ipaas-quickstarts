@@ -461,6 +461,20 @@
         <maven.require.version>3.0.5</maven.require.version>
       </properties>
     </profile>
+
+    <!-- S2I requires only 3.0.5 so we lower the barrier for s2i build which is detected by from the environment -->
+    <profile>
+      <id>vw</id>
+      <activation>
+        <property>
+          <name>env.S2I_ASSEMBLE</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <properties>
+        <maven.require.version>3.0.5</maven.require.version>
+      </properties>
+    </profile>
   </profiles>
 
 </project>
