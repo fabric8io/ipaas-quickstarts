@@ -127,6 +127,13 @@
       <artifactId>static</artifactId>
       <version>${karaf.plugin.version}</version>
       <type>kar</type>
+      <!-- no need to download kar dependencies -->
+      <exclusions>
+        <exclusion>
+          <groupId>*</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.apache.karaf.assemblies.features</groupId>
