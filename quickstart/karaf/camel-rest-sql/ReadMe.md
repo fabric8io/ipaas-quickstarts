@@ -52,6 +52,19 @@ You can from a web browser then access these services such as:
     http://qs-camel-rest-sql.vagrant.f8/camel-rest-sql/books/order/1
 
 
+### Running the example using OpenShift S2I template
+
+The example can also be built and run using the included S2I template quickstart-template.json.
+
+The application can be run directly by first editing the template file and populating S2I build parameters, including the required parameter GIT_REPO and then executing the command:
+
+    oc new-app -f quickstart-template.json
+
+Alternatively the template file can be processed into an OpenShift resource list and the resources created by executing the command:
+
+    oc process -f quickstart-template.json | oc create -f -
+
+
 ### More details
 
 You can find more details about running this [quickstart](http://fabric8.io/guide/quickstarts/running.html) on the website. This also includes instructions how to change the Docker image user and registry.

@@ -77,13 +77,13 @@ You can use a command-line utility, such as cURL or wget, to perform the HTTP re
 
 1. Open a command prompt and change directory to `cxf-cdi`.
 2. Run the following curl commands (curl commands may not be available on all platforms):
-    
+
     * Create a customer
  
             curl -X POST -T src/test/resources/add_customer.xml -H "Content-Type: text/xml" http://quickstart-java-cxf-cdi.vagrant.f8/cxfcdi/customerservice/customers
   
     * Retrieve the customer instance with id 123
-    
+
             curl http://localhost:8080/cxfcdi/cxfcdi/customerservice/customers/123
 
     * Update the customer instance with id 123
@@ -93,6 +93,19 @@ You can use a command-line utility, such as cURL or wget, to perform the HTTP re
     * Delete the customer instance with id 123
   
              curl -X DELETE http://quickstart-java-cxf-cdi.vagrant.f8/cxfcdi/customerservice/customers/123
+
+
+### Running the example using OpenShift S2I template
+
+The example can also be built and run using the included S2I template quickstart-template.json.
+
+The application can be run directly by first editing the template file and populating S2I build parameters, including the required parameter GIT_REPO and then executing the command:
+
+    oc new-app -f quickstart-template.json
+
+Alternatively the template file can be processed into an OpenShift resource list and the resources created by executing the command:
+
+    oc process -f quickstart-template.json | oc create -f -
 
 
 ### More details

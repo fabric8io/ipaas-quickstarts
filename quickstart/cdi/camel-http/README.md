@@ -43,7 +43,7 @@ Then find the name of the pod that runs this quickstart, and output the logs fro
 
 You can also use the OpenShift [web console](https://docs.openshift.com/enterprise/3.1/getting_started/developers/developers_console.html#tutorial-video) to manage the
 running pods, and view logs and much more.
-    
+
 ## Calling the remote service from a shell script
 
 You can also call the remote HTTP service from a shell script. We have provided a script named `src/test/resources/hitme-f8.sh` (no script for windows)
@@ -61,6 +61,19 @@ While the script runs, you can try to scale up or down the number of pods on the
 or from the command line using the openshift client
 
     oc scale --replicas=3 replicationcontrollers quickstart-cdi-camel-jetty
+
+
+### Running the example using OpenShift S2I template
+
+The example can also be built and run using the included S2I template quickstart-template.json.
+
+The application can be run directly by first editing the template file and populating S2I build parameters, including the required parameter GIT_REPO and then executing the command:
+
+    oc new-app -f quickstart-template.json
+
+Alternatively the template file can be processed into an OpenShift resource list and the resources created by executing the command:
+
+    oc process -f quickstart-template.json | oc create -f -
 
 
 ### More details
