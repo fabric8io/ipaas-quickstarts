@@ -40,11 +40,11 @@
     <fabric8.version>2.2.0.redhat-061</fabric8.version>
     <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
 
-    <cxf.version>3.0.4.redhat-621072</cxf.version>
-    <cxf.plugin.version>3.0.4.redhat-621072</cxf.plugin.version>
+    <cxf.version>3.0.4.redhat-621077</cxf.version>
+    <cxf.plugin.version>3.0.4.redhat-621077</cxf.plugin.version>
     <fuse.version>6.2.1.redhat-072</fuse.version>
-    <karaf.version>2.4.0.redhat-621072</karaf.version>
-    <karaf.plugin.version>4.0.2.redhat-621054</karaf.plugin.version>
+    <karaf.version>2.4.0.redhat-621077</karaf.version>
+    <karaf.plugin.version>4.0.2.redhat-621061</karaf.plugin.version>
 
     <jackson2-version>2.6.3</jackson2-version>
     <swagger-version>1.5.4</swagger-version>
