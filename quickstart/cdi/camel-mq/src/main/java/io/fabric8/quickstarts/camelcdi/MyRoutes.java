@@ -15,13 +15,13 @@
  */
 package io.fabric8.quickstarts.camelcdi;
 
-import javax.inject.Inject;
-
 import io.fabric8.annotations.Alias;
 import io.fabric8.annotations.ServiceName;
 import org.apache.activemq.camel.component.ActiveMQComponent;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.cdi.ContextName;
+
+import javax.inject.Inject;
 
 /**
  * Configures all our Camel routes, components, endpoints and beans
@@ -30,7 +30,7 @@ import org.apache.camel.cdi.ContextName;
 public class MyRoutes extends RouteBuilder {
 
     @Inject
-    @ServiceName("amqbroker")
+    @ServiceName("broker")
     @Alias("jms")
     ActiveMQComponent activeMQComponent;
 
