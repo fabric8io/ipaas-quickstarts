@@ -18,6 +18,7 @@
     },
     {
       "name": "GIT_REPO",
+      "required": true,
       "description": "Git repository, required"
     },
     {
@@ -46,11 +47,11 @@
       "description": "Arguments passed to mvn in the build"
     },
     {
-      "name": "MAVEN_EXTRA_ARGS",
+      "name": "MAVEN_ARGS_APPEND",
       "description": "Extra arguments passed to mvn, e.g. for multi-module builds"
     },
     {
-      "name": "MAVEN_BUILD_DIR",
+      "name": "ARTIFACT_DIR",
       "description": "Maven build directory"
     },
     {
@@ -196,16 +197,16 @@
                 "value": "5"
               },
               {
-                "name": "MAVEN_BUILD_DIR",
-                "value": "${MAVEN_BUILD_DIR}"
+                "name": "ARTIFACT_DIR",
+                "value": "${ARTIFACT_DIR}"
               },
               {
                 "name": "MAVEN_ARGS",
                 "value": "${MAVEN_ARGS}"
               },
               {
-                "name": "MAVEN_EXTRA_ARGS",
-                "value": "${MAVEN_EXTRA_ARGS}"
+                "name": "MAVEN_ARGS_APPEND",
+                "value": "${MAVEN_ARGS_APPEND}"
               }
             ]
           }
