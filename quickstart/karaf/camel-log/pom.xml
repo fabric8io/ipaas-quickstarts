@@ -48,7 +48,7 @@
     <karaf.version>2.4.0.redhat-621077</karaf.version>
     <karaf.plugin.version>4.0.2.redhat-621061</karaf.plugin.version>
 
-    <docker.from>fabric8/s2i-karaf-rhel:1.2.1</docker.from>
+    <docker.from>fabric8/s2i-karaf-rhel:1.2.4</docker.from>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerUser}quickstart-karaf-camellog:${project.version}</docker.image>
     <docker.assemblyDescriptor>${basedir}/src/main/fabric8/assembly.xml</docker.assemblyDescriptor>

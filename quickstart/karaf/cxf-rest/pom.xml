@@ -58,7 +58,7 @@
     <swagger-scala-version>2.10.2</swagger-scala-version>
     <javassist-version>3.19.0-GA</javassist-version>
 
-    <docker.from>fabric8/s2i-karaf-rhel:1.2.1</docker.from>
+    <docker.from>fabric8/s2i-karaf-rhel:1.2.4</docker.from>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
     <docker.assemblyDescriptor>${basedir}/src/main/fabric8/assembly.xml</docker.assemblyDescriptor>
