@@ -1,13 +1,14 @@
 # CDI Camel MQ QuickStart
 
-This example shows how to use Camel in the Java Container using CDI to connect to an ActiveMQ broker hosted in Kubernetes.
+This example shows how to use Camel in the Java Container using CDI to connect to the A-MQ xPaaS message broker on OpenShift.
+the Red Hat JBoss A-MQ xPaaS product should already be installed and running on your OpenShift installation - see the [documentation](https://docs.openshift.com/enterprise/3.1/using_images/xpaas_images/a_mq.html)
 
 This example is implemented using Java code with CDI injected resources.
 The source code uses the CDI Annotation `@ServiceName` to lookup the ActiveMQ broker Service name.
 
-The broker service name can be changed [here](https://github.com/fabric8io/ipaas-quickstarts/blob/master/quickstart/cdi/camel-mq/src/main/java/io/fabric8/quickstarts/camelcdi/MyRoutes.java#L33) and defaults to `@ServiceName("fabric8mq")`
+The broker service name can be changed [here](https://github.com/fabric8io/ipaas-quickstarts/blob/master/quickstart/cdi/camel-mq/src/main/java/io/fabric8/quickstarts/camelcdi/MyRoutes.java#L33) and defaults to `@ServiceName("broker")`
 
-This example will connect to the broker and send messages to a queue TEST.FOO
+This example will connect to the A_MQ message broker and send messages to a queue TEST.FOO
 
 
 ### Building
@@ -35,7 +36,7 @@ Then find the name of the pod that runs this quickstart, and output the logs fro
 
     oc logs <name of pod>
 
-You can also use the fabric8 [web console](http://fabric8.io/guide/console.html) to manage the
+You can also use the openshift [web console](https://docs.openshift.com/enterprise/3.1/getting_started/developers/developers_console.html#tutorial-video) to manage the
 running pods, and view logs and much more.
 
 

@@ -53,7 +53,7 @@ The example exposes a service over HTTP which you can find using
 This lists all the routes to the services, where you can find the actual HTTP url, which you can use from a web browser.
 
 
-You can also use the fabric8 [web console](http://fabric8.io/guide/console.html) to manage the
+You can also use the OpenShift [web console](https://docs.openshift.com/enterprise/3.1/getting_started/developers/developers_console.html#tutorial-video) to manage the
 running pods, and view logs and much more.
 
 

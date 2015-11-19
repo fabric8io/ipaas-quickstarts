@@ -1,7 +1,7 @@
 Quickstarts
 ===========
 
-Welcome the fabric quickstarts which demonstrates how to use fabric with various technologies.
+Welcome the fabric quickstarts which demonstrates how to use Red Hat Fuse Integration Services on OpenShift
 
 The quickstarts are categorized accordingly to the container being used:
 
