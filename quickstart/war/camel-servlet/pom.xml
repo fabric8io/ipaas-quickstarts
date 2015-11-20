@@ -41,6 +41,10 @@
     <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
     <jetty.plugin.version>9.2.11.v20150529</jetty.plugin.version>
 
+
+
+    <camel.version>2.16.0</camel.version>
+
     <docker.from>fabric8/tomcat-8.0</docker.from>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
