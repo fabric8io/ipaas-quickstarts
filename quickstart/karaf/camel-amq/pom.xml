@@ -40,6 +40,8 @@
     <fabric8.version>2.2.63</fabric8.version>
     <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
 
+
+
     <activemq.version>5.12.1</activemq.version>
     <camel.version>2.16.0</camel.version>
     <karaf.version>2.4.3</karaf.version>
