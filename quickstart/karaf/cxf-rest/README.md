@@ -96,9 +96,9 @@ The application can be run directly by first editing the template file and popul
 
     oc new-app -f quickstart-template.json
 
-Alternatively the template file can be processed into an OpenShift resource list and the resources created by executing the command:
+Alternatively the template file can be used to create an OpenShift application template by executing the command:
 
-    oc process -f quickstart-template.json | oc create -f -
+    oc create -f quickstart-template.json
 
 
 ### More details
