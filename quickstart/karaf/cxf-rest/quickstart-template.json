@@ -43,7 +43,7 @@
     },
     {
       "name": "MAVEN_ARGS",
-      "value": "package -DskipTests -e",
+      "value": "install -DskipTests -e",
       "description": "Arguments passed to mvn in the build"
     },
     {
