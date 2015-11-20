@@ -49,7 +49,7 @@
     <karaf.version>2.4.0.redhat-62107</karaf.version>
     <karaf.plugin.version>4.0.2.redhat-621061</karaf.plugin.version>
 
-    <docker.from>fabric8/s2i-karaf-rhel:1.2.4</docker.from>
+    <docker.from>fabric8/s2i-karaf-rhel:1.2.5</docker.from>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
     <docker.assemblyDescriptor>${basedir}/src/main/fabric8/assembly.xml</docker.assemblyDescriptor>

@@ -52,7 +52,7 @@
     <fuse.version>6.2.1.redhat-072</fuse.version>
 
     <!-- Docker & Fabric8 Configs -->
-    <docker.from>fabric8/s2i-java-rhel:1.2.4</docker.from>
+    <docker.from>fabric8/s2i-java-rhel:1.2.5</docker.from>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
