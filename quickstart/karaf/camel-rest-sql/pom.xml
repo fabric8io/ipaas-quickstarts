@@ -250,8 +250,7 @@
           </execution>
         </executions>
         <configuration>
-          <!-- we are using karaf 2.4.x -->
-          <karafVersion>v24</karafVersion>
+          <karafVersion>v4x</karafVersion>
           <useReferenceUrls>true</useReferenceUrls>
           <!-- do not include build output directory -->
           <includeBuildOutputDirectory>false</includeBuildOutputDirectory>
