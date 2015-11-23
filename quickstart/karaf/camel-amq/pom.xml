@@ -43,7 +43,7 @@
 
 
     <activemq.version>5.12.1</activemq.version>
-    <camel.version>2.16.0</camel.version>
+    <camel.version>2.16.1</camel.version>
     <karaf.version>2.4.3</karaf.version>
     <karaf.plugin.version>4.0.3</karaf.plugin.version>
 

@@ -43,7 +43,7 @@
 
 
 
-    <camel.version>2.16.0</camel.version>
+    <camel.version>2.16.1</camel.version>
 
     <docker.from>fabric8/tomcat-8.0</docker.from>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
