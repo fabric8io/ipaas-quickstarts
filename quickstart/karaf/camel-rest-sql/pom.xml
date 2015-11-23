@@ -42,7 +42,7 @@
 
 
 
-    <camel.version>2.16.0</camel.version>
+    <camel.version>2.16.1</camel.version>
     <derby.version>10.10.2.0</derby.version>
     <karaf.version>2.4.3</karaf.version>
     <spring.features.version>3.0.4</spring.features.version>

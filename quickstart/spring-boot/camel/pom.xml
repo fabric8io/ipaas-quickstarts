@@ -40,7 +40,7 @@
 
 
 
-    <camel.version>2.16.0</camel.version>
+    <camel.version>2.16.1</camel.version>
     <spring-boot-plugin.version>1.2.7.RELEASE</spring-boot-plugin.version>
     <spring-boot.version>1.2.7.RELEASE</spring-boot.version>
 
