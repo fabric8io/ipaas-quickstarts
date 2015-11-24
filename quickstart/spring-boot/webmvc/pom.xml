@@ -40,6 +40,7 @@
 
 
 
+    <!-- configure the versions you want to use here -->
     <spring-boot.version>1.2.7.RELEASE</spring-boot.version>
 
     <!-- Docker & Fabric8 Configs -->

@@ -42,6 +42,7 @@
     <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
 
 
+    <!-- configure the versions you want to use here -->
     <camel.version>2.16.1</camel.version>
 
     <!-- Docker & Fabric8 Configs -->

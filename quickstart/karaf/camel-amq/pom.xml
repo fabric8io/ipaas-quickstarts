@@ -42,6 +42,7 @@
 
 
 
+    <!-- configure the versions you want to use here -->
     <activemq.version>5.12.1</activemq.version>
     <camel.version>2.16.1</camel.version>
     <karaf.version>2.4.3</karaf.version>
