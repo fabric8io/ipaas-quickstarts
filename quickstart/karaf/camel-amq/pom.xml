@@ -55,7 +55,7 @@
     <docker.assemblyDescriptor>${basedir}/src/main/fabric8/assembly.xml</docker.assemblyDescriptor>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
     <docker.port.container.http>8181</docker.port.container.http>
-    <fabric8.env.FABRIC8MQ_SERVICE_NAME>FABRIC8MQ</fabric8.env.FABRIC8MQ_SERVICE_NAME>
+    <fabric8.env.A_MQ_SERVICE_NAME>broker</fabric8.env.A_MQ_SERVICE_NAME>
 
     <fabric8.label.component>${project.artifactId}</fabric8.label.component>
     <fabric8.label.container>karaf</fabric8.label.container>
