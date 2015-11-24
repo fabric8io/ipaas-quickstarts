@@ -70,6 +70,14 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-parent</artifactId>
+        <version>${camel.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <!-- import fabric8 last -->
+      <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>fabric8-project</artifactId>
         <version>${fabric8.version}</version>
@@ -86,22 +94,18 @@
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-blueprint</artifactId>
       <scope>provided</scope>
-      <version>${camel.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-sql</artifactId>
-      <version>${camel.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-jackson</artifactId>
-      <version>${camel.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-servlet</artifactId>
-      <version>${camel.version}</version>
     </dependency>
 
     <!-- embedded database -->
