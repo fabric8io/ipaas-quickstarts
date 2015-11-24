@@ -217,7 +217,9 @@
         <executions>
           <execution>
             <id>hawt-app</id>
-            <goals><goal>build</goal></goals>
+            <goals>
+              <goal>build</goal>
+            </goals>
             <configuration>
               <javaMainClass>org.apache.camel.cdi.Main</javaMainClass>
             </configuration>
