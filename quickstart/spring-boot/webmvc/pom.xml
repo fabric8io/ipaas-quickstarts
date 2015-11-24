@@ -40,7 +40,6 @@
 
 
 
-    <spring-boot-plugin.version>1.2.7.RELEASE</spring-boot-plugin.version>
     <spring-boot.version>1.2.7.RELEASE</spring-boot.version>
 
     <!-- Docker & Fabric8 Configs -->
@@ -131,7 +130,7 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
-        <version>${spring-boot-plugin.version}</version>
+        <version>${spring-boot.version}</version>
         <configuration>
           <mainClass>io.fabric8.quickstarts.springbootmvc.App</mainClass>
         </configuration>

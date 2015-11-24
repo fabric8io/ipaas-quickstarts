@@ -36,7 +36,6 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <!-- the version of the BOM, defining all the dependency versions -->
-    <weld.version>2.3.1.Final</weld.version>
     <fabric8.version>2.2.65</fabric8.version>
     <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
 
@@ -45,6 +44,7 @@
     <cxf.version>3.1.4</cxf.version>
     <cxf.plugin.version>3.1.4</cxf.plugin.version>
     <jetty-version>9.2.10.v20150310</jetty-version>
+    <weld.version>2.3.1.Final</weld.version>
 
     <http.port>9092</http.port>
 

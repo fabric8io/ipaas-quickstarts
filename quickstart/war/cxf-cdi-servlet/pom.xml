@@ -35,15 +35,14 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <!-- the version of the BOM, defining all the dependency versions -->
-    <weld.version>2.3.1.Final</weld.version>
     <fabric8.version>2.2.65</fabric8.version>
     <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
-    <jetty.plugin.version>9.2.11.v20150529</jetty.plugin.version>
 
 
 
     <cxf.version>3.1.4</cxf.version>
     <cxf.plugin.version>3.1.4</cxf.plugin.version>
+    <weld.version>2.3.1.Final</weld.version>
 
     <docker.from>fabric8/tomcat-8.0</docker.from>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
@@ -160,7 +159,7 @@
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-servlet</artifactId>
-      <version>${jetty.plugin.version}</version>
+      <version>9.2.11.v20150529</version>
       <scope>optional</scope>
     </dependency>
     <dependency>
@@ -279,7 +278,7 @@
       <plugin>
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
-        <version>${jetty.plugin.version}</version>
+        <version>9.2.11.v20150529</version>
         <configuration>
           <httpConnector>
             <port>8080</port>
