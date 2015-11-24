@@ -43,6 +43,7 @@
 
 
 
+    <!-- configure the versions you want to use here -->
     <activemq.version>5.12.1</activemq.version>
     <camel.version>2.16.1</camel.version>
     <weld.version>2.3.1.Final</weld.version>

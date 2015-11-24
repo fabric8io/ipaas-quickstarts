@@ -41,6 +41,7 @@
 
 
 
+    <!-- configure the versions you want to use here -->
     <cxf.version>3.1.4</cxf.version>
     <cxf.plugin.version>3.1.4</cxf.plugin.version>
     <jetty-version>9.2.10.v20150310</jetty-version>
