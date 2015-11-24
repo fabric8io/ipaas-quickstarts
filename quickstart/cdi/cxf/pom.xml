@@ -36,6 +36,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <!-- the version of the BOM, defining all the dependency versions -->
+    <weld.version>2.3.1.Final</weld.version>
     <fabric8.version>2.2.65</fabric8.version>
     <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
 
@@ -89,6 +90,7 @@
 
   <dependencies>
 
+    <!-- fabric8 -->
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>fabric8-cxf</artifactId>
@@ -104,6 +106,7 @@
       <artifactId>fabric8-utils</artifactId>
     </dependency>
 
+    <!-- cxf -->
     <dependency>
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-core</artifactId>
@@ -185,17 +188,33 @@
       <version>${cxf.version}</version>
     </dependency>
 
+    <!-- cdi api -->
+    <dependency>
+      <groupId>javax.enterprise</groupId>
+      <artifactId>cdi-api</artifactId>
+      <version>1.2</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- cdi container -->
     <dependency>
       <groupId>org.jboss.weld.se</groupId>
       <artifactId>weld-se</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.weld.servlet</groupId>
-      <artifactId>weld-servlet</artifactId>
+      <version>${weld.version}</version>
     </dependency>
     <dependency>
       <groupId>org.jboss.weld</groupId>
       <artifactId>weld-core</artifactId>
+      <version>${weld.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.weld.servlet</groupId>
+      <artifactId>weld-servlet</artifactId>
+      <version>${weld.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.deltaspike.cdictrl</groupId>
+      <artifactId>deltaspike-cdictrl-weld</artifactId>
     </dependency>
 
     <!-- these explicit transitive dependencies avoid issues of 8.x bleeding into the generated archetype
@@ -254,6 +273,7 @@
       </exclusions>
     </dependency>
 
+    <!-- logging -->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>

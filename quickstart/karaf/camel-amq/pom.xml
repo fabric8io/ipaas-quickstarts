@@ -74,13 +74,13 @@
   </dependencyManagement>
 
   <dependencies>
-    <!--
-      For this example, we will be using the OSGi Blueprint XML syntax for Apache Camel.
-    -->
+
+    <!-- camel -->
     <dependency>
       <groupId>org.apache.camel</groupId>
-      <artifactId>camel-core</artifactId>
+      <artifactId>camel-blueprint</artifactId>
       <version>${camel.version}</version>
+      <scope>provided</scope>
     </dependency>
 
     <!-- Karaf microcontainer dependencies -->
@@ -107,8 +107,16 @@
       <type>xml</type>
     </dependency>
     <dependency>
+      <groupId>org.apache.karaf.assemblies.features</groupId>
+      <artifactId>spring</artifactId>
+      <version>${karaf.version}</version>
+      <classifier>features</classifier>
+      <type>xml</type>
+    </dependency>
+    <dependency>
       <groupId>org.apache.camel.karaf</groupId>
       <artifactId>apache-camel</artifactId>
+      <version>${camel.version}</version>
       <classifier>features</classifier>
       <type>xml</type>
     </dependency>
@@ -116,13 +124,6 @@
       <groupId>org.apache.activemq</groupId>
       <artifactId>activemq-karaf</artifactId>
       <version>${activemq.version}</version>
-      <classifier>features</classifier>
-      <type>xml</type>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.karaf.assemblies.features</groupId>
-      <artifactId>spring</artifactId>
-      <version>${karaf.version}</version>
       <classifier>features</classifier>
       <type>xml</type>
     </dependency>
