@@ -39,7 +39,6 @@
     <!-- the version of the BOM, defining all the dependency versions -->
     <fabric8.version>2.2.65</fabric8.version>
     <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
-    <jetty.plugin.version>9.2.11.v20150529</jetty.plugin.version>
 
 
 
@@ -174,7 +173,7 @@
       <plugin>
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
-        <version>${jetty.plugin.version}</version>
+        <version>9.2.11.v20150529</version>
         <configuration>
           <httpConnector>
             <port>8080</port>
