@@ -64,6 +64,27 @@
   "objects": [
     {
       "apiVersion": "v1",
+      "kind": "Route",
+      "metadata": {
+        "labels": {
+          "container": "java",
+          "component": "${APP_NAME}",
+          "provider": "s2i",
+          "project": "${APP_NAME}",
+          "version": "${APP_VERSION}",
+          "group": "quickstarts"
+        },
+        "name": "${SERVICE_NAME}-route"
+      },
+      "spec": {
+        "to": {
+          "kind": "Service",
+          "name": "${SERVICE_NAME}"
+        }
+      }
+    },
+    {
+      "apiVersion": "v1",
       "kind": "Service",
       "metadata": {
         "annotations": {
