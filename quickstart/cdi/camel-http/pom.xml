@@ -85,16 +85,15 @@
 
   <dependencies>
 
+    <!-- camel -->
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-core</artifactId>
     </dependency>
-
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-cdi</artifactId>
     </dependency>
-
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-netty4-http</artifactId>
@@ -108,21 +107,23 @@
       <scope>provided</scope>
     </dependency>
 
-    <!-- need to use a CDI container such as JBoss Weld -->
-    <!-- lets use weld for CDI -->
+    <!-- cdi container -->
     <dependency>
       <groupId>org.jboss.weld.se</groupId>
       <artifactId>weld-se</artifactId>
+      <version>${weld.version}</version>
     </dependency>
     <dependency>
       <groupId>org.jboss.weld</groupId>
       <artifactId>weld-core</artifactId>
+      <version>${weld.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.deltaspike.cdictrl</groupId>
       <artifactId>deltaspike-cdictrl-weld</artifactId>
     </dependency>
 
+    <!-- logging -->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
