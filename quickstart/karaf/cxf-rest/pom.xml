@@ -40,12 +40,10 @@
     <fuse.version>6.2.1.redhat-083</fuse.version>
     <fabric8.version>2.2.0.redhat-067</fabric8.version>
     <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
-
-    <cxf.version>3.0.4.redhat-621083</cxf.version>
     <cxf.plugin.version>3.0.4.redhat-621083</cxf.plugin.version>
-    <karaf.version>2.4.0.redhat-621083</karaf.version>
     <karaf.plugin.version>4.0.2.redhat-621067</karaf.plugin.version>
 
+    <!-- to resolve cxf karaf features -->
     <jackson2-version>2.6.3</jackson2-version>
     <swagger-version>1.5.4</swagger-version>
     <validation-api-version>1.1.0.Final</validation-api-version>
@@ -56,7 +54,7 @@
     <reflections-version>0.9.10_3</reflections-version>
     <jackson-module-scala-version>2.1.5_2</jackson-module-scala-version>
     <swagger-scala-version>2.10.2</swagger-scala-version>
-    <javassist-version>3.19.0-GA</javassist-version>
+    <javassist-version>3.20.0-GA</javassist-version>
 
     <docker.from>fabric8/s2i-karaf-rhel:1.2.5</docker.from>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
@@ -101,22 +99,18 @@
     <dependency>
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-core</artifactId>
-      <version>${cxf.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-rt-transports-http</artifactId>
-      <version>${cxf.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-rt-frontend-jaxrs</artifactId>
-      <version>${cxf.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-rt-rs-service-description</artifactId>
-      <version>${cxf.version}</version>
     </dependency>
 
     <!-- swagger -->
@@ -166,13 +160,6 @@
           <artifactId>*</artifactId>
         </exclusion>
       </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.cxf.karaf</groupId>
-      <artifactId>apache-cxf</artifactId>
-      <version>${cxf.version}</version>
-      <classifier>features</classifier>
-      <type>xml</type>
     </dependency>
 
   </dependencies>

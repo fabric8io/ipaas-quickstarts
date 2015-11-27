@@ -40,11 +40,6 @@
     <fuse.version>6.2.1.redhat-083</fuse.version>
     <fabric8.version>2.2.0.redhat-067</fabric8.version>
     <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
-
-
-
-    <camel.version>2.15.1.redhat-621083</camel.version>
-    <karaf.version>2.4.0.redhat-621083</karaf.version>
     <karaf.plugin.version>4.0.2.redhat-621067</karaf.plugin.version>
     <derby.version>10.10.2.0</derby.version>
     <spring.features.version>3.0.4</spring.features.version>

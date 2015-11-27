@@ -40,13 +40,6 @@
     <fuse.version>6.2.1.redhat-083</fuse.version>
     <fabric8.version>2.2.0.redhat-067</fabric8.version>
     <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
-
-
-
-    <activemq.version>5.11.0.redhat-621083</activemq.version>
-    <camel.version>2.15.1.redhat-621083</camel.version>
-    <cxf.version>3.0.4.redhat-621083</cxf.version>
-    <karaf.version>2.4.0.redhat-62107</karaf.version>
     <karaf.plugin.version>4.0.2.redhat-621067</karaf.plugin.version>
 
     <docker.from>fabric8/s2i-karaf-rhel:1.2.5</docker.from>
@@ -240,15 +233,13 @@
             <feature>aries-blueprint</feature>
             <feature>camel-blueprint</feature>
             <feature>camel-jms</feature>
-            <feature>activemq-client</feature>
+            <feature>activemq-camel</feature>
             <feature>camel-blueprint</feature>
           </startupFeatures>
           <startupBundles>
             <bundle>mvn:io.fabric8.mq/camel-amq/${fabric8.version}</bundle>
             <bundle>mvn:io.fabric8.mq/mq-client/${fabric8.version}</bundle>
             <bundle>mvn:io.fabric8/fabric8-utils/${fabric8.version}</bundle>
-            <bundle>mvn:org.apache.activemq/activemq-camel/${activemq.version}</bundle>
-            <bundle>mvn:org.apache.activemq/activemq-osgi/${activemq.version}</bundle>
 
             <bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}</bundle>
           </startupBundles>
