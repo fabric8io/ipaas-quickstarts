@@ -37,6 +37,7 @@
     <version.maven-bundle-plugin>2.3.7</version.maven-bundle-plugin>
 
     <!-- the version of the BOM, defining all the dependency versions -->
+    <fuse.version>6.2.1.redhat-083</fuse.version>
     <fabric8.version>2.2.0.redhat-067</fabric8.version>
     <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
 
@@ -45,7 +46,6 @@
     <activemq.version>5.11.0.redhat-621083</activemq.version>
     <camel.version>2.15.1.redhat-621083</camel.version>
     <cxf.version>3.0.4.redhat-621083</cxf.version>
-    <fuse.version>6.2.1.redhat-072</fuse.version>
     <karaf.version>2.4.0.redhat-62107</karaf.version>
     <karaf.plugin.version>4.0.2.redhat-621067</karaf.plugin.version>
 
@@ -65,6 +65,14 @@
 
   <dependencyManagement>
     <dependencies>
+      <!-- fuse bom must be before fabric8 bom -->
+      <dependency>
+        <groupId>org.jboss.fuse.bom</groupId>
+        <artifactId>jboss-fuse-parent</artifactId>
+        <version>${fuse.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
       <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>fabric8-project</artifactId>
@@ -82,7 +90,6 @@
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-core</artifactId>
-      <version>${camel.version}</version>
     </dependency>
 
     <!-- Karaf microcontainer dependencies -->
