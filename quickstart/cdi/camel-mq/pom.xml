@@ -37,10 +37,8 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-    <!-- the version of the BOM, defining all the dependency versions -->
-    <weld.version>2.3.1.Final</weld.version>
-
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
+    <fuse.version>6.2.1.redhat-083</fuse.version>
     <fabric8.version>2.2.0.redhat-067</fabric8.version>
     <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
 
@@ -49,7 +47,6 @@
     <activemq.version>5.11.0.redhat-621083</activemq.version>
     <camel.version>2.15.1.redhat-621083</camel.version>
     <cxf.version>3.0.4.redhat-621083</cxf.version>
-    <fuse.version>6.2.1.redhat-072</fuse.version>
 
     <!-- Docker & Fabric8 Configs -->
     <docker.from>fabric8/s2i-java-rhel:1.2.5</docker.from>
@@ -66,6 +63,14 @@
 
   <dependencyManagement>
     <dependencies>
+      <!-- fuse bom must be before fabric8 bom -->
+      <dependency>
+        <groupId>org.jboss.fuse.bom</groupId>
+        <artifactId>jboss-fuse-parent</artifactId>
+        <version>${fuse.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
       <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>fabric8-project</artifactId>
@@ -81,13 +86,11 @@
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-core</artifactId>
-      <version>${camel.version}</version>
     </dependency>
 
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-cdi</artifactId>
-      <version>${camel.version}</version>
     </dependency>
 
     <!-- cdi api -->
@@ -115,17 +118,14 @@
     <dependency>
       <groupId>org.jboss.weld.se</groupId>
       <artifactId>weld-se</artifactId>
-      <version>${weld.version}</version>
     </dependency>
     <dependency>
       <groupId>org.jboss.weld</groupId>
       <artifactId>weld-core</artifactId>
-      <version>${weld.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.deltaspike.cdictrl</groupId>
       <artifactId>deltaspike-cdictrl-weld</artifactId>
-      <version>1.5.1</version>
     </dependency>
 
     <dependency>
