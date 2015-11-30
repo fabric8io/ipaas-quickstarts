@@ -39,7 +39,7 @@
 
     <!-- the version of the BOM, defining all the dependency versions -->
     <fuse.version>6.2.1.redhat-083</fuse.version>
-    <fabric8.version>2.2.0.redhat-067</fabric8.version>
+    <fabric8.version>2.2.0.redhat-070</fabric8.version>
     <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
 
     <!-- Docker & Fabric8 Configs -->
@@ -61,13 +61,6 @@
         <groupId>org.jboss.fuse.bom</groupId>
         <artifactId>jboss-fuse-parent</artifactId>
         <version>${fuse.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-      <dependency>
-        <groupId>io.fabric8</groupId>
-        <artifactId>fabric8-project</artifactId>
-        <version>${fabric8.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
