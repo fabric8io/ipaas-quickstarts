@@ -56,7 +56,14 @@
 
   <dependencyManagement>
     <dependencies>
-      <!-- fuse bom must be before fabric8 bom -->
+      <!-- fabric8 bom must be before fabric8 bom -->
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>fabric8-project-bom-with-platform-deps</artifactId>
+        <version>${fabric8.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
       <dependency>
         <groupId>org.jboss.fuse.bom</groupId>
         <artifactId>jboss-fuse-parent</artifactId>

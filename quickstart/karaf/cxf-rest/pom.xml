@@ -75,18 +75,18 @@
 
   <dependencyManagement>
     <dependencies>
-      <!-- fuse bom must be before fabric8 bom -->
+      <!-- fabric8 bom must be before fabric8 bom -->
       <dependency>
-        <groupId>org.jboss.fuse.bom</groupId>
-        <artifactId>jboss-fuse-parent</artifactId>
-        <version>${fuse.version}</version>
+        <groupId>io.fabric8</groupId>
+        <artifactId>fabric8-project-bom-with-platform-deps</artifactId>
+        <version>${fabric8.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
-        <groupId>io.fabric8</groupId>
-        <artifactId>fabric8-project</artifactId>
-        <version>${fabric8.version}</version>
+        <groupId>org.jboss.fuse.bom</groupId>
+        <artifactId>jboss-fuse-parent</artifactId>
+        <version>${fuse.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -117,6 +117,7 @@
     <dependency>
       <groupId>io.swagger</groupId>
       <artifactId>swagger-jaxrs</artifactId>
+      <version>1.5.4</version>
       <optional>true</optional>
       <exclusions>
         <!-- avoid this old dependency which breaks CXF -->
@@ -143,6 +144,7 @@
     <dependency>
         <groupId>com.fasterxml.jackson.module</groupId>
         <artifactId>jackson-module-jaxb-annotations</artifactId>
+        <version>${jackson2-version}</version>
     </dependency>
 
     <!-- Karaf microcontainer dependencies -->
