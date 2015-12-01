@@ -46,6 +46,8 @@
     <cxf.plugin.version>3.1.4</cxf.plugin.version>
     <jetty-version>9.2.10.v20150310</jetty-version>
     <weld.version>2.3.1.Final</weld.version>
+    <slf4j-version>1.7.12</slf4j-version>
+    <swagger-version>1.5.4</swagger-version>
 
     <http.port>9092</http.port>
 
@@ -80,7 +82,7 @@
     <dependencies>
       <dependency>
         <groupId>io.fabric8</groupId>
-        <artifactId>fabric8-project</artifactId>
+        <artifactId>fabric8-project-bom-with-platform-deps</artifactId>
         <version>${fabric8.version}</version>
         <type>pom</type>
         <scope>import</scope>
@@ -264,6 +266,7 @@
     <dependency>
       <groupId>io.swagger</groupId>
       <artifactId>swagger-jaxrs</artifactId>
+      <version>${swagger-version}</version>
       <optional>true</optional>
       <exclusions>
         <!-- avoid this old dependency which breaks CXF -->
@@ -278,17 +281,20 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
+      <version>${slf4j-version}</version>
     </dependency>
 
     <!-- testing -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
+      <version>4.12</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
+      <version>${slf4j-version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
