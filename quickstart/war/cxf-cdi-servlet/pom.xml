@@ -44,6 +44,8 @@
     <cxf.version>3.1.4</cxf.version>
     <cxf.plugin.version>3.1.4</cxf.plugin.version>
     <weld.version>2.3.1.Final</weld.version>
+    <slf4j-version>1.7.12</slf4j-version>
+    <swagger-version>1.5.4</swagger-version>
 
     <docker.from>fabric8/tomcat-8.0</docker.from>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
@@ -66,7 +68,7 @@
     <dependencies>
       <dependency>
         <groupId>io.fabric8</groupId>
-        <artifactId>fabric8-project</artifactId>
+        <artifactId>fabric8-project-bom-with-platform-deps</artifactId>
         <version>${fabric8.version}</version>
         <type>pom</type>
         <scope>import</scope>
@@ -144,16 +146,14 @@
     <dependency>
       <groupId>io.swagger</groupId>
       <artifactId>swagger-jaxrs</artifactId>
+      <version>${swagger-version}</version>
     </dependency>
 
     <!-- logging -->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
+      <version>${slf4j-version}</version>
     </dependency>
 
     <!-- needed for running locally with jetty:run -->
