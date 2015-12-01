@@ -43,19 +43,6 @@
     <cxf.plugin.version>3.0.4.redhat-621083</cxf.plugin.version>
     <karaf.plugin.version>4.0.2.redhat-621067</karaf.plugin.version>
 
-    <!-- to resolve cxf karaf features -->
-    <jackson2-version>2.6.3</jackson2-version>
-    <swagger-version>1.5.4</swagger-version>
-    <validation-api-version>1.1.0.Final</validation-api-version>
-    <commons-lang3-version>3.4</commons-lang3-version>
-    <google-guava-version>18.0</google-guava-version>
-    <json4s-version>3.2.4_1</json4s-version>
-    <jsr311-api-version>1.1.1</jsr311-api-version>
-    <reflections-version>0.9.10_3</reflections-version>
-    <jackson-module-scala-version>2.1.5_2</jackson-module-scala-version>
-    <swagger-scala-version>2.10.2</swagger-scala-version>
-    <javassist-version>3.20.0-GA</javassist-version>
-
     <docker.from>fabric8/s2i-karaf-rhel:1.2.5</docker.from>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
