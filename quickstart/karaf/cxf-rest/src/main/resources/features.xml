@@ -20,24 +20,24 @@
 
     <feature name="swagger2" version="${project.version}" description="swagger2 necessary bundkles">
         <!-- swagger -->
-            <bundle start-level="10">mvn:javax.ws.rs/jsr311-api/${jsr311-api-version}</bundle>
-            <bundle start-level="10">mvn:com.fasterxml.jackson.core/jackson-core/${jackson2-version}</bundle>
-            <bundle start-level="10">mvn:com.fasterxml.jackson.core/jackson-databind/${jackson2-version}</bundle>
-            <bundle start-level="10">mvn:com.fasterxml.jackson.core/jackson-annotations/${jackson2-version}</bundle>
-            <bundle start-level="10">mvn:com.fasterxml.jackson.dataformat/jackson-dataformat-xml/${jackson2-version}</bundle>
-            <bundle start-level="10">mvn:com.fasterxml.jackson.dataformat/jackson-dataformat-yaml/${jackson2-version}</bundle>
-            <bundle start-level="10">mvn:com.fasterxml.jackson.module/jackson-module-jaxb-annotations/${jackson2-version}</bundle>
-            <bundle start-level="10">mvn:com.fasterxml.jackson.jaxrs/jackson-jaxrs-base/${jackson2-version}</bundle>
-            <bundle start-level="10">mvn:com.fasterxml.jackson.jaxrs/jackson-jaxrs-json-provider/${jackson2-version}</bundle>
-            <bundle start-level="10">mvn:org.javassist/javassist/${javassist-version}</bundle>
-            <bundle start-level="10">mvn:javax.validation/validation-api/${validation-api-version}</bundle>
-            <bundle start-level="10">mvn:org.apache.commons/commons-lang3/${commons-lang3-version}</bundle>
-            <bundle start-level="10">mvn:com.google.guava/guava/${google-guava-version}</bundle>
-            <bundle start-level="10">mvn:io.swagger/swagger-core/${swagger-version}</bundle>
-            <bundle start-level="10">mvn:io.swagger/swagger-annotations/${swagger-version}</bundle>
-            <bundle start-level="10">mvn:io.swagger/swagger-models/${swagger-version}</bundle>
-            <bundle start-level="10">mvn:io.swagger/swagger-jaxrs/${swagger-version}</bundle>
-            <bundle start-level="10">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.reflections/${reflections-version}</bundle>
+            <bundle start-level="10">mvn:javax.ws.rs/jsr311-api/1.1.1</bundle>
+            <bundle start-level="10">mvn:com.fasterxml.jackson.core/jackson-core/2.6.3</bundle>
+            <bundle start-level="10">mvn:com.fasterxml.jackson.core/jackson-databind/2.6.3</bundle>
+            <bundle start-level="10">mvn:com.fasterxml.jackson.core/jackson-annotations/2.6.3</bundle>
+            <bundle start-level="10">mvn:com.fasterxml.jackson.dataformat/jackson-dataformat-xml/2.6.3</bundle>
+            <bundle start-level="10">mvn:com.fasterxml.jackson.dataformat/jackson-dataformat-yaml/2.6.3</bundle>
+            <bundle start-level="10">mvn:com.fasterxml.jackson.module/jackson-module-jaxb-annotations/2.6.3</bundle>
+            <bundle start-level="10">mvn:com.fasterxml.jackson.jaxrs/jackson-jaxrs-base/2.6.3</bundle>
+            <bundle start-level="10">mvn:com.fasterxml.jackson.jaxrs/jackson-jaxrs-json-provider/2.6.3</bundle>
+            <bundle start-level="10">mvn:org.javassist/javassist/3.20.0-GA</bundle>
+            <bundle start-level="10">mvn:javax.validation/validation-api/1.1.0.Final</bundle>
+            <bundle start-level="10">mvn:org.apache.commons/commons-lang3/3.4</bundle>
+            <bundle start-level="10">mvn:com.google.guava/guava/18.0</bundle>
+            <bundle start-level="10">mvn:io.swagger/swagger-core/1.5.4</bundle>
+            <bundle start-level="10">mvn:io.swagger/swagger-annotations/1.5.4</bundle>
+            <bundle start-level="10">mvn:io.swagger/swagger-models/1.5.4</bundle>
+            <bundle start-level="10">mvn:io.swagger/swagger-jaxrs/1.5.4</bundle>
+            <bundle start-level="10">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.reflections/0.9.10_3</bundle>
 
     </feature>
 </features>
