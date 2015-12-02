@@ -209,7 +209,8 @@
           "sourceStrategy": {
             "from": {
               "kind": "ImageStreamTag",
-              "name": "s2i-java-rhel-${APP_NAME}:${BUILDER_VERSION}"
+              "namespace": "openshift",
+              "name": "fis-java-openshift:${BUILDER_VERSION}"
             },
             "forcePull": true,
             "env": [

@@ -122,28 +122,6 @@
       "kind": "ImageStream",
       "apiVersion": "v1",
       "metadata": {
-        "name": "s2i-karaf-rhel-${APP_NAME}",
-        "creationTimestamp": null,
-        "labels": {
-          "component": "${APP_NAME}",
-          "container": "karaf",
-          "group": "quickstarts",
-          "project": "${APP_NAME}",
-          "provider": "s2i",
-          "version": "${APP_VERSION}"
-        }
-      },
-      "spec": {
-        "dockerImageRepository": "fabric8/s2i-karaf-rhel:${BUILDER_VERSION}"
-      },
-      "status": {
-        "dockerImageRepository": ""
-      }
-    },
-    {
-      "kind": "ImageStream",
-      "apiVersion": "v1",
-      "metadata": {
         "name": "${APP_NAME}",
         "creationTimestamp": null,
         "labels": {
@@ -209,7 +187,8 @@
           "sourceStrategy": {
             "from": {
               "kind": "ImageStreamTag",
-              "name": "s2i-karaf-rhel-${APP_NAME}:${BUILDER_VERSION}"
+              "namespace": "openshift",
+              "name": "fis-karaf-openshift:${BUILDER_VERSION}"
             },
             "forcePull": true,
             "env": [
