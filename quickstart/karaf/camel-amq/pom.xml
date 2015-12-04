@@ -42,7 +42,7 @@
     <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
     <karaf.plugin.version>4.0.2.redhat-621067</karaf.plugin.version>
 
-    <docker.from>jboss-fuse-6/fis-karaf-openshift:1.0-7</docker.from>
+    <docker.from>jboss-fuse-6/fis-karaf-openshift:1.0-10</docker.from>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
     <docker.assemblyDescriptor>${basedir}/src/main/fabric8/assembly.xml</docker.assemblyDescriptor>

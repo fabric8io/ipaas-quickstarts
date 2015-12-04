@@ -45,7 +45,7 @@
     <spring.features.version>3.0.4</spring.features.version>
     <spring.tx.feature.version>3.2.11.RELEASE_1</spring.tx.feature.version>
 
-    <docker.from>jboss-fuse-6/fis-karaf-openshift:1.0-7</docker.from>
+    <docker.from>jboss-fuse-6/fis-karaf-openshift:1.0-10</docker.from>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerUser}quickstart-karaf-camelrest:${project.version}</docker.image>
     <docker.assemblyDescriptor>${basedir}/src/main/fabric8/assembly.xml</docker.assemblyDescriptor>

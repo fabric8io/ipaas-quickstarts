@@ -47,7 +47,7 @@
     <http.port>9092</http.port>
 
     <!-- Docker & Fabric8 Configs -->
-    <docker.from>jboss-fuse-6/fis-java-openshift:1.0-7</docker.from>
+    <docker.from>jboss-fuse-6/fis-java-openshift:1.0-10</docker.from>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
     <docker.port.container.http>${http.port}</docker.port.container.http>
