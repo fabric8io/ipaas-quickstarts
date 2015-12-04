@@ -32,6 +32,11 @@
       "description": "Exposed Service name"
     },
     {
+      "name": "HTTP_PORT",
+      "value": "9092",
+      "description": "HTTP_PORT environment variable"
+    },
+    {
       "name": "BUILDER_VERSION",
       "value": "1.2.5",
       "description": "Builder version"
@@ -299,7 +304,7 @@
                     "command": [
                       "/bin/bash",
                       "-c",
-                      "(curl -f 127.0.0.1:9092) >/dev/null 2>&1; test $? != 7"
+                      "(curl -f 127.0.0.1:${HTTP_PORT}) >/dev/null 2>&1; test $? != 7"
                     ]
                   },
                   "initialDelaySeconds": 30,
@@ -317,6 +322,12 @@
                   {
                     "containerPort": 8778,
                     "name": "jolokia"
+                  }
+                ],
+                "env": [
+                  {
+                    "name": "HTTP_PORT",
+                    "value": "${HTTP_PORT}"
                   }
                 ],
                 "resources": {}
