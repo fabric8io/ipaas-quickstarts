@@ -44,7 +44,7 @@
     <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
 
     <!-- Docker & Fabric8 Configs -->
-    <docker.from>fabric8/s2i-java-rhel:1.2.5</docker.from>
+    <docker.from>jboss-fuse-6/fis-java-openshift:1.0-7</docker.from>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
