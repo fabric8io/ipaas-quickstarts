@@ -1,18 +1,39 @@
 # Camel AMQ QuickStart
 
-This quickstart demonstrates how to connect to an ActiveMQ broker and use JMS messaging between two Camel routes.
+This example shows how to use Camel in a Karaf Container using Blueprint to connect to the A-MQ xPaaS message broker on OpenShift.
+The Red Hat JBoss A-MQ xPaaS product should already be installed and running on your OpenShift installation - see the [documentation](https://docs.openshift.com/enterprise/3.1/using_images/xpaas_images/a_mq.html)
 
-In this example we will use two containers, one container to run as a ActiveMQ broker, and another as a client to the broker, where the Camel routes is running.
+This example will connect to the A_MQ message broker and send messages to a queue TEST.FOO
 
-This quickstarts requires the ActiveMQ broker has been deployed and running first. This can be done from the web console from the `Apps` page, and then install the `messaging` application.
 
-To install this quickstart from the command line type
+### Building
+
+The example can be built with
+
+    mvn clean install
+
+
+### Running the example in fabric8
+
+It is assumed that OpenShift platform is already running. If not you can find details how to [Install OpenShift at your site](https://docs.openshift.com/enterprise/3.1/install_config/install/index.html).
 
 The example can be built and deployed using a single goal:
 
-    mvn -Pf8-local-deploy
+    mvn -Pf8-deploy
 
-This requires you have [setup your local computer](http://fabric8.io/guide/getStarted/develop.html) to work with docker and kubernetes.
+When the example runs in OpenShift, you can use the OpenShift client tool to inspect the status
+
+To list all the running pods:
+
+    oc get pods
+
+Then find the name of the pod that runs this quickstart, and output the logs from the running pods with:
+
+    oc logs <name of pod>
+
+You can also use the openshift [web console](https://docs.openshift.com/enterprise/3.1/getting_started/developers/developers_console.html#tutorial-video) to manage the
+running pods, and view logs and much more.
+
 
 ### Running the example using OpenShift S2I template
 
@@ -30,3 +51,5 @@ Alternatively the template file can be used to create an OpenShift application t
 ### More details
 
 You can find more details about running this [quickstart](http://fabric8.io/guide/quickstarts/running.html) on the website. This also includes instructions how to change the Docker image user and registry.
+
+

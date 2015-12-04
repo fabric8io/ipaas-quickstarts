@@ -1,7 +1,7 @@
 # CDI Camel MQ QuickStart
 
 This example shows how to use Camel in the Java Container using CDI to connect to the A-MQ xPaaS message broker on OpenShift.
-the Red Hat JBoss A-MQ xPaaS product should already be installed and running on your OpenShift installation - see the [documentation](https://docs.openshift.com/enterprise/3.1/using_images/xpaas_images/a_mq.html)
+The Red Hat JBoss A-MQ xPaaS product should already be installed and running on your OpenShift installation - see the [documentation](https://docs.openshift.com/enterprise/3.1/using_images/xpaas_images/a_mq.html)
 
 This example is implemented using Java code with CDI injected resources.
 The source code uses the CDI Annotation `@ServiceName` to lookup the ActiveMQ broker Service name.
