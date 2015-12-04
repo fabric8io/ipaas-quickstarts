@@ -25,13 +25,13 @@ Then you can access the service using the following url from a web browser:
 
 ### Running the example in fabric8
 
-It is assumed a running Kubernetes platform is already running. If not you can find details how to [get started](http://fabric8.io/guide/getStarted/index.html).
+It is assumed that OpenShift platform is already running. If not you can find details how to [Install OpenShift at your site](https://docs.openshift.com/enterprise/3.1/install_config/install/index.html).
 
 The example can be built and deployed using a single goal:
 
-    mvn -Pf8-local-deploy
+    mvn -Pf8-deploy
 
-When the example runs in fabric8, you can use the OpenShift client tool to inspect the status
+When the example runs in OpenShift, you can use the OpenShift client tool to inspect the status
 
 To list all the running pods:
 
