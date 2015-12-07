@@ -163,6 +163,7 @@
       <artifactId>fabric8-cdi</artifactId>
       <scope>test</scope>
       <type>test-jar</type>
+      <version>${fabric8.version}</version>
     </dependency>
 
   </dependencies>
