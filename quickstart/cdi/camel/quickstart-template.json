@@ -33,7 +33,7 @@
     },
     {
       "name": "BUILDER_VERSION",
-      "value": "1.0-10",
+      "value": "1.0",
       "description": "Builder version"
     },
     {

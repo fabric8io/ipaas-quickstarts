@@ -48,7 +48,7 @@
     <cxf.version>3.0.4.redhat-621083</cxf.version>
 
     <!-- Docker & Fabric8 Configs -->
-    <docker.from>jboss-fuse-6/fis-java-openshift:1.0-10</docker.from>
+    <docker.from>jboss-fuse-6/fis-java-openshift:1.0</docker.from>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
