@@ -55,6 +55,12 @@
       "description": "Maven build directory"
     },
     {
+      "description": "Namespace in which the Fuse ImageStreams are installed. These ImageStreams are normally installed in the openshift namespace. You should only need to modify this if you've installed the ImageStreams in a different namespace/project.",
+      "name": "IMAGE_STREAM_NAMESPACE",
+      "value": "openshift",
+      "required": true
+    },
+    {
       "generate": "expression",
       "name": "BUILD_SECRET",
       "description": "The secret needed to trigger a build",
@@ -187,7 +193,7 @@
           "sourceStrategy": {
             "from": {
               "kind": "ImageStreamTag",
-              "namespace": "openshift",
+              "namespace": "IMAGE_STREAM_NAMESPACE",
               "name": "fis-karaf-openshift:${BUILDER_VERSION}"
             },
             "forcePull": true,
