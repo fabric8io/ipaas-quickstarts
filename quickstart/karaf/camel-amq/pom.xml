@@ -229,6 +229,7 @@
           <startupFeatures>
             <feature>karaf-framework</feature>
             <feature>shell</feature>
+            <feature>scr</feature>
             <feature>jaas</feature>
             <feature>aries-blueprint</feature>
             <feature>camel-blueprint</feature>
