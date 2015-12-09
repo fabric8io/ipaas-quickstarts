@@ -57,7 +57,7 @@ And then run the script
 
     src/test/resources/hitme-f8.sh
 
-While the script runs, you can try to scale up or down the number of pods on the remote HTTP service using either the fabric8 web console,
+While the script runs, you can try to scale up or down the number of pods on the remote HTTP service using either the OpenShift web console,
 or from the command line using the openshift client
 
     oc scale --replicas=3 replicationcontrollers quickstart-cdi-camel-jetty
