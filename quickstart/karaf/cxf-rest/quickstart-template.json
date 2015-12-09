@@ -193,7 +193,7 @@
           "sourceStrategy": {
             "from": {
               "kind": "ImageStreamTag",
-              "namespace": "IMAGE_STREAM_NAMESPACE",
+              "namespace": "${IMAGE_STREAM_NAMESPACE}",
               "name": "fis-karaf-openshift:${BUILDER_VERSION}"
             },
             "forcePull": true,
