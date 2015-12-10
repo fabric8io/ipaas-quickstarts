@@ -37,7 +37,7 @@
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <fabric8.version>2.2.74</fabric8.version>
-    <docker.maven.plugin.version>0.13.7</docker.maven.plugin.version>
+    <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
 
     <!-- Docker & Fabric8 Configs -->
     <docker.from>fabric8/s2i-java:1.2.5</docker.from>
