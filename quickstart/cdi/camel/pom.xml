@@ -44,7 +44,7 @@
 
     <!-- configure the versions you want to use here -->
     <camel.version>2.16.1</camel.version>
-    <weld.version>2.3.1.Final</weld.version>
+    <weld.version>2.3.2.Final</weld.version>
 
     <!-- Docker & Fabric8 Configs -->
     <docker.from>fabric8/s2i-java:1.2.5</docker.from>
