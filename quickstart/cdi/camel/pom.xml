@@ -47,7 +47,7 @@
     <weld.version>2.3.2.Final</weld.version>
 
     <!-- Docker & Fabric8 Configs -->
-    <docker.from>fabric8/s2i-java:1.2.8</docker.from>
+    <docker.from>fabric8/s2i-java:1.2</docker.from>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
