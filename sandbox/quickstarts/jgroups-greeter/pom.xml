@@ -25,7 +25,7 @@
     <version>2.2.36-SNAPSHOT</version>
   </parent>
 
-  <artifactId>quickstart-java-jgroups</artifactId>
+  <artifactId>java-jgroups</artifactId>
   <packaging>jar</packaging>
 
   <name>Fabric8 :: Quickstarts :: Java :: JGroups Greeter</name>

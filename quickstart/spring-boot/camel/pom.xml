@@ -23,11 +23,11 @@
 
   <parent>
     <groupId>io.fabric8.quickstarts</groupId>
-    <artifactId>quickstart-springboot</artifactId>
+    <artifactId>springboot</artifactId>
     <version>2.2.78-SNAPSHOT</version>
   </parent>
 
-  <artifactId>quickstart-springboot-camel</artifactId>
+  <artifactId>springboot-camel</artifactId>
   <name>Fabric8 :: Quickstarts :: Spring-Boot :: Camel</name>
   <description>Shows how to use Camel with Spring Boot in the Java Container</description>
 

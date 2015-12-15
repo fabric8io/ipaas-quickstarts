@@ -27,7 +27,7 @@
     <version>2.2.78-SNAPSHOT</version>
   </parent>
 
-  <artifactId>quickstart-springboot</artifactId>
+  <artifactId>springboot</artifactId>
   <packaging>pom</packaging>
   <name>Fabric8 :: Quickstarts :: Spring-Boot :: Parent</name>
 

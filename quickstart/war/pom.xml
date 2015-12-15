@@ -27,7 +27,7 @@
     <version>2.2.78-SNAPSHOT</version>
   </parent>
 
-  <artifactId>quickstart-war</artifactId>
+  <artifactId>war</artifactId>
   <version>2.2.78-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Fabric8 :: Quickstarts :: War :: Parent</name>

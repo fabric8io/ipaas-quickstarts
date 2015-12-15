@@ -22,11 +22,11 @@
 
   <parent>
     <groupId>io.fabric8.quickstarts</groupId>
-    <artifactId>quickstart-karaf</artifactId>
+    <artifactId>karaf</artifactId>
     <version>2.2.78-SNAPSHOT</version>
   </parent>
 
-  <artifactId>quickstart-karaf-camel-amq</artifactId>
+  <artifactId>karaf-camel-amq</artifactId>
   <version>2.2.78-SNAPSHOT</version>
   <packaging>bundle</packaging>
   <name>Fabric8 :: Quickstarts :: Karaf :: Camel and ActiveMQ</name>

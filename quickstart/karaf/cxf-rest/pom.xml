@@ -23,11 +23,11 @@
 
   <parent>
     <groupId>io.fabric8.quickstarts</groupId>
-    <artifactId>quickstart-karaf</artifactId>
+    <artifactId>karaf</artifactId>
     <version>2.2.78-SNAPSHOT</version>
   </parent>
 
-  <artifactId>quickstart-karaf-cxf-rest</artifactId>
+  <artifactId>karaf-cxf-rest</artifactId>
   <packaging>bundle</packaging>
   <name>Fabric8 :: Quickstarts :: Karaf :: CXF REST</name>
   <description>REST example using CXF in Karaf container</description>

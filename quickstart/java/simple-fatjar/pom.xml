@@ -23,11 +23,11 @@
 
   <parent>
     <groupId>io.fabric8.quickstarts</groupId>
-    <artifactId>quickstart-java</artifactId>
+    <artifactId>java</artifactId>
     <version>2.2.78-SNAPSHOT</version>
   </parent>
 
-  <artifactId>quickstart-java-simple-fatjar</artifactId>
+  <artifactId>java-simple-fatjar</artifactId>
   <version>2.2.78-SNAPSHOT</version>
   <packaging>jar</packaging>
 
