@@ -48,7 +48,7 @@
     <docker.image>${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
     <docker.assemblyDescriptorRef>artifact</docker.assemblyDescriptorRef>
 
-    <fabric8.service.name>quickstart-wildfly</fabric8.service.name>
+    <fabric8.service.name>${project.artifactId}</fabric8.service.name>
     <fabric8.service.port>9101</fabric8.service.port>
     <fabric8.service.containerPort>8080</fabric8.service.containerPort>
 

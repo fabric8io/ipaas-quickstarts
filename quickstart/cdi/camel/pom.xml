@@ -58,7 +58,7 @@
       This headless service is used to collect application level metrics
       for ingestion into Prometheus.
     -->
-    <fabric8.service.name>qs-java-camel-cdi</fabric8.service.name>
+    <fabric8.service.name>${project.artifactId}</fabric8.service.name>
     <fabric8.service.headless>true</fabric8.service.headless>
 
     <fabric8.metrics.scrape>true</fabric8.metrics.scrape>

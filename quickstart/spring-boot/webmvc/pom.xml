@@ -45,7 +45,7 @@
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
 
-    <fabric8.service.name>springboot-webmvc</fabric8.service.name>
+    <fabric8.service.name>${project.artifactId}</fabric8.service.name>
     <fabric8.service.port>80</fabric8.service.port>
     <fabric8.service.containerPort>8080</fabric8.service.containerPort>
 

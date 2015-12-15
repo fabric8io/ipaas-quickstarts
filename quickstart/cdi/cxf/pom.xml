@@ -59,7 +59,7 @@
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
     <docker.port.container.metrics>9779</docker.port.container.metrics>
 
-    <fabric8.service.name>quickstart-java-cxf-cdi</fabric8.service.name>
+    <fabric8.service.name>${project.artifactId}</fabric8.service.name>
     <fabric8.service.port>80</fabric8.service.port>
     <fabric8.service.containerPort>${http.port}</fabric8.service.containerPort>
     <fabric8.annotations.service.apiman.io.servicePath>cxfcdi</fabric8.annotations.service.apiman.io.servicePath>

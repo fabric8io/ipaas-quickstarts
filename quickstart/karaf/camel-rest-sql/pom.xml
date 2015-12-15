@@ -57,7 +57,7 @@
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
     <docker.port.container.http>8181</docker.port.container.http>
 
-    <fabric8.service.name>qs-camel-rest-sql</fabric8.service.name>
+    <fabric8.service.name>${project.artifactId}</fabric8.service.name>
     <fabric8.service.port>9411</fabric8.service.port>
     <fabric8.service.containerPort>8181</fabric8.service.containerPort>
 
