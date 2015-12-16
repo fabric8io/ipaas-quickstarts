@@ -15,13 +15,19 @@
  */
 package io.fabric8.quickstarts.cxfcdi;
 
+import java.util.EnumSet;
+import javax.servlet.DispatcherType;
+
 import io.fabric8.cxf.endpoint.ManagedApi;
 import io.fabric8.utils.Strings;
 import io.fabric8.utils.Systems;
+
 import org.apache.cxf.cdi.CXFCdiServlet;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.servlets.CrossOriginFilter;
 import org.jboss.weld.environment.servlet.BeanManagerResourceBindingListener;
 import org.jboss.weld.environment.servlet.Listener;
 
@@ -73,8 +79,15 @@ public class ApplicationStarter {
             servletPath = servletContextPath + "/*";
         }
         context.addServlet(servletHolder, servletPath);
+        
+        FilterHolder cors = context.addFilter(CrossOriginFilter.class,"/*",EnumSet.of(DispatcherType.REQUEST));
+        cors.setInitParameter(CrossOriginFilter.ALLOWED_ORIGINS_PARAM, "*");
+        cors.setInitParameter(CrossOriginFilter.ACCESS_CONTROL_ALLOW_ORIGIN_HEADER, "*");
+        cors.setInitParameter(CrossOriginFilter.ALLOWED_METHODS_PARAM, "POST,GET,DELETE,OPTIONS,PUT,HEAD");
+        cors.setInitParameter(CrossOriginFilter.ALLOWED_HEADERS_PARAM, "X-Requested-With,Content-Type,Accept,Origin");
 
         server.setHandler(context);
+        
         server.start();
         return server;
     }
