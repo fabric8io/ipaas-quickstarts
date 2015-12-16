@@ -268,7 +268,6 @@
             <feature>camel-blueprint</feature>
             <feature>camel-jms</feature>
             <feature>activemq-client</feature>
-            <feature>camel-blueprint</feature>
           </startupFeatures>
           <startupBundles>
             <bundle>mvn:io.fabric8.mq/camel-amq/${fabric8.version}</bundle>
@@ -276,7 +275,6 @@
             <bundle>mvn:io.fabric8/fabric8-utils/${fabric8.version}</bundle>
             <bundle>mvn:org.apache.activemq/activemq-camel/${activemq.version}</bundle>
             <bundle>mvn:org.apache.activemq/activemq-osgi/${activemq.version}</bundle>
-
             <bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}</bundle>
           </startupBundles>
           <blacklistedBundles>
