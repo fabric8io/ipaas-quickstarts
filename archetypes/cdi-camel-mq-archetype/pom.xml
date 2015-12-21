@@ -22,7 +22,7 @@
     <parent>
         <groupId>io.fabric8.archetypes</groupId>
         <artifactId>archetypes</artifactId>
-        <version>2.2.82-SNAPSHOT</version>
+        <version>2.2.82</version>
     </parent>
     
     <artifactId>cdi-camel-mq-archetype</artifactId>
