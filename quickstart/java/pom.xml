@@ -36,6 +36,7 @@
     <module>camel-spring</module>
     <module>simple-fatjar</module>
     <module>simple-mainclass</module>
+    <module>camel-example-spring-ws</module>
   </modules>
 
 </project>
