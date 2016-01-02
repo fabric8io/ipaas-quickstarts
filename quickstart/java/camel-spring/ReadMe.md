@@ -12,7 +12,7 @@ the message is regarded as high priority or not.
 
 ### Building
 
-The example can be built with
+Navigate to the $IPAAS_QUICKSTART/quickstart/java/camel-spring/ folder and the example can be built with
 
     mvn clean install
 
