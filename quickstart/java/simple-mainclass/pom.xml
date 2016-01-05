@@ -24,11 +24,11 @@
   <parent>
     <groupId>io.fabric8.quickstarts</groupId>
     <artifactId>java</artifactId>
-    <version>2.2.88-SNAPSHOT</version>
+    <version>2.2.88</version>
   </parent>
 
   <artifactId>java-simple-mainclass</artifactId>
-  <version>2.2.88-SNAPSHOT</version>
+  <version>2.2.88</version>
   <packaging>jar</packaging>
 
   <name>Fabric8 :: Quickstarts :: Java :: Simple main class</name>
