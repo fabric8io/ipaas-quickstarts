@@ -10,7 +10,8 @@ public class HelloWorldEmbedded {
 
   public static void main(String[] args) {
     // Create an HTTP server which simply returns "Hello World!" to each request.
-    Vertx.vertx().createHttpServer().requestHandler(req -> req.response().end("Hello World!")).listen(8080);
+    String podName = System.getenv("HOSTNAME");
+    Vertx.vertx().createHttpServer().requestHandler(req -> req.response().end("Hello World! from pod: " + podName + "\n")).listen(8080);
   }
 
 }
