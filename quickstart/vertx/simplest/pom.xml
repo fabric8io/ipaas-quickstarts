@@ -52,6 +52,11 @@
     <fabric8.iconRef>vertx</fabric8.iconRef>
 
 
+    <fabric8.service.name>${project.artifactId}</fabric8.service.name>
+    <fabric8.service.port>80</fabric8.service.port>
+    <fabric8.service.containerPort>8080</fabric8.service.containerPort>
+
+
     <!-- the main class -->
     <exec.mainClass>io.vertx.example.HelloWorldEmbedded</exec.mainClass>
 
