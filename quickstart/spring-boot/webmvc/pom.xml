@@ -48,6 +48,7 @@
     <fabric8.service.name>${project.artifactId}</fabric8.service.name>
     <fabric8.service.port>80</fabric8.service.port>
     <fabric8.service.containerPort>8080</fabric8.service.containerPort>
+    <fabric8.service.type>LoadBalancer</fabric8.service.type>
 
     <fabric8.label.component>${project.artifactId}</fabric8.label.component>
     <fabric8.label.container>spring-boot</fabric8.label.container>

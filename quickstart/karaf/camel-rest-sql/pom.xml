@@ -58,8 +58,9 @@
     <docker.port.container.http>8181</docker.port.container.http>
 
     <fabric8.service.name>${project.artifactId}</fabric8.service.name>
-    <fabric8.service.port>9411</fabric8.service.port>
+    <fabric8.service.port>80</fabric8.service.port>
     <fabric8.service.containerPort>8181</fabric8.service.containerPort>
+    <fabric8.service.type>LoadBalancer</fabric8.service.type>
 
     <fabric8.label.component>${project.artifactId}</fabric8.label.component>
     <fabric8.label.container>karaf</fabric8.label.container>
