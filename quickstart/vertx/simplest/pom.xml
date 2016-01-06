@@ -120,7 +120,6 @@
               </transformers>
               <artifactSet>
               </artifactSet>
-              <outputFile>${project.build.directory}/${project.artifactId}-${project.version}-fat.jar</outputFile>
             </configuration>
           </execution>
         </executions>
@@ -163,7 +162,7 @@
                   <descriptorRef>artifact</descriptorRef>
                 </assembly>
                 <env>
-                  <JAVA_APP_JAR>${project.build.finalName}-fat.jar</JAVA_APP_JAR>
+                  <JAVA_APP_JAR>${project.build.finalName}.jar</JAVA_APP_JAR>
                 </env>
               </build>
             </image>
