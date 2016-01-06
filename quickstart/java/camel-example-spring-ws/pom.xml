@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one or more
+    contributor license agreements.  See the NOTICE file distributed with
+    this work for additional information regarding copyright ownership.
+    The ASF licenses this file to You under the Apache License, Version 2.0
+    (the "License"); you may not use this file except in compliance with
+    the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>examples</artifactId>
+      <version>2.16.1</version>
+    </parent>
+
+    <artifactId>camel-example-spring-ws</artifactId>
+    <packaging>war</packaging>
+    <name>Camel :: Example :: Spring :: Web Services</name>
+    <description>An example showing how to work with Camel and Spring Web Services</description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- fabric8 version -->
+        <fabric8.version>2.2.81</fabric8.version>
+        <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
+
+        <!-- configure the versions you want to use here -->
+        <camel.version>2.16.1</camel.version>
+
+        <!-- configure the versions you want to use here -->
+        <cxf.version>3.1.4</cxf.version>
+        <cxf.plugin.version>3.1.4</cxf.plugin.version>
+        <weld.version>2.3.2.Final</weld.version>
+        <slf4j-version>1.7.12</slf4j-version>
+        <swagger-version>1.5.4</swagger-version>
+
+        <docker.from>fabric8/tomcat-8.0</docker.from>
+        <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
+        <docker.image>${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
+        <docker.assemblyDescriptorRef>rootWar</docker.assemblyDescriptorRef>
+        <docker.port.container.jolokia>8778</docker.port.container.jolokia>
+        <docker.port.container.http>8080</docker.port.container.http>
+
+        <fabric8.service.name>${project.artifactId}</fabric8.service.name>
+        <fabric8.service.port>9102</fabric8.service.port>
+        <fabric8.service.containerPort>8080</fabric8.service.containerPort>
+
+        <fabric8.label.component>${project.artifactId}</fabric8.label.component>
+        <fabric8.label.container>tomcat</fabric8.label.container>
+        <fabric8.label.group>quickstarts</fabric8.label.group>
+        <fabric8.iconRef>tomcat</fabric8.iconRef>
+      </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>fabric8-project-bom-with-platform-deps</artifactId>
+        <version>${fabric8.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+
+  <dependencies>
+
+      <!-- fabric8 -->
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>fabric8-cxf</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.cxf</groupId>
+          <artifactId>cxf-bundle</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.geronimo.specs</groupId>
+          <artifactId>geronimo-servlet_3.0_spec</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-spring-ws</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-jaxb</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-spring</artifactId>
+    </dependency>
+
+    <!-- for running inside a servlet container -->
+    <dependency>
+        <groupId>org.springframework.ws</groupId>
+        <artifactId>spring-ws-core</artifactId>
+        <version>${spring-ws-version}</version>
+    </dependency>
+    <dependency>
+        <groupId>wsdl4j</groupId>
+        <artifactId>wsdl4j</artifactId>
+        <version>${wsdl4j-version}</version>
+    </dependency>
+
+    <!-- logging -->
+    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-log4j12</artifactId>
+        <version>${slf4j-version}</version>
+    </dependency>
+    <dependency>
+        <groupId>log4j</groupId>
+        <artifactId>log4j</artifactId>
+    </dependency>
+
+    <!-- swagger -->
+    <dependency>
+      <groupId>io.swagger</groupId>
+      <artifactId>swagger-jaxrs</artifactId>
+      <version>${swagger-version}</version>
+    </dependency>
+    <!-- for testing -->
+    <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <scope>test</scope>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+
+    <finalName>${project.artifactId}</finalName>
+
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.3</version>
+        <configuration>
+        <source>1.7</source>
+        <target>1.7</target>
+        </configuration>
+    </plugin>
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-surefire-plugin</artifactId>
+      <version>2.18.1</version>
+      <inherited>true</inherited>
+      <configuration>
+        <excludes>
+          <exclude>**/*KT.java</exclude>
+        </excludes>
+      </configuration>
+    </plugin>
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-resources-plugin</artifactId>
+      <version>2.7</version>
+      <executions>
+        <execution>
+          <id>filter</id>
+          <phase>generate-resources</phase>
+          <goals>
+            <goal>resources</goal>
+          </goals>
+        </execution>
+      </executions>
+    </plugin>
+
+    <!-- Allows the routes to be run via 'mvn camel:run' -->
+    <plugin>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-maven-plugin</artifactId>
+        <version>${project.version}</version>
+    </plugin>
+
+    <!-- so we can run mvn jetty:run -->
+    <plugin>
+        <groupId>org.mortbay.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <version>${jetty-plugin-version}</version>
+        <configuration>
+            <connectors>
+                <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+                  <port>8080</port>
+                  <maxIdleTime>60000</maxIdleTime>
+                </connector>
+            </connectors>
+        </configuration>
+    </plugin>
+
+    <plugin>
+      <groupId>io.fabric8</groupId>
+      <artifactId>fabric8-maven-plugin</artifactId>
+      <version>${fabric8.version}</version>
+      <executions>
+        <execution>
+          <id>json</id>
+          <phase>generate-resources</phase>
+          <goals>
+            <goal>json</goal>
+          </goals>
+        </execution>
+        <execution>
+          <id>attach</id>
+          <phase>package</phase>
+          <goals>
+            <goal>attach</goal>
+          </goals>
+        </execution>
+      </executions>
+    </plugin>
+
+    <plugin>
+      <groupId>org.jolokia</groupId>
+      <artifactId>docker-maven-plugin</artifactId>
+      <version>${docker.maven.plugin.version}</version>
+      <configuration>
+        <images>
+          <image>
+            <name>${docker.image}</name>
+            <build>
+              <from>${docker.from}</from>
+              <assembly>
+                <descriptorRef>${docker.assemblyDescriptorRef}</descriptorRef>
+              </assembly>
+              <env>
+                <CATALINA_OPTS>-javaagent:/opt/tomcat/jolokia-agent.jar=host=0.0.0.0,port=8778</CATALINA_OPTS>
+              </env>
+            </build>
+          </image>
+        </images>
+      </configuration>
+    </plugin>
+
+
+    </plugins>
+
+  </build>
+
+  <profiles>
+    <profile>
+      <id>f8-build</id>
+      <build>
+        <defaultGoal>clean install docker:build fabric8:json</defaultGoal>
+      </build>
+    </profile>
+    <profile>
+      <id>f8-deploy</id>
+      <properties>
+        <fabric8.imagePullPolicySnapshot>Always</fabric8.imagePullPolicySnapshot>
+        <fabric8.recreate>true</fabric8.recreate>
+      </properties>
+      <build>
+        <defaultGoal>clean install docker:build docker:push fabric8:json fabric8:apply</defaultGoal>
+      </build>
+    </profile>
+    <profile>
+      <id>f8-local-deploy</id>
+      <properties>
+        <fabric8.recreate>true</fabric8.recreate>
+      </properties>
+      <build>
+        <defaultGoal>clean install docker:build fabric8:json fabric8:apply</defaultGoal>
+      </build>
+    </profile>
+  </profiles>
+
+</project>
