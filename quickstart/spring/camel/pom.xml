@@ -27,12 +27,12 @@
     <version>2.2.90-SNAPSHOT</version>
   </parent>
 
-  <artifactId>java-simple-fatjar</artifactId>
+  <artifactId>spring-camel</artifactId>
   <version>2.2.90-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>Fabric8 :: Quickstarts :: Java :: Simple fat jar</name>
-  <description>Simple standalone Java Container (fat jar)</description>
+  <name>Fabric8 :: Quickstarts :: Spring :: Camel</name>
+  <description>Camel route using Spring XML in a standalone Java container</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -41,19 +41,38 @@
     <fabric8.version>2.2.84</fabric8.version>
     <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
 
+
+    <!-- configure the versions you want to use here -->
+    <camel.version>2.16.1</camel.version>
+
     <!-- Docker & Fabric8 Configs -->
-    <docker.from>fabric8/java-jboss-openjdk8-jdk:1.0.10</docker.from>
+    <docker.from>fabric8/s2i-java:1.2</docker.from>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
+    <docker.port.container.jolokia>8778</docker.port.container.jolokia>
+
+    <!--
+      Start Prometheus metrics stuff.
+
+      This headless service is used to collect application level metrics
+      for ingestion into Prometheus.
+    -->
+    <fabric8.service.name>${project.artifactId}</fabric8.service.name>
+    <fabric8.service.headless>true</fabric8.service.headless>
+
+    <fabric8.metrics.scrape>true</fabric8.metrics.scrape>
+    <fabric8.metrics.port>9779</fabric8.metrics.port>
+    <!-- End Prometheus metrics stuff -->
 
     <fabric8.label.component>${project.artifactId}</fabric8.label.component>
     <fabric8.label.container>java</fabric8.label.container>
     <fabric8.label.group>quickstarts</fabric8.label.group>
-    <fabric8.iconRef>java</fabric8.iconRef>
+    <fabric8.iconRef>camel</fabric8.iconRef>
   </properties>
 
   <dependencyManagement>
     <dependencies>
+      <!-- import fabric8 platfrom bom first -->
       <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>fabric8-project-bom-with-platform-deps</artifactId>
@@ -61,14 +80,60 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-parent</artifactId>
+        <version>${camel.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
   <dependencies>
+
+    <!-- camel -->
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-spring</artifactId>
+    </dependency>
+
+    <!-- used for generating random message -->
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
       <version>3.4</version>
+    </dependency>
+
+    <!-- logging -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+    </dependency>
+
+    <!-- testing -->
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-test-spring</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.arquillian.junit</groupId>
+      <artifactId>arquillian-junit-container</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>fabric8-arquillian</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
@@ -85,27 +150,16 @@
           <target>1.7</target>
         </configuration>
       </plugin>
-
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-        <version>2.3</version>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>shade</goal>
-            </goals>
-            <configuration>
-              <createDependencyReducedPom>false</createDependencyReducedPom>
-              <transformers>
-                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                  <mainClass>io.fabric8.quickstarts.java.simple.fatjar.Main</mainClass>
-                </transformer>
-              </transformers>
-            </configuration>
-          </execution>
-        </executions>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.18.1</version>
+        <inherited>true</inherited>
+        <configuration>
+          <excludes>
+            <exclude>**/*KT.java</exclude>
+          </excludes>
+        </configuration>
       </plugin>
 
       <plugin>
@@ -131,6 +185,23 @@
       </plugin>
 
       <plugin>
+        <groupId>io.fabric8</groupId>
+        <artifactId>hawt-app-maven-plugin</artifactId>
+        <version>${fabric8.version}</version>
+        <executions>
+          <execution>
+            <id>hawt-app</id>
+            <goals>
+              <goal>build</goal>
+            </goals>
+            <configuration>
+              <javaMainClass>org.apache.camel.spring.Main</javaMainClass>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
         <groupId>org.jolokia</groupId>
         <artifactId>docker-maven-plugin</artifactId>
         <version>${docker.maven.plugin.version}</version>
@@ -141,11 +212,12 @@
               <build>
                 <from>${docker.from}</from>
                 <assembly>
-                  <basedir>/app</basedir>
-                  <descriptorRef>artifact</descriptorRef>
+                  <basedir>/deployments</basedir>
+                  <descriptorRef>hawt-app</descriptorRef>
                 </assembly>
                 <env>
-                  <JAVA_APP_JAR>${project.build.finalName}.jar</JAVA_APP_JAR>
+                  <JAVA_LIB_DIR>/deployments/lib</JAVA_LIB_DIR>
+                  <JAVA_MAIN_CLASS>org.apache.camel.spring.Main</JAVA_MAIN_CLASS>
                 </env>
               </build>
             </image>
@@ -159,10 +231,9 @@
         <artifactId>exec-maven-plugin</artifactId>
         <version>1.4.0</version>
         <configuration>
-          <mainClass>io.fabric8.quickstarts.java.simple.fatjar.Main</mainClass>
+          <mainClass>org.apache.camel.spring.Main</mainClass>
         </configuration>
       </plugin>
-
     </plugins>
   </build>
 
@@ -186,7 +257,7 @@
       <id>f8-deploy</id>
       <properties>
         <fabric8.imagePullPolicySnapshot>Always</fabric8.imagePullPolicySnapshot>
-        <fabric8.recreate>true</fabric8.recreate>
+       <fabric8.recreate>true</fabric8.recreate>
       </properties>
       <build>
         <defaultGoal>clean install docker:build docker:push fabric8:json fabric8:apply</defaultGoal>

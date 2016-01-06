@@ -8,12 +8,12 @@
       "iconClass": "icon-java"
     },
     "labels": {},
-    "name": "s2i-quickstart-java-simple-mainclass"
+    "name": "s2i-quickstart-java-mainclass"
   },
   "parameters": [
     {
       "name": "APP_NAME",
-      "value": "s2i-quickstart-java-simple-mainclass",
+      "value": "s2i-quickstart-java-mainclass",
       "description": "Application Name"
     },
     {
@@ -28,7 +28,7 @@
     },
     {
       "name": "SERVICE_NAME",
-      "value": "s2i-qs-java-simple-mainclass",
+      "value": "s2i-qs-java-mainclass",
       "description": "Exposed Service name"
     },
     {

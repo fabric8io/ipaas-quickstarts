@@ -8,12 +8,12 @@
       "iconClass": "icon-java"
     },
     "labels": {},
-    "name": "s2i-quickstart-java-simple-fatjar"
+    "name": "s2i-quickstart-java-fatjar"
   },
   "parameters": [
     {
       "name": "APP_NAME",
-      "value": "s2i-quickstart-java-simple-fatjar",
+      "value": "s2i-quickstart-java-fatjar",
       "description": "Application Name"
     },
     {
@@ -28,7 +28,7 @@
     },
     {
       "name": "SERVICE_NAME",
-      "value": "s2i-qs-java-simple-fatjar",
+      "value": "s2i-qs-java-fatjar",
       "description": "Exposed Service name"
     },
     {

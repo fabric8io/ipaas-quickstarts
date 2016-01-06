@@ -8,12 +8,12 @@
       "iconClass": "icon-java"
     },
     "labels": {},
-    "name": "s2i-quickstart-java-camel-spring"
+    "name": "s2i-quickstart-spring-camel"
   },
   "parameters": [
     {
       "name": "APP_NAME",
-      "value": "s2i-quickstart-java-camel-spring",
+      "value": "s2i-quickstart-spring-camel",
       "description": "Application Name"
     },
     {
@@ -28,7 +28,7 @@
     },
     {
       "name": "SERVICE_NAME",
-      "value": "s2i-qs-java-camel-spring",
+      "value": "s2i-qs-spring-camel",
       "description": "Exposed Service name"
     },
     {

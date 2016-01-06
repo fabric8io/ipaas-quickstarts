@@ -69,6 +69,10 @@
               <key>sourcedir</key>
               <value>${basedir}/../quickstart</value>
             </systemProperty>
+            <systemProperty>
+              <key>project.version</key>
+              <value>${project.version}</value>
+            </systemProperty>
           </systemProperties>
         </configuration>
       </plugin>

@@ -25,18 +25,18 @@
         <version>2.2.90-SNAPSHOT</version>
     </parent>
 
-    <artifactId>java-simple-fatjar-archetype</artifactId>
-    <name>Fabric8 :: Archetypes :: Java :: Simple fat jar</name>
+    <artifactId>java-mainclass-archetype</artifactId>
+    <name>Fabric8 :: Archetypes :: Java :: main class</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new Simple standalone Java Container (fat jar)</description>
+    <description>Creates a new Simple standalone Java Container (main class)</description>
 
     <build>
         <extensions>
             <extension>
                 <groupId>org.apache.maven.archetype</groupId>
                 <artifactId>archetype-packaging</artifactId>
-                <version>2.2</version>
+                <version>2.4</version>
             </extension>
         </extensions>
 
@@ -45,7 +45,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-archetype-plugin</artifactId>
-                    <version>2.2</version>
+                    <version>2.4</version>
                 </plugin>
             </plugins>
         </pluginManagement>
