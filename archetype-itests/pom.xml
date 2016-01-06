@@ -199,14 +199,14 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>io.fabric8.archetypes</groupId>
-                  <artifactId>java-simple-fatjar-archetype</artifactId>
+                  <artifactId>java-fatjar-archetype</artifactId>
                   <version>${project.version}</version>
                   <type>jar</type>
                   <overWrite>false</overWrite>
                 </artifactItem>
                 <artifactItem>
                   <groupId>io.fabric8.archetypes</groupId>
-                  <artifactId>java-simple-mainclass-archetype</artifactId>
+                  <artifactId>java-mainclass-archetype</artifactId>
                   <version>${project.version}</version>
                   <type>jar</type>
                   <overWrite>false</overWrite>
