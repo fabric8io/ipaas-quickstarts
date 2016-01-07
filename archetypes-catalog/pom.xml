@@ -90,7 +90,7 @@
             <configuration>
               <artifacts>
                 <artifact>
-                  <file>target/classes/archetype-catalog.xml</file>
+                  <file>${basedir}/target/classes/archetype-catalog.xml</file>
                   <type>xml</type>
                   <classifier>archetype-catalog</classifier>
                 </artifact>
