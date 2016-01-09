@@ -23,24 +23,13 @@
 
   <parent>
     <groupId>io.fabric8.quickstarts</groupId>
-    <artifactId>fabric8-quickstart-parent</artifactId>
+    <artifactId>node</artifactId>
     <version>2.2.92-SNAPSHOT</version>
   </parent>
 
-  <artifactId>karaf</artifactId>
+  <artifactId>node-hello-world-rest</artifactId>
   <version>2.2.92-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>Fabric8 :: Quickstarts :: Karaf :: Parent</name>
-
-  <properties>
-    <fabric8.iconRef>karaf.svg</fabric8.iconRef>
-  </properties>
-
-  <modules>
-    <module>camel-amq</module>
-    <module>camel-log</module>
-    <module>camel-rest-sql</module>
-    <module>cxf-rest</module>
-  </modules>
+  <name>Fabric8 :: Quickstarts :: Node :: DUMMY used to generate archetype</name>
 
 </project>

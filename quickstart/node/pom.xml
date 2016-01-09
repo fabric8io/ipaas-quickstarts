@@ -27,20 +27,13 @@
     <version>2.2.92-SNAPSHOT</version>
   </parent>
 
-  <artifactId>karaf</artifactId>
+  <artifactId>node</artifactId>
   <version>2.2.92-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>Fabric8 :: Quickstarts :: Karaf :: Parent</name>
-
-  <properties>
-    <fabric8.iconRef>karaf.svg</fabric8.iconRef>
-  </properties>
+  <name>Fabric8 :: Quickstarts :: Node :: Parent</name>
 
   <modules>
-    <module>camel-amq</module>
-    <module>camel-log</module>
-    <module>camel-rest-sql</module>
-    <module>cxf-rest</module>
+    <module>node-hello-world-rest</module>
   </modules>
 
 </project>

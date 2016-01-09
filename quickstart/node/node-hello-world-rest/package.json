@@ -1,0 +1,13 @@
+{
+  "name": "node-hello-world-rest",
+  "version": "1.0.0",
+  "description": "fabric8 node hello world rest app",
+  "main": "hello.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node hello-rest.js"
+  },
+  "homepage": "https://github.com/fabric8io/ipaas-quickstarts/blob/master/ReadMe.md"
+}
