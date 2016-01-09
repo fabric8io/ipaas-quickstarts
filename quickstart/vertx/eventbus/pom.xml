@@ -89,10 +89,17 @@
       <artifactId>vertx-core</artifactId>
       <version>3.2.0</version>
     </dependency>
+    <!-- We need to override the HZ dependency pulled in by vertx-hazelcast 3.2.0 as we require HZ > 3.6 as the
+    kubernetes discovery stuff is only present in that version or later -->
+    <dependency>
+      <groupId>com.hazelcast</groupId>
+      <artifactId>hazelcast</artifactId>
+      <version>3.6-EA2</version>
+    </dependency>
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-hazelcast</artifactId>
-      <version>3.3.0-SNAPSHOT</version>
+      <version>3.2.0</version>
     </dependency>
     <dependency>
       <groupId>com.noctarius.discovery</groupId>
