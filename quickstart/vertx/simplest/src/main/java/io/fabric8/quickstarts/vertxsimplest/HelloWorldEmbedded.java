@@ -1,4 +1,4 @@
-package io.vertx.example;
+package io.fabric8.quickstarts.vertxsimplest;
 
 import io.vertx.core.Vertx;
 
