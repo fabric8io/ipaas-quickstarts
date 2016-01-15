@@ -253,7 +253,7 @@
     <profile>
       <id>fabric8-snapshot</id>
       <properties>
-        <fabric8.version>2.2.86-SNAPSHOT</fabric8.version>
+        <fabric8.version>2.2.88-SNAPSHOT</fabric8.version>
       </properties>
     </profile>
 
