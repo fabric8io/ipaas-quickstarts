@@ -3,7 +3,7 @@ Camel Java Swagger Example
 
 See: https://github.com/apache/camel/blob/master/examples/camel-example-swagger-java/README.md
 
-Modified so that iyt can be run locally with:
+Modified so that it can be run locally with:
 
 mvn jetty:run
 
