@@ -106,6 +106,20 @@
     </dependency>
   </dependencies>
 
+  <repositories>
+    <repository>
+      <id>jenkins-ci</id>
+      <url>http://repo.jenkins-ci.org/public</url>
+      <layout>default</layout>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+
   <build>
     <plugins>
       <plugin>
