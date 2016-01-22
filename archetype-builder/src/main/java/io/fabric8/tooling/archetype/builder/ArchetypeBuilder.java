@@ -19,14 +19,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -42,7 +40,6 @@ import java.util.regex.Pattern;
 import io.fabric8.tooling.archetype.ArchetypeUtils;
 import io.fabric8.utils.DomHelper;
 import io.fabric8.utils.Files;
-import io.fabric8.utils.GitHelpers;
 import io.fabric8.utils.IOHelpers;
 import io.fabric8.utils.Objects;
 import io.fabric8.utils.Strings;
@@ -209,7 +206,11 @@ public class ArchetypeBuilder {
             File gitFolder = new File(cloneDir, ".git");
             Files.recursiveDelete(gitFolder);
             String description = repoName.replace('-', ' ');
-            generatePomIfRequired(projectDir, repoName, description);
+            File archetypePom = generatePomIfRequired(projectDir, repoName, description);
+            if (archetypePom != null && archetypePom.exists()) {
+                addArchetypeMetaData(archetypePom, archetypeFolderName);
+            }
+
             dirs.add(repoName);
             File outputGitIgnoreFile = new File(projectDir, ".gitignore");
             if (!outputGitIgnoreFile.exists()) {
@@ -568,7 +569,7 @@ public class ArchetypeBuilder {
         generatePomIfRequired(archetypeDir, originalName, originalDescription);
     }
 
-    protected void generatePomIfRequired(File archetypeDir, String originalName, String originalDescription) throws IOException {
+    protected File generatePomIfRequired(File archetypeDir, String originalName, String originalDescription) throws IOException {
         File archetypeProjectPom = new File(archetypeDir, "pom.xml");
         // now generate Archetype's pom
         if (!archetypeProjectPom.exists()) {
@@ -621,6 +622,7 @@ public class ArchetypeBuilder {
 
             archetypeUtils.writeXmlDocument(pomDocument, archetypeProjectPom);
         }
+        return archetypeProjectPom;
     }
 
     /**
