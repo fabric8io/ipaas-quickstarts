@@ -19,12 +19,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -40,9 +42,15 @@ import java.util.regex.Pattern;
 import io.fabric8.tooling.archetype.ArchetypeUtils;
 import io.fabric8.utils.DomHelper;
 import io.fabric8.utils.Files;
+import io.fabric8.utils.GitHelpers;
 import io.fabric8.utils.IOHelpers;
 import io.fabric8.utils.Objects;
 import io.fabric8.utils.Strings;
+import org.eclipse.jgit.api.CloneCommand;
+import org.eclipse.jgit.api.Git;
+import org.kohsuke.github.GHOrganization;
+import org.kohsuke.github.GHRepository;
+import org.kohsuke.github.GitHub;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -58,6 +66,8 @@ import org.xml.sax.InputSource;
  */
 public class ArchetypeBuilder {
 
+    public static final String ARCHETYPE_RESOURCES_PATH = "src/main/resources/archetype-resources";
+    public static final String ARCHETYPE_RESOURCES_XML = "src/main/resources-filtered/META-INF/maven/archetype-metadata.xml";
     public static Logger LOG = LoggerFactory.getLogger(ArchetypeBuilder.class);
 
     private static final String[] specialVersions = new String[]{
@@ -167,6 +177,54 @@ public class ArchetypeBuilder {
     }
 
     /**
+     * Iterates through all projects in the given github organisation and generates an archetype for it
+     */
+    public void generateArchetypesFromGithubOrganisation(String githubOrg, File outputDir, List<String> dirs) throws IOException {
+        GitHub github = GitHub.connectAnonymously();
+        GHOrganization organization = github.getOrganization(githubOrg);
+        Objects.notNull(organization, "No github organisation found for: " + githubOrg);
+        Map<String, GHRepository> repositories = organization.getRepositories();
+        Set<Map.Entry<String, GHRepository>> entries = repositories.entrySet();
+        for (Map.Entry<String, GHRepository> entry : entries) {
+            String repoName = entry.getKey();
+            GHRepository repo = entry.getValue();
+            String archetypeFolderName = repoName + "-archetype";
+            File projectDir = new File(outputDir, archetypeFolderName);
+            File cloneDir = new File(projectDir, ARCHETYPE_RESOURCES_PATH);
+            String url = repo.getGitTransportUrl();
+            System.out.println("Cloning repo " + url + " to " + cloneDir);
+            cloneDir.getParentFile().mkdirs();
+            if (cloneDir.exists()) {
+                Files.recursiveDelete(cloneDir);
+            }
+
+            CloneCommand command = Git.cloneRepository().setCloneAllBranches(false).setURI(url).setDirectory(cloneDir);
+
+            try {
+                Git git = command.call();
+            } catch (Throwable e) {
+                LOG.error("Failed to command remote repo " + url + " due: " + e.getMessage(), e);
+                throw new IOException("Failed to command remote repo " + url + " due: " + e.getMessage(), e);
+            }
+            File gitFolder = new File(cloneDir, ".git");
+            Files.recursiveDelete(gitFolder);
+            String description = repoName.replace('-', ' ');
+            generatePomIfRequired(projectDir, repoName, description);
+            dirs.add(repoName);
+
+            // lets add to the git ignore if its not already there
+            File gitIgnore = new File(outputDir, ".gitignore");
+            List<String> lines = Files.readLines(gitIgnore);
+            if (!lines.contains(archetypeFolderName)) {
+                try (FileWriter writer = new FileWriter(gitIgnore, true)) {
+                    writer.append("\n" + archetypeFolderName);
+                }
+            }
+        }
+    }
+
+
+    /**
      * Iterates through all nested directories and generates archetypes for all found, non-pom Maven projects.
      *
      * @param baseDir a directory to look for projects which may be converted to Maven Archetypes
@@ -262,10 +320,10 @@ public class ArchetypeBuilder {
         // Main dir for archetype resources - copied from original maven project. Sources will have
         // package names replaced with variable placeholders - to make them parameterizable during
         // mvn archetype:generate
-        File archetypeOutputDir = new File(archetypeDir, "src/main/resources/archetype-resources");
+        File archetypeOutputDir = new File(archetypeDir, ARCHETYPE_RESOURCES_PATH);
         // target archetype-metadata.xml file. it'll end in resources-filtered, so most of variables will be replaced
         // during the build of archetype project
-        File metadataXmlOutFile = new File(archetypeDir, "src/main/resources-filtered/META-INF/maven/archetype-metadata.xml");
+        File metadataXmlOutFile = new File(archetypeDir, ARCHETYPE_RESOURCES_XML);
 
         Replacement replaceFunction = new IdentityReplacement();
 
@@ -512,6 +570,10 @@ public class ArchetypeBuilder {
         metadataXmlOutFile.getParentFile().mkdirs();
         archetypeUtils.writeXmlDocument(archDoc, metadataXmlOutFile);
 
+        generatePomIfRequired(archetypeDir, originalName, originalDescription);
+    }
+
+    protected void generatePomIfRequired(File archetypeDir, String originalName, String originalDescription) throws IOException {
         File archetypeProjectPom = new File(archetypeDir, "pom.xml");
         // now generate Archetype's pom
         if (!archetypeProjectPom.exists()) {

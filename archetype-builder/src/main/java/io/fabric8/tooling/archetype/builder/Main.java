@@ -57,6 +57,7 @@ public class Main {
                 if (!sourceDirectory.exists() || !sourceDirectory.isDirectory()) {
                     throw new IllegalArgumentException("Source directory: " + sourcedir + " is not a valid directory");
                 }
+                builder.generateArchetypesFromGithubOrganisation("fabric8-quickstarts", outputDir, dirs);
                 builder.generateArchetypes("", sourceDirectory, outputDir, false, dirs);
             } finally {
                 LOG.debug("Completed the generation. Closing!");
