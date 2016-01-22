@@ -260,6 +260,7 @@
     <profile>
       <id>release</id>
       <modules>
+        <module>archetype-builder</module>
         <module>archetypes-catalog</module>
         <module>archetypes</module>
         <module>archetype-itests</module>
