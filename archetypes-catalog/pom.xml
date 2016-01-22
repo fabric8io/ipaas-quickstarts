@@ -39,9 +39,9 @@
         <version>1.4.0</version>
         <dependencies>
           <dependency>
-            <groupId>io.fabric8</groupId>
+            <groupId>io.fabric8.quickstarts</groupId>
             <artifactId>archetype-builder</artifactId>
-            <version>${fabric8.version}</version>
+            <version>${project.version}</version>
           </dependency>
         </dependencies>
         <executions>
