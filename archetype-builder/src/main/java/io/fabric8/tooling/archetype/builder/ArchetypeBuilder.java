@@ -201,7 +201,7 @@ public class ArchetypeBuilder {
             CloneCommand command = Git.cloneRepository().setCloneAllBranches(false).setURI(url).setDirectory(cloneDir);
 
             try {
-                Git git = command.call();
+                command.call();
             } catch (Throwable e) {
                 LOG.error("Failed to command remote repo " + url + " due: " + e.getMessage(), e);
                 throw new IOException("Failed to command remote repo " + url + " due: " + e.getMessage(), e);
@@ -211,14 +211,9 @@ public class ArchetypeBuilder {
             String description = repoName.replace('-', ' ');
             generatePomIfRequired(projectDir, repoName, description);
             dirs.add(repoName);
-
-            // lets add to the git ignore if its not already there
-            File gitIgnore = new File(outputDir, ".gitignore");
-            List<String> lines = Files.readLines(gitIgnore);
-            if (!lines.contains(archetypeFolderName)) {
-                try (FileWriter writer = new FileWriter(gitIgnore, true)) {
-                    writer.append("\n" + archetypeFolderName);
-                }
+            File outputGitIgnoreFile = new File(projectDir, ".gitignore");
+            if (!outputGitIgnoreFile.exists()) {
+                ArchetypeUtils.writeGitIgnore(outputGitIgnoreFile);
             }
         }
     }
