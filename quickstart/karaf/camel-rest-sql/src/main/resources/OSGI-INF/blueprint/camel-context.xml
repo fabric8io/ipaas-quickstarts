@@ -65,7 +65,11 @@
     <!-- use Camel property placeholder loaded from the given file -->
     <propertyPlaceholder id="placeholder" location="classpath:sql.properties"/>
 
-    <restConfiguration component="servlet" bindingMode="json" contextPath="/camel-rest-sql" port="{{env:HTTP_PORT:8181}}"/>
+    <restConfiguration
+        component="servlet"
+        bindingMode="json"
+        contextPath="/camel-rest-sql" port="{{env:HTTP_PORT:8181}}"
+        apiContextPath="/camel-rest-sql-api-doc"/>
 
     <!-- rest service for books -->
     <rest path="/books" consumes="application/json" produces="application/json">
