@@ -51,6 +51,14 @@ You can from a web browser then access these services such as:
     http://qs-camel-rest-sql.vagrant.f8/camel-rest-sql/books
     http://qs-camel-rest-sql.vagrant.f8/camel-rest-sql/books/order/1
 
+### Swagger API
+
+The example provides API documentation of the service using Swagger using the context-path `camel-rest-sql-api-doc`.
+
+You can from a web browser then access the API from:
+
+    http://qs-camel-rest-sql.vagrant.f8/camel-rest-sql-api-doc
+
 
 ### More details
 

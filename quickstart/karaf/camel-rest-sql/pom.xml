@@ -108,6 +108,10 @@
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-servlet</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-swagger-java</artifactId>
+    </dependency>
 
     <!-- embedded database -->
     <dependency>
@@ -274,6 +278,7 @@
             <feature>camel-jms</feature>
             <feature>camel-sql</feature>
             <feature>camel-jackson</feature>
+            <feature>camel-swagger-java</feature>
           </startupFeatures>
           <startupBundles>
             <bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}</bundle>
