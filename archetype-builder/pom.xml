@@ -28,7 +28,7 @@
   </parent>
 
   <artifactId>archetype-builder</artifactId>
-  <name>Fabric8 iPaaS :: Archetype Builder</name>
+  <name>Fabric8 :: Archetype Builder</name>
 
   <dependencyManagement>
     <dependencies>
