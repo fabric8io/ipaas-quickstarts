@@ -354,6 +354,8 @@
                 <include>src/test/java/**</include>
                 <include>pom.xml</include>
                 <include>**/*.xml</include>
+                <include>**/*.zip</include>
+                <include>**/*.tar</include>
                 <include>**/*.cfg</include>
                 <include>**/*.properties</include>
               </includes>
