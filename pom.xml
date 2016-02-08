@@ -96,7 +96,7 @@
     <module>archetypes-catalog</module>
     <module>archetypes</module>
     <module>archetype-itests</module>
-    <module>quickstart</module>
+    <!--<module>quickstart</module>-->
   </modules>
 
   <distributionManagement>
@@ -355,7 +355,7 @@
                 <include>pom.xml</include>
                 <include>**/*.xml</include>
                 <include>**/*.zip</include>
-                <include>**/*.tar</include>
+                <include>**/*.gz</include>
                 <include>**/*.cfg</include>
                 <include>**/*.properties</include>
               </includes>
