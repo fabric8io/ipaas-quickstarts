@@ -41,6 +41,7 @@
     <module>cdi-camel-http-archetype</module>
     <module>cdi-camel-jetty-archetype</module>
     <module>cdi-camel-mq-archetype</module>
+    <module>cdi-camel-swagger-archetype</module>
     <module>cdi-cxf-archetype</module>
     <module>django-example-archetype</module>
     <module>golang-example-archetype</module>
