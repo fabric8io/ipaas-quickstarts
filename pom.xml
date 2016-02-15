@@ -96,7 +96,7 @@
     <module>archetypes-catalog</module>
     <module>archetypes</module>
     <module>archetype-itests</module>
-    <!--<module>quickstart</module>-->
+    <module>quickstart</module>
   </modules>
 
   <distributionManagement>
@@ -267,12 +267,6 @@
 
     <profile>
       <id>release</id>
-      <modules>
-        <module>archetype-builder</module>
-        <module>archetypes-catalog</module>
-        <module>archetypes</module>
-        <module>archetype-itests</module>
-      </modules>
       <build>
         <plugins>
           <plugin>
@@ -355,7 +349,7 @@
                 <include>pom.xml</include>
                 <include>**/*.xml</include>
                 <include>**/*.zip</include>
-                <include>**/*.gz</include>
+                <include>**/*.gz.tar</include>
                 <include>**/*.cfg</include>
                 <include>**/*.properties</include>
               </includes>
@@ -383,20 +377,6 @@
       <properties>
         <skipItests>false</skipItests>
       </properties>
-    </profile>
-
-    <profile>
-      <id>quickstarts</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <modules>
-        <module>archetype-builder</module>
-        <module>archetypes-catalog</module>
-        <module>archetypes</module>
-        <module>archetype-itests</module>
-        <module>quickstart</module>
-      </modules>
     </profile>
 
     <profile>
