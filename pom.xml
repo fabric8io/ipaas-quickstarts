@@ -275,7 +275,7 @@
             <executions>
               <execution>
                 <id>sign-artifacts</id>
-                <phase>verify</phase>
+                <phase>install</phase>
                 <goals>
                   <goal>sign</goal>
                 </goals>
@@ -349,7 +349,7 @@
                 <include>pom.xml</include>
                 <include>**/*.xml</include>
                 <include>**/*.zip</include>
-                <include>**/*.gz.tar</include>
+                <include>**/*.tar.gz</include>
                 <include>**/*.cfg</include>
                 <include>**/*.properties</include>
               </includes>
@@ -363,6 +363,7 @@
             </configuration>
             <executions>
               <execution>
+                <phase>install</phase>
                 <goals>
                   <goal>check</goal>
                 </goals>
