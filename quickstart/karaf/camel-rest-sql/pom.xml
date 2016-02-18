@@ -252,6 +252,7 @@
             <goals>
               <goal>assembly</goal>
             </goals>
+            <!-- <phase>package</phase> this ought to be in the package phase so that we sign zip and tar.gz artifacts, needed by sonartype in order to release the quickstarts-->
             <phase>install</phase>
           </execution>
           <execution>

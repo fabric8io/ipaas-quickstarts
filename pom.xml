@@ -96,7 +96,7 @@
     <module>archetypes-catalog</module>
     <module>archetypes</module>
     <module>archetype-itests</module>
-    <module>quickstart</module>
+    <!-- <module>quickstart</module> -->
   </modules>
 
   <distributionManagement>
@@ -275,7 +275,6 @@
             <executions>
               <execution>
                 <id>sign-artifacts</id>
-                <phase>deploy</phase>
                 <goals>
                   <goal>sign</goal>
                 </goals>
@@ -363,7 +362,6 @@
             </configuration>
             <executions>
               <execution>
-                <phase>deploy</phase>
                 <goals>
                   <goal>check</goal>
                 </goals>
