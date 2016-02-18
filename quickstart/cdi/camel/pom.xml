@@ -213,6 +213,36 @@
         </executions>
       </plugin>
 
+      <!-- Lets package jolokia as part of the app to get remote management -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.10</version>
+        <executions>
+          <execution>
+            <id>copy</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.jolokia</groupId>
+                  <artifactId>jolokia-jvm</artifactId>
+                  <version>1.3.3</version>
+                  <type>jar</type>
+                  <classifier>agent</classifier>
+                  <overWrite>false</overWrite>
+                  <outputDirectory>${project.build.directory}/hawt-app/agents</outputDirectory>
+                  <destFileName>jolokia.jar</destFileName>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
       <plugin>
         <groupId>io.fabric8</groupId>
         <artifactId>hawt-app-maven-plugin</artifactId>
