@@ -225,6 +225,7 @@
             </goals>
             <configuration>
               <javaMainClass>org.apache.camel.cdi.Main</javaMainClass>
+              <archive>${project.build.directory}/${project.artifactId}-${project.version}-app.zip</archive>
             </configuration>
           </execution>
         </executions>
