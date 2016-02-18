@@ -96,7 +96,7 @@
     <module>archetypes-catalog</module>
     <module>archetypes</module>
     <module>archetype-itests</module>
-    <!-- <module>quickstart</module> -->
+    <module>quickstart</module>
   </modules>
 
   <distributionManagement>
@@ -264,13 +264,6 @@
         <fabric8.version>2.2.95-SNAPSHOT</fabric8.version>
       </properties>
     </profile>
-    <profile>
-      <id>quickstarts</id>
-      <modules>
-        <module>quickstart</module>
-      </modules>
-    </profile>
-
     <profile>
       <id>release</id>
       <build>
