@@ -96,7 +96,7 @@
     <module>archetypes-catalog</module>
     <module>archetypes</module>
     <module>archetype-itests</module>
-    <module>quickstart</module>
+    <!--<module>quickstart</module>-->
   </modules>
 
   <distributionManagement>
