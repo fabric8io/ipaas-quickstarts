@@ -44,7 +44,7 @@
     <cxf.version>3.1.4</cxf.version>
     <cxf.plugin.version>3.1.4</cxf.plugin.version>
     <karaf.version>2.4.4</karaf.version>
-    <karaf.plugin.version>4.0.4</karaf.plugin.version>
+    <karaf.plugin.version>4.0.3</karaf.plugin.version>
 
     <docker.from>fabric8/s2i-karaf:1.2</docker.from>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
