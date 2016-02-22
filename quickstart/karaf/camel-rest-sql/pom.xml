@@ -21,13 +21,13 @@
   <parent>
     <groupId>io.fabric8.quickstarts</groupId>
     <artifactId>karaf</artifactId>
-    <version>2.2.99-SNAPSHOT</version>
+    <version>2.2.100-SNAPSHOT</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>karaf-camel-rest-sql</artifactId>
-  <version>2.2.99-SNAPSHOT</version>
+  <version>2.2.100-SNAPSHOT</version>
   <packaging>bundle</packaging>
   <name>Fabric8 :: Quickstarts :: Karaf :: Camel Rest using SQL</name>
   <description>Camel Example using Rest DSL with SQL Database in Karaf container</description>
@@ -252,8 +252,7 @@
             <goals>
               <goal>assembly</goal>
             </goals>
-            <!-- <phase>package</phase> this ought to be in the package phase so that we sign zip and tar.gz artifacts, needed by sonartype in order to release the quickstarts-->
-            <phase>install</phase>
+            <phase>package</phase>
           </execution>
           <execution>
             <id>karaf-archive</id>

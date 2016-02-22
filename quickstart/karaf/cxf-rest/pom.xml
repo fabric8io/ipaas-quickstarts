@@ -24,7 +24,7 @@
   <parent>
     <groupId>io.fabric8.quickstarts</groupId>
     <artifactId>karaf</artifactId>
-    <version>2.2.99-SNAPSHOT</version>
+    <version>2.2.100-SNAPSHOT</version>
   </parent>
 
   <artifactId>karaf-cxf-rest</artifactId>
@@ -329,8 +329,7 @@
             <goals>
               <goal>assembly</goal>
             </goals>
-            <!-- <phase>package</phase> this ought to be in the package phase so that we sign zip and tar.gz artifacts, needed by sonartype in order to release the quickstarts-->
-            <phase>install</phase>
+            <phase>package</phase>
           </execution>
           <execution>
             <id>karaf-archive</id>
