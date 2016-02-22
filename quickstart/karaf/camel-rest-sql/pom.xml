@@ -44,7 +44,7 @@
 
     <!-- configure the versions you want to use here -->
     <camel.version>2.16.2</camel.version>
-    <karaf.version>2.4.3</karaf.version>
+    <karaf.version>2.4.4</karaf.version>
     <karaf.plugin.version>4.0.3</karaf.plugin.version>
     <derby.version>10.10.2.0</derby.version>
     <spring.features.version>3.0.4</spring.features.version>
@@ -223,23 +223,9 @@
           </execution>
         </executions>
       </plugin>
-      <!-- plugin goals have to be executed in order -->
-      <!-- 1. install the bundle -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-install-plugin</artifactId>
-        <version>2.5.2</version>
-        <executions>
-          <execution>
-            <id>install-bundle</id>
-            <goals>
-              <goal>install</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
 
-      <!-- 2. create karaf assembly -->
+      <!-- plugin goals have to be executed in order -->
+      <!-- 1. create karaf assembly -->
       <!-- karaf-maven-plugin creates custom microservice distribution -->
       <plugin>
         <groupId>org.apache.karaf.tooling</groupId>
@@ -252,20 +238,20 @@
             <goals>
               <goal>assembly</goal>
             </goals>
-            <!-- <phase>package</phase> this ought to be in the package phase so that we sign zip and tar.gz artifacts, needed by sonartype in order to release the quickstarts-->
-            <phase>install</phase>
+            <phase>package</phase>
           </execution>
           <execution>
             <id>karaf-archive</id>
             <goals>
               <goal>archive</goal>
             </goals>
-            <phase>install</phase>
+            <phase>package</phase>
           </execution>
         </executions>
         <configuration>
           <karafVersion>v4x</karafVersion>
           <useReferenceUrls>true</useReferenceUrls>
+          <archiveTarGz>false</archiveTarGz>
           <!-- do not include build output directory -->
           <includeBuildOutputDirectory>false</includeBuildOutputDirectory>
           <!-- no startupFeatures -->
@@ -282,7 +268,7 @@
             <feature>camel-swagger-java</feature>
           </startupFeatures>
           <startupBundles>
-            <bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}</bundle>
+            <bundle>file:${project.build.directory}/${project.artifactId}.jar</bundle>
           </startupBundles>
           <blacklistedBundles>
             <bundle>mvn:org.ops4j.pax.logging/pax-logging-api/1.8.4</bundle>
@@ -296,7 +282,7 @@
         </configuration>
       </plugin>
 
-      <!-- 3. create docker image -->
+      <!-- 2. create docker image -->
       <plugin>
         <groupId>io.fabric8</groupId>
         <artifactId>docker-maven-plugin</artifactId>
