@@ -23,11 +23,11 @@
   <parent>
     <groupId>io.fabric8.quickstarts</groupId>
     <artifactId>karaf</artifactId>
-    <version>2.2.99-SNAPSHOT</version>
+    <version>2.2.100-SNAPSHOT</version>
   </parent>
 
   <artifactId>karaf-camel-amq</artifactId>
-  <version>2.2.99-SNAPSHOT</version>
+  <version>2.2.100-SNAPSHOT</version>
   <packaging>bundle</packaging>
   <name>Fabric8 :: Quickstarts :: Karaf :: Camel and ActiveMQ</name>
   <description>Camel route using ActiveMQ in Karaf container</description>
@@ -45,7 +45,7 @@
     <!-- configure the versions you want to use here -->
     <activemq.version>5.12.1</activemq.version>
     <camel.version>2.16.2</camel.version>
-    <karaf.version>2.4.3</karaf.version>
+    <karaf.version>2.4.4</karaf.version>
     <karaf.plugin.version>4.0.3</karaf.plugin.version>
 
     <docker.from>fabric8/s2i-karaf:1.2</docker.from>
