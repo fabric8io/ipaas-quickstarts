@@ -21,13 +21,13 @@
   <parent>
     <groupId>io.fabric8.quickstarts</groupId>
     <artifactId>karaf</artifactId>
-    <version>2.2.99-SNAPSHOT</version>
+    <version>2.2.100-SNAPSHOT</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>karaf-camel-rest-sql</artifactId>
-  <version>2.2.99-SNAPSHOT</version>
+  <version>2.2.100-SNAPSHOT</version>
   <packaging>bundle</packaging>
   <name>Fabric8 :: Quickstarts :: Karaf :: Camel Rest using SQL</name>
   <description>Camel Example using Rest DSL with SQL Database in Karaf container</description>
@@ -37,14 +37,14 @@
     <version.maven-bundle-plugin>2.3.7</version.maven-bundle-plugin>
 
     <!-- fabric8 version -->
-    <fabric8.version>2.2.95</fabric8.version>
+    <fabric8.version>2.2.96</fabric8.version>
     <docker.maven.plugin.version>0.13.9</docker.maven.plugin.version>
 
 
 
     <!-- configure the versions you want to use here -->
     <camel.version>2.16.2</camel.version>
-    <karaf.version>2.4.3</karaf.version>
+    <karaf.version>2.4.4</karaf.version>
     <karaf.plugin.version>4.0.3</karaf.plugin.version>
     <derby.version>10.10.2.0</derby.version>
     <spring.features.version>3.0.4</spring.features.version>
@@ -252,8 +252,7 @@
             <goals>
               <goal>assembly</goal>
             </goals>
-            <!-- <phase>package</phase> this ought to be in the package phase so that we sign zip and tar.gz artifacts, needed by sonartype in order to release the quickstarts-->
-            <phase>install</phase>
+            <phase>package</phase>
           </execution>
           <execution>
             <id>karaf-archive</id>
