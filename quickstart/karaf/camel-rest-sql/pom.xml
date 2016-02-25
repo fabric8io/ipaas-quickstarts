@@ -38,7 +38,7 @@
 
     <!-- fabric8 version -->
     <fabric8.version>2.2.95</fabric8.version>
-    <docker.maven.plugin.version>0.13.9</docker.maven.plugin.version>
+    <docker.maven.plugin.version>0.14.1</docker.maven.plugin.version>
 
 
 
@@ -298,7 +298,7 @@
 
       <!-- 3. create docker image -->
       <plugin>
-        <groupId>org.jolokia</groupId>
+        <groupId>io.fabric8</groupId>
         <artifactId>docker-maven-plugin</artifactId>
         <version>${docker.maven.plugin.version}</version>
         <configuration>

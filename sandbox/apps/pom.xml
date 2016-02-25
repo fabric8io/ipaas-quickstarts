@@ -140,7 +140,7 @@
                 <pluginManagement>
                     <plugins>
                         <plugin>
-                            <groupId>org.jolokia</groupId>
+                            <groupId>io.fabric8</groupId>
                             <artifactId>docker-maven-plugin</artifactId>
                             <version>${docker.maven.plugin.version}</version>
                             <executions>
