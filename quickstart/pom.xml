@@ -53,6 +53,7 @@
     <module>cdi</module>
     <module>node</module>
     <module>spring-boot</module>
+    <module>vertx</module>
     <module>war</module>
   </modules>
 

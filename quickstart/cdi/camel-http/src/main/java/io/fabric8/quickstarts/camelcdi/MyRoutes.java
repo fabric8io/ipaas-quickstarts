@@ -31,7 +31,7 @@ public class MyRoutes extends RouteBuilder {
     @Inject @Uri("timer:foo?period=5000")
     private Endpoint inputEndpoint;
 
-    @Inject @Uri("netty4-http:http://{{service:qs-cdi-camel-jetty:localhost:8080}}/camel/hello?keepAlive=false&disconnect=true")
+    @Inject @Uri("netty4-http:http://{{service:cdi-camel-jetty:localhost:8080}}/camel/hello?keepAlive=false&disconnect=true")
     private Endpoint httpEndpoint;
 
     @Inject @Uri("log:output?showExchangePattern=false&showBodyType=false&showStreams=true")
@@ -40,6 +40,10 @@ public class MyRoutes extends RouteBuilder {
     @Override
     public void configure() throws Exception {
         // you can configure the route rule with Java DSL here
+
+        // let the client attempt to redeliver if the service is not available
+        onException(Exception.class)
+            .maximumRedeliveries(5).redeliveryDelay(1000);
 
         from(inputEndpoint)
             .setHeader("name", method("counterBean"))

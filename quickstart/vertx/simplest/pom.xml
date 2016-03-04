@@ -24,11 +24,11 @@
   <parent>
     <groupId>io.fabric8.quickstarts</groupId>
     <artifactId>vertx</artifactId>
-    <version>2.2.90-SNAPSHOT</version>
+    <version>2.2.101-SNAPSHOT</version>
   </parent>
 
   <artifactId>vertx-simplest</artifactId>
-  <version>2.2.90-SNAPSHOT</version>
+  <version>2.2.101-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>Fabric8 :: Quickstarts :: Vert.x :: Simplest fat jar</name>
@@ -57,6 +57,10 @@
     <fabric8.service.containerPort>8080</fabric8.service.containerPort>
     <fabric8.service.type>LoadBalancer</fabric8.service.type>
 
+    <fabric8.readinessProbe.httpGet.port>8080</fabric8.readinessProbe.httpGet.port>
+    <fabric8.readinessProbe.httpGet.path>/</fabric8.readinessProbe.httpGet.path>
+    <fabric8.readinessProbe.timeoutSeconds>30</fabric8.readinessProbe.timeoutSeconds>
+    <fabric8.readinessProbe.initialDelaySeconds>5</fabric8.readinessProbe.initialDelaySeconds>
 
     <!-- the main class -->
     <exec.mainClass>io.vertx.example.HelloWorldEmbedded</exec.mainClass>
@@ -79,7 +83,7 @@
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-core</artifactId>
-      <version>3.2.0</version>
+      <version>3.2.1</version>
     </dependency>
   </dependencies>
 

@@ -64,6 +64,11 @@
     <fabric8.service.containerPort>${http.port}</fabric8.service.containerPort>
     <fabric8.service.type>LoadBalancer</fabric8.service.type>
 
+    <fabric8.readinessProbe.httpGet.port>${http.port}</fabric8.readinessProbe.httpGet.port>
+    <fabric8.readinessProbe.httpGet.path>/</fabric8.readinessProbe.httpGet.path>
+    <fabric8.readinessProbe.timeoutSeconds>30</fabric8.readinessProbe.timeoutSeconds>
+    <fabric8.readinessProbe.initialDelaySeconds>5</fabric8.readinessProbe.initialDelaySeconds>
+
     <fabric8.annotations.service.apiman.io.servicePath>cxfcdi</fabric8.annotations.service.apiman.io.servicePath>
     <fabric8.annotations.service.apiman.io.serviceType>REST</fabric8.annotations.service.apiman.io.serviceType>
     <fabric8.annotations.service.apiman.io.descriptionPath>cxfcdi/swagger.json</fabric8.annotations.service.apiman.io.descriptionPath>
