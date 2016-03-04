@@ -41,6 +41,10 @@ public class MyRoutes extends RouteBuilder {
     public void configure() throws Exception {
         // you can configure the route rule with Java DSL here
 
+        // let the client attempt to redeliver if the service is not available
+        onException(Exception.class)
+            .maximumRedeliveries(5).redeliveryDelay(1000);
+
         from(inputEndpoint)
             .setHeader("name", method("counterBean"))
             .to(httpEndpoint)
