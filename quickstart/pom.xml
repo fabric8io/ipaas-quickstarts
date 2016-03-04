@@ -54,6 +54,7 @@
     <module>node</module>
     <module>spring-boot</module>
     <module>war</module>
+    <module>vertx</module>
   </modules>
 
   <developers>
