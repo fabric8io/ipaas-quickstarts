@@ -59,7 +59,7 @@
     <fabric8.service.type>LoadBalancer</fabric8.service.type>
 
     <fabric8.readinessProbe.httpGet.port>8080</fabric8.readinessProbe.httpGet.port>
-    <fabric8.readinessProbe.httpGet.path>/</fabric8.readinessProbe.httpGet.path>
+    <fabric8.readinessProbe.httpGet.path>/camel/hello</fabric8.readinessProbe.httpGet.path>
     <fabric8.readinessProbe.timeoutSeconds>30</fabric8.readinessProbe.timeoutSeconds>
     <fabric8.readinessProbe.initialDelaySeconds>5</fabric8.readinessProbe.initialDelaySeconds>
 
