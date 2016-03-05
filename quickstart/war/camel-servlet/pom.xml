@@ -70,7 +70,7 @@
 
   <dependencyManagement>
     <dependencies>
-      <!-- import fabric8 platfrom bom first -->
+      <!-- import fabric8 platform bom first -->
       <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>fabric8-project-bom-with-platform-deps</artifactId>
