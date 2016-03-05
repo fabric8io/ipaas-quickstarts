@@ -45,6 +45,7 @@
     <module>cdi-cxf-archetype</module>
     <module>django-example-archetype</module>
     <module>golang-example-archetype</module>
+    <module>java-camel-spring-archetype</module>
     <module>java-fatjar-archetype</module>
     <module>java-mainclass-archetype</module>
     <module>karaf-camel-amq-archetype</module>
