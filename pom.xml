@@ -89,6 +89,8 @@
     <fabric8.version>2.2.96</fabric8.version>
     <fabric8.release.version>${fabric8.version}</fabric8.release.version>
     <maven.enforcer.plugin.version>1.4.1</maven.enforcer.plugin.version>
+    <archetype-packaging-plugin.version>2.2</archetype-packaging-plugin.version>
+    <archetype-plugin.version>2.2</archetype-plugin.version>
   </properties>
 
   <modules>
