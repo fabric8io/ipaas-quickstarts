@@ -1,6 +1,6 @@
 # Java Camel Spring QuickStart
 
-This quickstarts run in a Java standalone container, using Spring with Apache Camel.
+This quickstart run in a Java standalone container, using Spring with Apache Camel.
 
 This example is implemented using solely a Spring XML file (there is no custom Java code).
 The source code is provided in the following XML file `src/main/resources/META-INF/spring/camel-context.xml`,

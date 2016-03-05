@@ -1,3 +1,4 @@
+#set( $D = '$' )
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
@@ -35,12 +36,12 @@
       </transform>
       <choice>
         <when>
-          <simple>${body} &gt; 500</simple>
-          <log message="High priority message : ${body}"/>
+          <simple>${D}{body} &gt; 500</simple>
+          <log message="High priority message : ${D}{body}"/>
           <to uri="mock:high"/>
         </when>
         <otherwise>
-          <log message="Low priority message  : ${body}"/>
+          <log message="Low priority message  : ${D}{body}"/>
           <to uri="mock:regular"/>
         </otherwise>
       </choice>
