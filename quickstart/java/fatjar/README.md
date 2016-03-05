@@ -1,6 +1,6 @@
 # Java Simple Fat-jar QuickStart
 
-This quickstarts run in a Java standalone container using the fat-jar style.
+This quickstart run in a Java standalone container using the fat-jar style.
 
 This example is implemented using very simple Java code.
 The source code is provided in the following java file `src/main/java/io/fabric8/quickstarts/java/simple/fatjar/Main.java`,
