@@ -37,11 +37,9 @@
         <when>
           <simple>${body} &gt; 500</simple>
           <log message="High priority message : ${body}"/>
-          <to uri="mock:high"/>
         </when>
         <otherwise>
           <log message="Low priority message  : ${body}"/>
-          <to uri="mock:regular"/>
         </otherwise>
       </choice>
     </route>
