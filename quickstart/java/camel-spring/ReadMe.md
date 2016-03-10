@@ -21,7 +21,7 @@ Navigate to the $IPAAS_QUICKSTART/quickstart/java/camel-spring/ folder and the e
 
 The example can be run locally using the following Maven goal:
 
-    mvn camel:run
+    mvn exec:java
 
 
 ### Running the example in fabric8
