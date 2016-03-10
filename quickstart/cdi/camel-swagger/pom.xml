@@ -75,9 +75,9 @@
     <fabric8.metrics.port>9779</fabric8.metrics.port>
     <!-- End Prometheus metrics stuff -->
 
-    <fabric8.annotations.service.apiman.io.serviceType>REST</fabric8.annotations.service.apiman.io.serviceType>
-    <fabric8.annotations.service.apiman.io.descriptionPath>swagger.json</fabric8.annotations.service.apiman.io.descriptionPath>
-    <fabric8.annotations.service.apiman.io.descriptionType>SwaggerJSON</fabric8.annotations.service.apiman.io.descriptionType>
+    <fabric8.annotations.service.api.service.kubernetes.io.protocol>REST</fabric8.annotations.service.api.service.kubernetes.io.protocol>
+    <fabric8.annotations.service.api.service.kubernetes.io.description-path>swagger.json</fabric8.annotations.service.api.service.kubernetes.io.description-path>
+    <fabric8.annotations.service.api.service.kubernetes.io.description-language>SwaggerJSON</fabric8.annotations.service.api.service.kubernetes.io.description-language>
 
     <fabric8.label.component>${project.artifactId}</fabric8.label.component>
     <fabric8.label.container>java</fabric8.label.container>
