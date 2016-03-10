@@ -30,6 +30,6 @@
   <artifactId>node-hello-world-rest</artifactId>
   <version>2.2.101-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>Fabric8 :: Quickstarts :: Node :: DUMMY used to generate archetype</name>
+  <name>Fabric8 :: Quickstarts :: Node :: Hello World</name>
 
 </project>

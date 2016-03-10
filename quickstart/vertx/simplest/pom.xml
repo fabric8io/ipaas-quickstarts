@@ -31,7 +31,7 @@
   <version>2.2.101-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>Fabric8 :: Quickstarts :: Vert.x :: Simplest fat jar</name>
+  <name>Fabric8 :: Quickstarts :: Vert.x :: Fat Jar</name>
   <description>Simple embedded vert.x fatjar</description>
 
   <properties>
@@ -40,6 +40,7 @@
     <!-- fabric8 version -->
     <fabric8.version>2.2.96</fabric8.version>
     <docker.maven.plugin.version>0.14.2</docker.maven.plugin.version>
+    <vertx.version>3.2.1</vertx.version>
 
     <!-- Docker & Fabric8 Configs -->
     <docker.from>fabric8/java-jboss-openjdk8-jdk:1.0.10</docker.from>
@@ -80,10 +81,19 @@
   </dependencyManagement>
 
   <dependencies>
+
+    <!-- vertx -->
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-core</artifactId>
-      <version>3.2.1</version>
+      <version>${vertx.version}</version>
+    </dependency>
+
+    <!-- logging -->
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.17</version>
     </dependency>
   </dependencies>
 
