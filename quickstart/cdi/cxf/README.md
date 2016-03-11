@@ -58,15 +58,15 @@ hostname is valid for you
 
 Use this URL to display the root of the REST service, which also allows to access the WADL of the service:
 
-    http://quickstart-java-cxf-cdi.vagrant.f8/cxfcdi
+    http://cdi-cxf-default.vagrant.f8/cxfcdi
 
 Use this URL to display the XML representation for customer 123:
 
-    http://quickstart-java-cxf-cdi.vagrant.f8/cxfcdi/customerservice/customers/123
+    http://cdi-cxf-default.vagrant.f8/cxfcdi/customerservice/customers/123
 
 You can also access the XML representation for order 223 ...
 
-    http://quickstart-java-cxf-cdi.vagrant.f8/rest/cxf/customerservice/customers/123
+    http://cdi-cxf-default.vagrant.f8/rest/cxf/customerservice/customers/123
 
 **Note:** if you use Safari, you will only see the text elements but not the XML tags - you can view the entire document with 'View Source'
 
@@ -80,7 +80,7 @@ You can use a command-line utility, such as cURL or wget, to perform the HTTP re
     
     * Create a customer
  
-            curl -X POST -T src/test/resources/add_customer.xml -H "Content-Type: text/xml" http://quickstart-java-cxf-cdi.vagrant.f8/cxfcdi/customerservice/customers
+            curl -X POST -T src/test/resources/add_customer.xml -H "Content-Type: text/xml" http://cdi-cxf-default.vagrant.f8/cxfcdi/customerservice/customers
   
     * Retrieve the customer instance with id 123
     
@@ -88,11 +88,11 @@ You can use a command-line utility, such as cURL or wget, to perform the HTTP re
 
     * Update the customer instance with id 123
   
-            curl -X PUT -T src/test/resources/update_customer.xml -H "Content-Type: text/xml" http://quickstart-java-cxf-cdi.vagrant.f8/cxfcdi/customerservice/customers
+            curl -X PUT -T src/test/resources/update_customer.xml -H "Content-Type: text/xml" http://cdi-cxf-default.vagrant.f8/cxfcdi/customerservice/customers
 
     * Delete the customer instance with id 123
   
-             curl -X DELETE http://quickstart-java-cxf-cdi.vagrant.f8/cxfcdi/customerservice/customers/123
+             curl -X DELETE http://cdi-cxf-default.vagrant.f8/cxfcdi/customerservice/customers/123
 
 
 ### More details
