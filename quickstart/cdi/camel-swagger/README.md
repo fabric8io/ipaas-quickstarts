@@ -69,7 +69,7 @@ Use this URL to display the root of the REST service, which also allows to acces
 
 Use this URL to display the JSON representation for customer 123:
 
-    http://cdi-camel-swagger.vagrant.f8/user/123
+    http://cdi-camel-swagger-default.vagrant.f8/user/123
 
 where `vagrant.f8` is your Kubernetes domain. 
 
