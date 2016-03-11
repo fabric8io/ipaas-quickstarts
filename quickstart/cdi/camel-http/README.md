@@ -60,7 +60,7 @@ And then run the script
 While the script runs, you can try to scale up or down the number of pods on the remote HTTP service using either the fabric8 web console,
 or from the command line using the openshift client
 
-    oc scale --replicas=3 replicationcontrollers quickstart-cdi-camel-jetty
+    oc scale --replicas=3 rc cdi-camel-jetty
 
 
 ### More details
