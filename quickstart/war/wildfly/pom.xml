@@ -43,7 +43,7 @@
 
 
 
-    <docker.from>jboss/wildfly:9.0.2.Final</docker.from>
+    <docker.from>jboss/wildfly:10.0.0.Final</docker.from>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
     <docker.assemblyDescriptorRef>artifact</docker.assemblyDescriptorRef>
