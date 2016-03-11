@@ -49,7 +49,7 @@ running pods, and view logs and much more.
 
 When the application is running, you can use a web browser to access the HTTP service. Assuming that you
 have a [Vagrant setup](http://fabric8.io/guide/getStarted/vagrant.html) you can access the REST service with
-`http://quickstart-camelservlet.vagrant.f8/`.
+`http://war-camel-servlet-default.vagrant.f8/`.
 
 Notice: As it depends on your OpenShift setup, the hostname (route) might vary. Verify with `oc get routes` which
 hostname is valid for you.

@@ -37,12 +37,17 @@ To list all the running pods:
 
     oc get pods
 
-Then find the service `vertx-simplest` in the services tab, which you can click the link to open in a web browser.
-The service should reply with a _Hello World_ message.
+### Access services using a web browser
+
+When the application is running, you can use a web browser to access the service. Assuming that you
+have a [Vagrant setup](http://fabric8.io/guide/getStarted/vagrant.html) you can access the service with
+`http://vertx-simplest-default.vagrant.f8/`.
+
+Notice: As it depends on your OpenShift setup, the hostname (route) might vary. Verify with `oc get routes` which
+hostname is valid for you.
 
 You can also use the fabric8 [web console](http://fabric8.io/guide/console.html) to manage the
 running pods, and view logs and much more.
-
 
 ### More details
 
