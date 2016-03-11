@@ -53,7 +53,7 @@ The example exposes a service over HTTP which you can find using
 This lists all the routes to the services, where you can find the actual HTTP url, which you can use from a web browser.
 
 The Camel route is listening on context-path `camel/hello`, so the actual HTTP url should be prefixed with that.
-For example if the route to the service is listed at `http://qs-cdi-camel-jetty.vagrant.f8` then the actual URL to use should be `http://qs-cdi-camel-jetty.vagrant.f8/camel/hello`
+For example if the route to the service is listed at `http://cdi-camel-jetty.vagrant.f8` then the actual URL to use should be `http://cdi-camel-jetty.vagrant.f8/camel/hello`
 
 You can also use the fabric8 [web console](http://fabric8.io/guide/console.html) to manage the
 running pods, and view logs and much more.
@@ -75,7 +75,7 @@ And then run the script
 While the script runs, you can try to scale up or down the number of pods on the Jetty HTTP service using either the fabric8 web console,
 or from the command line using the openshift client
 
-    oc scale --replicas=3 replicationcontrollers quickstart-cdi-camel-jetty
+    oc scale --replicas=3 rc cdi-camel-jetty
 
 
 ### More details
