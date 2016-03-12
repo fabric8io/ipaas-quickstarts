@@ -1,0 +1,22 @@
+This example started from:
+
+https://github.com/swagger-api/swagger-codegen
+
+I generated the JAXRS code:
+
+java -jar modules/swagger-codegen-cli/target/swagger-codegen-cli.jar generate \
+  -i http://petstore.swagger.io/v2/swagger.json \
+  -l jaxrs \
+  -o samples/server/petstore/jaxrs-jersey
+
+Then using a fabric8 sprint boot quickstart modied the pom file.
+
+Important to remember to logon to OpenShift using 'oc login' before using the maven command:
+mvn -Pf8-local-deploy
+
+In order to access the swagger output you need to go to:
+
+http://swagger-jaxrs-server-default.vagrant.f8/tomcat-fabric8/v2/swagger.json
+
+best tried with swagger UI: http://petstore.swagger.io/
+
