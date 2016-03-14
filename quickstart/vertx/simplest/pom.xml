@@ -47,12 +47,6 @@
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
 
-    <fabric8.label.component>${project.artifactId}</fabric8.label.component>
-    <fabric8.label.container>java</fabric8.label.container>
-    <fabric8.label.group>quickstarts</fabric8.label.group>
-    <fabric8.iconRef>vertx</fabric8.iconRef>
-
-
     <fabric8.service.name>${project.artifactId}</fabric8.service.name>
     <fabric8.service.port>80</fabric8.service.port>
     <fabric8.service.containerPort>8080</fabric8.service.containerPort>
@@ -63,8 +57,8 @@
     <fabric8.readinessProbe.timeoutSeconds>30</fabric8.readinessProbe.timeoutSeconds>
     <fabric8.readinessProbe.initialDelaySeconds>5</fabric8.readinessProbe.initialDelaySeconds>
 
-    <!-- the main class -->
-    <exec.mainClass>io.vertx.example.HelloWorldEmbedded</exec.mainClass>
+    <fabric8.label.group>quickstarts</fabric8.label.group>
+    <fabric8.iconRef>vertx</fabric8.iconRef>
 
   </properties>
 
@@ -125,7 +119,7 @@
               <transformers>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                   <manifestEntries>
-                    <Main-Class>${exec.mainClass}</Main-Class>
+                    <Main-Class>io.vertx.example.HelloWorldEmbedded</Main-Class>
                   </manifestEntries>
                 </transformer>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
@@ -190,7 +184,7 @@
         <artifactId>exec-maven-plugin</artifactId>
         <version>1.4.0</version>
         <configuration>
-          <mainClass>${exec.mainClass}</mainClass>
+          <mainClass>io.vertx.example.HelloWorldEmbedded</mainClass>
         </configuration>
       </plugin>
 
