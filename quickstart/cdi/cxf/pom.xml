@@ -77,10 +77,6 @@
     <fabric8.metrics.scrape>true</fabric8.metrics.scrape>
     <fabric8.metrics.port>9779</fabric8.metrics.port>
 
-    <fabric8.label.container>java</fabric8.label.container>
-    <fabric8.label.group>quickstarts</fabric8.label.group>
-    <fabric8.label.component>${project.artifactId}</fabric8.label.component>
-    <fabric8.label.container>java</fabric8.label.container>
     <fabric8.label.group>quickstarts</fabric8.label.group>
     <fabric8.iconRef>java</fabric8.iconRef>
   </properties>

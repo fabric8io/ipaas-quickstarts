@@ -15,6 +15,7 @@
  */
 package io.fabric8.quickstarts.camelcdi;
 
+import java.util.Objects;
 import javax.inject.Inject;
 
 import org.apache.camel.Endpoint;
@@ -41,7 +42,7 @@ public class MyRoutes extends RouteBuilder {
         // you can configure the route rule with Java DSL here
 
         from(inputEndpoint)
-            .beanRef("counterBean")
+            .bean("counterBean")
             .to(resultEndpoint);
     }
 
