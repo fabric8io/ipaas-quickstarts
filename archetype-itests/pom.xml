@@ -183,6 +183,13 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>io.fabric8.archetypes</groupId>
+                  <artifactId>cdi-camel-swagger-archetype</artifactId>
+                  <version>${project.version}</version>
+                  <type>jar</type>
+                  <overWrite>false</overWrite>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>io.fabric8.archetypes</groupId>
                   <artifactId>cdi-cxf-archetype</artifactId>
                   <version>${project.version}</version>
                   <type>jar</type>
@@ -253,6 +260,15 @@
                 <artifactItem>
                   <groupId>io.fabric8.archetypes</groupId>
                   <artifactId>spring-boot-webmvc-archetype</artifactId>
+                  <version>${project.version}</version>
+                  <type>jar</type>
+                  <overWrite>false</overWrite>
+                </artifactItem>
+
+                <!-- vertx archetypes -->
+                <artifactItem>
+                  <groupId>io.fabric8.archetypes</groupId>
+                  <artifactId>vertx-simplest-archetype</artifactId>
                   <version>${project.version}</version>
                   <type>jar</type>
                   <overWrite>false</overWrite>
