@@ -192,7 +192,7 @@
                 <!-- java archetypes -->
                 <artifactItem>
                   <groupId>io.fabric8.archetypes</groupId>
-                  <artifactId>spring-camel-archetype</artifactId>
+                  <artifactId>java-camel-spring-archetype</artifactId>
                   <version>${project.version}</version>
                   <type>jar</type>
                   <overWrite>false</overWrite>
