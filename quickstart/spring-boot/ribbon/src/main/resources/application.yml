@@ -1,0 +1,4 @@
+hello:
+  ribbon:
+    client:
+      name: hello-service
