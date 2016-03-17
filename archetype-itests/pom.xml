@@ -264,6 +264,13 @@
                   <type>jar</type>
                   <overWrite>false</overWrite>
                 </artifactItem>
+                <artifactItem>
+                  <groupId>io.fabric8.archetypes</groupId>
+                  <artifactId>spring-boot-ribbon-archetype</artifactId>
+                  <version>${project.version}</version>
+                  <type>jar</type>
+                  <overWrite>false</overWrite>
+                </artifactItem>
 
                 <!-- vertx archetypes -->
                 <artifactItem>
