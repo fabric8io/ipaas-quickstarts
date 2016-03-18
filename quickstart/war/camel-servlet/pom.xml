@@ -57,6 +57,8 @@
     <fabric8.service.containerPort>8080</fabric8.service.containerPort>
     <fabric8.service.type>LoadBalancer</fabric8.service.type>
 
+    <fabric8.annotations.service.servicepath>/hello</fabric8.annotations.service.servicepath>
+
     <fabric8.readinessProbe.httpGet.port>8080</fabric8.readinessProbe.httpGet.port>
     <fabric8.readinessProbe.httpGet.path>/</fabric8.readinessProbe.httpGet.path>
     <fabric8.readinessProbe.timeoutSeconds>30</fabric8.readinessProbe.timeoutSeconds>

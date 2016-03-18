@@ -56,7 +56,12 @@
 		<fabric8.service.port>80</fabric8.service.port>
 		<fabric8.service.containerPort>8080</fabric8.service.containerPort>
 		<fabric8.service.type>LoadBalancer</fabric8.service.type>
-		<fabric8.serviceAccount>fabric8</fabric8.serviceAccount>
+
+		<fabric8.annotations.service.servicepath>/hello</fabric8.annotations.service.servicepath>
+
+		<fabric8.serviceAccount>ribbon</fabric8.serviceAccount>
+		<fabric8.serviceAccountCreate>true</fabric8.serviceAccountCreate>
+
 		<fabric8.label.hystrix.enabled>true</fabric8.label.hystrix.enabled>
 		<fabric8.label.hystrix.cluster>default</fabric8.label.hystrix.cluster>
 	</properties>

@@ -60,6 +60,8 @@
     <fabric8.service.containerPort>${http.port}</fabric8.service.containerPort>
     <fabric8.service.type>LoadBalancer</fabric8.service.type>
 
+     <fabric8.annotations.service.servicepath>/user</fabric8.annotations.service.servicepath>
+
     <fabric8.readinessProbe.httpGet.port>${http.port}</fabric8.readinessProbe.httpGet.port>
     <fabric8.readinessProbe.httpGet.path>/swagger.json</fabric8.readinessProbe.httpGet.path>
     <fabric8.readinessProbe.timeoutSeconds>30</fabric8.readinessProbe.timeoutSeconds>
