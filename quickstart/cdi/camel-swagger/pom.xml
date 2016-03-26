@@ -80,6 +80,7 @@
     <fabric8.annotations.service.api.service.kubernetes.io.protocol>REST</fabric8.annotations.service.api.service.kubernetes.io.protocol>
     <fabric8.annotations.service.api.service.kubernetes.io.description-path>swagger.json</fabric8.annotations.service.api.service.kubernetes.io.description-path>
     <fabric8.annotations.service.api.service.kubernetes.io.description-language>SwaggerJSON</fabric8.annotations.service.api.service.kubernetes.io.description-language>
+    <fabric8.annotations.service.api.service.openshift.io.api-manager>apiman</fabric8.annotations.service.api.service.openshift.io.api-manager>
 
     <fabric8.label.group>quickstarts</fabric8.label.group>
     <fabric8.iconRef>camel</fabric8.iconRef>

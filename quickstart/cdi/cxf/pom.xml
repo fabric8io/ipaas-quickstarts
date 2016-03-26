@@ -73,6 +73,7 @@
     <fabric8.annotations.service.api.service.kubernetes.io.protocol>REST</fabric8.annotations.service.api.service.kubernetes.io.protocol>
     <fabric8.annotations.service.api.service.kubernetes.io.description-path>cxfcdi/swagger.json</fabric8.annotations.service.api.service.kubernetes.io.description-path>
     <fabric8.annotations.service.api.service.kubernetes.io.description-language>SwaggerJSON</fabric8.annotations.service.api.service.kubernetes.io.description-language>
+    <fabric8.annotations.service.api.service.openshift.io.api-manager>apiman</fabric8.annotations.service.api.service.openshift.io.api-manager>
 
     <fabric8.metrics.scrape>true</fabric8.metrics.scrape>
     <fabric8.metrics.port>9779</fabric8.metrics.port>
