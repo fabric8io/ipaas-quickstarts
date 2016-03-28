@@ -37,13 +37,13 @@
     <version.maven-bundle-plugin>2.3.7</version.maven-bundle-plugin>
 
     <!-- fabric8 version -->
-    <fabric8.version>2.2.98</fabric8.version>
+    <fabric8.version>2.2.100</fabric8.version>
     <docker.maven.plugin.version>0.14.2</docker.maven.plugin.version>
 
 
 
     <!-- configure the versions you want to use here -->
-    <camel.version>2.16.2</camel.version>
+    <camel.version>2.17.0</camel.version>
     <karaf.version>2.4.4</karaf.version>
     <karaf.plugin.version>4.0.3</karaf.plugin.version>
     <derby.version>10.10.2.0</derby.version>

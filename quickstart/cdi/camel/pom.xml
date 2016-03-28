@@ -38,11 +38,11 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <!-- fabric8 version -->
-    <fabric8.version>2.2.98</fabric8.version>
+    <fabric8.version>2.2.100</fabric8.version>
     <docker.maven.plugin.version>0.14.2</docker.maven.plugin.version>
 
     <!-- configure the versions you want to use here -->
-    <camel.version>2.16.2</camel.version>
+    <camel.version>2.17.0</camel.version>
     <weld.version>2.3.3.Final</weld.version>
 
     <!-- Docker & Fabric8 Configs -->
