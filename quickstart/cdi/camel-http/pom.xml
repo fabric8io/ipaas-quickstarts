@@ -44,7 +44,7 @@
 
 
     <!-- configure the versions you want to use here -->
-    <camel.version>2.16.2</camel.version>
+    <camel.version>2.17.0</camel.version>
     <weld.version>2.3.3.Final</weld.version>
 
     <!-- Docker & Fabric8 Configs -->
