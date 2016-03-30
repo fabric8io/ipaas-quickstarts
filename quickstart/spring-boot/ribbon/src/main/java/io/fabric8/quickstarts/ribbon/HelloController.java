@@ -34,7 +34,7 @@ public class HelloController {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "5000")
     })
     public String hello() {
-        return restTemplate.getForObject("http://hello-service/hello", String.class);
+        return restTemplate.getForObject("http://hello-hystrix/hello", String.class);
     }
 
     public String helloFallback() {
