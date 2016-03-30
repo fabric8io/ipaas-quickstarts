@@ -269,6 +269,7 @@
                       <file>
                         <source>${project.build.directory}/${project.artifactId}-${project.version}.tar.gz</source>
                         <outputDirectory>/</outputDirectory>
+                        <fileMode>0644</fileMode>
                       </file>
                     </files>
                   </inline>
