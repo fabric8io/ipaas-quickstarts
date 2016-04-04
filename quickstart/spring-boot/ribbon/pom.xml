@@ -46,6 +46,7 @@
 		<spring-boot.version>1.2.7.RELEASE</spring-boot.version>
 		<spring-boot-plugin.version>1.2.7.RELEASE</spring-boot-plugin.version>
 		<spring-cloud-netflix.version>1.0.6.RELEASE</spring-cloud-netflix.version>
+		<spring-cloud-kubernetes.version>0.0.2</spring-cloud-kubernetes.version>
 
 		<docker.from>fabric8/java-jboss-openjdk8-jdk:1.0.10</docker.from>
 		<fabric8.dockerUser>fabric8/</fabric8.dockerUser>
@@ -61,6 +62,10 @@
 
 		<fabric8.serviceAccount>ribbon</fabric8.serviceAccount>
 		<fabric8.serviceAccountCreate>true</fabric8.serviceAccountCreate>
+
+		<fabric8.readinessProbe.httpGet.path>/health</fabric8.readinessProbe.httpGet.path>
+		<fabric8.readinessProbe.httpGet.port>8080</fabric8.readinessProbe.httpGet.port>
+		<fabric8.readinessProbe.initialDelaySeconds>5</fabric8.readinessProbe.initialDelaySeconds>
 
 		<fabric8.label.hystrix.enabled>true</fabric8.label.hystrix.enabled>
 		<fabric8.label.hystrix.cluster>default</fabric8.label.hystrix.cluster>
@@ -91,9 +96,9 @@
 	<dependencies>
 
 		<dependency>
-			<groupId>io.fabric8.kubeflix</groupId>
-			<artifactId>ribbon-discovery</artifactId>
-			<version>${kubeflix.version}</version>
+			<groupId>io.fabric8</groupId>
+			<artifactId>spring-cloud-starter-kubernetes</artifactId>
+			<version>${spring-cloud-kubernetes.version}</version>
 		</dependency>
 
 		<dependency>

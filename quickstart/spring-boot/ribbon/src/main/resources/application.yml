@@ -1,4 +1,5 @@
-hello:
-  ribbon:
+#Enable / Disable Ribbon Http Client (disabling requires spring-cloud-netflix 1.1.0 (currently unreleased))
+ribbon:
+  http:
     client:
-      name: hello-service
+      enabled: true

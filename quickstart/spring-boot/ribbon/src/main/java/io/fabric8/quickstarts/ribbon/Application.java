@@ -19,11 +19,12 @@ package io.fabric8.quickstarts.ribbon;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.ribbon.RibbonClient;
 
 @SpringBootApplication
 @EnableCircuitBreaker
-@RibbonClient(name = "hello-service", configuration = HelloRibbonConfiguration.class)
+@EnableDiscoveryClient
 public class Application {
 
     public static void main(String[] args) {
