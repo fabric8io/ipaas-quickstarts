@@ -16,12 +16,6 @@
  */
 package org.apache.camel.example.cdi;
 
-import java.util.Map;
-import java.util.jar.Manifest;
-
-import io.fabric8.utils.Manifests;
-import io.fabric8.utils.Systems;
-
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.cdi.ContextName;
 import org.apache.camel.model.rest.RestBindingMode;
@@ -37,9 +31,6 @@ public class UserRouteBuilder extends RouteBuilder {
 
     @Override
     public void configure() throws Exception {
-        int port = Integer.valueOf(Systems.getEnvVarOrSystemProperty("HTTP_PORT","8080"));
-        Manifest manifest = Manifests.getManifestFromCurrentJar(getClass());
-        Map<Manifests.Attribute, String> projectInfo = Manifests.getManifestEntryMap(manifest, Manifests.PROJECT_ATTRIBUTES.class);
         // configure we want to use servlet as the component for the rest DSL
         // and we enable json binding mode
         restConfiguration().component("netty4-http")
@@ -48,15 +39,12 @@ public class UserRouteBuilder extends RouteBuilder {
             // and output using pretty print
             .dataFormatProperty("prettyPrint", "true")
             // setup context path on localhost and port number that netty will use
-            .contextPath("/").host("0.0.0.0").port(port)
+            .contextPath("/").host("0.0.0.0").port("{{env:HTTP_PORT:8080}}")
             // add swagger api-doc out of the box
             .apiContextPath("/swagger.json")
-                .apiProperty("api.title", projectInfo.get(Manifests.PROJECT_ATTRIBUTES.Title))
-                .apiProperty("api.version", projectInfo.get(Manifests.PROJECT_ATTRIBUTES.Version))
-                .apiProperty("api.description", projectInfo.get(Manifests.PROJECT_ATTRIBUTES.Description))
-                .apiProperty("api.license.name", projectInfo.get(Manifests.PROJECT_ATTRIBUTES.License))
-                .apiProperty("api.license.url", projectInfo.get(Manifests.PROJECT_ATTRIBUTES.LicenseUrl))
-                .apiProperty("api.contact.name", projectInfo.get(Manifests.PROJECT_ATTRIBUTES.Contact))
+                .apiProperty("api.title", "User Service")
+                .apiProperty("api.version", "1.0")
+                .apiProperty("api.description", "An example using REST DSL and Swagger Java with CDI")
                 // and enable CORS
                 .apiProperty("cors", "true");
 
