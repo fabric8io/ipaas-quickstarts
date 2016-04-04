@@ -38,7 +38,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <!-- fabric8 version -->
-    <fabric8.version>2.2.100</fabric8.version>
+    <fabric8.version>2.2.101</fabric8.version>
     <docker.maven.plugin.version>0.14.2</docker.maven.plugin.version>
     <vertx.version>3.2.1</vertx.version>
 
