@@ -38,6 +38,7 @@
 
     <!-- fabric8 version -->
     <fabric8.version>2.2.101</fabric8.version>
+    <fabric8-ipaas.version>2.2.103</fabric8-ipaas.version>
     <docker.maven.plugin.version>0.14.2</docker.maven.plugin.version>
 
 
@@ -255,8 +256,8 @@
             <feature>activemq-client</feature>
           </startupFeatures>
           <startupBundles>
-            <bundle>mvn:io.fabric8.mq/camel-amq/${fabric8.version}</bundle>
-            <bundle>mvn:io.fabric8.mq/mq-client/${fabric8.version}</bundle>
+            <bundle>mvn:io.fabric8.ipaas.mq/camel-amq/${fabric8-ipaas.version}</bundle>
+            <bundle>mvn:io.fabric8.ipaas.mq/mq-client/${fabric8-ipaas.version}</bundle>
             <bundle>mvn:io.fabric8/fabric8-utils/${fabric8.version}</bundle>
             <bundle>mvn:org.apache.activemq/activemq-camel/${activemq.version}</bundle>
             <bundle>mvn:org.apache.activemq/activemq-osgi/${activemq.version}</bundle>
