@@ -1,7 +1,7 @@
 spring:
   application:
     # This ends up as the service name in zipkin
-    name: ribbon
+    name: ${project.artifactId}
   sleuth:
     sampler:
       percentage: 1.0
