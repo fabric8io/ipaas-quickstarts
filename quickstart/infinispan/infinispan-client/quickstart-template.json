@@ -1,0 +1,318 @@
+{
+  "apiVersion": "v1",
+  "kind": "Template",
+  "labels": {},
+  "metadata": {
+    "annotations": {
+      "description": "# Java Camel Spring QuickStart\n\nThis quickstarts run in a Java standalone container, using Spring with Apache Camel.\n\nThis example is implemented using solely a Spring XML file (there is no custom Java code).\nThe source code is provided in the following XML file `src/main/resources/META-INF/spring/camel-context.xml`,\nwhich can be viewed from [github](https://github.com/fabric8io/ipaas-quickstarts/blob/master/quickstart/java/camel-spring/src/main/resources/META-INF/spring/camel-context.xml).\n\nThis example uses a timer to trigger a message every 5th second that is routed using a content based router, based on\nthe message is regarded as high priority or not.\n\n\n### Building\n\nThe example can be built with\n\n    mvn clean install\n\n\n### Running the example locally\n\nThe example can be run locally using the following Maven goal:\n\n    mvn camel:run\n\n\n### Running the example in fabric8\n\nIt is assumed a running Kubernetes platform is already running. If not you can find details how to [get started](http://fabric8.io/guide/getStarted/index.html).\n\nThe example can be built and deployed using a single goal:\n\n    mvn -Pf8-local-deploy\n\nWhen the example runs in fabric8, you can use the OpenShift client tool to inspect the status\n\nTo list all the running pods:\n\n    oc get pods\n\nThen find the name of the pod that runs this quickstart, and output the logs from the running pods with:\n\n    oc logs <name of pod>\n\nYou can also use the fabric8 [web console](http://fabric8.io/guide/console.html) to manage the\nrunning pods, and view logs and much more.\n\n\n### More details\n\nYou can find more details about running this [quickstart](http://fabric8.io/guide/quickstarts/running.html) on the website. This also includes instructions how to change the Docker image user and registry.\n\n",
+      "iconClass": "icon-java"
+    },
+    "labels": {},
+    "name": "s2i-quickstart-spring-camel"
+  },
+  "parameters": [
+    {
+      "name": "APP_NAME",
+      "value": "s2i-quickstart-spring-camel",
+      "description": "Application Name"
+    },
+    {
+      "name": "GIT_REPO",
+      "required": true,
+      "description": "Git repository, required"
+    },
+    {
+      "name": "GIT_REF",
+      "value": "master",
+      "description": "Git ref to build"
+    },
+    {
+      "name": "SERVICE_NAME",
+      "value": "s2i-qs-spring-camel",
+      "description": "Exposed Service name"
+    },
+    {
+      "name": "BUILDER_VERSION",
+      "value": "1.2.5",
+      "description": "Builder version"
+    },
+    {
+      "name": "APP_VERSION",
+      "value": "2.2.64-SNAPSHOT",
+      "description": "Application version"
+    },
+    {
+      "name": "MAVEN_ARGS",
+      "value": "package -DskipTests -e",
+      "description": "Arguments passed to mvn in the build"
+    },
+    {
+      "name": "MAVEN_ARGS_APPEND",
+      "description": "Extra arguments passed to mvn, e.g. for multi-module builds"
+    },
+    {
+      "name": "ARTIFACT_DIR",
+      "description": "Maven build directory"
+    },
+    {
+      "generate": "expression",
+      "name": "BUILD_SECRET",
+      "description": "The secret needed to trigger a build",
+      "from": "[a-zA-Z0-9]{8}"
+    }
+  ],
+  "objects": [
+    {
+      "apiVersion": "v1",
+      "kind": "Service",
+      "metadata": {
+        "annotations": {
+          "prometheus.io/port": "9779",
+          "prometheus.io/scrape": "true"
+        },
+        "labels": {
+          "container": "java",
+          "component": "${APP_NAME}",
+          "provider": "s2i",
+          "project": "${APP_NAME}",
+          "version": "${APP_VERSION}",
+          "group": "quickstarts"
+        },
+        "name": "${SERVICE_NAME}"
+      },
+      "spec": {
+        "clusterIP": "None",
+        "deprecatedPublicIPs": [],
+        "ports": [
+          {
+            "port": 1
+          }
+        ],
+        "selector": {
+          "container": "java",
+          "project": "${APP_NAME}",
+          "component": "${APP_NAME}",
+          "provider": "s2i",
+          "group": "quickstarts"
+        }
+      }
+    },
+    {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "s2i-java-${APP_NAME}",
+        "creationTimestamp": null,
+        "labels": {
+          "component": "${APP_NAME}",
+          "container": "java",
+          "group": "quickstarts",
+          "project": "${APP_NAME}",
+          "provider": "s2i",
+          "version": "${APP_VERSION}"
+        }
+      },
+      "spec": {
+        "dockerImageRepository": "fabric8/s2i-java:${BUILDER_VERSION}"
+      },
+      "status": {
+        "dockerImageRepository": ""
+      }
+    },
+    {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${APP_NAME}",
+        "creationTimestamp": null,
+        "labels": {
+          "component": "${APP_NAME}",
+          "container": "java",
+          "group": "quickstarts",
+          "project": "${APP_NAME}",
+          "provider": "s2i",
+          "version": "${APP_VERSION}"
+        }
+      },
+      "spec": {},
+      "status": {
+        "dockerImageRepository": ""
+      }
+    },
+    {
+      "kind": "BuildConfig",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${APP_NAME}",
+        "creationTimestamp": null,
+        "labels": {
+          "component": "${APP_NAME}",
+          "container": "java",
+          "group": "quickstarts",
+          "project": "${APP_NAME}",
+          "provider": "s2i",
+          "version": "${APP_VERSION}"
+        }
+      },
+      "spec": {
+        "triggers": [
+          {
+            "type": "GitHub",
+            "github": {
+              "secret": "${BUILD_SECRET}"
+            }
+          },
+          {
+            "type": "Generic",
+            "generic": {
+              "secret": "${BUILD_SECRET}"
+            }
+          },
+          {
+            "type": "ConfigChange"
+          },
+          {
+            "type": "ImageChange",
+            "imageChange": {}
+          }
+        ],
+        "source": {
+          "type": "Git",
+          "git": {
+            "uri": "${GIT_REPO}",
+            "ref": "${GIT_REF}"
+          }
+        },
+        "strategy": {
+          "type": "Source",
+          "sourceStrategy": {
+            "from": {
+              "kind": "ImageStreamTag",
+              "name": "s2i-java-${APP_NAME}:${BUILDER_VERSION}"
+            },
+            "forcePull": true,
+            "env": [
+              {
+                "name": "BUILD_LOGLEVEL",
+                "value": "5"
+              },
+              {
+                "name": "ARTIFACT_DIR",
+                "value": "${ARTIFACT_DIR}"
+              },
+              {
+                "name": "MAVEN_ARGS",
+                "value": "${MAVEN_ARGS}"
+              },
+              {
+                "name": "MAVEN_ARGS_APPEND",
+                "value": "${MAVEN_ARGS_APPEND}"
+              }
+            ]
+          }
+        },
+        "output": {
+          "to": {
+            "kind": "ImageStreamTag",
+            "name": "${APP_NAME}:latest"
+          }
+        },
+        "resources": {}
+      },
+      "status": {
+        "lastVersion": 0
+      }
+    },
+    {
+      "kind": "DeploymentConfig",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${APP_NAME}",
+        "creationTimestamp": null,
+        "labels": {
+          "component": "${APP_NAME}",
+          "container": "java",
+          "group": "quickstarts",
+          "project": "${APP_NAME}",
+          "provider": "s2i",
+          "version": "${APP_VERSION}"
+        }
+      },
+      "spec": {
+        "strategy": {
+          "resources": {}
+        },
+        "triggers": [
+          {
+            "type": "ConfigChange"
+          },
+          {
+            "type": "ImageChange",
+            "imageChangeParams": {
+              "automatic": true,
+              "containerNames": [
+                "${APP_NAME}"
+              ],
+              "from": {
+                "kind": "ImageStreamTag",
+                "name": "${APP_NAME}:latest"
+              }
+            }
+          }
+        ],
+        "replicas": 1,
+        "selector": {
+          "component": "${APP_NAME}",
+          "container": "java",
+          "deploymentconfig": "${APP_NAME}",
+          "group": "quickstarts",
+          "project": "${APP_NAME}",
+          "provider": "s2i",
+          "version": "${APP_VERSION}"
+        },
+        "template": {
+          "metadata": {
+            "creationTimestamp": null,
+            "labels": {
+              "component": "${APP_NAME}",
+              "container": "java",
+              "deploymentconfig": "${APP_NAME}",
+              "group": "quickstarts",
+              "project": "${APP_NAME}",
+              "provider": "s2i",
+              "version": "${APP_VERSION}"
+            }
+          },
+          "spec": {
+            "containers": [
+              {
+                "name": "${APP_NAME}",
+                "image": "library/${APP_NAME}:latest",
+                "readinessProbe": {
+                  "exec": {
+                    "command": [
+                      "/bin/bash",
+                      "-c",
+                      "(curl -f 127.0.0.1:8778) >/dev/null 2>&1; test $? != 7"
+                    ]
+                  },
+                  "initialDelaySeconds": 30,
+                  "timeoutSeconds": 5
+                },
+                "ports": [
+                  {
+                    "containerPort": 8778,
+                    "name": "jolokia",
+                    "protocol": "TCP"
+                  }
+                ],
+                "resources": {}
+              }
+            ]
+          }
+        }
+      },
+      "status": {}
+    }
+  ]
+}

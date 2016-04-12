@@ -49,6 +49,7 @@
 
   <modules>
     <module>cdi</module>
+    <module>infinispan</module>
     <module>java</module>
     <module>karaf</module>
     <module>node</module>
