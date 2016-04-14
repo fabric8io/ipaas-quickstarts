@@ -88,14 +88,6 @@
               <name>${docker.image}</name>
               <build>
                 <from>${docker.from}</from>
-                <ports>
-                  <port>7600</port>
-                  <port>8080</port>
-                  <port>8181</port>
-                  <port>9990</port>
-                  <port>11211</port>
-                  <port>11222</port>
-                </ports>
               </build>
             </image>
           </images>
