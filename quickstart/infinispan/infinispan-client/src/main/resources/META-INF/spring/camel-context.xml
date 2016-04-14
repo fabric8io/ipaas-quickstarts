@@ -41,7 +41,7 @@
       <setHeader headerName="CamelInfinispanOperation">
         <constant>CamelInfinispanOperationPut</constant>        
       </setHeader>
-      <to uri="infinispan://172.17.0.4?cacheName=pippo" />
+      <to uri="infinispan://172.17.0.4" />
       <log message="Result Put: ${header.CamelInfinispanOperationResult}"/>
       <setHeader headerName="CamelInfinispanKey">
         <simple>${body}</simple>       
@@ -49,7 +49,7 @@
       <setHeader headerName="CamelInfinispanOperation">
         <constant>CamelInfinispanOperationGet</constant>        
       </setHeader>
-      <to uri="infinispan://172.17.0.4?cacheName=pippo" />
+      <to uri="infinispan://172.17.0.4" />
       <log message="Result Get: ${header.CamelInfinispanOperationResult}"/>
     </route>
 
