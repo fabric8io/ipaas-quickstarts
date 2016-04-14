@@ -25,7 +25,6 @@
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
 
-  <bean id="cacheManager" class="org.infinispan.client.hotrod.DefaultCacheManager" init-method="start" destroy-method="stop"/>
   <bean id="checkValueRoute" class="io.fabric8.example.camel.infinispan.routes.CheckValueRoute"/>
 
   <camelContext xmlns="http://camel.apache.org/schema/spring">
@@ -42,7 +41,7 @@
       <setHeader headerName="CamelInfinispanOperation">
         <constant>CamelInfinispanOperationPut</constant>        
       </setHeader>
-      <to uri="infinispan://localhost?cacheContainer=#cacheManager" />
+      <to uri="infinispan://{{service:infinispan-server}}" />
       <log message="Result Put: ${header.CamelInfinispanOperationResult}"/>
       <setHeader headerName="CamelInfinispanKey">
         <simple>${body}</simple>       
@@ -50,7 +49,7 @@
       <setHeader headerName="CamelInfinispanOperation">
         <constant>CamelInfinispanOperationGet</constant>        
       </setHeader>
-      <to uri="infinispan://localhost?cacheContainer=#cacheManager" />
+      <to uri="infinispan://{{service:infinispan-server}}" />
       <log message="Result Get: ${header.CamelInfinispanOperationResult}"/>
     </route>
 

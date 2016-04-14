@@ -32,8 +32,8 @@
     <docker.assemblyDescriptorRef>artifact</docker.assemblyDescriptorRef>
 
     <fabric8.service.name>${project.artifactId}</fabric8.service.name>
-    <fabric8.service.port>80</fabric8.service.port>
-    <fabric8.service.containerPort>8080</fabric8.service.containerPort>
+    <fabric8.service.port>11222</fabric8.service.port>
+    <fabric8.service.containerPort>11222</fabric8.service.containerPort>
     <fabric8.service.type>LoadBalancer</fabric8.service.type>
 
     <fabric8.readinessProbe.httpGet.port>9990</fabric8.readinessProbe.httpGet.port>
@@ -88,14 +88,6 @@
               <name>${docker.image}</name>
               <build>
                 <from>${docker.from}</from>
-                <ports>
-                  <port>7600</port>
-                  <port>8080</port>
-                  <port>8181</port>
-                  <port>9990</port>
-                  <port>11211</port>
-                  <port>11222</port>
-                </ports>
               </build>
             </image>
           </images>
