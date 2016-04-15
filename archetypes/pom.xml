@@ -41,6 +41,8 @@
     <module>cdi-cxf-archetype</module>
     <module>django-example-archetype</module>
     <module>golang-example-archetype</module>
+    <module>infinispan-infinispan-client-archetype</module>
+    <module>infinispan-infinispan-server-archetype</module>
     <module>java-camel-spring-archetype</module>
     <module>java-fatjar-archetype</module>
     <module>java-mainclass-archetype</module>

@@ -8,7 +8,7 @@ public class CheckValueRoute extends RouteBuilder {
 	public void configure() throws Exception {
 		
 		from("direct:check")
-		.transform(simple("random(1,10000)"))
+		.transform(simple("random(1,1000)"))
 		.choice()
 		.when(simple("${body} > 500"))
 		  .log("High priority message : ${body}")

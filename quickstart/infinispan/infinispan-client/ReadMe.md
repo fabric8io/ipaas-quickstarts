@@ -2,21 +2,17 @@
 
 This quickstart run in a Java standalone container, using Spring with Apache Camel (Infinispan component)
 
-This example uses a timer to trigger a message every 5th second and put this value in an Infinispan local cache.
+This example uses a timer to trigger a message every 5th secondi, generating a random number and put this value in an Infinispan cache and then get this value.
+
+This example is related to `infinispan-server` quickstart which must be up and running.
+
+You should be able to see the operations looking at the logs of `infinispan-client`.
 
 ### Building
 
 Navigate to the $IPAAS_QUICKSTART/quickstart/infinispan/infinispan-client/ folder and the example can be built with
 
     mvn clean install
-
-
-### Running the example locally
-
-The example can be run locally using the following Maven goal:
-
-    mvn exec:java
-
 
 ### Running the example in fabric8
 
