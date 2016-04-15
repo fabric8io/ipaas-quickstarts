@@ -41,6 +41,7 @@
     <fabric8.readinessProbe.initialDelaySeconds>5</fabric8.readinessProbe.initialDelaySeconds>
 
     <fabric8.label.group>quickstarts</fabric8.label.group>
+    <fabric8.iconUrl>https://raw.githubusercontent.com/fabric8io/ipaas-quickstarts/master/quickstart/infinispan/infinispan-server/src/main/fabric8/icon.png</fabric8.iconUrl>
   </properties>
 
   <dependencyManagement>
