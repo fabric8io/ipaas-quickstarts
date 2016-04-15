@@ -42,7 +42,7 @@
         <constant>CamelInfinispanOperationPut</constant>        
       </setHeader>
       <to uri="infinispan://{{service:infinispan-server}}" />
-      <log message="Result Put: ${header.CamelInfinispanOperationResult}"/>
+      <log message="Put (${header.CamelInfinispanKey},${header.CamelInfinispanValue})"/>
       <setHeader headerName="CamelInfinispanKey">
         <simple>${body}</simple>       
       </setHeader>
@@ -50,7 +50,7 @@
         <constant>CamelInfinispanOperationGet</constant>        
       </setHeader>
       <to uri="infinispan://{{service:infinispan-server}}" />
-      <log message="Result Get: ${header.CamelInfinispanOperationResult}"/>
+      <log message="Get ${header.CamelInfinispanKey} with result ${header.CamelInfinispanOperationResult}"/>
     </route>
 
   </camelContext>
