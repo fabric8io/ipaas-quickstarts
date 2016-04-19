@@ -14,7 +14,7 @@
  * permissions and limitations under the License.
  */
 
-package io.fabric8;
+package io.fabric8.example.camel.infinispan.routes;
 
 import io.fabric8.arquillian.kubernetes.Session;
 import io.fabric8.kubernetes.client.KubernetesClient;
