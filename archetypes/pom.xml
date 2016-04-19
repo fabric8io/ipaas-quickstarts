@@ -50,8 +50,6 @@
     <module>karaf-camel-log-archetype</module>
     <module>karaf-camel-rest-sql-archetype</module>
     <module>karaf-cxf-rest-archetype</module>
-    <module>infinispan-infinispan-client-archetype</module>
-    <module>infinispan-infinispan-server-archetype</module>
     <module>node-example-archetype</module>
     <module>rails-example-archetype</module>
     <module>spring-boot-camel-archetype</module>
