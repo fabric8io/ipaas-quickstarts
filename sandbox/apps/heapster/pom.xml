@@ -40,7 +40,7 @@
   </dependencies>
 
   <properties>
-    <docker.image>kubernetes/heapster:V0.14.2</docker.image>
+    <docker.image>kubernetes/heapster:V0.15.1</docker.image>
     <docker.port.container.jolokia />
 
     <fabric8.label.component>heapster</fabric8.label.component>
