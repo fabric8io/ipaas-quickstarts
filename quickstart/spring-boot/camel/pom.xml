@@ -40,7 +40,7 @@
 
     <!-- configure the versions you want to use here -->
     <camel.version>2.17.1</camel.version>
-    <spring-boot.version>1.3.3.RELEASE</spring-boot.version>
+    <spring-boot.version>1.3.5.RELEASE</spring-boot.version>
 
     <!-- Docker & Fabric8 Configs -->
     <docker.from>fabric8/java-jboss-openjdk8-jdk:1.0.12</docker.from>
