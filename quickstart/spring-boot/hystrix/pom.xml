@@ -32,7 +32,7 @@
 
   <properties>
     <fabric8.version>2.2.114</fabric8.version>
-    <docker.maven.plugin.version>0.14.2</docker.maven.plugin.version>
+    <docker.maven.plugin.version>0.15.1</docker.maven.plugin.version>
 
     <archaius.version>0.6.6</archaius.version>
     <kubeflix.version>1.0.13</kubeflix.version>
@@ -48,7 +48,7 @@
     <spring-cloud-netflix.version>1.0.6.RELEASE</spring-cloud-netflix.version>
     <spring-cloud.version>1.0.5.RELEASE</spring-cloud.version>
 
-    <docker.from>fabric8/java-jboss-openjdk8-jdk:1.0.10</docker.from>
+    <docker.from>fabric8/java-jboss-openjdk8-jdk:1.0.12</docker.from>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
     <docker.port.container.http>8080</docker.port.container.http>
