@@ -46,8 +46,6 @@
     <weld.version>2.3.3.Final</weld.version>
     <slf4j-version>1.7.12</slf4j-version>
     <swagger-version>1.5.7</swagger-version>
-    <!-- Use same version as Swagger -->
-    <jackson.version>2.7.4</jackson.version>
 
     <http.port>9092</http.port>
 
@@ -86,7 +84,7 @@
     <dependencies>
       <dependency>
         <groupId>io.fabric8</groupId>
-        <artifactId>fabric8-project-bom-with-platform-deps</artifactId>
+        <artifactId>fabric8-project-bom-full</artifactId>
         <version>${fabric8.version}</version>
         <type>pom</type>
         <scope>import</scope>
@@ -284,24 +282,55 @@
           <groupId>javax.ws.rs</groupId>
           <artifactId>jsr311-api</artifactId>
         </exclusion>
+
+        <!-- lets exclude jackson so we can use a recent version -->
+        <exclusion>
+          <groupId>com.fasterxml.jackson.dataformat</groupId>
+          <artifactId>jackson-dataformat-yaml</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.dataformat</groupId>
+          <artifactId>jackson-dataformat-xml</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.datatype</groupId>
+          <artifactId>jackson-dataformat-joda</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-annotations</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.jaxrs</groupId>
+          <artifactId>jackson-jaxrs-json-provider</artifactId>
+        </exclusion>
       </exclusions>
     </dependency>
 
     <!-- Jackson dependencies required by Swagger -->
     <dependency>
+       <groupId>com.fasterxml.jackson.dataformat</groupId>
+       <artifactId>jackson-dataformat-xml</artifactId>
+     </dependency>
+     <dependency>
+       <groupId>com.fasterxml.jackson.datatype</groupId>
+       <artifactId>jackson-datatype-joda</artifactId>
+     </dependency>
+     <dependency>
+       <groupId>com.fasterxml.jackson.jaxrs</groupId>
+       <artifactId>jackson-jaxrs-json-provider</artifactId>
+     </dependency>
+    <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
-      <version>${jackson.version}</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>${jackson.version}</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-annotations</artifactId>
-      <version>${jackson.version}</version>
     </dependency>
 
     <!-- logging -->
