@@ -241,13 +241,6 @@
                   <type>jar</type>
                   <overWrite>false</overWrite>
                 </artifactItem>
-                <artifactItem>
-                  <groupId>io.fabric8.archetypes</groupId>
-                  <artifactId>karaf-cxf-rest-archetype</artifactId>
-                  <version>${project.version}</version>
-                  <type>jar</type>
-                  <overWrite>false</overWrite>
-                </artifactItem>
 
                 <!--spring-boot archetypes -->
                 <artifactItem>
