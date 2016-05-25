@@ -46,6 +46,12 @@ def mergePullRequest(prId){
     project = 'fabric8io/ipaas-quickstarts'
     pullRequestId = prId
   }
+}
 
+def drop(project, prId){
+  dropProject{
+    stagedProject = project
+    pullRequestId = prId
+  }
 }
 return this;
