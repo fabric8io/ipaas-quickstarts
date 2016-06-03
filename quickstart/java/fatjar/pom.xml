@@ -24,11 +24,11 @@
   <parent>
     <groupId>io.fabric8.quickstarts</groupId>
     <artifactId>java</artifactId>
-    <version>2.3-SNAPSHOT</version>
+    <version>2.2.125</version>
   </parent>
 
   <artifactId>java-fatjar</artifactId>
-  <version>2.3-SNAPSHOT</version>
+  <version>2.2.125</version>
   <packaging>jar</packaging>
 
   <name>Fabric8 :: Quickstarts :: Java :: Fat Jar</name>
