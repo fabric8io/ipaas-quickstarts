@@ -43,7 +43,7 @@
     <spring-boot.version>1.3.5.RELEASE</spring-boot.version>
 
     <!-- Docker & Fabric8 Configs -->
-    <docker.from>fabric8/java-jboss-openjdk8-jdk:1.0.13</docker.from>
+    <docker.from>fabric8/s2i-java:1.2</docker.from>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
 
@@ -130,7 +130,7 @@
 
   <build>
     <plugins>
-      <!-- Compiler plugin enforces Java 1.7 compatibility and activates annotation processors -->
+      <!-- Compiler plugin enforces Java 1.8 compatibility and activates annotation processors -->
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.3</version>
@@ -188,6 +188,23 @@
 
       <plugin>
         <groupId>io.fabric8</groupId>
+        <artifactId>hawt-app-maven-plugin</artifactId>
+        <version>${fabric8.version}</version>
+        <executions>
+          <execution>
+            <id>hawt-app</id>
+            <goals>
+              <goal>build</goal>
+            </goals>
+            <configuration>
+              <javaMainClass>io.fabric8.quickstarts.camel.MyCamelRoute</javaMainClass>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>io.fabric8</groupId>
         <artifactId>docker-maven-plugin</artifactId>
         <version>${docker.maven.plugin.version}</version>
         <configuration>
@@ -197,11 +214,12 @@
               <build>
                 <from>${docker.from}</from>
                 <assembly>
-                  <basedir>/app</basedir>
-                  <descriptorRef>artifact</descriptorRef>
+                  <basedir>/deployments</basedir>
+                  <descriptorRef>hawt-app</descriptorRef>
                 </assembly>
                 <env>
-                  <JAVA_APP_JAR>${project.build.finalName}.jar</JAVA_APP_JAR>
+                  <JAVA_LIB_DIR>/deployments/lib</JAVA_LIB_DIR>
+                  <JAVA_MAIN_CLASS>io.fabric8.quickstarts.camel.MyCamelRoute</JAVA_MAIN_CLASS>
                 </env>
               </build>
             </image>
