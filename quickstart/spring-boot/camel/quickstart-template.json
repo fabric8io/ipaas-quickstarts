@@ -4,7 +4,7 @@
   "labels": {},
   "metadata": {
     "annotations": {
-      "description": "# Spring-Boot Camel QuickStart\n\nThis example demonstrates how you can use Apache Camel with Spring Boot\nbased on a [fabric8 Java s2i image](https://github.com/fabric8io-images/s2i#java-s2i-builder-image)\n\nThe quickstart uses Spring Boot to configure a little application that includes a Camel\nroute that triggeres a message every 5th second, and routes the message to a log.\n\n\n### Building\n\nThe example can be built with\n\n    mvn clean install\n\n\n### Running the example locally\n\nThe example can be run locally using the following Maven goal:\n\n    mvn spring-boot:run\n\n\n### Running the example in fabric8\n\nIt is assumed a running Kubernetes platform is already running. If not you can find details how to [get started](http://fabric8.io/guide/getStarted/index.html).\n\nThe example can be built and deployed using a single goal:\n\n    mvn -Pf8-local-deploy\n\nWhen the example runs in fabric8, you can use the OpenShift client tool to inspect the status\n\nTo list all the running pods:\n\n    oc get pods\n\nThen find the name of the pod that runs this quickstart, and output the logs from the running pods with:\n\n    oc logs <name of pod>\n\nYou can also use the fabric8 [web console](http://fabric8.io/guide/console.html) to manage the\nrunning pods, and view logs and much more.\n\n\n### More details\n\nYou can find more details about running this [quickstart](http://fabric8.io/guide/quickstarts/running.html) on the website. This also includes instructions how to change the Docker image user and registry.\n\n",
+      "description": "# Spring-Boot Camel QuickStart\n\nThis example demonstrates how you can use Apache Camel with Spring Boot\nbased on a [fabric8 Java base image](https://github.com/fabric8io/base-images#java-base-images)\n\nThe quickstart uses Spring Boot to configure a little application that includes a Camel\nroute that triggeres a message every 5th second, and routes the message to a log.\n\n\n### Building\n\nThe example can be built with\n\n    mvn clean install\n\n\n### Running the example locally\n\nThe example can be run locally using the following Maven goal:\n\n    mvn spring-boot:run\n\n\n### Running the example in fabric8\n\nIt is assumed a running Kubernetes platform is already running. If not you can find details how to [get started](http://fabric8.io/guide/getStarted/index.html).\n\nThe example can be built and deployed using a single goal:\n\n    mvn -Pf8-local-deploy\n\nWhen the example runs in fabric8, you can use the OpenShift client tool to inspect the status\n\nTo list all the running pods:\n\n    oc get pods\n\nThen find the name of the pod that runs this quickstart, and output the logs from the running pods with:\n\n    oc logs <name of pod>\n\nYou can also use the fabric8 [web console](http://fabric8.io/guide/console.html) to manage the\nrunning pods, and view logs and much more.\n\n\n### More details\n\nYou can find more details about running this [quickstart](http://fabric8.io/guide/quickstarts/running.html) on the website. This also includes instructions how to change the Docker image user and registry.\n\n",
       "iconClass": "icon-java"
     },
     "labels": {},
@@ -33,7 +33,7 @@
     },
     {
       "name": "BUILDER_VERSION",
-      "value": "1.2.9",
+      "value": "1.2.5",
       "description": "Builder version"
     },
     {
@@ -78,7 +78,7 @@
         }
       },
       "spec": {
-        "dockerImageRepository": "fabric8/s2i-java"
+        "dockerImageRepository": "fabric8/s2i-java:${BUILDER_VERSION}"
       },
       "status": {
         "dockerImageRepository": ""
