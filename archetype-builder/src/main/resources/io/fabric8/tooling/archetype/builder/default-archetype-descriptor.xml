@@ -93,6 +93,9 @@
     <fileSet filtered="true" encoding="UTF-8">
       <directory/>
       <includes>
+        <include>*.js</include>
+        <include>*.go</include>
+        <include>*.yml</include>
         <include>*.md</include>
         <include>*.txt</include>
         <include>*.json</include>

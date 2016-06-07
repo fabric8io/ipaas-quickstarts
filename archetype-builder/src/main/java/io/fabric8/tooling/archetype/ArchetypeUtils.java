@@ -149,14 +149,13 @@ public class ArchetypeUtils {
      * Is the file a valid file to copy (excludes files starting with a dot, build output
      * or java/groovy/kotlin/scala source code
      */
-    public boolean isValidFileToCopy(File projectDir, File src) throws IOException {
+    public boolean isValidFileToCopy(File projectDir, File src, Set<String> ignoreFileSet) throws IOException {
         if (isValidSourceFileOrDir(src)) {
             if (src.equals(projectDir)) {
                 return true;
             }
-
             String relative = relativePath(projectDir, src);
-            return !sourceCodeDirPaths.contains(relative);
+            return !sourceCodeDirPaths.contains(relative) && !ignoreFileSet.contains(relative);
         }
         return false;
     }
