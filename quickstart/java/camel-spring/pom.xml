@@ -24,11 +24,11 @@
   <parent>
     <groupId>io.fabric8.quickstarts</groupId>
     <artifactId>java</artifactId>
-    <version>2.3-SNAPSHOT</version>
+    <version>2.2.126</version>
   </parent>
 
   <artifactId>camel-spring</artifactId>
-  <version>2.3-SNAPSHOT</version>
+  <version>2.2.126</version>
   <packaging>jar</packaging>
 
   <name>Fabric8 :: Quickstarts :: Java :: Camel with Spring</name>
