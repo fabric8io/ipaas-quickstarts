@@ -32,7 +32,7 @@
 
   <properties>
     <fabric8.version>2.2.126</fabric8.version>
-    <docker.maven.plugin.version>0.15.3</docker.maven.plugin.version>
+    <docker.maven.plugin.version>0.15.5</docker.maven.plugin.version>
 
     <archaius.version>0.6.6</archaius.version>
     <kubeflix.version>1.0.13</kubeflix.version>
