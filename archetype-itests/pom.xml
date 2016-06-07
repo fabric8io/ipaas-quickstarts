@@ -252,6 +252,13 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>io.fabric8.archetypes</groupId>
+                  <artifactId>spring-boot-camel-drools-archetype</artifactId>
+                  <version>${project.version}</version>
+                  <type>jar</type>
+                  <overWrite>false</overWrite>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>io.fabric8.archetypes</groupId>
                   <artifactId>spring-boot-webmvc-archetype</artifactId>
                   <version>${project.version}</version>
                   <type>jar</type>
