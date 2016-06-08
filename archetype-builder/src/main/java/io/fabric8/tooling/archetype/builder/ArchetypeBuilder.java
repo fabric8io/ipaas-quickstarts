@@ -226,18 +226,18 @@ public class ArchetypeBuilder {
                 File to = destDir.getCanonicalFile();
                 LOG.info("Copying git checkout from " + from + " to " + to);
                 Files.copy(from, to);
+            }
 
-                String description = repoName.replace('-', ' ');
-                File archetypePom = generatePomIfRequired(projectDir, repoName, description);
-                if (archetypePom != null && archetypePom.exists()) {
-                    addArchetypeMetaData(archetypePom, archetypeFolderName);
-                }
+            String description = repoName.replace('-', ' ');
+            File archetypePom = generatePomIfRequired(projectDir, repoName, description);
+            if (archetypePom != null && archetypePom.exists()) {
+                addArchetypeMetaData(archetypePom, archetypeFolderName);
+            }
 
-                dirs.add(repoName);
-                File outputGitIgnoreFile = new File(projectDir, ".gitignore");
-                if (!outputGitIgnoreFile.exists()) {
-                    ArchetypeUtils.writeGitIgnore(outputGitIgnoreFile);
-                }
+            dirs.add(repoName);
+            File outputGitIgnoreFile = new File(projectDir, ".gitignore");
+            if (!outputGitIgnoreFile.exists()) {
+                ArchetypeUtils.writeGitIgnore(outputGitIgnoreFile);
             }
         }
     }
