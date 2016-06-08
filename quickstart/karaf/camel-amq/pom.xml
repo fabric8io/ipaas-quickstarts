@@ -39,7 +39,7 @@
     <!-- fabric8 version -->
     <fabric8.version>2.2.126</fabric8.version>
     <fabric8-ipaas.version>2.2.103</fabric8-ipaas.version>
-    <docker.maven.plugin.version>0.15.3</docker.maven.plugin.version>
+    <docker.maven.plugin.version>0.15.5</docker.maven.plugin.version>
 
 
 
