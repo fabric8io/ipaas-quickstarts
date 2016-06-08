@@ -33,7 +33,6 @@
 
   <modules>
     <module>webmvc</module>
-    <module>camel</module>
     <module>camel-drools</module>
     <module>hystrix</module>
     <module>ribbon</module>

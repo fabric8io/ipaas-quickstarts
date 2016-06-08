@@ -15,6 +15,26 @@
  */
 package io.fabric8.tooling.archetype.builder;
 
+import io.fabric8.tooling.archetype.ArchetypeUtils;
+import io.fabric8.utils.DomHelper;
+import io.fabric8.utils.Files;
+import io.fabric8.utils.IOHelpers;
+import io.fabric8.utils.Objects;
+import io.fabric8.utils.Strings;
+import org.eclipse.jgit.api.CloneCommand;
+import org.eclipse.jgit.api.Git;
+import org.kohsuke.github.GHOrganization;
+import org.kohsuke.github.GHRepository;
+import org.kohsuke.github.GitHub;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
+import org.xml.sax.InputSource;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -37,26 +57,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import io.fabric8.tooling.archetype.ArchetypeUtils;
-import io.fabric8.utils.DomHelper;
-import io.fabric8.utils.Files;
-import io.fabric8.utils.IOHelpers;
-import io.fabric8.utils.Objects;
-import io.fabric8.utils.Strings;
-import org.eclipse.jgit.api.CloneCommand;
-import org.eclipse.jgit.api.Git;
-import org.kohsuke.github.GHOrganization;
-import org.kohsuke.github.GHRepository;
-import org.kohsuke.github.GitHub;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
-import org.xml.sax.InputSource;
-
 /**
  * This class is a replacement for <code>mvn archetype:create-from-project</code> without dependencies to
  * maven-archetype related libraries.
@@ -65,12 +65,15 @@ public class ArchetypeBuilder {
 
     public static final String ARCHETYPE_RESOURCES_PATH = "src/main/resources/archetype-resources";
     public static final String ARCHETYPE_RESOURCES_XML = "src/main/resources-filtered/META-INF/maven/archetype-metadata.xml";
+    public static final String FUNKTION_YML = "funktion.yml";
     public static Logger LOG = LoggerFactory.getLogger(ArchetypeBuilder.class);
 
     private static final String[] specialVersions = new String[]{
             "camel.version", "cxf.version", "cxf.plugin.version", "activemq.version",
             "karaf.version", "spring-boot.version", "weld.version"
     };
+
+    private static final Set<String> sourceFileNames = new HashSet<String>(Arrays.asList("application.properties"));
 
     private static final Set<String> sourceFileExtensions = new HashSet<String>(Arrays.asList(
         "bpmn",
@@ -182,12 +185,21 @@ public class ArchetypeBuilder {
         Objects.notNull(organization, "No github organisation found for: " + githubOrg);
         Map<String, GHRepository> repositories = organization.getRepositories();
         Set<Map.Entry<String, GHRepository>> entries = repositories.entrySet();
+        File cloneParentDir = new File(outputDir, "../git-clones");
+        if (cloneParentDir.exists()) {
+            Files.recursiveDelete(cloneParentDir);
+        }
+
         for (Map.Entry<String, GHRepository> entry : entries) {
             String repoName = entry.getKey();
             GHRepository repo = entry.getValue();
             String archetypeFolderName = repoName + "-archetype";
             File projectDir = new File(outputDir, archetypeFolderName);
-            File cloneDir = new File(projectDir, ARCHETYPE_RESOURCES_PATH);
+            File destDir = new File(projectDir, ARCHETYPE_RESOURCES_PATH);
+            //File cloneDir = new File(projectDir, ARCHETYPE_RESOURCES_PATH);
+            File cloneDir = new File(cloneParentDir, archetypeFolderName);
+            cloneDir.mkdirs();
+
             String url = repo.getGitTransportUrl();
             System.out.println("Cloning repo " + url + " to " + cloneDir);
             cloneDir.getParentFile().mkdirs();
@@ -205,6 +217,17 @@ public class ArchetypeBuilder {
             }
             File gitFolder = new File(cloneDir, ".git");
             Files.recursiveDelete(gitFolder);
+
+            File pom = new File(cloneDir, "pom.xml");
+            if (pom.exists()) {
+                generateArchetype(cloneDir, pom, projectDir, false, dirs);
+            } else {
+                File from = cloneDir.getCanonicalFile();
+                File to = destDir.getCanonicalFile();
+                LOG.info("Copying git checkout from " + from + " to " + to);
+                Files.copy(from, to);
+            }
+
             String description = repoName.replace('-', ' ');
             File archetypePom = generatePomIfRequired(projectDir, repoName, description);
             if (archetypePom != null && archetypePom.exists()) {
@@ -321,7 +344,7 @@ public class ArchetypeBuilder {
         // during the build of archetype project
         File metadataXmlOutFile = new File(archetypeDir, ARCHETYPE_RESOURCES_XML);
 
-        Replacement replaceFunction = new IdentityReplacement();
+        Replacement replaceFunction = null;
 
         File mainSrcDir = null;
         for (String it : ArchetypeUtils.sourceCodeDirNames) {
@@ -332,6 +355,8 @@ public class ArchetypeBuilder {
             }
         }
 
+        Set<String> extraIgnorefiles = new HashSet<>();
+
         if (mainSrcDir != null) {
             // lets find the first projectDir which contains more than one child
             // to find the root-most package
@@ -341,18 +366,20 @@ public class ArchetypeBuilder {
                 String packagePath = archetypeUtils.relativePath(mainSrcDir, rootPackage);
                 String packageName = packagePath.replace(File.separatorChar, '.');
                 LOG.debug("Found root package in {}: {}", mainSrcDir, packageName);
-                final String regex = packageName.replace(".", "\\.");
-
-                replaceFunction = new Replacement() {
-                    @Override
-                    public String replace(String token) {
-                        return token.replaceAll(regex, "\\${package}");
-                    }
-                };
+                replaceFunction = new PatternReplacement(packageName);
 
                 // lets recursively copy files replacing the package names
                 File outputMainSrc = new File(archetypeOutputDir, archetypeUtils.relativePath(projectDir, mainSrcDir));
                 copyCodeFiles(rootPackage, outputMainSrc, replaceFunction);
+
+                // lets see if there's a funktion to replace
+                File funktionYaml = new File(projectDir, FUNKTION_YML);
+                if (funktionYaml.isFile()) {
+                    File outFile = new File(archetypeDir, ARCHETYPE_RESOURCES_PATH + "/" + FUNKTION_YML);
+                    copyFile(funktionYaml, outFile, replaceFunction, true);
+                    extraIgnorefiles.add(FUNKTION_YML);
+                    extraIgnorefiles.add("/" + FUNKTION_YML);
+                }
             }
         }
 
@@ -372,30 +399,30 @@ public class ArchetypeBuilder {
                 String packagePath = archetypeUtils.relativePath(testSrcDir, rootPackage);
                 String packageName = packagePath.replace(File.separatorChar, '.');
                 LOG.debug("Found root package in {}: {}", testSrcDir, packageName);
-                final String regex = packageName.replace(".", "\\.");
 
-                replaceFunction = new Replacement() {
-                    @Override
-                    public String replace(String token) {
-                        return token.replaceAll(regex, "\\${package}");
-                    }
-                };
+                Replacement testReplaceFunction = new PatternReplacement(packageName);
+                if (replaceFunction == null) {
+                    replaceFunction = testReplaceFunction;
+                }
 
                 File rootTestDir = new File(testSrcDir, packagePath);
                 File outputTestSrc = new File(archetypeOutputDir, archetypeUtils.relativePath(projectDir, testSrcDir));
                 if (rootTestDir.exists()) {
-                    copyCodeFiles(rootTestDir, outputTestSrc, replaceFunction);
+                    copyCodeFiles(rootTestDir, outputTestSrc, testReplaceFunction);
                 } else {
-                    copyCodeFiles(testSrcDir, outputTestSrc, replaceFunction);
+                    copyCodeFiles(testSrcDir, outputTestSrc, testReplaceFunction);
                 }
             }
         }
 
+        if (replaceFunction == null) {
+            replaceFunction= new IdentityReplacement();
+        }
         // now copy pom.xml
         createArchetypeDescriptors(projectPom, archetypeDir, new File(archetypeOutputDir, "pom.xml"), metadataXmlOutFile, replaceFunction);
 
         // now lets copy all non-ignored files across
-        copyOtherFiles(projectDir, projectDir, archetypeOutputDir, replaceFunction);
+        copyOtherFiles(projectDir, projectDir, archetypeOutputDir, replaceFunction, extraIgnorefiles);
 
         // add missing .gitignore if missing
         if (!outputGitIgnoreFile.exists()) {
@@ -453,10 +480,24 @@ public class ArchetypeBuilder {
             // remove the parent element and the following text Node
             NodeList parents = root.getElementsByTagName("parent");
             if (parents.getLength() > 0) {
-                if (parents.item(0).getNextSibling().getNodeType() == Node.TEXT_NODE) {
-                    root.removeChild(parents.item(0).getNextSibling());
+                boolean removeParentPom = true;
+                Element parentNode = (Element) parents.item(0);
+                Element groupId = DomHelper.firstChild(parentNode, "groupId");
+                if (groupId != null) {
+                    String textContent = groupId.getTextContent();
+                    if (textContent != null) {
+                        textContent = textContent.trim();
+                        if (Objects.equal(textContent, "io.fabric8.funktion.starter")) {
+                            removeParentPom = false;
+                        }
+                    }
                 }
-                root.removeChild(parents.item(0));
+                if (removeParentPom) {
+                    if (parentNode.getNextSibling().getNodeType() == Node.TEXT_NODE) {
+                        root.removeChild(parents.item(0).getNextSibling());
+                    }
+                    root.removeChild(parents.item(0));
+                }
             }
 
             // lets load all the properties defined in the <properties> element in the pom.
@@ -771,7 +812,12 @@ public class ArchetypeBuilder {
      * If the file is source file, variable references will be escaped, so they'll survive Velocity template merging.
      */
     private void copyFile(File src, File dest, Replacement replaceFn) throws IOException {
-        if (replaceFn != null && isSourceFile(src)) {
+        boolean isSource = isSourceFile(src);
+        copyFile(src, dest, replaceFn, isSource);
+    }
+
+    private void copyFile(File src, File dest, Replacement replaceFn, boolean isSource) throws IOException {
+        if (replaceFn != null && isSource) {
             String original = IOHelpers.readFully(src);
             String escapedContent = original;
             if (original.contains("${")) {
@@ -800,8 +846,8 @@ public class ArchetypeBuilder {
     /**
      * Copies all other source files which are not excluded
      */
-    private void copyOtherFiles(File projectDir, File srcDir, File outDir, Replacement replaceFn) throws IOException {
-        if (archetypeUtils.isValidFileToCopy(projectDir, srcDir)) {
+    private void copyOtherFiles(File projectDir, File srcDir, File outDir, Replacement replaceFn, Set<String> extraIgnorefiles) throws IOException {
+        if (archetypeUtils.isValidFileToCopy(projectDir, srcDir, extraIgnorefiles)) {
             if (srcDir.isFile()) {
                 copyFile(srcDir, outDir, replaceFn);
             } else {
@@ -809,7 +855,7 @@ public class ArchetypeBuilder {
                 String[] names = srcDir.list();
                 if (names != null) {
                     for (String name: names) {
-                        copyOtherFiles(projectDir, new File(srcDir, name), new File(outDir, name), replaceFn);
+                        copyOtherFiles(projectDir, new File(srcDir, name), new File(outDir, name), replaceFn, extraIgnorefiles);
                     }
                 }
             }
@@ -820,8 +866,9 @@ public class ArchetypeBuilder {
      * Returns true if this file is a valid source file name
      */
     private boolean isSourceFile(File file) {
-        String name = Files.getExtension(file.getName()).toLowerCase();
-        return sourceFileExtensions.contains(name);
+        String name = file.getName();
+        String extension = Files.getExtension(name).toLowerCase();
+        return sourceFileExtensions.contains(extension) || sourceFileNames.contains(name);
     }
 
     /**
@@ -880,4 +927,21 @@ public class ArchetypeBuilder {
         }
     }
 
+    private static class PatternReplacement implements Replacement {
+        private final String pattern;
+
+        public PatternReplacement(String pattern) {
+            this.pattern = pattern;
+        }
+
+        @Override
+        public String replace(String token) {
+            return Strings.replaceAllWithoutRegex(token, pattern, "${package}");
+        }
+
+        @Override
+        public String toString() {
+            return "Replacement(" + pattern + ")";
+        }
+    }
 }
