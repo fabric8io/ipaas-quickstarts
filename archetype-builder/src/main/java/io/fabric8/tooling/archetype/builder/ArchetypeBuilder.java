@@ -73,6 +73,8 @@ public class ArchetypeBuilder {
             "karaf.version", "spring-boot.version", "weld.version"
     };
 
+    private static final Set<String> sourceFileNames = new HashSet<String>(Arrays.asList("application.properties"));
+
     private static final Set<String> sourceFileExtensions = new HashSet<String>(Arrays.asList(
         "bpmn",
         "csv",
@@ -342,7 +344,7 @@ public class ArchetypeBuilder {
         // during the build of archetype project
         File metadataXmlOutFile = new File(archetypeDir, ARCHETYPE_RESOURCES_XML);
 
-        Replacement replaceFunction = new IdentityReplacement();
+        Replacement replaceFunction = null;
 
         File mainSrcDir = null;
         for (String it : ArchetypeUtils.sourceCodeDirNames) {
@@ -364,14 +366,7 @@ public class ArchetypeBuilder {
                 String packagePath = archetypeUtils.relativePath(mainSrcDir, rootPackage);
                 String packageName = packagePath.replace(File.separatorChar, '.');
                 LOG.debug("Found root package in {}: {}", mainSrcDir, packageName);
-                final String regex = packageName.replace(".", "\\.");
-
-                replaceFunction = new Replacement() {
-                    @Override
-                    public String replace(String token) {
-                        return token.replaceAll(regex, "\\${package}");
-                    }
-                };
+                replaceFunction = new PatternReplacement(packageName);
 
                 // lets recursively copy files replacing the package names
                 File outputMainSrc = new File(archetypeOutputDir, archetypeUtils.relativePath(projectDir, mainSrcDir));
@@ -404,25 +399,25 @@ public class ArchetypeBuilder {
                 String packagePath = archetypeUtils.relativePath(testSrcDir, rootPackage);
                 String packageName = packagePath.replace(File.separatorChar, '.');
                 LOG.debug("Found root package in {}: {}", testSrcDir, packageName);
-                final String regex = packageName.replace(".", "\\.");
 
-                replaceFunction = new Replacement() {
-                    @Override
-                    public String replace(String token) {
-                        return token.replaceAll(regex, "\\${package}");
-                    }
-                };
+                Replacement testReplaceFunction = new PatternReplacement(packageName);
+                if (replaceFunction == null) {
+                    replaceFunction = testReplaceFunction;
+                }
 
                 File rootTestDir = new File(testSrcDir, packagePath);
                 File outputTestSrc = new File(archetypeOutputDir, archetypeUtils.relativePath(projectDir, testSrcDir));
                 if (rootTestDir.exists()) {
-                    copyCodeFiles(rootTestDir, outputTestSrc, replaceFunction);
+                    copyCodeFiles(rootTestDir, outputTestSrc, testReplaceFunction);
                 } else {
-                    copyCodeFiles(testSrcDir, outputTestSrc, replaceFunction);
+                    copyCodeFiles(testSrcDir, outputTestSrc, testReplaceFunction);
                 }
             }
         }
 
+        if (replaceFunction == null) {
+            replaceFunction= new IdentityReplacement();
+        }
         // now copy pom.xml
         createArchetypeDescriptors(projectPom, archetypeDir, new File(archetypeOutputDir, "pom.xml"), metadataXmlOutFile, replaceFunction);
 
@@ -817,7 +812,8 @@ public class ArchetypeBuilder {
      * If the file is source file, variable references will be escaped, so they'll survive Velocity template merging.
      */
     private void copyFile(File src, File dest, Replacement replaceFn) throws IOException {
-        copyFile(src, dest, replaceFn, isSourceFile(src));
+        boolean isSource = isSourceFile(src);
+        copyFile(src, dest, replaceFn, isSource);
     }
 
     private void copyFile(File src, File dest, Replacement replaceFn, boolean isSource) throws IOException {
@@ -870,8 +866,9 @@ public class ArchetypeBuilder {
      * Returns true if this file is a valid source file name
      */
     private boolean isSourceFile(File file) {
-        String name = Files.getExtension(file.getName()).toLowerCase();
-        return sourceFileExtensions.contains(name);
+        String name = file.getName();
+        String extension = Files.getExtension(name).toLowerCase();
+        return sourceFileExtensions.contains(extension) || sourceFileNames.contains(name);
     }
 
     /**
@@ -930,4 +927,21 @@ public class ArchetypeBuilder {
         }
     }
 
+    private static class PatternReplacement implements Replacement {
+        private final String pattern;
+
+        public PatternReplacement(String pattern) {
+            this.pattern = pattern;
+        }
+
+        @Override
+        public String replace(String token) {
+            return Strings.replaceAllWithoutRegex(token, pattern, "${package}");
+        }
+
+        @Override
+        public String toString() {
+            return "Replacement(" + pattern + ")";
+        }
+    }
 }
