@@ -21,8 +21,8 @@
     <failOnMissingWebXml>false</failOnMissingWebXml>
 
     <!-- fabric8 version -->
-    <fabric8.version>2.2.125</fabric8.version>
-    <docker.maven.plugin.version>0.15.3</docker.maven.plugin.version>
+    <fabric8.version>2.2.126</fabric8.version>
+    <docker.maven.plugin.version>0.15.5</docker.maven.plugin.version>
 
 
 
