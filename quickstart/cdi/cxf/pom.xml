@@ -50,7 +50,7 @@
     <http.port>9092</http.port>
 
     <!-- Docker & Fabric8 Configs -->
-    <docker.from>fabric8/s2i-java:1.2</docker.from>
+    <docker.from>docker.io/fabric8/s2i-java:1.2</docker.from>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
     <docker.port.container.http>${http.port}</docker.port.container.http>
@@ -71,7 +71,11 @@
     <fabric8.annotations.service.api.service.kubernetes.io.protocol>REST</fabric8.annotations.service.api.service.kubernetes.io.protocol>
     <fabric8.annotations.service.api.service.kubernetes.io.description-path>cxfcdi/swagger.json</fabric8.annotations.service.api.service.kubernetes.io.description-path>
     <fabric8.annotations.service.api.service.kubernetes.io.description-language>SwaggerJSON</fabric8.annotations.service.api.service.kubernetes.io.description-language>
-    <fabric8.annotations.service.api.service.openshift.io.api-manager>apiman</fabric8.annotations.service.api.service.openshift.io.api-manager>
+
+    <fabric8.annotations.service.apiman.io.publish>publish</fabric8.annotations.service.apiman.io.publish>
+<!--
+    <fabric8.annotations.service.apiman.io.plans>BasicAuthPlan</fabric8.annotations.service.apiman.io.plans>
+-->
 
     <fabric8.metrics.scrape>true</fabric8.metrics.scrape>
     <fabric8.metrics.port>9779</fabric8.metrics.port>
