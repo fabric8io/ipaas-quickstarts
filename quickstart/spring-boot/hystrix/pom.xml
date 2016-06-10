@@ -31,7 +31,7 @@
   <name>Fabric8 :: Quickstarts :: Spring-Boot :: Hystrix</name>
 
   <properties>
-    <fabric8.version>2.2.126</fabric8.version>
+    <fabric8.version>2.2.130</fabric8.version>
     <docker.maven.plugin.version>0.15.5</docker.maven.plugin.version>
 
     <archaius.version>0.6.6</archaius.version>
