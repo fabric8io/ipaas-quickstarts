@@ -143,7 +143,7 @@ public class ArchetypeTest {
                 System.setProperty("maven.multiModuleProjectDirectory", "$M2_HOME");
                 MavenCli maven = new MavenCli();
                 // Dmaven.multiModuleProjectDirectory
-                resultPointer[0] = maven.doMain(new String[] { "clean", "package", "-f", "archetypes-test-pom.xml"}, outDir, System.out, System.out);
+                resultPointer[0] = maven.doMain(new String[] { "clean", "package", "-f", "archetypes-test-pom.xml", "-Dfabric8.service.name=dummy-service"}, outDir, System.out, System.out);
                 System.out.println("result: " + resultPointer[0]);
             }
         });
