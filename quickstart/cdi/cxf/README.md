@@ -29,13 +29,13 @@ The example can be run locally using the following Maven goal:
 
 ### Running the example in fabric8
 
-It is assumed a running Kubernetes platform is already running. If not you can find details how to [get started](http://fabric8.io/guide/getStarted/index.html).
+It is assumed a running Kubernetes platform is already running and that you will deploy the microservice within the `default` namespace. If not you can find details how to [get started](http://fabric8.io/guide/getStarted/index.html).
 
 The example can be built and deployed using a single goal:
 
     mvn -Pf8-local-deploy
 
-When the example runs in fabric8, you can use the OpenShift client tool to inspect the status
+When the example runs in fabric8, you can use the OpenShift client tool to inspect the status at the condition to be connected to the OpenShift platform `oc login`
 
 To list all the running pods:
 
@@ -80,15 +80,15 @@ You can use a command-line utility, such as cURL or wget, to perform the HTTP re
     
     * Create a customer
  
-            curl -X POST -T src/test/resources/add_customer.xml -H "Content-Type: text/xml" http://cdi-cxf-default.vagrant.f8/cxfcdi/customerservice/customers
+            curl -X POST -T src/test/resources/add_customer.xml -H "Content-Type: application/xml" http://cdi-cxf-default.vagrant.f8/cxfcdi/customerservice/customers
   
     * Retrieve the customer instance with id 123
     
-            curl http://localhost:8080/cxfcdi/cxfcdi/customerservice/customers/123
+            curl http://cdi-cxf-default.vagrant.f8/cxfcdi/cxfcdi/customerservice/customers/123
 
     * Update the customer instance with id 123
   
-            curl -X PUT -T src/test/resources/update_customer.xml -H "Content-Type: text/xml" http://cdi-cxf-default.vagrant.f8/cxfcdi/customerservice/customers
+            curl -X PUT -T src/test/resources/update_customer.xml -H "Content-Type: application/xml" http://cdi-cxf-default.vagrant.f8/cxfcdi/customerservice/customers
 
     * Delete the customer instance with id 123
   
