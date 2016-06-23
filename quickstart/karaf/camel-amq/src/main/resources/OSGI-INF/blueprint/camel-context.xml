@@ -23,13 +23,24 @@
    The root element for any OSGi Blueprint file is 'blueprint' - you also see the namespace definitions for both the Blueprint
    and the Camel namespaces.
 -->
-<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0" 
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:ext="http://aries.apache.org/blueprint/xmlns/blueprint-ext/v1.5.0"
            xsi:schemaLocation="
              http://www.osgi.org/xmlns/blueprint/v1.0.0 https://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
              http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd">
 
+  <ext:property-placeholder evaluator="camel"/>
 
   <bean id="orderGenerator" class="io.fabric8.quickstarts.camelamq.OrderGenerator"/>
+
+  <bean id="activemq" class="org.apache.activemq.camel.component.ActiveMQComponent">
+    <property name="brokerURL" value="tcp://${env+service:ACTIVEMQ_SERVICE_NAME}"/>
+    <!--
+    <property name="userName"  value="${env:ACTIVEMQ_USERNAME}"/>
+    <property name="password"  value="${env:ACTIVEMQ_PASSWORD}"/>
+    -->
+  </bean>
 
   <!--
     The namespace for the camelContext element in Blueprint is 'http://camel.apache.org/schema/blueprint'. Additionally,
@@ -59,13 +70,11 @@
 
       Files that are consumed from the work/jms/input directory, are then sent to the JMS queue incomingOrders on the
       ActiveMQ broker.
-
-      The amq component is from fabric8 that ensures to use the broker in the kubernetes cluster
     -->
     <route id="file-to-jms-route">
       <from uri="file:work/jms/input"/>
       <log message="Receiving order ${file:name}"/>
-      <to uri="amq:incomingOrders"/>
+      <to uri="activemq:incomingOrders"/>
     </route>
 
     <!--
@@ -77,7 +86,7 @@
       requirements for either of the <when/> elements will be moved to the work/jms/output/others directory.
     -->
     <route id="jms-cbr-route" streamCache="true">
-      <from uri="amq:incomingOrders"/>
+      <from uri="activemq:incomingOrders"/>
       <choice>
         <when>
           <xpath>/order:order/order:customer/order:country = 'UK'</xpath>
