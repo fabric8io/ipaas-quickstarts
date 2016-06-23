@@ -59,6 +59,7 @@
     <module>rails-example-archetype</module>
     <module>spring-boot-camel-archetype</module>
     <module>spring-boot-camel-xml-archetype</module>
+    <module>spring-boot-camel-amq-archetype</module>
     <module>spring-boot-camel-drools-archetype</module>
     <module>spring-boot-webmvc-archetype</module>
     <module>spring-boot-ribbon-archetype</module>
