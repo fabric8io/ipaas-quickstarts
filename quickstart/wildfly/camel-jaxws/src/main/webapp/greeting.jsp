@@ -1,6 +1,6 @@
 <%--
   #%L
-  Wildfly Camel :: Example :: Camel CXF JAX-RS
+  Wildfly Camel :: Example :: Camel CXF JAX-WS
   %%
   Copyright (C) 2013 - 2016 RedHat
   %%
@@ -19,22 +19,16 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
-    <title>WildFly Camel Subsystem CXF JAX-RS Example</title>
+    <title>WildFly Camel Subsystem CXF JAX-WS Example</title>
     <link href="bootstrap.min.css" rel="stylesheet"/>
 </head>
 <body>
 <div class="container">
     <div class="page-header">
-        <h1>Send a Greeting</h1>
-        <form action="/cxf" method="post">
-            <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" class="form-control" id="name" name="name"/>
-            </div>
-            <div class="form-group">
-                <input type="submit" class="btn btn-primary" value="Send"/>
-            </div>
-        </form>
+        <h1>Greetings</h1>
+        <div class="row">
+            <div class="col-md-4"><h3>${greeting}</h3></div>
+        </div>
     </div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>

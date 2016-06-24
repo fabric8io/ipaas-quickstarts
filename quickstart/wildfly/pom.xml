@@ -36,6 +36,7 @@
     <module>camel-cdi</module>
     <module>camel-ejb</module>
     <module>camel-jaxrs</module>
+    <module>camel-jaxws</module>
   </modules>
 
 </project>
