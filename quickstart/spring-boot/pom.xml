@@ -33,6 +33,7 @@
 
   <modules>
     <module>webmvc</module>
+    <module>camel-amq</module>
     <module>camel-drools</module>
     <module>hystrix</module>
     <module>ribbon</module>
