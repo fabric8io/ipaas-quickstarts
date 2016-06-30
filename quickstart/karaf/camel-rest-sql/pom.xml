@@ -37,7 +37,7 @@
     <version.maven-bundle-plugin>2.3.7</version.maven-bundle-plugin>
 
     <!-- fabric8 version -->
-    <fabric8.version>2.2.136</fabric8.version>
+    <fabric8.version>2.2.138</fabric8.version>
     <docker.maven.plugin.version>0.15.9</docker.maven.plugin.version>
 
 
