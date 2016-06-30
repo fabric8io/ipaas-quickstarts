@@ -38,7 +38,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <!-- fabric8 version -->
-    <fabric8.version>2.2.136</fabric8.version>
+    <fabric8.version>2.2.138</fabric8.version>
     <docker.maven.plugin.version>0.15.9</docker.maven.plugin.version>
 
 
@@ -154,9 +154,11 @@
         <version>2.18.1</version>
         <inherited>true</inherited>
         <configuration>
+<!--
           <excludes>
             <exclude>**/*KT.java</exclude>
           </excludes>
+-->
         </configuration>
       </plugin>
 

@@ -38,7 +38,7 @@ public class MQKubernetesTest {
 
     @Test
     public void testMQAutoscaler() throws Exception {
-        assertThat(client).replicationController("fabric8MQAutoScaler", session.getNamespace()).isNotNull();
+        assertThat(client).replicationController("fabric8MQAutoScaler").isNotNull();
         assertThat(client).pods()
             .runningStatus()
             .filterNamespace(session.getNamespace())
