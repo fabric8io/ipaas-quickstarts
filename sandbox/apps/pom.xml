@@ -36,7 +36,7 @@
         <amqbroker.container.port>7162</amqbroker.container.port>
         <amqbroker.service.port>7163</amqbroker.service.port>
 
-        <docker.from>fabric8/java</docker.from>
+        <docker.from>fabric8/java-jboss-openjdk8-jdk:1.1.4</docker.from>
 
         <docker.image>${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
         <docker.assemblyDescriptorRef>artifact-with-dependencies</docker.assemblyDescriptorRef>
