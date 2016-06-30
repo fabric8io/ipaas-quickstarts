@@ -38,7 +38,7 @@ public class CadvisorKubernetesTest {
 
     @Test
     public void testCadvisor() throws Exception {
-        assertThat(client).replicationController("cadvisor-rc", session.getNamespace()).isNotNull();
+        assertThat(client).replicationController("cadvisor-rc").isNotNull();
         assertThat(client).pods()
                 .runningStatus()
                 .filterNamespace(session.getNamespace())

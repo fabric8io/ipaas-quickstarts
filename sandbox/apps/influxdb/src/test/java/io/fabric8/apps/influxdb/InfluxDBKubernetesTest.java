@@ -39,9 +39,9 @@ public class InfluxDBKubernetesTest {
 
     @Test
     public void testInfluxDB() throws Exception {
-        assertThat(client).replicationController("influxdb", session.getNamespace()).isNotNull();
+        assertThat(client).replicationController("influxdb").isNotNull();
         String serviceName = "influxdb";
-        assertThat(client).hasServicePort(serviceName, session.getNamespace(), 8086);
+        assertThat(client).hasServicePort(serviceName, 8086);
 
         assertThat(client).pods()
                 .runningStatus()

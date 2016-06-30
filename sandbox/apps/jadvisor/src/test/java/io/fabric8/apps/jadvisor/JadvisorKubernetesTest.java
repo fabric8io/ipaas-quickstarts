@@ -39,7 +39,7 @@ public class JadvisorKubernetesTest {
 
     @Test
     public void testJadvisor() throws Exception {
-        assertThat(client).replicationController("jadvisor-rc", session.getNamespace()).isNotNull();
+        assertThat(client).replicationController("jadvisor-rc").isNotNull();
         assertThat(client).pods()
                 .runningStatus()
                 .filterNamespace(session.getNamespace())
