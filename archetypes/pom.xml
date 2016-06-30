@@ -69,6 +69,10 @@
     <module>war-camel-servlet-archetype</module>
     <module>war-cxf-cdi-servlet-archetype</module>
     <module>war-wildfly-archetype</module>
+    <module>wildfly-camel-cdi-archetype</module>
+    <module>wildfly-camel-ejb-archetype</module>
+    <module>wildfly-camel-jaxrs-archetype</module>
+    <module>wildfly-camel-jaxws-archetype</module>
   </modules>
 
 </project>
