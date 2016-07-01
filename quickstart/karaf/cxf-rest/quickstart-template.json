@@ -197,6 +197,7 @@
               "name": "fis-karaf-openshift:${BUILDER_VERSION}"
             },
             "forcePull": true,
+            "incremental": true,
             "env": [
               {
                 "name": "BUILD_LOGLEVEL",
