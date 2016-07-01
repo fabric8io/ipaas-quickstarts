@@ -30,7 +30,7 @@
     <name>Fabric8 :: Quickstarts :: Swarm :: Parent</name>
 
     <modules>
-        <module></module>
+        <module>camel-rest</module>
     </modules>
 
 </project>
