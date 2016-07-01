@@ -33,13 +33,13 @@ To run the example type
 
 The rest service can be accessed from the following url
 
-    curl http://localhost:8080/api/say/{name}
-<http://localhost:8080/api/say/{name}>
+    curl http://localhost:8080/service/say/{name}
+<http://localhost:8080/service/say/{name}>
 
 For example to say Hello for the name `charles`
 
-    curl http://localhost:8080/api/say/charles
-<http://localhost:8080/api/say/charles>
+    curl http://localhost:8080/service/say/charles
+<http://localhost:8080/service/say/charles>
 
 The rest services provides Swagger API which can be accessed from the following url
 
@@ -88,7 +88,7 @@ Notice: As it depends on your OpenShift setup, the hostname (route) might vary. 
 
 Use this URL to display response message from the REST service:
 
-    http://swarm-camel-rest-default.vagrant.f8/api/say/charles
+    http://swarm-camel-rest-default.vagrant.f8/service/say/charles
 
 where `vagrant.f8` is your Kubernetes domain and `default`, the namespace of the project
 

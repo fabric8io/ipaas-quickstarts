@@ -103,63 +103,29 @@
     </dependencyManagement>
 
     <dependencies>
-        <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-api</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
         <!-- Swarm -->
         <dependency>
             <groupId>org.wildfly.swarm</groupId>
-            <artifactId>container</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.wildfly.swarm</groupId>
-            <artifactId>jaxrs</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.wildfly.swarm</groupId>
             <artifactId>jolokia</artifactId>
-        </dependency>
-
-        <!-- Camel Swarm -->
-        <dependency>
-            <groupId>org.wildfly.swarm</groupId>
-            <artifactId>camel-core</artifactId>
         </dependency>
         <dependency>
             <groupId>org.wildfly.swarm</groupId>
             <artifactId>camel-undertow</artifactId>
         </dependency>
-        <!-- The camel-other artifact contains all the non Camel Swarm Components including also camel-swagger-java.
-             There is nevertheless a classloading issue : https://github.com/wildfly-swarm/wildfly-swarm-camel/issues/52
+        <dependency>
+            <groupId>org.wildfly.swarm</groupId>
+            <artifactId>camel-cdi</artifactId>
+        </dependency>
        <dependency>
             <groupId>org.wildfly.swarm</groupId>
             <artifactId>camel-other</artifactId>
         </dependency>
-        -->
 
-        <!-- Camel -->
         <dependency>
-            <groupId>org.apache.camel</groupId>
-            <artifactId>camel-swagger-java</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.camel</groupId>
-            <artifactId>camel-jackson</artifactId>
-        </dependency>
-
-        <!-- Logging -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.9</version>
-        </dependency>
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.17</version>
+          <groupId>org.jboss.spec.javax.ws.rs</groupId>
+          <artifactId>jboss-jaxrs-api_2.0_spec</artifactId>
+          <version>1.0.0.Final</version>
+          <scope>provided</scope>
         </dependency>
     </dependencies>
 
@@ -180,7 +146,6 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <useUberJar>true</useUberJar>
                     <debug>${debug.port}</debug>
                     <mainClass>io.fabric8.quickstarts.swarm.MainApp</mainClass>
                 </configuration>

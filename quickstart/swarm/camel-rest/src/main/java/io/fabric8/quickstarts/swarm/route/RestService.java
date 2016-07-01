@@ -16,8 +16,14 @@
 package io.fabric8.quickstarts.swarm.route;
 
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.cdi.ContextName;
+
+import javax.enterprise.context.ApplicationScoped;
+
 import static org.apache.camel.model.rest.RestParamType.path;
 
+@ApplicationScoped
+@ContextName("rest-context")
 public class RestService extends RouteBuilder {
     @Override public void configure() throws Exception {
 
@@ -26,18 +32,15 @@ public class RestService extends RouteBuilder {
           .dataFormatProperty("prettyPrint", "true")
           // WildFly & Swarm only allows to use localhost host
           .host("localhost")
-          /* DOESN'T WORK DUE TO CLASSLOADING ISSUE - https://github.com/wildfly-swarm/wildfly-swarm-camel/issues/52
           // add swagger api-doc out of the box
           .apiContextPath("/swagger.json")
           .apiProperty("api.title", "User Service")
           .apiProperty("api.version", "1.0")
           .apiProperty("api.description", "An example using REST DSL and Swagger Java with CDI")
           // and enable CORS
-          .apiProperty("cors", "true")
-          */
-           ;
+          .apiProperty("cors", "true");
 
-        rest("/api").description("Api rest service").consumes("application/json").produces("application/json")
+        rest("/service").description("Api rest service").consumes("application/json").produces("application/json")
 
            .get("/say/{name}").description("Say Hello to the name")
                 .param().name("id").type(path).description("The namr of the user to say Hello").dataType("string").endParam()
