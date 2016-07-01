@@ -101,9 +101,7 @@
         "annotations": {
           "apiman.io/descriptionpath": "cxfcdi/swagger.json",
           "apiman.io/servicepath": "cxfcdi",
-          "prometheus.io/port": "9779",
           "apiman.io/servicetype": "REST",
-          "prometheus.io/scrape": "true",
           "apiman.io/descriptiontype": "SwaggerJSON"
         },
         "labels": {
