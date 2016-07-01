@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+     Copyright 2005-2015 Red Hat, Inc.
+     Red Hat licenses this file to you under the Apache License, version
+     2.0 (the "License"); you may not use this file except in compliance
+     with the License.  You may obtain a copy of the License at
+        http://www.apache.org/licenses/LICENSE-2.0
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+     implied.  See the License for the specific language governing
+     permissions and limitations under the License.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>springboot</artifactId>
+        <groupId>io.fabric8.quickstarts</groupId>
+        <version>2.3-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>swarm-camel-rest</artifactId>
+    <version>2.3-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>Fabric8 :: Quickstarts :: Swarm :: Camel REST endpoint with Undertow</name>
+    <description>Camel REST Service running in a standalone Java Swarm Container</description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- This image doesn't work as jolokia logger is different from WildFly
+        <docker.from>docker.io/fabric8/java-jboss-openjdk8-jdk:1.0.13</docker.from>
+        -->
+
+        <http.port>8080</http.port>
+
+        <docker.from>docker.io/java:openjdk-8-jdk</docker.from>
+        <docker.image>fabric8/${project.artifactId}:${project.version}</docker.image>
+        <docker.port.container.http>${http.port}</docker.port.container.http>
+        <docker.port.container.jolokia>8778</docker.port.container.jolokia>
+
+        <!-- Fabric8 Kubernetes Metadata -->
+        <!-- Service -->
+        <fabric8.service.name>${project.artifactId}</fabric8.service.name>
+        <fabric8.service.port>${http.port}</fabric8.service.port>
+        <fabric8.service.containerPort>${http.port}</fabric8.service.containerPort>
+        <fabric8.service.type>LoadBalancer</fabric8.service.type>
+
+        <fabric8.readinessProbe.httpGet.port>${http.port}</fabric8.readinessProbe.httpGet.port>
+        <fabric8.readinessProbe.httpGet.path>/jmx</fabric8.readinessProbe.httpGet.path>
+        <fabric8.readinessProbe.timeoutSeconds>30</fabric8.readinessProbe.timeoutSeconds>
+        <fabric8.readinessProbe.initialDelaySeconds>5</fabric8.readinessProbe.initialDelaySeconds>
+
+        <fabric8.label.group>quickstarts</fabric8.label.group>
+
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+
+        <version.camel>2.17.1</version.camel>
+        <version.docker.maven.plugin>0.15.9</version.docker.maven.plugin>
+        <version.fabric8>2.2.136</version.fabric8>
+        <version.wildfly-swarm>1.0.0.Final</version.wildfly-swarm>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- Swarm -->
+            <dependency>
+                <groupId>org.wildfly.swarm</groupId>
+                <artifactId>bom</artifactId>
+                <version>${version.wildfly-swarm}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- import fabric8 platform bom first -->
+            <dependency>
+                <groupId>io.fabric8</groupId>
+                <artifactId>fabric8-project-bom-with-platform-deps</artifactId>
+                <version>${version.fabric8}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.camel</groupId>
+                <artifactId>camel-parent</artifactId>
+                <version>${version.camel}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Java EE -->
+            <dependency>
+                <groupId>javax</groupId>
+                <artifactId>javaee-api</artifactId>
+                <version>7.0</version>
+                <scope>provided</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Swarm -->
+        <dependency>
+            <groupId>org.wildfly.swarm</groupId>
+            <artifactId>container</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.wildfly.swarm</groupId>
+            <artifactId>jaxrs</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.wildfly.swarm</groupId>
+            <artifactId>jolokia</artifactId>
+        </dependency>
+
+        <!-- Camel Swarm -->
+        <dependency>
+            <groupId>org.wildfly.swarm</groupId>
+            <artifactId>camel-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.wildfly.swarm</groupId>
+            <artifactId>camel-undertow</artifactId>
+        </dependency>
+        <!-- The camel-other artifact contains all the non Camel Swarm Components including also camel-swagger-java.
+             There is nevertheless a classloading issue : https://github.com/wildfly-swarm/wildfly-swarm-camel/issues/52
+       <dependency>
+            <groupId>org.wildfly.swarm</groupId>
+            <artifactId>camel-other</artifactId>
+        </dependency>
+        -->
+
+        <!-- Camel -->
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-swagger-java</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-jackson</artifactId>
+        </dependency>
+
+        <!-- Logging -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.9</version>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>${project.artifactId}</finalName>
+        <plugins>
+
+            <!-- Swarm -->
+            <plugin>
+                <groupId>org.wildfly.swarm</groupId>
+                <artifactId>wildfly-swarm-plugin</artifactId>
+                <version>${version.wildfly-swarm}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>package</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <useUberJar>true</useUberJar>
+                    <debug>${debug.port}</debug>
+                    <mainClass>io.fabric8.quickstarts.swarm.MainApp</mainClass>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>${version.docker.maven.plugin}</version>
+                <configuration>
+                    <images>
+                        <image>
+                            <name>${docker.image}</name>
+                            <run>
+                                <ports>
+                                    <port>8080:8080</port>
+                                </ports>
+                            </run>
+                            <build>
+                                <from>${docker.from}</from>
+                                <ports>
+                                    <port>${docker.port.container.http}</port>
+                                </ports>
+                                <assembly>
+                                    <basedir>/opt</basedir>
+                                    <inline>
+                                        <fileSets>
+                                            <fileSet>
+                                                <includes>
+                                                    <include>${project.build.finalName}-swarm.jar</include>
+                                                </includes>
+                                                <directory>${project.build.directory}</directory>
+                                                <outputDirectory>/</outputDirectory>
+                                            </fileSet>
+                                        </fileSets>
+                                    </inline>
+                                </assembly>
+                                <entryPoint>
+                                    <shell>java -jar /opt/${project.artifactId}-swarm.jar</shell>
+                                </entryPoint>
+                            </build>
+                        </image>
+                    </images>
+                </configuration>
+            </plugin>
+
+            <!-- Fabric8 -->
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>fabric8-maven-plugin</artifactId>
+                <version>${version.fabric8}</version>
+                <executions>
+                    <execution>
+                        <id>json</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>json</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>attach</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>attach</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>debug</id>
+            <properties>
+                <debug.port>5555</debug.port>
+            </properties>
+        </profile>
+
+        <!--
+          Default sample commands:
+          mvn -Pf8-build         ... build Docker images and create OpenShift deployment configs
+          mvn -Pf8-deploy        ... f8-build + push to Docker registry + applying deployment config to OpenShift
+          mvn -Pf8-local-deploy ... deployment for a single node setup without pushing to a registry
+          For individual goal usage please consult the fabric8 documentation
+          -->
+        <profile>
+            <id>f8-build</id>
+            <build>
+                <defaultGoal>clean install docker:build fabric8:json</defaultGoal>
+            </build>
+        </profile>
+        <profile>
+            <id>f8-deploy</id>
+            <properties>
+                <fabric8.imagePullPolicySnapshot>Always</fabric8.imagePullPolicySnapshot>
+                <fabric8.recreate>true</fabric8.recreate>
+            </properties>
+            <build>
+                <defaultGoal>clean install docker:build docker:push fabric8:json fabric8:apply</defaultGoal>
+            </build>
+        </profile>
+        <profile>
+            <id>f8-local-deploy</id>
+            <properties>
+                <fabric8.recreate>true</fabric8.recreate>
+            </properties>
+            <build>
+                <defaultGoal>clean install docker:build fabric8:json fabric8:apply</defaultGoal>
+            </build>
+        </profile>
+    </profiles>
+
+    <repositories>
+        <!-- Repo containing some Java EE jar files not published on Maven Central -->
+        <repository>
+            <id>springsource-libs-releases</id>
+            <url>http://repo.springsource.org/libs-release-remote</url>
+        </repository>
+    </repositories>
+</project>
