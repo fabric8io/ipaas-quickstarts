@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+     Copyright 2005-2016 Red Hat, Inc.
+
+     Red Hat licenses this file to you under the Apache License, version
+     2.0 (the "License"); you may not use this file except in compliance
+     with the License.  You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+     implied.  See the License for the specific language governing
+     permissions and limitations under the License.
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+       http://camel.apache.org/schema/spring       http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+    <!-- A random country generator -->
+    <bean id="random" class="io.fabric8.quickstarts.camel.teiid.RandomGenerator"/>
+
+    <!-- Camel Route -->
+    <camelContext xmlns="http://camel.apache.org/schema/spring" depends-on="teiid">
+        <route trace="false" id="testRoute">
+            <description>Example route that will regularly generate a random country code and then compute the total revenue using a cross-database join on the Teiid virtual database</description>
+            <from uri="timer:testRoute?period=5s"/>
+
+            <setHeader headerName="country">
+                <method bean="random" method="randomCountry"/>
+            </setHeader>
+
+            <to uri="sql:select sum(s.price) from mysales s join myinventory i on s.code=i.code where i.country=:#country?dataSource=teiid&amp;outputType=SelectOne"/>
+            <choice>
+                <when>
+                    <simple>${body} &gt;= 100</simple>
+                    <!-- When the query returns a result that is greater than or equal to 100 -->
+                    <log message="High revenue for country ${header.country}: &#36; ${body} :)"/>
+                </when>
+                <when>
+                    <simple>${body} &lt; 100</simple>
+                    <!-- When the query returns a result that is lower than 100 -->
+                    <log message="Revenue for country ${header.country}: &#36; ${body}"/>
+                </when>
+                <otherwise>
+                    <!-- When the query has no result -->
+                    <log message="No revenue for country ${header.country} :("/>
+                </otherwise>
+            </choice>
+
+        </route>
+
+    </camelContext>
+
+</beans>
