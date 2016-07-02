@@ -48,7 +48,7 @@
     <spring-cloud-netflix.version>1.0.6.RELEASE</spring-cloud-netflix.version>
     <spring-cloud.version>1.0.5.RELEASE</spring-cloud.version>
 
-    <docker.from>fabric8/java-jboss-openjdk8-jdk:1.1.4</docker.from>
+    <docker.from>fabric8/java-jboss-openjdk8-jdk:1.1.5</docker.from>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
     <docker.port.container.http>8080</docker.port.container.http>
