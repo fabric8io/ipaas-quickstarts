@@ -43,7 +43,7 @@
 
 
     <!-- configure the versions you want to use here -->
-    <camel.version>2.17.1</camel.version>
+    <camel.version>2.17.2</camel.version>
     <karaf.version>2.4.4</karaf.version>
     <karaf.plugin.version>4.0.3</karaf.plugin.version>
     <derby.version>10.10.2.0</derby.version>
