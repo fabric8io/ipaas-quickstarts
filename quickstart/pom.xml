@@ -57,6 +57,7 @@
     <module>vertx</module>
     <module>war</module>
     <module>wildfly</module>
+    <module>swarm</module>
   </modules>
 
   <developers>
