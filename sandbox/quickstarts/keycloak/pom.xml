@@ -47,7 +47,7 @@
     <keycloak.version>1.1.0.Beta2</keycloak.version>
 
     <!-- Docker & Fabric8 Configs -->
-    <docker.from>fabric8/java-jboss-openjdk8-jdk:1.1.4</docker.from>
+    <docker.from>fabric8/java-jboss-openjdk8-jdk:1.1.5</docker.from>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
 

@@ -45,7 +45,7 @@
     <!-- configure the versions you want to use here -->
     <camel.version>2.17.2</camel.version>
 
-    <docker.from>fabric8/tomcat-8.0</docker.from>
+    <docker.from>fabric8/tomcat-8</docker.from>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <docker.image>${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
     <docker.assemblyDescriptorRef>rootWar</docker.assemblyDescriptorRef>
@@ -154,9 +154,6 @@
                 <assembly>
                   <descriptorRef>${docker.assemblyDescriptorRef}</descriptorRef>
                 </assembly>
-                <env>
-                  <CATALINA_OPTS>-javaagent:/opt/tomcat/jolokia-agent.jar=host=0.0.0.0,port=8778</CATALINA_OPTS>
-                </env>
               </build>
             </image>
           </images>

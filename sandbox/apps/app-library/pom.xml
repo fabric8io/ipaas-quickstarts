@@ -52,7 +52,7 @@
 
     <http.port>8080</http.port>
 
-    <docker.from>fabric8/java-jboss-openjdk8-jdk:1.1.4</docker.from>
+    <docker.from>fabric8/java-jboss-openjdk8-jdk:1.1.5</docker.from>
 
     <docker.image>${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
     <docker.assemblyDescriptorRef>artifact-with-dependencies</docker.assemblyDescriptorRef>
