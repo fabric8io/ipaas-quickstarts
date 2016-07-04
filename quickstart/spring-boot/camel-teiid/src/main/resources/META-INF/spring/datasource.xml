@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+     Copyright 2005-2016 Red Hat, Inc.
+
+     Red Hat licenses this file to you under the Apache License, version
+     2.0 (the "License"); you may not use this file except in compliance
+     with the License.  You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+     implied.  See the License for the specific language governing
+     permissions and limitations under the License.
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+       http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.2.xsd">
+
+    <!--
+        For this sample application, two sample H2 embedded databases are created,
+        one holding the product inventory and the other holding sales information.
+
+        A virtual database layer will be created in Teiid, to allow issuing (cross-database) join queries in Camel routes.
+
+        The embedded H2 databases should be replaced with other datasources in order to create a concrete application.
+        Take a look at https://teiid.gitbooks.io/documents/content/reference/Data_Sources.html for a list of supported data sources.
+     -->
+    <jdbc:embedded-database id="db1" database-name="db1" type="H2">
+        <jdbc:script location="classpath:db/db1-init.sql"/>
+    </jdbc:embedded-database>
+
+    <jdbc:embedded-database id="db2" database-name="db2" type="H2">
+        <jdbc:script location="classpath:db/db2-init.sql"/>
+    </jdbc:embedded-database>
+
+    <!--
+        A custom teiidServer bean is defined to initialize an instance of the Teiid EmbeddedServer
+        and provide access to its virtual datasource.
+    -->
+    <bean id="teiidServer" class="io.fabric8.quickstarts.camel.teiid.TeiidServer" init-method="init"/>
+
+    <bean id="teiid" primary="true" factory-bean="teiidServer" factory-method="getDatasource"/>
+
+</beans>

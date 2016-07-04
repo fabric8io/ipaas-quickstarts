@@ -252,7 +252,21 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>io.fabric8.archetypes</groupId>
+                  <artifactId>spring-boot-camel-amq-archetype</artifactId>
+                  <version>${project.version}</version>
+                  <type>jar</type>
+                  <overWrite>false</overWrite>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>io.fabric8.archetypes</groupId>
                   <artifactId>spring-boot-camel-drools-archetype</artifactId>
+                  <version>${project.version}</version>
+                  <type>jar</type>
+                  <overWrite>false</overWrite>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>io.fabric8.archetypes</groupId>
+                  <artifactId>spring-boot-camel-teiid-archetype</artifactId>
                   <version>${project.version}</version>
                   <type>jar</type>
                   <overWrite>false</overWrite>
