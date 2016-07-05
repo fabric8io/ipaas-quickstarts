@@ -38,13 +38,10 @@
 
     <!-- fabric8 version -->
     <fabric8.version>2.2.139</fabric8.version>
-    <fabric8-ipaas.version>2.2.103</fabric8-ipaas.version>
     <docker.maven.plugin.version>0.15.9</docker.maven.plugin.version>
 
-
-
     <!-- configure the versions you want to use here -->
-    <activemq.version>5.12.1</activemq.version>
+    <activemq.version>5.12.3</activemq.version>
     <camel.version>2.17.2</camel.version>
     <karaf.version>2.4.4</karaf.version>
     <karaf.plugin.version>4.0.3</karaf.plugin.version>
@@ -55,8 +52,11 @@
     <docker.assemblyDescriptor>${basedir}/src/main/fabric8/assembly.xml</docker.assemblyDescriptor>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
     <docker.port.container.http>8181</docker.port.container.http>
-    <fabric8.env.FABRIC8MQ_SERVICE_NAME>FABRIC8MQ</fabric8.env.FABRIC8MQ_SERVICE_NAME>
-
+    <fabric8.env.ACTIVEMQ_SERVICE_NAME>activemq</fabric8.env.ACTIVEMQ_SERVICE_NAME>
+    <!--
+    <fabric8.env.ACTIVEMQ_USERNAME>amq_username</fabric8.env.ACTIVEMQ_USERNAME>
+    <fabric8.env.ACTIVEMQ_PASSWORD>amq_password</fabric8.env.ACTIVEMQ_PASSWORD>
+    -->
     <fabric8.label.group>quickstarts</fabric8.label.group>
     <fabric8.iconRef>camel</fabric8.iconRef>
   </properties>
@@ -145,7 +145,7 @@
       </resource>
     </resources>
     <plugins>
-      <!-- Compiler plugin enforces Java 1.7 compatibility and activates annotation processors -->
+      <!-- Compiler plugin enforces Java 1.8 compatibility and activates annotation processors -->
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.3</version>
@@ -162,8 +162,6 @@
         <configuration>
           <instructions>
             <Import-Package>
-              io.fabric8.mq.core,
-              io.fabric8.mq.camel,
               org.apache.activemq.pool,
               *
             </Import-Package>
@@ -241,7 +239,8 @@
         <configuration>
          <karafVersion>v4x</karafVersion>
          <useReferenceUrls>true</useReferenceUrls>
-         <archiveTarGz>false</archiveTarGz>
+         <archiveTarGz>true</archiveTarGz>
+         <archiveZip>false</archiveZip>
           <!-- do not include build output directory -->
           <includeBuildOutputDirectory>false</includeBuildOutputDirectory>
           <!-- no startupFeatures -->
@@ -254,13 +253,10 @@
             <feature>camel-blueprint</feature>
             <feature>camel-jms</feature>
             <feature>activemq-client</feature>
+            <feature>activemq-camel</feature>
           </startupFeatures>
           <startupBundles>
-            <bundle>mvn:io.fabric8.ipaas.mq/camel-amq/${fabric8-ipaas.version}</bundle>
-            <bundle>mvn:io.fabric8.ipaas.mq/mq-client/${fabric8-ipaas.version}</bundle>
-            <bundle>mvn:io.fabric8/fabric8-utils/${fabric8.version}</bundle>
-            <bundle>mvn:org.apache.activemq/activemq-camel/${activemq.version}</bundle>
-            <bundle>mvn:org.apache.activemq/activemq-osgi/${activemq.version}</bundle>
+            <bundle>mvn:io.fabric8/fabric8-karaf/${fabric8.version}</bundle>
             <bundle>file:${project.build.directory}/${project.artifactId}.jar</bundle>
           </startupBundles>
           <blacklistedBundles>
@@ -295,7 +291,7 @@
                     <files>
                       <!-- copy karaf archive -->
                       <file>
-                        <source>${project.build.directory}/${project.artifactId}-${project.version}.zip</source>
+                        <source>${project.build.directory}/${project.artifactId}-${project.version}.tar.gz</source>
                         <outputDirectory>/</outputDirectory>
                         <fileMode>0644</fileMode>
                       </file>

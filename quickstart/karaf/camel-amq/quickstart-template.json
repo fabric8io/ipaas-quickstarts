@@ -59,6 +59,22 @@
       "name": "BUILD_SECRET",
       "description": "The secret needed to trigger a build",
       "from": "[a-zA-Z0-9]{8}"
+    },
+    {
+      "name": "MQ_SERVICE_NAME",
+      "value": "broker",
+      "description": "Name of the ActiveMQ broker service in Kubernetes",
+      "required": false
+    },
+    {
+      "description": "User name for standard broker user",
+      "name": "MQ_USERNAME",
+      "required": false
+    },
+    {
+      "description": "Password name for standard broker user",
+      "name": "MQ_PASSWORD",
+      "required": false
     }
   ],
   "objects": [
@@ -172,6 +188,18 @@
               {
                 "name": "MAVEN_ARGS_APPEND",
                 "value": "${MAVEN_ARGS_APPEND}"
+              },
+              {
+                "name": "ACTIVEMQ_SERVICE_NAME",
+                "value": "${MQ_SERVICE_NAME}"
+              },
+              {
+                "name": "ACTIVEMQ_USERNAME",
+                "value": "${MQ_USERNAME}"
+              },
+              {
+                "name": "ACTIVEMQ_PASSWORD",
+                "value": "${MQ_PASSWORD}"
               }
             ]
           }
