@@ -1,3 +1,4 @@
+#set( $D = '$' )
 /**
  *  Copyright 2005-2015 Red Hat, Inc.
  *
@@ -13,7 +14,7 @@
  *  implied.  See the License for the specific language governing
  *  permissions and limitations under the License.
  */
-package io.fabric8.quickstarts.swarm.route;
+package ${package}.route;
 
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.cdi.ContextName;
@@ -48,6 +49,6 @@ public class RestService extends RouteBuilder {
 
         from("direct:say")
            .transform()
-              .simple("Hello from REST endpoint to ${header.name}");
+              .simple("Hello from REST endpoint to ${D}{header.name}");
     }
 }
