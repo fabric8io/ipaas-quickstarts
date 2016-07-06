@@ -30,8 +30,7 @@
     <name>Fabric8 :: Quickstarts :: Swarm :: Parent</name>
 
     <modules>
-        <!-- commented out so we can release see fabric8io/fabric8/issues/6136 -->
-        <!--<module>camel-rest</module>-->
+        <module>camel-rest</module>
     </modules>
 
 </project>
