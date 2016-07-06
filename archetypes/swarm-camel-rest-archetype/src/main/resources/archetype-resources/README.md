@@ -1,6 +1,7 @@
+#set( $H = '##' )
 # Swarm Camel REST Quickstart
 
-## Introduction
+${H} Introduction
 
 This quickstart uses WildFly Swarm as Java lightweight container and the Apache Camel Integration Framework to expose a RESTfull endpoint registered within the Undertow server.
 This example uses the REST fluent DSL to define a service which provides one operation
@@ -19,13 +20,13 @@ public static void main(String[] args) throws Exception {
 	        .addRouteBuilder(new RestService()));
 ```
 
-## Build
+${H} Build
 
 You will need to compile this example first:
 
     mvn install
 
-## Run
+${H} Run
 
 To run the example type
 
@@ -48,7 +49,7 @@ The rest services provides Swagger API which can be accessed from the following 
 
 To stop the example hit <kbd>ctrl</kbd>+<kbd>c</kbd>
 
-## Jolokia & JMX
+${H} Jolokia & JMX
 
 We have registered the Jolokia fraction in order to access the JMX operations or attributes using the JSon HTTP Servlet Bridge offered by the
 [jolokia](https://jolokia.org/reference/html/protocol.html) project.
@@ -60,7 +61,7 @@ curl -X GET http://localhost:8080/jmx
 curl -d "{\"type\":\"read\",\"mbean\":\"java.lang:type=Memory\",\"attribute\":\"HeapMemoryUsage\",\"path\":\"used\"}" http://localhost:8080/jmx/ && echo ""
 ```
 
-## Running the example in fabric8
+${H} Running the example in fabric8
 
 It is assumed a Kubernetes platform is already running with or without OpenShift. If not, you can find details how to [get started](http://fabric8.io/guide/getStarted/index.html).
 
@@ -80,7 +81,7 @@ Then find the name of the pod that runs this quickstart, and output the logs fro
 
 You can also use the fabric8 web console to manage the running pods, and view logs and much more.
 
-## Access services using a web browser
+${H} Access services using a web browser
 
 You can use any browser to perform a HTTP GET. This allows you to very easily test a few of the RESTful services we defined:
 
@@ -92,6 +93,6 @@ Use this URL to display response message from the REST service:
 
 where `vagrant.f8` is your Kubernetes domain and `default`, the namespace of the project
 
-## More details
+${H} More details
 
 You can find more details about running this quickstart on the website. This also includes instructions how to change the Docker image user and registry.

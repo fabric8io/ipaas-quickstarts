@@ -65,7 +65,6 @@
     <module>spring-boot-webmvc-archetype</module>
     <module>spring-boot-ribbon-archetype</module>
     <module>spring-boot-hystrix-archetype</module>
-    <module>swarm-camel-rest-archetype</module>
     <module>swift-example-archetype</module>
     <module>vertx-simplest-archetype</module>
     <module>war-camel-servlet-archetype</module>
