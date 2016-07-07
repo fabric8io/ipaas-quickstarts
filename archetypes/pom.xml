@@ -57,6 +57,7 @@
     <!--<module>karaf-cxf-rest-archetype</module>-->
     <module>node-example-archetype</module>
     <module>rails-example-archetype</module>
+    <module>swarm-camel-archetype</module>
     <module>spring-boot-camel-archetype</module>
     <module>spring-boot-camel-xml-archetype</module>
     <module>spring-boot-camel-amq-archetype</module>
