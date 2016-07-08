@@ -25,8 +25,8 @@
         <version>2.3-SNAPSHOT</version>
     </parent>
 
-    <artifactId>java-camel-spring-archetype</artifactId>
-    <name>Fabric8 :: Archetypes :: Camel :: Spring</name>
+    <artifactId>spring-camel-archetype</artifactId>
+    <name>Fabric8 :: Archetypes :: Java :: Camel with Spring</name>
     <packaging>maven-archetype</packaging>
 
     <description>Creates a new Camel route using Spring XML in a standalone Java container</description>
