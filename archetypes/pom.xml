@@ -33,7 +33,6 @@
   <name>Fabric8 :: Archetypes :: Parent</name>
 
   <modules>
-    <module>camel-spring-archetype</module>
     <module>cdi-camel-archetype</module>
     <module>cdi-camel-http-archetype</module>
     <module>cdi-camel-jetty-archetype</module>
@@ -66,6 +65,7 @@
     <module>spring-boot-webmvc-archetype</module>
     <module>spring-boot-ribbon-archetype</module>
     <module>spring-boot-hystrix-archetype</module>
+    <module>spring-camel-archetype</module>
     <module>swift-example-archetype</module>
     <module>vertx-simplest-archetype</module>
     <module>war-camel-servlet-archetype</module>
