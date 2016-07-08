@@ -52,7 +52,7 @@
     <!-- Docker & Fabric8 Configs -->
     <docker.from>fabric8/java-jboss-openjdk8-jdk:1.1.5</docker.from>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
-    <docker.image>${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
+    <fabric8.image>${fabric8.dockerUser}${project.artifactId}:${project.version}</fabric8.image>
     <docker.port.container.http>${http.port}</docker.port.container.http>
     <docker.port.container.jolokia>8778</docker.port.container.jolokia>
     <docker.port.container.metrics>9779</docker.port.container.metrics>
@@ -478,7 +478,7 @@
         <configuration>
           <images>
             <image>
-              <name>${docker.image}</name>
+              <name>${fabric8.image}</name>
               <build>
                 <from>${docker.from}</from>
                 <assembly>

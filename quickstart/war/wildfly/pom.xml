@@ -45,7 +45,7 @@
 
     <docker.from>jboss/wildfly:10.0.0.Final</docker.from>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
-    <docker.image>${fabric8.dockerUser}${project.artifactId}:${project.version}</docker.image>
+    <fabric8.image>${fabric8.dockerUser}${project.artifactId}:${project.version}</fabric8.image>
     <docker.assemblyDescriptorRef>artifact</docker.assemblyDescriptorRef>
 
     <fabric8.service.name>${project.artifactId}</fabric8.service.name>
@@ -113,7 +113,7 @@
         <configuration>
           <images>
             <image>
-              <name>${docker.image}</name>
+              <name>${fabric8.image}</name>
               <build>
                 <from>${docker.from}</from>
                 <assembly>
