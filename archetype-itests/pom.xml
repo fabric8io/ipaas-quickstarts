@@ -199,7 +199,7 @@
                 <!-- java archetypes -->
                 <artifactItem>
                   <groupId>io.fabric8.archetypes</groupId>
-                  <artifactId>java-camel-spring-archetype</artifactId>
+                  <artifactId>spring-camel-archetype</artifactId>
                   <version>${project.version}</version>
                   <type>jar</type>
                   <overWrite>false</overWrite>
