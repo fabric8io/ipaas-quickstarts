@@ -22,7 +22,7 @@
     <parent>
         <artifactId>springboot</artifactId>
         <groupId>io.fabric8.quickstarts</groupId>
-        <version>2.3-SNAPSHOT</version>
+        <version>2.2.146</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
