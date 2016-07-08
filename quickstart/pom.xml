@@ -52,7 +52,6 @@
     <module>infinispan</module>
     <module>karaf</module>
     <module>node</module>
-    <module>spring-boot</module>
     <module>vertx</module>
     <module>war</module>
     <module>wildfly</module>
