@@ -33,11 +33,9 @@
 
   <modules>
     <module>webmvc</module>
-    <module>camel-amq</module>
     <module>camel-drools</module>
     <module>camel-teiid</module>
     <module>hystrix</module>
-    <module>ribbon</module>
   </modules>
 
 </project>
