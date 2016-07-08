@@ -165,13 +165,12 @@
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-servlet</artifactId>
       <version>9.2.11.v20150529</version>
-      <scope>optional</scope>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-rt-transports-http-jetty</artifactId>
       <version>${cxf.version}</version>
-      <scope>optional</scope>
     </dependency>
 
   </dependencies>
