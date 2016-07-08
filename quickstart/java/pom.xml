@@ -33,7 +33,6 @@
   <name>Fabric8 :: Quickstarts :: Java :: Parent</name>
 
   <modules>
-    <module>camel-spring</module>
     <module>fatjar</module>
     <module>mainclass</module>
   </modules>
