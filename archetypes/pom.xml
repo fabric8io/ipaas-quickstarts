@@ -55,6 +55,7 @@
     <!-- removed quickstart - for details see fabric8io/ipaas-quickstarts#1237 -->
     <!--<module>karaf-cxf-rest-archetype</module>-->
     <module>node-example-archetype</module>
+    <module>php-example-archetype</module>
     <module>rails-example-archetype</module>
 <!--
     <module>swarm-camel-archetype</module>
@@ -69,6 +70,7 @@
     <module>spring-boot-hystrix-archetype</module>
     <module>spring-camel-archetype</module>
     <module>swift-example-archetype</module>
+    <module>vertx-simple-archetype</module>
     <module>war-camel-servlet-archetype</module>
     <module>war-cxf-cdi-servlet-archetype</module>
     <module>war-wildfly-archetype</module>
