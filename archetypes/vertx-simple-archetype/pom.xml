@@ -25,8 +25,8 @@
         <version>2.3-SNAPSHOT</version>
     </parent>
 
-    <artifactId>vertx-simplest-archetype</artifactId>
-    <name>Fabric8 :: Archetypes :: Vert.x :: Simplest fat jar</name>
+    <artifactId>vertx-simple-archetype</artifactId>
+    <name>Fabric8 :: Archetypes :: Vert.x :: Fat Jar</name>
     <packaging>maven-archetype</packaging>
 
     <description>Creates a new Simple embedded vert.x fatjar</description>
