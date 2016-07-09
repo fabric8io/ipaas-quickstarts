@@ -18,6 +18,7 @@ package io.fabric8.tooling.archetype.builder;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import io.fabric8.utils.Strings;
 import org.slf4j.Logger;
@@ -73,6 +74,27 @@ public class Main {
             }
             System.out.println("Done creating archetypes:\n" + sb + "\n");
 
+            Set<String> missingArtifactIds = builder.getMissingArtifactIds();
+            if (missingArtifactIds.size() > 0) {
+                System.out.println();
+                System.out.println();
+                System.out.println("WARNING the following archetypes were not added to the archetypes catalog: " + missingArtifactIds);
+                System.out.println();
+                System.out.println("To add them please type the following commands into the terminal:");
+                System.out.println();
+                for (String missingArtifactId : missingArtifactIds) {
+                    System.out.println("git add archetypes/" + missingArtifactId);
+                }
+                System.out.println();
+                System.out.println("Then add the following XML into the archetypes/pom.xml file in the <modules> element:");
+                System.out.println();
+                for (String missingArtifactId : missingArtifactIds) {
+                    System.out.println("    <module>" + missingArtifactId + "</module>");
+                }
+                System.out.println();
+                System.out.println("Then git commit and submit a PR please!");
+                System.out.println();
+            }
         } catch (Exception e) {
             System.out.println("Caught: " + e.getMessage());
             e.printStackTrace();

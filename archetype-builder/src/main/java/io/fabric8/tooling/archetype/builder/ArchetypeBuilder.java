@@ -112,9 +112,14 @@ public class ArchetypeBuilder {
     private String indent = "  ";
     private File archetypesPomFile;
     private Set<String> archetypesPomArtifactIds;
+    private Set<String> missingArtifactIds = new TreeSet<>();
 
     public ArchetypeBuilder(File catalogXmlFile) {
         this.catalogXmlFile = catalogXmlFile;
+    }
+
+    public Set<String> getMissingArtifactIds() {
+        return missingArtifactIds;
     }
 
     public void setIndentSize(int indentSize) {
@@ -806,6 +811,7 @@ public class ArchetypeBuilder {
         if (archetypesPomArtifactIds != null) {
             if (!archetypesPomArtifactIds.contains(artifactId)) {
                 LOG.warn("Not adding archetype: " + artifactId + " to the  catalog as it is not included in the " + archetypesPomFile);
+                missingArtifactIds.add(artifactId);
                 return;
             }
         }
