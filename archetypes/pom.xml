@@ -40,6 +40,7 @@
     <module>cdi-camel-swagger-archetype</module>
     <module>cdi-cxf-archetype</module>
     <module>django-example-archetype</module>
+    <module>dotnet-example-archetype</module>
     <module>funktion-groovy-example-archetype</module>
     <module>funktion-java-example-archetype</module>
     <module>funktion-kotlin-example-archetype</module>
