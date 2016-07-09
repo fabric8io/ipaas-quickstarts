@@ -69,7 +69,6 @@
     <module>spring-boot-hystrix-archetype</module>
     <module>spring-camel-archetype</module>
     <module>swift-example-archetype</module>
-    <module>vertx-simplest-archetype</module>
     <module>war-camel-servlet-archetype</module>
     <module>war-cxf-cdi-servlet-archetype</module>
     <module>war-wildfly-archetype</module>
