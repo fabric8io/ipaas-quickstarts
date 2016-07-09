@@ -55,6 +55,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.regex.Pattern;
 
 /**
@@ -109,6 +110,8 @@ public class ArchetypeBuilder {
 
     private int indentSize = 2;
     private String indent = "  ";
+    private File archetypesPomFile;
+    private Set<String> archetypesPomArtifactIds;
 
     public ArchetypeBuilder(File catalogXmlFile) {
         this.catalogXmlFile = catalogXmlFile;
@@ -132,6 +135,9 @@ public class ArchetypeBuilder {
      * @throws IOException
      */
     public void configure() throws IOException {
+        if (archetypesPomFile != null) {
+            archetypesPomArtifactIds = loadArchetypesPomArtifactIds(archetypesPomFile);
+        }
         catalogXmlFile.getParentFile().mkdirs();
         LOG.info("Writing catalog: " + catalogXmlFile);
         printWriter = new PrintWriter(new OutputStreamWriter(new FileOutputStream(catalogXmlFile), "UTF-8"));
@@ -165,6 +171,33 @@ public class ArchetypeBuilder {
                     LOG.debug("bom property: {}={}", entry.getKey(), entry.getValue());
                 }
             }
+        }
+    }
+
+    protected Set<String> loadArchetypesPomArtifactIds(File archetypesPomFile) throws IOException {
+        Set<String> answer = new TreeSet<>();
+        if (!archetypesPomFile.isFile() || !archetypesPomFile.exists()) {
+            LOG.warn("archetypes pom.xml file does not exist!: " + archetypesPomFile);
+            return null;
+
+        }
+        try {
+            Document doc = archetypeUtils.parseXml(new InputSource(new FileReader(archetypesPomFile)));
+            Element root = doc.getDocumentElement();
+
+            // lets load all the properties defined in the <properties> element in the bom pom.
+            NodeList moduleElements = root.getElementsByTagName("module");
+            for (int i = 0, size = moduleElements.getLength(); i < size; i++) {
+                Element moduleElement = (Element) moduleElements.item(i);
+                String module = moduleElement.getTextContent();
+                if (Strings.isNotBlank(module)) {
+                    answer.add(module);
+                }
+            }
+            LOG.info("Loaded archetypes module names: "+ answer);
+            return answer;
+        } catch (FileNotFoundException e) {
+            throw new IOException("Failed to parse " + archetypesPomFile + ". " + e, e);
         }
     }
 
@@ -770,6 +803,12 @@ public class ArchetypeBuilder {
             version = archetypeUtils.firstElementText(root, "version", "");
         }
 
+        if (archetypesPomArtifactIds != null) {
+            if (!archetypesPomArtifactIds.contains(artifactId)) {
+                LOG.warn("Not adding archetype: " + artifactId + " to the  catalog as it is not included in the " + archetypesPomFile);
+                return;
+            }
+        }
         printWriter.println(String.format(indent + indent + "<archetype>\n" +
             indent + indent + indent + "<groupId>%s</groupId>\n" +
             indent + indent + indent + "<artifactId>%s</artifactId>\n" +
@@ -910,6 +949,10 @@ public class ArchetypeBuilder {
             IOHelpers.close(reader, sw);
         }
         return sw.toString();
+    }
+
+    public void setArchetypesPomFile(File archetypesPomFile) {
+        this.archetypesPomFile = archetypesPomFile;
     }
 
     /**

@@ -47,8 +47,11 @@ public class Main {
             String outputPath = System.getProperty("outputdir");
             File outputDir = Strings.isNotBlank(outputPath) ? new File(outputPath) : new File(basedir);
 
+            File archetypesPomFile = new File(basedir, "../archetypes/pom.xml").getCanonicalFile();
+
             ArchetypeBuilder builder = new ArchetypeBuilder(catalogFile);
             builder.setBomFile(bomFile);
+            builder.setArchetypesPomFile(archetypesPomFile);
             builder.configure();
 
             List<String> dirs = new ArrayList<>();
