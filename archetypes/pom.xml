@@ -33,10 +33,10 @@
   <name>Fabric8 :: Archetypes :: Parent</name>
 
   <modules>
+    <module>cdi-camel-amq-archetype</module>
     <module>cdi-camel-archetype</module>
-    <module>cdi-camel-http-archetype</module>
+    <module>cdi-camel-http-client-archetype</module>
     <module>cdi-camel-jetty-archetype</module>
-    <module>cdi-camel-mq-archetype</module>
     <module>cdi-camel-swagger-archetype</module>
     <module>cdi-cxf-archetype</module>
     <module>django-example-archetype</module>

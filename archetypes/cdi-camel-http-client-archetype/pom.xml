@@ -24,12 +24,12 @@
         <artifactId>archetypes</artifactId>
         <version>2.3-SNAPSHOT</version>
     </parent>
-    
-    <artifactId>cdi-camel-mq-archetype</artifactId>
-    <name>Fabric8 :: Archetypes :: CDI :: Camel and ActiveMQ</name>
+
+    <artifactId>cdi-camel-http-client-archetype</artifactId>
+    <name>Fabric8 :: Archetypes :: CDI :: Camel with HTTP as client</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new Camel route using CDI and ActiveMQ in a standalone Java Container</description>
+    <description>Creates a new Camel route using CDI in a standalone Java Container using HTTP client to call remote camel-jetty quickstart</description>
 
     <build>
         <extensions>
