@@ -95,6 +95,9 @@ public class Main {
                 System.out.println("Then git commit and submit a PR please!");
                 System.out.println();
             }
+
+            PomValidator validator = new PomValidator(new File("../git-clones"));
+            validator.validate();
         } catch (Exception e) {
             System.out.println("Caught: " + e.getMessage());
             e.printStackTrace();
