@@ -48,7 +48,6 @@
   </properties>
 
   <modules>
-    <module>cdi</module>
     <module>infinispan</module>
     <module>karaf</module>
     <module>node</module>
