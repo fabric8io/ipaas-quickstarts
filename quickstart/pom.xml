@@ -48,7 +48,6 @@
   </properties>
 
   <modules>
-    <module>infinispan</module>
     <module>karaf</module>
     <module>node</module>
     <module>war</module>
