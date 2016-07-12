@@ -25,7 +25,7 @@
         <version>2.3-SNAPSHOT</version>
     </parent>
 
-    <artifactId>infinispan-infinispan-client-archetype</artifactId>
+    <artifactId>infinispan-client-archetype</artifactId>
     <name>Fabric8 :: Archetypes :: Infinispan :: Client</name>
     <packaging>maven-archetype</packaging>
 
