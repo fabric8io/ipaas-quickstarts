@@ -25,14 +25,18 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 import org.xml.sax.InputSource;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 /**
  * Validates the pom.xml files from the quickstarts to check that
@@ -75,6 +79,22 @@ public class PomValidator {
                         validatePom(file.getName(), pom);
                     }
                 }
+            }
+
+            if (!addMavenDependency.isEmpty()) {
+                System.out.println();
+                System.out.println();
+                if (!addPropertiesToMavenDependenciesPom()) {
+                    System.out.println("Please add the following lines to: https://github.com/fabric8io/fabric8-maven-dependencies/blob/master/pom.xml#L39");
+                    System.out.println("Inside the <properties> element");
+                    System.out.println();
+                    for (Map.Entry<String, String> entry : addMavenDependency.entrySet()) {
+                        String propertyName = entry.getKey();
+                        String propertyValue = entry.getValue();
+                        System.out.println("    <" + propertyName + ">" + propertyValue + "</" + propertyName + ">");
+                    }
+                }
+                System.out.println();
             }
         }
     }
@@ -152,20 +172,76 @@ public class PomValidator {
             Element plugin = (Element) pluginElements.item(i);
             validateVersion(prefix + " plugin", plugin, propertyElement);
         }
+    }
 
-        if (!addMavenDependency.isEmpty()) {
-            System.out.println();
-            System.out.println();
-            System.out.println("Please add the following lines to: https://github.com/fabric8io/fabric8-maven-dependencies/blob/master/pom.xml#L39");
-            System.out.println("Inside the <properties> element");
-            System.out.println();
-            for (Map.Entry<String, String> entry : addMavenDependency.entrySet()) {
-                String propertyName = entry.getKey();
-                String propertyValue = entry.getValue();
-                System.out.println("    <" + propertyName + ">" + propertyValue + "</" + propertyName + ">");
+    private boolean addPropertiesToMavenDependenciesPom() {
+        File pom = new File("../../fabric8-maven-dependencies/pom.xml");
+        if (pom.isFile() && pom.exists()) {
+            Document doc;
+            try {
+                doc = archetypeUtils.parseXml(new InputSource(new FileReader(pom)));
+            } catch (Exception e) {
+                LOG.error("Failed to parse " + pom + ". " + e, e);
+                return false;
             }
-            System.out.println();
+            Element root = doc.getDocumentElement();
+
+            Element properties = getPropertiesElement(root);
+            if (properties != null) {
+                Set<String> addedProperties = new TreeSet<>();
+                for (Map.Entry<String, String> entry : addMavenDependency.entrySet()) {
+                    String propertyName = entry.getKey();
+                    String propertyValue = entry.getValue();
+                    if (addPropertyElement(properties, propertyName, propertyValue)) {
+                        addedProperties.add(propertyName);
+                    }
+                }
+
+                if (addedProperties.size() > 0) {
+                    System.out.println("Added properties " + addMavenDependency.keySet() + " to " + pom);
+                    System.out.println("Please commit this change and submit a Pull Request!!!");
+
+                    try {
+                        archetypeUtils.writeXmlDocument(doc, pom);
+                        return true;
+                    } catch (IOException e) {
+                        LOG.error("Failed to write " + pom + ". " + e, e);
+                    }
+                }
+            }
         }
+        return false;
+    }
+
+    /**
+     * Lets add a child element at the right place
+     */
+    private boolean addPropertyElement(Element element, String elementName, String textContent) {
+        Document doc = element.getOwnerDocument();
+        Element newElement = doc.createElement(elementName);
+        newElement.setTextContent(textContent);
+        Text textNode = doc.createTextNode("\n    ");
+
+        NodeList childNodes = element.getChildNodes();
+        for (int i = 0, size = childNodes.getLength(); i < size; i++) {
+            Node item = childNodes.item(i);
+            if (item instanceof Element) {
+                Element childElement = (Element) item;
+                int value = childElement.getTagName().compareTo(elementName);
+                if (value == 0) {
+                    return false;
+                }
+                if (value > 0) {
+                    element.insertBefore(textNode, childElement);
+                    element.insertBefore(newElement, textNode);
+                    return true;
+                }
+            }
+        }
+        // lets insert at the end
+        element.appendChild(textNode);
+        element.appendChild(newElement);
+        return true;
     }
 
     private void validateVersion(String kind, Element element, Element propertyElement) {
