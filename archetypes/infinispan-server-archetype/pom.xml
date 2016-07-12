@@ -25,7 +25,7 @@
         <version>2.3-SNAPSHOT</version>
     </parent>
 
-    <artifactId>infinispan-infinispan-server-archetype</artifactId>
+    <artifactId>infinispan-server-archetype</artifactId>
     <name>Fabric8 :: Archetypes :: Infinispan :: Server</name>
     <packaging>maven-archetype</packaging>
 
