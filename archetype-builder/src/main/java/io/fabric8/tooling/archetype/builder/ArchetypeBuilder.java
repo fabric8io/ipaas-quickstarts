@@ -35,27 +35,8 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 import org.xml.sax.InputSource;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import java.io.*;
+import java.util.*;
 import java.util.regex.Pattern;
 
 /**
@@ -224,60 +205,96 @@ public class ArchetypeBuilder {
         Objects.notNull(organization, "No github organisation found for: " + githubOrg);
         Map<String, GHRepository> repositories = organization.getRepositories();
         Set<Map.Entry<String, GHRepository>> entries = repositories.entrySet();
+
+        File cloneParentDir = new File(outputDir, "../git-clones");
+        if (cloneParentDir.exists()) {
+            Files.recursiveDelete(cloneParentDir);
+        }
+        for (Map.Entry<String, GHRepository> entry : entries) {
+            String repoName = entry.getKey();
+            GHRepository repo = entry.getValue();
+            String url = repo.getGitTransportUrl();
+
+            generateArchetypeFromGitRepo(outputDir, dirs, cloneParentDir, repoName, url);
+        }
+    }
+
+    /**
+     * Iterates through all projects in the given properties file adn generate an archetype for it
+     */
+    public void generateArchetypesFromGitRepoList(File file, File outputDir, List<String> dirs) throws IOException {
         File cloneParentDir = new File(outputDir, "../git-clones");
         if (cloneParentDir.exists()) {
             Files.recursiveDelete(cloneParentDir);
         }
 
-        for (Map.Entry<String, GHRepository> entry : entries) {
-            String repoName = entry.getKey();
-            GHRepository repo = entry.getValue();
-            String archetypeFolderName = repoName + "-archetype";
-            File projectDir = new File(outputDir, archetypeFolderName);
-            File destDir = new File(projectDir, ARCHETYPE_RESOURCES_PATH);
-            //File cloneDir = new File(projectDir, ARCHETYPE_RESOURCES_PATH);
-            File cloneDir = new File(cloneParentDir, archetypeFolderName);
-            cloneDir.mkdirs();
+        Properties properties = new Properties();
+        try (FileInputStream is = new FileInputStream(file)) {
+            properties.load(is);
+        }
 
-            String url = repo.getGitTransportUrl();
-            System.out.println("Cloning repo " + url + " to " + cloneDir);
-            cloneDir.getParentFile().mkdirs();
-            if (cloneDir.exists()) {
-                Files.recursiveDelete(cloneDir);
-            }
+        for (Map.Entry<Object, Object> entry : properties.entrySet()) {
+            generateArchetypeFromGitRepo(outputDir, dirs, cloneParentDir, (String)entry.getKey(), (String)entry.getValue());
+        }
+    }
 
-            CloneCommand command = Git.cloneRepository().setCloneAllBranches(false).setURI(url).setDirectory(cloneDir);
+    private void generateArchetypeFromGitRepo(File outputDir, List<String> dirs, File cloneParentDir, String repoName, String repoURL) throws IOException {
+        String archetypeFolderName = repoName + "-archetype";
+        File projectDir = new File(outputDir, archetypeFolderName);
+        File destDir = new File(projectDir, ARCHETYPE_RESOURCES_PATH);
+        //File cloneDir = new File(projectDir, ARCHETYPE_RESOURCES_PATH);
+        File cloneDir = new File(cloneParentDir, archetypeFolderName);
+        cloneDir.mkdirs();
 
+        System.out.println("Cloning repo " + repoURL + " to " + cloneDir);
+        cloneDir.getParentFile().mkdirs();
+        if (cloneDir.exists()) {
+            Files.recursiveDelete(cloneDir);
+        }
+
+        CloneCommand command = Git.cloneRepository().setCloneAllBranches(false).setURI(repoURL).setDirectory(cloneDir);
+
+        try {
+            command.call();
+        } catch (Throwable e) {
+            LOG.error("Failed to command remote repo " + repoURL + " due: " + e.getMessage(), e);
+            throw new IOException("Failed to command remote repo " + repoURL + " due: " + e.getMessage(), e);
+        }
+
+        // Try to checkout a specific tag.
+        String tag = System.getProperty("repo.tag", "").trim();
+        if( !tag.isEmpty() ) {
             try {
-                command.call();
+                Git.open(cloneDir).checkout().setName(tag).call();
             } catch (Throwable e) {
-                LOG.error("Failed to command remote repo " + url + " due: " + e.getMessage(), e);
-                throw new IOException("Failed to command remote repo " + url + " due: " + e.getMessage(), e);
+                LOG.error("Failed checkout " + tag + " due: " + e.getMessage(), e);
+                throw new IOException("Failed checkout " + tag + " due: " + e.getMessage(), e);
             }
-            File gitFolder = new File(cloneDir, ".git");
-            Files.recursiveDelete(gitFolder);
+        }
 
-            File pom = new File(cloneDir, "pom.xml");
-            if (pom.exists()) {
-                generateArchetype(cloneDir, pom, projectDir, false, dirs);
-            } else {
-                File from = cloneDir.getCanonicalFile();
-                File to = destDir.getCanonicalFile();
-                LOG.info("Copying git checkout from " + from + " to " + to);
-                Files.copy(from, to);
-            }
+        File gitFolder = new File(cloneDir, ".git");
+        Files.recursiveDelete(gitFolder);
 
-            String description = repoName.replace('-', ' ');
-            File archetypePom = generatePomIfRequired(projectDir, repoName, description);
-            if (archetypePom != null && archetypePom.exists()) {
-                addArchetypeMetaData(archetypePom, archetypeFolderName);
-            }
+        File pom = new File(cloneDir, "pom.xml");
+        if (pom.exists()) {
+            generateArchetype(cloneDir, pom, projectDir, false, dirs);
+        } else {
+            File from = cloneDir.getCanonicalFile();
+            File to = destDir.getCanonicalFile();
+            LOG.info("Copying git checkout from " + from + " to " + to);
+            Files.copy(from, to);
+        }
 
-            dirs.add(repoName);
-            File outputGitIgnoreFile = new File(projectDir, ".gitignore");
-            if (!outputGitIgnoreFile.exists()) {
-                ArchetypeUtils.writeGitIgnore(outputGitIgnoreFile);
-            }
+        String description = repoName.replace('-', ' ');
+        File archetypePom = generatePomIfRequired(projectDir, repoName, description);
+        if (archetypePom != null && archetypePom.exists()) {
+            addArchetypeMetaData(archetypePom, archetypeFolderName);
+        }
+
+        dirs.add(repoName);
+        File outputGitIgnoreFile = new File(projectDir, ".gitignore");
+        if (!outputGitIgnoreFile.exists()) {
+            ArchetypeUtils.writeGitIgnore(outputGitIgnoreFile);
         }
     }
 

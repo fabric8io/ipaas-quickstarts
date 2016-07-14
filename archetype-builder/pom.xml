@@ -154,6 +154,14 @@
               <key>project.version</key>
               <value>${project.version}</value>
             </systemProperty>
+            <systemProperty>
+              <key>repos</key>
+              <value>${quickstart.git.repos}</value>
+            </systemProperty>
+            <systemProperty>
+              <key>repo.tag</key>
+              <value>${quickstart.git.version}</value>
+            </systemProperty>
           </systemProperties>
         </configuration>
       </plugin>
