@@ -289,7 +289,7 @@
                 <!-- vertx archetypes -->
                 <artifactItem>
                   <groupId>io.fabric8.archetypes</groupId>
-                  <artifactId>vertx-simplest-archetype</artifactId>
+                  <artifactId>vertx-simple-archetype</artifactId>
                   <version>${project.version}</version>
                   <type>jar</type>
                   <overWrite>false</overWrite>
