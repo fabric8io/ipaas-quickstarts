@@ -86,13 +86,13 @@
     <maven.surefire.plugin.version>2.19.1</maven.surefire.plugin.version>
     <maven-resources-plugin.version>2.6</maven-resources-plugin.version>
     <junit.version>4.12</junit.version>
-    <fabric8.version>2.2.143</fabric8.version>
+    <fabric8.version>2.2.144</fabric8.version>
     <fabric8.release.version>${fabric8.version}</fabric8.release.version>
     <maven.enforcer.plugin.version>1.4.1</maven.enforcer.plugin.version>
 
     <!-- build with -Dquickstart.git.repos=path/to/repos.properties to configure a list of repos
          to clone instead of using the discovered the github repos. -->
-    <quickstart.git.repos></quickstart.git.repos>
+    <quickstart.git.repos/>
     <quickstart.git.version>master</quickstart.git.version>
 
   </properties>
