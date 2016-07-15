@@ -20,7 +20,7 @@
 
     <feature name="swagger2" version="${project.version}" description="swagger2 necessary bundkles">
         <!-- swagger -->
-            <bundle start-level="10">mvn:javax.ws.rs/jsr311-api/1.1.1</bundle>
+            <bundle start-level="10">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jsr339-api-2.0/2.5.0</bundle>
             <bundle start-level="10">mvn:com.fasterxml.jackson.core/jackson-core/2.6.3</bundle>
             <bundle start-level="10">mvn:com.fasterxml.jackson.core/jackson-databind/2.6.3</bundle>
             <bundle start-level="10">mvn:com.fasterxml.jackson.core/jackson-annotations/2.6.3</bundle>
