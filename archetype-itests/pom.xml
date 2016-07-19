@@ -162,7 +162,7 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>io.fabric8.archetypes</groupId>
-                  <artifactId>cdi-camel-http-archetype</artifactId>
+                  <artifactId>cdi-camel-http-client-archetype</artifactId>
                   <version>${project.version}</version>
                   <type>jar</type>
                   <overWrite>false</overWrite>
