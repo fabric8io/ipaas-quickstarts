@@ -176,7 +176,7 @@
                 </artifactItem>
                 <artifactItem>
                   <groupId>io.fabric8.archetypes</groupId>
-                  <artifactId>cdi-camel-mq-archetype</artifactId>
+                  <artifactId>cdi-camel-amq-archetype</artifactId>
                   <version>${project.version}</version>
                   <type>jar</type>
                   <overWrite>false</overWrite>
