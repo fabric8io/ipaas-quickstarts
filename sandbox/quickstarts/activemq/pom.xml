@@ -38,8 +38,8 @@
     <integrationTestPattern>**/*KT.java</integrationTestPattern>
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
-    <fabric8.version>2.2.142</fabric8.version>
-    <docker.maven.plugin.version>0.15.9</docker.maven.plugin.version>
+    <fabric8.version>2.2.144</fabric8.version>
+    <docker.maven.plugin.version>0.15.10</docker.maven.plugin.version>
 
     <spring-boot.version>1.2.7.RELEASE</spring-boot.version>
     <spring-boot-plugin.version>1.2.7.RELEASE</spring-boot-plugin.version>
