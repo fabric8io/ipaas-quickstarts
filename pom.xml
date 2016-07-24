@@ -77,7 +77,7 @@
     <docker.source.dir>${basedir}/src/main/docker</docker.source.dir>
 
     <arquillian.version>1.1.11.Final</arquillian.version>
-    <docker.maven.plugin.version>0.15.10</docker.maven.plugin.version>
+    <docker.maven.plugin.version>0.15.11</docker.maven.plugin.version>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <!--
             <docker.registry>registry.hub.docker.com</docker.registry>
