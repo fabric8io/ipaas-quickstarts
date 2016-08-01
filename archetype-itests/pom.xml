@@ -31,6 +31,10 @@
   <name>Fabric8 :: Archetypes :: Integration Tests</name>
   <packaging>jar</packaging>
 
+  <properties>
+    <test.archetype></test.archetype>
+    <maven-failsafe-plugin.version>2.19</maven-failsafe-plugin.version>
+  </properties>
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -49,11 +53,26 @@
       <artifactId>fabric8-utils</artifactId>
     </dependency>
     <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>kubernetes-api</artifactId>
+    </dependency>
+    <dependency>
       <groupId>io.fabric8.quickstarts</groupId>
       <artifactId>archetype-builder</artifactId>
       <version>${project.version}</version>
     </dependency>
 
+    <dependency>
+      <groupId>io.fabric8.archetypes</groupId>
+      <artifactId>archetypes-catalog</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-embedder</artifactId>
@@ -134,197 +153,11 @@
           <systemPropertyVariables>
             <basedir>${basedir}</basedir>
             <project.version>${project.version}</project.version>
+            <fabric8.version>${fabric8.version}</fabric8.version>
+            <failsafe.version>${maven-failsafe-plugin.version}</failsafe.version>
+            <test.archetype>${test.archetype}</test.archetype>
           </systemPropertyVariables>
         </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <version>2.10</version>
-        <executions>
-          <execution>
-            <id>copy</id>
-            <phase>compile</phase>
-            <goals>
-              <goal>copy</goal>
-            </goals>
-            <configuration>
-              <artifactItems>
-
-                <!-- cdi archetypes -->
-                <artifactItem>
-                  <groupId>io.fabric8.archetypes</groupId>
-                  <artifactId>cdi-camel-archetype</artifactId>
-                  <version>${project.version}</version>
-                  <type>jar</type>
-                  <overWrite>false</overWrite>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>io.fabric8.archetypes</groupId>
-                  <artifactId>cdi-camel-http-client-archetype</artifactId>
-                  <version>${project.version}</version>
-                  <type>jar</type>
-                  <overWrite>false</overWrite>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>io.fabric8.archetypes</groupId>
-                  <artifactId>cdi-camel-jetty-archetype</artifactId>
-                  <version>${project.version}</version>
-                  <type>jar</type>
-                  <overWrite>false</overWrite>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>io.fabric8.archetypes</groupId>
-                  <artifactId>cdi-camel-amq-archetype</artifactId>
-                  <version>${project.version}</version>
-                  <type>jar</type>
-                  <overWrite>false</overWrite>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>io.fabric8.archetypes</groupId>
-                  <artifactId>cdi-camel-swagger-archetype</artifactId>
-                  <version>${project.version}</version>
-                  <type>jar</type>
-                  <overWrite>false</overWrite>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>io.fabric8.archetypes</groupId>
-                  <artifactId>cdi-cxf-archetype</artifactId>
-                  <version>${project.version}</version>
-                  <type>jar</type>
-                  <overWrite>false</overWrite>
-                </artifactItem>
-
-                <!-- java archetypes -->
-                <artifactItem>
-                  <groupId>io.fabric8.archetypes</groupId>
-                  <artifactId>spring-camel-archetype</artifactId>
-                  <version>${project.version}</version>
-                  <type>jar</type>
-                  <overWrite>false</overWrite>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>io.fabric8.archetypes</groupId>
-                  <artifactId>java-fatjar-archetype</artifactId>
-                  <version>${project.version}</version>
-                  <type>jar</type>
-                  <overWrite>false</overWrite>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>io.fabric8.archetypes</groupId>
-                  <artifactId>java-mainclass-archetype</artifactId>
-                  <version>${project.version}</version>
-                  <type>jar</type>
-                  <overWrite>false</overWrite>
-                </artifactItem>
-
-                <!-- karaf archetypes -->
-                <artifactItem>
-                  <groupId>io.fabric8.archetypes</groupId>
-                  <artifactId>karaf-camel-amq-archetype</artifactId>
-                  <version>${project.version}</version>
-                  <type>jar</type>
-                  <overWrite>false</overWrite>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>io.fabric8.archetypes</groupId>
-                  <artifactId>karaf-camel-log-archetype</artifactId>
-                  <version>${project.version}</version>
-                  <type>jar</type>
-                  <overWrite>false</overWrite>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>io.fabric8.archetypes</groupId>
-                  <artifactId>karaf-camel-rest-sql-archetype</artifactId>
-                  <version>${project.version}</version>
-                  <type>jar</type>
-                  <overWrite>false</overWrite>
-                </artifactItem>
-
-                <!--spring-boot archetypes -->
-                <artifactItem>
-                  <groupId>io.fabric8.archetypes</groupId>
-                  <artifactId>spring-boot-camel-archetype</artifactId>
-                  <version>${project.version}</version>
-                  <type>jar</type>
-                  <overWrite>false</overWrite>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>io.fabric8.archetypes</groupId>
-                  <artifactId>spring-boot-camel-amq-archetype</artifactId>
-                  <version>${project.version}</version>
-                  <type>jar</type>
-                  <overWrite>false</overWrite>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>io.fabric8.archetypes</groupId>
-                  <artifactId>spring-boot-camel-drools-archetype</artifactId>
-                  <version>${project.version}</version>
-                  <type>jar</type>
-                  <overWrite>false</overWrite>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>io.fabric8.archetypes</groupId>
-                  <artifactId>spring-boot-camel-teiid-archetype</artifactId>
-                  <version>${project.version}</version>
-                  <type>jar</type>
-                  <overWrite>false</overWrite>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>io.fabric8.archetypes</groupId>
-                  <artifactId>spring-boot-webmvc-archetype</artifactId>
-                  <version>${project.version}</version>
-                  <type>jar</type>
-                  <overWrite>false</overWrite>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>io.fabric8.archetypes</groupId>
-                  <artifactId>spring-boot-ribbon-archetype</artifactId>
-                  <version>${project.version}</version>
-                  <type>jar</type>
-                  <overWrite>false</overWrite>
-                </artifactItem>
-
-                <!-- vertx archetypes -->
-                <artifactItem>
-                  <groupId>io.fabric8.archetypes</groupId>
-                  <artifactId>vertx-simple-archetype</artifactId>
-                  <version>${project.version}</version>
-                  <type>jar</type>
-                  <overWrite>false</overWrite>
-                </artifactItem>
-
-                <!-- war archetypes -->
-                <artifactItem>
-                  <groupId>io.fabric8.archetypes</groupId>
-                  <artifactId>war-camel-servlet-archetype</artifactId>
-                  <version>${project.version}</version>
-                  <type>jar</type>
-                  <overWrite>false</overWrite>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>io.fabric8.archetypes</groupId>
-                  <artifactId>war-cxf-cdi-servlet-archetype</artifactId>
-                  <version>${project.version}</version>
-                  <type>jar</type>
-                  <overWrite>false</overWrite>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>io.fabric8.archetypes</groupId>
-                  <artifactId>war-wildfly-archetype</artifactId>
-                  <version>${project.version}</version>
-                  <type>jar</type>
-                  <overWrite>false</overWrite>
-                </artifactItem>
-
-              </artifactItems>
-              <outputDirectory>${project.build.directory}/archetypes</outputDirectory>
-              <overWriteReleases>true</overWriteReleases>
-              <overWriteSnapshots>true</overWriteSnapshots>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
     </plugins>
   </build>

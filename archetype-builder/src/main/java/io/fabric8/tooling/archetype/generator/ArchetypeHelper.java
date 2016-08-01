@@ -193,6 +193,10 @@ public class ArchetypeHelper {
         // now lets replace all the properties in the pom.xml
         if (!replaceProperties.isEmpty()) {
             File pom = new File(outputDir, "pom.xml");
+            if (!pom.isFile()) {
+                // must be non maven archetype?
+                return 0;
+            }
             String text = IOHelpers.readFully(new FileReader(pom));
             for (Map.Entry<String, String> e : replaceProperties.entrySet()) {
                 text = replaceVariable(text, e.getKey(), e.getValue());
