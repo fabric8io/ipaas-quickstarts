@@ -39,4 +39,26 @@
         <!-- to be replaced -->
     </modules>
 
+
+    <profiles>
+      <profile>
+        <id>arq</id>
+        <activation />
+        <build>
+          <plugins>
+            <plugin>
+              <artifactId>maven-failsafe-plugin</artifactId>
+              <version>2.19</version>
+              <configuration>
+                <includes>
+                  <include>**/*KT.*</include>
+                </includes>
+              </configuration>
+            </plugin>
+          </plugins>
+        </build>
+      </profile>
+    </profiles>
+
+
 </project>
