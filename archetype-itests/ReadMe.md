@@ -22,8 +22,17 @@ Note make sure that your current shell can connect to both docker and a kubernet
 
 ### Testing a single archetype
 
-To just test a single archetype you can specify a system property ``test.archetype`
+Once you have built the generated projects you can just `cd` into the generated project folder and run things there directly
+
+```sh
+cd target/createdProjects/spring-boot-camel-archetype-output
+mvn clean install  -Dfabric8.mode=openshift -Dfabric8.build.recreate=all
+mvn failsafe:integration-test failsafe:verify
+ ```
+
+Or to just generate a signle single archetype you can specify a system property `test.archetype` in this folder when you run a build:
 
 ```sh
 mvn clean test -Dtest.archetype=cdi-camel-archetype
 ```
+
