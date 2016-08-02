@@ -125,6 +125,26 @@
        <modules><module>java-mainclass-archetype</module></modules>
     </profile>
     <profile>
+      <id>enable-jboss-fuse-camel-amq-archetype</id>
+      <activation><file><exists>${basedir}/jboss-fuse-camel-amq-archetype/src</exists></file></activation>
+      <modules><module>jboss-fuse-camel-amq-archetype</module></modules>
+    </profile>
+    <profile>
+      <id>enable-jboss-fuse-camel-log-archetype</id>
+      <activation><file><exists>${basedir}/jboss-fuse-camel-log-archetype/src</exists></file></activation>
+      <modules><module>jboss-fuse-camel-log-archetype</module></modules>
+    </profile>
+    <profile>
+      <id>enable-jboss-fuse-camel-rest-sql-archetype</id>
+      <activation><file><exists>${basedir}/jboss-fuse-camel-rest-sql-archetype/src</exists></file></activation>
+      <modules><module>jboss-fuse-camel-rest-sql-archetype</module></modules>
+    </profile>
+    <profile>
+      <id>enable-jboss-fuse-cxf-rest-archetype</id>
+      <activation><file><exists>${basedir}/jboss-fuse-cxf-rest-archetype/src</exists></file></activation>
+      <modules><module>jboss-fuse-cxf-rest-archetype</module></modules>
+    </profile>
+    <profile>
        <id>enable-karaf-camel-amq-archetype</id>
        <activation><file><exists>${basedir}/karaf-camel-amq-archetype/src</exists></file></activation>
        <modules><module>karaf-camel-amq-archetype</module></modules>
