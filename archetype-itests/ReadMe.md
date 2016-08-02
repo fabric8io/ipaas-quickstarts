@@ -1,6 +1,7 @@
 ## Archetypes Integration Test
 
-This module generates every archetype in the generated [archetype-catalog](../archetypes-catalog) as a project in `target/createdProjects` and then creates an uber pom in `target/createdProjects/pom.xml` and then checks that all the projects build.
+This module generates every archetype in the generated [archetype-catalog](../archetypes-catalog) as a project in `target/createdProjects` and then creates an uber pom in `target/createdProjects/pom.xml` and then checks that all the projects build and pass their system tests via  [Fabric8 Arquillian](https://github.com/fabric8io/fabric8/tree/master/components/fabric8-arquillian) 
+.
 
 ### Testing all the archetypes build OK
 
