@@ -15,26 +15,6 @@
  */
 package io.fabric8.tooling.archetype.generator;
 
-import io.fabric8.kubernetes.api.KubernetesHelper;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
-import io.fabric8.utils.DomHelper;
-import io.fabric8.utils.Files;
-import io.fabric8.utils.IOHelpers;
-import io.fabric8.utils.Strings;
-import io.fabric8.utils.XmlUtils;
-import org.apache.maven.cli.MavenCli;
-import org.junit.AfterClass;
-import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -52,6 +32,27 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import io.fabric8.kubernetes.api.KubernetesHelper;
+import io.fabric8.kubernetes.client.DefaultKubernetesClient;
+import io.fabric8.utils.DomHelper;
+import io.fabric8.utils.Files;
+import io.fabric8.utils.IOHelpers;
+import io.fabric8.utils.Strings;
+import io.fabric8.utils.XmlUtils;
+
+import org.apache.maven.cli.MavenCli;
+import org.junit.AfterClass;
+import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
@@ -490,6 +491,10 @@ public class ArchetypeTest {
                         args = new String[]{"clean", "install", "-Dfabric8.service.name=dummy-service", "-Dfabric8.mode=openshift"};
                     }
                 }
+                // using an itest settings.xml here similar to jboss-fuse archetypes configuration/settings.xml
+                args = Arrays.copyOf(args, args.length + 2);
+                args[args.length - 2] = "-s";
+                args[args.length - 1] = "../test-classes/settings.xml";
                 resultPointer[0] = maven.doMain(args, outDir, System.out, System.out);
                 LOG.info("result: " + resultPointer[0]);
 
