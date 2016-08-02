@@ -18,8 +18,18 @@ To enable the arquillian tests on each project type the following:
 mvn clean test -Dtest.arq=true
 ```
 
-Note make sure that your current shell can connect to both docker and a kubernetes or openshift cluster before trying to run this!
+NOTE: make sure that your current shell can connect to both docker and a kubernetes or openshift cluster before trying to run this!
+If you use [minikube](http://fabric8.io/guide/getStarted/minikube.html) or [minishift](http://fabric8.io/guide/getStarted/minishift.html) you will need to run one of these lines in your current shell:
 
+```sh
+eval $(minikube docker-env)
+
+eval $(minishift docker-env)
+```
+
+NOTE that [OpenShift is not yet supported for Arquillian tests with S2I binary builds](https://github.com/fabric8io/ipaas-quickstarts/issues/1369)! So I'd recommend you use Kubernetes for now.
+
+ 
 ### Testing a single archetype
 
 Once you have built the generated projects you can just `cd` into the generated project folder and run things there directly
