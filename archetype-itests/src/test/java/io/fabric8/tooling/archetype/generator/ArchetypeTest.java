@@ -53,6 +53,7 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import static javafx.scene.input.KeyCode.F;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 import static org.junit.Assert.assertEquals;
@@ -88,11 +89,6 @@ public class ArchetypeTest {
 
     // the following lists the archetypes which currently fail the system tests
     private static Set<String> ignoreArchetypes = new HashSet<>(Arrays.asList(
-            // TODO needs ActiveMQ dependency first
-            // see https://github.com/fabric8io/ipaas-quickstarts/issues/1358
-            "cdi-camel-amq-archetype",
-            "spring-boot-camel-amq-archetype",
-
             // TODO https://github.com/fabric8io/ipaas-quickstarts/issues/1359
             "funktion-groovy-example-archetype",
 
@@ -289,14 +285,46 @@ public class ArchetypeTest {
 
 
         // lets generate the system test
-        File systemTest = new File(outDir, "src/test/java/io/fabric8/systests/KubernetesIntegrationKT.java");
-        systemTest.getParentFile().mkdirs();
-        String javaFileName = "KubernetesIntegrationKT.java";
-        URL javaUrl = getClass().getClassLoader().getResource(javaFileName);
-        assertNotNull("Could not load resource on the classpath: " + javaFileName, javaUrl);
-        IOHelpers.copy(javaUrl.openStream(), new FileOutputStream(systemTest));
+        if (!hasGoodSystemTest(new File(outDir, "src/test/java"))) {
+            File systemTest = new File(outDir, "src/test/java/io/fabric8/systests/KubernetesIntegrationKT.java");
+            systemTest.getParentFile().mkdirs();
+            String javaFileName = "KubernetesIntegrationKT.java";
+            URL javaUrl = getClass().getClassLoader().getResource(javaFileName);
+            assertNotNull("Could not load resource on the classpath: " + javaFileName, javaUrl);
+            IOHelpers.copy(javaUrl.openStream(), new FileOutputStream(systemTest));
+        }
 
         outDirs.add(outDir.getPath());
+    }
+
+    /**
+     * Returns true if we can find a system test Java file which uses the nice <code>isPodReadyForPeriod()</code>
+     * assertions
+     */
+    protected boolean hasGoodSystemTest(File file) {
+        if (file.isFile()) {
+            String name = file.getName();
+            if (name.endsWith("KT.java")) {
+                try {
+                    String text = IOHelpers.readFully(file);
+                    if (text.contains("isPodReadyForPeriod(")) {
+                        LOG.info("Found good system test at " + file.getAbsolutePath() + " so not generating a new one for this archetype");
+                        return true;
+                    }
+                } catch (IOException e) {
+                    LOG.warn("Failed to load file " + file + ". " + e, e);
+                }
+            }
+        }
+        File[] files = file.listFiles();
+        if (files != null) {
+            for (File child : files) {
+                if (hasGoodSystemTest(child)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     protected static boolean ensureMavenDependency(Document doc, String groupId, String artifactId, String scope) {

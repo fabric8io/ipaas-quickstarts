@@ -30,7 +30,12 @@ eval $(minishift docker-env)
 
 NOTE that [OpenShift is not yet supported for Arquillian tests with S2I binary builds](https://github.com/fabric8io/ipaas-quickstarts/issues/1369)! So I'd recommend you use Kubernetes for now.
 
+#### Viewing the output
  
+Running all the tests can generate quite a bit of output :) 
+ 
+To browse or grep the test output see: `target/test.log`
+
 ### Testing a single archetype
 
 Once you have built the generated projects you can just `cd` into the generated project folder and run things there directly
