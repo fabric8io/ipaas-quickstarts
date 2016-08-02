@@ -106,9 +106,7 @@ public class ArchetypeTest {
             // TODO https://github.com/fabric8io/ipaas-quickstarts/issues/1363
             "spring-boot-hystrix-archetype",
             // TODO https://github.com/fabric8io/ipaas-quickstarts/issues/1364
-            "spring-boot-ribbon-archetype",
-            // TODO https://github.com/fabric8io/ipaas-quickstarts/issues/1365
-            "spring-camel-archetype"
+            "spring-boot-ribbon-archetype"
     ));
 
     private boolean verbose = true;
