@@ -36,3 +36,9 @@ Or to just generate a signle single archetype you can specify a system property 
 mvn clean test -Dtest.archetype=cdi-camel-archetype
 ```
 
+### Keeping track of failing archetypes
+
+When an archetype fails its system test we should [remove it from the catalog by excluding it from the archetypes/pom.xml file](https://github.com/fabric8io/ipaas-quickstarts/blob/master/archetypes/pom.xml#L36) and [create an issue for it](https://github.com/fabric8io/ipaas-quickstarts/issues/new).
+
+You can view all the current [failing system test issues](https://github.com/fabric8io/ipaas-quickstarts/issues?q=is%3Aissue+is%3Aopen+label%3A%22system+test%22) 
+

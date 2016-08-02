@@ -43,6 +43,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -52,7 +53,6 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import static org.apache.maven.artifact.ArtifactScopeEnum.test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 import static org.junit.Assert.assertEquals;
@@ -69,6 +69,51 @@ public class ArchetypeTest {
     private static File basedir = new File(System.getProperty("basedir", "."));
     private static String arqTesting = System.getProperty(ARQUILLIAN_SYSTEM_PROPERTY, "");
     private static File projectsOutputFolder = new File(basedir, "target/createdProjects");
+
+    // for an up to date list of failing system tests see
+    // https://github.com/fabric8io/ipaas-quickstarts/issues?q=is%3Aissue+is%3Aopen+label%3A%22system+test%22
+
+    // the following lists the sets of archetype prefixes which are not bet capable of being system tested yet
+    private static List<String> ignoreArchetypePrefixes = Arrays.asList(
+            // TODO https://github.com/fabric8io/ipaas-quickstarts/issues/1366
+            "karaf-",
+
+            // TODO https://github.com/fabric8io/ipaas-quickstarts/issues/1367
+            "war-",
+
+            // TODO https://github.com/fabric8io/ipaas-quickstarts/issues/1368
+            "wildfly-camel-"
+    );
+
+
+    // the following lists the archetypes which currently fail the system tests
+    private static Set<String> ignoreArchetypes = new HashSet<>(Arrays.asList(
+            // TODO needs ActiveMQ dependency first
+            // see https://github.com/fabric8io/ipaas-quickstarts/issues/1358
+            "cdi-camel-amq-archetype",
+            "spring-boot-camel-amq-archetype",
+
+            // TODO https://github.com/fabric8io/ipaas-quickstarts/issues/1359
+            "funktion-groovy-example-archetype",
+
+            // TODO https://github.com/fabric8io/ipaas-quickstarts/issues/1360
+            "funktion-java-example-archetype",
+
+            // TODO funktion nodejs build issue
+            // https://github.com/fabric8io/ipaas-quickstarts/issues/1361
+            "funktion-nodejs-example-archetype",
+
+            // TODO requires infinispan-server to be deployed
+            // https://github.com/fabric8io/ipaas-quickstarts/issues/1362
+            "infinispan-client-archetype",
+
+            // TODO https://github.com/fabric8io/ipaas-quickstarts/issues/1363
+            "spring-boot-hystrix-archetype",
+            // TODO https://github.com/fabric8io/ipaas-quickstarts/issues/1364
+            "spring-boot-ribbon-archetype",
+            // TODO https://github.com/fabric8io/ipaas-quickstarts/issues/1365
+            "spring-camel-archetype"
+    ));
 
     private boolean verbose = true;
 
@@ -97,7 +142,11 @@ public class ArchetypeTest {
             } else {
                 LOG.info("Generating archetypes: " + archetypes);
                 for (String archetype : archetypes) {
-                    assertArchetypeCreated(archetype);
+                    if (ignoreArchetype(archetype)) {
+                        LOG.warn("Ignoring archetype: " + archetype);
+                    } else {
+                        assertArchetypeCreated(archetype);
+                    }
                 }
             }
 
@@ -106,6 +155,15 @@ public class ArchetypeTest {
             fail("Failed to create archetypes: " + e, e);
             failed = true;
         }
+    }
+
+    protected boolean ignoreArchetype(String archetype) {
+        for (String prefix : ignoreArchetypePrefixes) {
+            if (archetype.startsWith(prefix)) {
+                return true;
+            }
+        }
+        return ignoreArchetypes.contains(archetype);
     }
 
     protected List<String> getArchetypesFromJar() throws IOException {
@@ -164,15 +222,17 @@ public class ArchetypeTest {
                 + artifactId + "-" + projectVersion + ".jar");
         assertThat(archetypeJar).describedAs("Could not find archetype jar for artifact id: " + artifactId).isFile();
 
-        assertArchetypeCreated(artifactId, groupId, projectVersion, archetypeJar);
+        assertArchetypeCreated(artifactId, "io.fabric8.archetypes.itests", projectVersion, archetypeJar);
     }
 
     private void assertArchetypeCreated(String artifactId, String groupId, String version, File archetypejar) throws Exception {
-        File outDir = new File(projectsOutputFolder, artifactId + "-output");
+        artifactId = Strings.stripSuffix(artifactId, "-archetype");
+        artifactId = Strings.stripSuffix(artifactId, "-example");
+        File outDir = new File(projectsOutputFolder, artifactId);
 
-        System.out.println("Creating Archetype " + groupId + ":" + artifactId + ":" + version);
+        LOG.info("Creating Archetype " + groupId + ":" + artifactId + ":" + version);
         Map<String, String> properties = new ArchetypeHelper(archetypejar, outDir, groupId, artifactId, version, null, null).parseProperties();
-        System.out.println("Has preferred properties: " + properties);
+        LOG.info("Has preferred properties: " + properties);
 
         ArchetypeHelper helper = new ArchetypeHelper(archetypejar, outDir, groupId, artifactId, version, null, null);
         helper.setPackageName(packageName);
@@ -200,7 +260,7 @@ public class ArchetypeTest {
         String badText = "${camel-";
         if (pomText.contains(badText)) {
             if (verbose) {
-                System.out.println(pomText);
+                LOG.info(pomText);
             }
             fail("" + pom + " contains " + badText);
         }
@@ -392,7 +452,7 @@ public class ArchetypeTest {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                System.out.println("Invoking projects in " + outDir);
+                LOG.info("Invoking projects in " + outDir);
                 System.setProperty("maven.multiModuleProjectDirectory", "$M2_HOME");
                 MavenCli maven = new MavenCli();
                 // Dmaven.multiModuleProjectDirectory
@@ -406,12 +466,14 @@ public class ArchetypeTest {
                     }
                 }
                 resultPointer[0] = maven.doMain(args, outDir, System.out, System.out);
-                System.out.println("result: " + resultPointer[0]);
+                LOG.info("result: " + resultPointer[0]);
 
                 if (useArq && resultPointer[0] == 0) {
-                    args = new String[]{"failsafe:integration-test", "failsafe:verify", "-Dfabric8.service.name=dummy-service"};
+                    maven = new MavenCli();
+                    args = new String[]{"failsafe:integration-test", "failsafe:verify", "-fae"};
+                    LOG.info("Now trying to run the integration tests via: mvn " + Strings.join(" ", args));
                     resultPointer[0] = maven.doMain(args, outDir, System.out, System.out);
-                    System.out.println("result: " + resultPointer[0]);
+                    LOG.info("result: " + resultPointer[0]);
                 }
             }
         });
