@@ -35,9 +35,6 @@ public class Main {
         }
 
         String sourcedir = System.getProperty("sourcedir");
-        if (Strings.isNullOrBlank(sourcedir)) {
-            throw new IllegalArgumentException("No sourcedir system property");
-        }
 
         File bomFile = new File(basedir, System.getProperty("rootPomFile", "../pom.xml"));
         File catalogFile = new File(basedir, "target/classes/archetype-catalog.xml").getCanonicalFile();
@@ -56,9 +53,12 @@ public class Main {
 
         List<String> dirs = new ArrayList<>();
         try {
-            File sourceDirectory = new File(sourcedir);
-            if (!sourceDirectory.exists() || !sourceDirectory.isDirectory()) {
-                throw new IllegalArgumentException("Source directory: " + sourcedir + " is not a valid directory");
+            if( sourcedir != null ) {
+                File sourceDirectory = new File(sourcedir);
+                if (!sourceDirectory.exists() || !sourceDirectory.isDirectory()) {
+                    throw new IllegalArgumentException("Source directory: " + sourcedir + " is not a valid directory");
+                }
+                builder.generateArchetypes("", sourceDirectory, outputDir, false, dirs);
             }
 
             String repoListFile = System.getProperty("repos", "").trim();
@@ -68,7 +68,6 @@ public class Main {
                 builder.generateArchetypesFromGitRepoList(new File(repoListFile), outputDir, dirs);
             }
 
-            builder.generateArchetypes("", sourceDirectory, outputDir, false, dirs);
         } finally {
             LOG.debug("Completed the generation. Closing!");
             builder.close();
