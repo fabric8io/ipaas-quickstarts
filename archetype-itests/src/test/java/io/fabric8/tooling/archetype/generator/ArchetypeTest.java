@@ -490,6 +490,10 @@ public class ArchetypeTest {
                         args = new String[]{"clean", "install", "-Dfabric8.service.name=dummy-service", "-Dfabric8.mode=openshift"};
                     }
                 }
+                // using an itest settings.xml here similar to jboss-fuse archetypes configuration/settings.xml
+                args = Arrays.copyOf(args, args.length + 2);
+                args[args.length - 2] = "-s";
+                args[args.length - 1] = "../test-classes/settings.xml";
                 resultPointer[0] = maven.doMain(args, outDir, System.out, System.out);
                 LOG.info("result: " + resultPointer[0]);
 
