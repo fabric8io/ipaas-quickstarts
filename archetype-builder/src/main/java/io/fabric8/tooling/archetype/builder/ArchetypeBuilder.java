@@ -215,7 +215,7 @@ public class ArchetypeBuilder {
             GHRepository repo = entry.getValue();
             String url = repo.getGitTransportUrl();
 
-            generateArchetypeFromGitRepo(outputDir, dirs, cloneParentDir, repoName, url);
+            generateArchetypeFromGitRepo(outputDir, dirs, cloneParentDir, repoName, url, null);
         }
     }
 
@@ -234,11 +234,14 @@ public class ArchetypeBuilder {
         }
 
         for (Map.Entry<Object, Object> entry : properties.entrySet()) {
-            generateArchetypeFromGitRepo(outputDir, dirs, cloneParentDir, (String)entry.getKey(), (String)entry.getValue());
+            LinkedList<String> values = new LinkedList<>(Arrays.asList(((String) entry.getValue()).split("|")));
+            String gitrepo = values.removeFirst();
+            String tag = values.isEmpty() ? null : values.removeFirst();
+            generateArchetypeFromGitRepo(outputDir, dirs, cloneParentDir, (String)entry.getKey(), gitrepo, tag);
         }
     }
 
-    private void generateArchetypeFromGitRepo(File outputDir, List<String> dirs, File cloneParentDir, String repoName, String repoURL) throws IOException {
+    private void generateArchetypeFromGitRepo(File outputDir, List<String> dirs, File cloneParentDir, String repoName, String repoURL, String tag) throws IOException {
         String archetypeFolderName = repoName + "-archetype";
         File projectDir = new File(outputDir, archetypeFolderName);
         File destDir = new File(projectDir, ARCHETYPE_RESOURCES_PATH);
@@ -262,7 +265,9 @@ public class ArchetypeBuilder {
         }
 
         // Try to checkout a specific tag.
-        String tag = System.getProperty("repo.tag", "").trim();
+        if (tag == null) {
+            tag = System.getProperty("repo.tag", "").trim();
+        }
         if( !tag.isEmpty() ) {
             try {
                 Git.open(cloneDir).checkout().setName(tag).call();
