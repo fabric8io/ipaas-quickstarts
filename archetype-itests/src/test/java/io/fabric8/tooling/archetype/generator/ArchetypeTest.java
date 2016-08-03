@@ -53,7 +53,6 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import static javafx.scene.input.KeyCode.F;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 import static org.junit.Assert.assertEquals;
@@ -115,8 +114,8 @@ public class ArchetypeTest {
 
     // lets get the versions from the pom.xml via a system property
     private String groupId = "io.fabric8.archetypes";
-    private String fabric8Version = System.getProperty("fabric8.version", "2.3-SNAPSHOT");
-    private String projectVersion = System.getProperty("project.version", "2.3-SNAPSHOT");
+    private String fabric8Version = System.getProperty("fabric8.version", "2.2-SNAPSHOT");
+    private String projectVersion = System.getProperty("project.version", "2.2-SNAPSHOT");
     private String failsafeVersion = System.getProperty("failsafe.version", "2.19");
 
     private static List<String> outDirs = new ArrayList<String>();
