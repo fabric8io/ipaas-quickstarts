@@ -234,7 +234,7 @@ public class ArchetypeBuilder {
         }
 
         for (Map.Entry<Object, Object> entry : properties.entrySet()) {
-            LinkedList<String> values = new LinkedList<>(Arrays.asList(((String) entry.getValue()).split("|")));
+            LinkedList<String> values = new LinkedList<>(Arrays.asList(((String) entry.getValue()).split("\\|")));
             String gitrepo = values.removeFirst();
             String tag = values.isEmpty() ? null : values.removeFirst();
             generateArchetypeFromGitRepo(outputDir, dirs, cloneParentDir, (String)entry.getKey(), gitrepo, tag);
