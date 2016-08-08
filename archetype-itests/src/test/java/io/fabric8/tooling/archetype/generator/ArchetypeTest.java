@@ -83,15 +83,9 @@ public class ArchetypeTest {
 
     // the following lists the archetypes which currently fail the system tests
     private static Set<String> ignoreArchetypes = new HashSet<>(Arrays.asList(
-            // TODO https://github.com/fabric8io/ipaas-quickstarts/issues/1359
-            //"funktion-groovy-example-archetype",
-
-            // TODO https://github.com/fabric8io/ipaas-quickstarts/issues/1360
-            //"funktion-java-example-archetype",
-
             // TODO funktion nodejs build issue
             // https://github.com/fabric8io/ipaas-quickstarts/issues/1361
-            //"funktion-nodejs-example-archetype",
+            "funktion-nodejs-example-archetype",
 
             // TODO requires infinispan-server to be deployed
             // https://github.com/fabric8io/ipaas-quickstarts/issues/1362
@@ -256,17 +250,21 @@ public class ArchetypeTest {
         // now lets ensure we have the necessary test dependencies...
         boolean updated = false;
         Document doc = XmlUtils.parseDoc(pom);
-        if (ensureMavenDependency(doc, "io.fabric8", "fabric8-arquillian", "test")) {
-            updated = true;
-        }
-        if (ensureMavenDependency(doc, "org.jboss.arquillian.junit", "arquillian-junit-container", "test")) {
-            updated = true;
-        }
-        if (ensureMavenDependency(doc, "org.jboss.shrinkwrap.resolver", "shrinkwrap-resolver-impl-maven", "test")) {
-            updated = true;
-        }
-        if (ensureMavenDependencyBOM(doc, "io.fabric8", "fabric8-project-bom-with-platform-deps", fabric8Version)) {
-            updated = true;
+        boolean funktion = isFunktionProject(doc);
+        LOG.debug("Funktion project: " + funktion);
+        if (!funktion) {
+            if (ensureMavenDependency(doc, "io.fabric8", "fabric8-arquillian", "test")) {
+                updated = true;
+            }
+            if (ensureMavenDependency(doc, "org.jboss.arquillian.junit", "arquillian-junit-container", "test")) {
+                updated = true;
+            }
+            if (ensureMavenDependency(doc, "org.jboss.shrinkwrap.resolver", "shrinkwrap-resolver-impl-maven", "test")) {
+                updated = true;
+            }
+            if (ensureMavenDependencyBOM(doc, "io.fabric8", "fabric8-project-bom-with-platform-deps", fabric8Version)) {
+                updated = true;
+            }
         }
         if (ensureFailsafePlugin(doc)) {
             updated = true;
@@ -319,6 +317,18 @@ public class ArchetypeTest {
         return false;
     }
 
+    protected static boolean isFunktionProject(Document doc) {
+        Element parent = DomHelper.firstChild(doc.getDocumentElement(), "parent");
+        if (parent != null) {
+            Element groupId = DomHelper.firstChild(parent, "groupId");
+            if (groupId != null) {
+                String text = groupId.getTextContent();
+                return Objects.equals("io.fabric8.funktion.starter", text);
+            }
+        }
+        return false;
+    }
+    
     protected static boolean ensureMavenDependency(Document doc, String groupId, String artifactId, String scope) {
         Element dependences = DomHelper.firstChild(doc.getDocumentElement(), "dependencies");
         if (dependences == null) {
@@ -496,6 +506,7 @@ public class ArchetypeTest {
             t.join();
             if (resultPointer[0] != 0) {
                 failedProjects.add(outDir);
+                LOG.error("Failed project: " + outDir);
             }
         }
 
