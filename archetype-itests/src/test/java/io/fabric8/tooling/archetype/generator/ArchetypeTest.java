@@ -507,6 +507,8 @@ public class ArchetypeTest {
             if (resultPointer[0] != 0) {
                 failedProjects.add(outDir);
                 LOG.error("Failed project: " + outDir);
+            } else {
+                LOG.info("Successful project: " + outDir);
             }
         }
 
