@@ -35,12 +35,9 @@ import org.xml.sax.InputSource;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.StringWriter;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,9 +52,7 @@ import java.util.TreeSet;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 public class ArchetypeTest {
     private static final transient Logger LOG = LoggerFactory.getLogger(ArchetypeTest.class);
@@ -88,12 +83,6 @@ public class ArchetypeTest {
 
     // the following lists the archetypes which currently fail the system tests
     private static Set<String> ignoreArchetypes = new HashSet<>(Arrays.asList(
-            // TODO https://github.com/fabric8io/ipaas-quickstarts/issues/1359
-            "funktion-groovy-example-archetype",
-
-            // TODO https://github.com/fabric8io/ipaas-quickstarts/issues/1360
-            "funktion-java-example-archetype",
-
             // TODO funktion nodejs build issue
             // https://github.com/fabric8io/ipaas-quickstarts/issues/1361
             "funktion-nodejs-example-archetype",
@@ -261,17 +250,21 @@ public class ArchetypeTest {
         // now lets ensure we have the necessary test dependencies...
         boolean updated = false;
         Document doc = XmlUtils.parseDoc(pom);
-        if (ensureMavenDependency(doc, "io.fabric8", "fabric8-arquillian", "test")) {
-            updated = true;
-        }
-        if (ensureMavenDependency(doc, "org.jboss.arquillian.junit", "arquillian-junit-container", "test")) {
-            updated = true;
-        }
-        if (ensureMavenDependency(doc, "org.jboss.shrinkwrap.resolver", "shrinkwrap-resolver-impl-maven", "test")) {
-            updated = true;
-        }
-        if (ensureMavenDependencyBOM(doc, "io.fabric8", "fabric8-project-bom-with-platform-deps", fabric8Version)) {
-            updated = true;
+        boolean funktion = isFunktionProject(doc);
+        LOG.debug("Funktion project: " + funktion);
+        if (!funktion) {
+            if (ensureMavenDependency(doc, "io.fabric8", "fabric8-arquillian", "test")) {
+                updated = true;
+            }
+            if (ensureMavenDependency(doc, "org.jboss.arquillian.junit", "arquillian-junit-container", "test")) {
+                updated = true;
+            }
+            if (ensureMavenDependency(doc, "org.jboss.shrinkwrap.resolver", "shrinkwrap-resolver-impl-maven", "test")) {
+                updated = true;
+            }
+            if (ensureMavenDependencyBOM(doc, "io.fabric8", "fabric8-project-bom-with-platform-deps", fabric8Version)) {
+                updated = true;
+            }
         }
         if (ensureFailsafePlugin(doc)) {
             updated = true;
@@ -324,6 +317,18 @@ public class ArchetypeTest {
         return false;
     }
 
+    protected static boolean isFunktionProject(Document doc) {
+        Element parent = DomHelper.firstChild(doc.getDocumentElement(), "parent");
+        if (parent != null) {
+            Element groupId = DomHelper.firstChild(parent, "groupId");
+            if (groupId != null) {
+                String text = groupId.getTextContent();
+                return Objects.equals("io.fabric8.funktion.starter", text);
+            }
+        }
+        return false;
+    }
+    
     protected static boolean ensureMavenDependency(Document doc, String groupId, String artifactId, String scope) {
         Element dependences = DomHelper.firstChild(doc.getDocumentElement(), "dependencies");
         if (dependences == null) {
@@ -456,64 +461,60 @@ public class ArchetypeTest {
         }
         // now let invoke the projects
         final int[] resultPointer = new int[1];
-        StringWriter sw = new StringWriter();
-        Set<String> modules = new HashSet<String>();
+        List<String> failedProjects = new ArrayList<>();
+
         for (final String outDir : outDirs) {
-            String module = new File(outDir).getName();
-            if (modules.add(module)) {
-                sw.append(String.format("        <module>%s</module>\n", module));
-            }
-        }
-        sw.close();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        Files.copy(ArchetypeTest.class.getResourceAsStream("/archetypes-test-pom.xml"), baos);
-        String pom = new String(baos.toByteArray()).replace("        <!-- to be replaced -->", sw.toString());
-        FileOutputStream modulePom = new FileOutputStream(new File(projectsOutputFolder, "pom.xml"));
-        Files.copy(new ByteArrayInputStream(pom.getBytes()), modulePom);
-        modulePom.close();
+/*
+            File outputDir = new File(projectsOutputFolder, projectName);
+            final String outDir = outputDir.getAbsolutePath();
+*/
 
-        final String outDir = projectsOutputFolder.getAbsolutePath();
-        // thread locals are evil (I'm talking to you - org.codehaus.plexus.DefaultPlexusContainer#lookupRealm!)
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                LOG.info("Invoking projects in " + outDir);
-                System.setProperty("maven.multiModuleProjectDirectory", "$M2_HOME");
-                MavenCli maven = new MavenCli();
-                // Dmaven.multiModuleProjectDirectory
-                String[] args = {"clean", "package", "-Dfabric8.service.name=dummy-service"};
-                boolean useArq = Objects.equals(arqTesting, "true");
-                if (useArq) {
-                    args = new String[]{"clean", "install", "-Dfabric8.service.name=dummy-service"};
-                    if (KubernetesHelper.isOpenShift(new DefaultKubernetesClient())) {
-                        // lets add a workaround for a lack of discovery OOTB with fabric8-maven-plugin
-                        args = new String[]{"clean", "install", "-Dfabric8.service.name=dummy-service", "-Dfabric8.mode=openshift"};
+            // thread locals are evil (I'm talking to you - org.codehaus.plexus.DefaultPlexusContainer#lookupRealm!)
+            Thread t = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    LOG.info("Invoking projects in " + outDir);
+                    System.setProperty("maven.multiModuleProjectDirectory", "$M2_HOME");
+                    MavenCli maven = new MavenCli();
+                    // Dmaven.multiModuleProjectDirectory
+                    String[] args = {"clean", "package", "-Dfabric8.service.name=dummy-service"};
+                    boolean useArq = Objects.equals(arqTesting, "true");
+                    if (useArq) {
+                        args = new String[]{"clean", "install", "-Dfabric8.service.name=dummy-service"};
+                        if (KubernetesHelper.isOpenShift(new DefaultKubernetesClient())) {
+                            // lets add a workaround for a lack of discovery OOTB with fabric8-maven-plugin
+                            args = new String[]{"clean", "install", "-Dfabric8.service.name=dummy-service", "-Dfabric8.mode=openshift"};
+                        }
                     }
-                }
-                // using an itest settings.xml here similar to jboss-fuse archetypes configuration/settings.xml
-                args = Arrays.copyOf(args, args.length + 2);
-                args[args.length - 2] = "-s";
-                args[args.length - 1] = "../test-classes/settings.xml";
-                resultPointer[0] = maven.doMain(args, outDir, System.out, System.out);
-                LOG.info("result: " + resultPointer[0]);
-
-                if (useArq && resultPointer[0] == 0) {
-                    maven = new MavenCli();
-                    args = new String[]{"failsafe:integration-test", "failsafe:verify", "-fae"};
-                    LOG.info("Now trying to run the integration tests via: mvn " + Strings.join(" ", args));
+                    // using an itest settings.xml here similar to jboss-fuse archetypes configuration/settings.xml
+                    args = Arrays.copyOf(args, args.length + 2);
+                    args[args.length - 2] = "-s";
+                    args[args.length - 1] = new File(basedir, "target/test-classes/settings.xml").getAbsolutePath();
                     resultPointer[0] = maven.doMain(args, outDir, System.out, System.out);
                     LOG.info("result: " + resultPointer[0]);
+
+                    if (useArq && resultPointer[0] == 0) {
+                        maven = new MavenCli();
+                        args = new String[]{"failsafe:integration-test", "failsafe:verify", "-fae"};
+                        LOG.info("Now trying to run the integration tests via: mvn " + Strings.join(" ", args));
+                        resultPointer[0] = maven.doMain(args, outDir, System.out, System.out);
+                        LOG.info("result: " + resultPointer[0]);
+                    }
                 }
+            });
+            t.start();
+            t.join();
+            if (resultPointer[0] != 0) {
+                failedProjects.add(outDir);
+                LOG.error("Failed project: " + outDir);
+            } else {
+                LOG.info("Successful project: " + outDir);
             }
-        });
-        t.start();
-        t.join();
+        }
 
-        assertEquals("Build of project " + outDir + " failed. Result = " + resultPointer[0], 0, resultPointer[0]);
+        for (String failedProject : failedProjects) {
+            LOG.error("Failed project: " + failedProject);
+        }
+        assertThat(failedProjects).describedAs("failed projects: " + failedProjects).isEmpty();
     }
-
-    protected void assertFileExists(File file) {
-        assertTrue("file should exist: " + file, file.exists());
-    }
-
 }
