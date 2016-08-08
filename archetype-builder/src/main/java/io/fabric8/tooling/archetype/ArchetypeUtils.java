@@ -142,7 +142,14 @@ public class ArchetypeUtils {
      */
     public boolean isValidSourceFileOrDir(File file) {
         String name = file.getName();
-        return !name.startsWith(".") && !excludeExtensions.contains(Files.getExtension(file.getName()));
+        return !isExcludedDotFile(name) && !excludeExtensions.contains(Files.getExtension(file.getName()));
+    }
+
+    /**
+     * Lets allow files like .maven-docker-include or .gitignore but lets ignore other files starting with "."
+     */
+    protected boolean isExcludedDotFile(String name) {
+        return name.startsWith(".") && !name.startsWith(".maven") && !name.equals(".gitignore");
     }
 
     /**

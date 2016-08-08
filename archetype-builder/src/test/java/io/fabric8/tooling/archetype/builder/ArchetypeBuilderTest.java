@@ -126,7 +126,13 @@ public class ArchetypeBuilderTest {
     public void validSourcesAndDirectories() {
         assertTrue(archetypeUtils.isValidSourceFileOrDir(new File("/tmp/main/java")));
         assertTrue(archetypeUtils.isValidSourceFileOrDir(new File("/tmp/main/java/A.java")));
+
+        assertTrue(archetypeUtils.isValidSourceFileOrDir(new File("/tmp/.gitignore")));
+        assertTrue(archetypeUtils.isValidSourceFileOrDir(new File("/tmp/.maven-dockerinclude")));
         assertFalse(archetypeUtils.isValidSourceFileOrDir(new File("/tmp/.project")));
+        assertFalse(archetypeUtils.isValidSourceFileOrDir(new File("/tmp/.idea")));
+        assertFalse(archetypeUtils.isValidSourceFileOrDir(new File("/tmp/.git")));
+
         assertFalse(archetypeUtils.isValidSourceFileOrDir(new File("/tmp/project.iml")));
     }
 
