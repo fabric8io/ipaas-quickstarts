@@ -83,10 +83,6 @@ public class ArchetypeTest {
 
     // the following lists the archetypes which currently fail the system tests
     private static Set<String> ignoreArchetypes = new HashSet<>(Arrays.asList(
-            // TODO funktion nodejs build issue
-            // https://github.com/fabric8io/ipaas-quickstarts/issues/1361
-            "funktion-nodejs-example-archetype",
-
             // TODO requires infinispan-server to be deployed
             // https://github.com/fabric8io/ipaas-quickstarts/issues/1362
             "infinispan-client-archetype",
@@ -462,13 +458,9 @@ public class ArchetypeTest {
         // now let invoke the projects
         final int[] resultPointer = new int[1];
         List<String> failedProjects = new ArrayList<>();
+        List<String> successfulProjects = new ArrayList<>();
 
         for (final String outDir : outDirs) {
-/*
-            File outputDir = new File(projectsOutputFolder, projectName);
-            final String outDir = outputDir.getAbsolutePath();
-*/
-
             // thread locals are evil (I'm talking to you - org.codehaus.plexus.DefaultPlexusContainer#lookupRealm!)
             Thread t = new Thread(new Runnable() {
                 @Override
@@ -504,17 +496,22 @@ public class ArchetypeTest {
             });
             t.start();
             t.join();
+            String projectName = new File(outDir).getName();
             if (resultPointer[0] != 0) {
-                failedProjects.add(outDir);
-                LOG.error("Failed project: " + outDir);
+                failedProjects.add(projectName);
+                LOG.error("Failed project: " + projectName);
             } else {
-                LOG.info("Successful project: " + outDir);
+                successfulProjects.add(projectName);
+                LOG.info("Successful project: " + projectName);
             }
         }
 
         for (String failedProject : failedProjects) {
+            LOG.info("Successful project: " + failedProject);
+        }
+        for (String failedProject : failedProjects) {
             LOG.error("Failed project: " + failedProject);
         }
-        assertThat(failedProjects).describedAs("failed projects: " + failedProjects).isEmpty();
+        assertThat(failedProjects).describedAs("Projects failed: " + failedProjects).isEmpty();
     }
 }
