@@ -458,6 +458,7 @@ public class ArchetypeTest {
         // now let invoke the projects
         final int[] resultPointer = new int[1];
         List<String> failedProjects = new ArrayList<>();
+        List<String> successfulProjects = new ArrayList<>();
 
         for (final String outDir : outDirs) {
             // thread locals are evil (I'm talking to you - org.codehaus.plexus.DefaultPlexusContainer#lookupRealm!)
@@ -500,13 +501,17 @@ public class ArchetypeTest {
                 failedProjects.add(projectName);
                 LOG.error("Failed project: " + projectName);
             } else {
+                successfulProjects.add(projectName);
                 LOG.info("Successful project: " + projectName);
             }
         }
 
         for (String failedProject : failedProjects) {
+            LOG.info("Successful project: " + failedProject);
+        }
+        for (String failedProject : failedProjects) {
             LOG.error("Failed project: " + failedProject);
         }
-        assertThat(failedProjects).describedAs("failed projects: " + failedProjects).isEmpty();
+        assertThat(failedProjects).describedAs("Projects failed: " + failedProjects).isEmpty();
     }
 }
