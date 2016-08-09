@@ -87,8 +87,6 @@ public class ArchetypeTest {
             // https://github.com/fabric8io/ipaas-quickstarts/issues/1362
             "infinispan-client-archetype",
 
-            // TODO https://github.com/fabric8io/ipaas-quickstarts/issues/1363
-            "spring-boot-hystrix-archetype",
             // TODO https://github.com/fabric8io/ipaas-quickstarts/issues/1364
             "spring-boot-ribbon-archetype"
     ));
@@ -469,13 +467,13 @@ public class ArchetypeTest {
                     System.setProperty("maven.multiModuleProjectDirectory", "$M2_HOME");
                     MavenCli maven = new MavenCli();
                     // Dmaven.multiModuleProjectDirectory
-                    String[] args = {"clean", "package", "-Dfabric8.service.name=dummy-service"};
+                    String[] args = {"clean", "package"};
                     boolean useArq = Objects.equals(arqTesting, "true");
                     if (useArq) {
-                        args = new String[]{"clean", "install", "-Dfabric8.service.name=dummy-service"};
+                        args = new String[]{"clean", "install"};
                         if (KubernetesHelper.isOpenShift(new DefaultKubernetesClient())) {
                             // lets add a workaround for a lack of discovery OOTB with fabric8-maven-plugin
-                            args = new String[]{"clean", "install", "-Dfabric8.service.name=dummy-service", "-Dfabric8.mode=openshift"};
+                            args = new String[]{"clean", "install"};
                         }
                     }
                     // using an itest settings.xml here similar to jboss-fuse archetypes configuration/settings.xml

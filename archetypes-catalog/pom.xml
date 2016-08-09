@@ -29,7 +29,7 @@
 
   <groupId>io.fabric8.archetypes</groupId>
   <artifactId>archetypes-catalog</artifactId>
-  <name>Fabric8 :: Archetypes :: Generate</name>
+  <name>Fabric8 :: Archetypes :: Catalog</name>
 
   <build>
     <plugins>
