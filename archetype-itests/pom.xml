@@ -32,6 +32,9 @@
   <packaging>jar</packaging>
 
   <properties>
+    <!-- pass this property in to force the fabric8 maven plugin mode such as 'kubernetes', 'openshift' or 'auto' -->
+    <fabric8.mode></fabric8.mode>
+
     <test.archetype></test.archetype>
     <maven-failsafe-plugin.version>2.19</maven-failsafe-plugin.version>
   </properties>
@@ -156,6 +159,7 @@
             <fabric8.version>${fabric8.version}</fabric8.version>
             <failsafe.version>${maven-failsafe-plugin.version}</failsafe.version>
             <test.archetype>${test.archetype}</test.archetype>
+            <fabric8.mode>${fabric8.mode}</fabric8.mode>
           </systemPropertyVariables>
         </configuration>
       </plugin>

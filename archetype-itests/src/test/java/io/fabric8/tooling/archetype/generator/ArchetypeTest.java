@@ -473,10 +473,11 @@ public class ArchetypeTest {
                     String[] args = {"clean", "package"};
                     boolean useArq = Objects.equals(arqTesting, "true");
                     if (useArq) {
-                        args = new String[]{"clean", "install"};
-                        if (KubernetesHelper.isOpenShift(new DefaultKubernetesClient())) {
+                        args = new String[]{"clean", "install", "-U"};
+                        String fabric8Mode = System.getProperty("fabric8.mode", "");
+                        if (Strings.isNotBlank(fabric8Mode) && KubernetesHelper.isOpenShift(new DefaultKubernetesClient())) {
                             // lets add a workaround for a lack of discovery OOTB with fabric8-maven-plugin
-                            args = new String[]{"clean", "install"};
+                            args = new String[]{"clean", "install", "-U", "-Dfabric8.mode=" + fabric8Mode};
                         }
                     }
                     // using an itest settings.xml here similar to jboss-fuse archetypes configuration/settings.xml
