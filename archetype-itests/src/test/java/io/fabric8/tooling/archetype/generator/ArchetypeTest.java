@@ -504,8 +504,8 @@ public class ArchetypeTest {
             }
         }
 
-        for (String failedProject : failedProjects) {
-            LOG.info("Successful project: " + failedProject);
+        for (String successful : successfulProjects) {
+            LOG.info("Successful project: " + successful);
         }
         for (String failedProject : failedProjects) {
             LOG.error("Failed project: " + failedProject);
