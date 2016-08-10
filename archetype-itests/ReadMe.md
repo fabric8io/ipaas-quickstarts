@@ -28,7 +28,13 @@ eval $(minikube docker-env)
 eval $(minishift docker-env)
 ```
 
-NOTE that [OpenShift is not yet supported for Arquillian tests with S2I binary builds](https://github.com/fabric8io/ipaas-quickstarts/issues/1369)! So I'd recommend you use Kubernetes for now.
+NOTE that [OpenShift is currently only supported in `kubernetes` mode for now until we get Arquillian working with S2I binary builds and ImageStreams](https://github.com/fabric8io/ipaas-quickstarts/issues/1369)! When running on OpenShift we [currently default to `kubernetes` mode](https://github.com/fabric8io/fabric8-maven-plugin/issues/240). 
+
+If you want to try things on OpenShift in `openshift` mode (using S2I binary builds and ImageStreams) then run the tests as follows:
+
+```sh
+mvn clean test -Dtest.arq=true -Dfabric8.mode=openshift
+```
 
 #### Viewing the output
  
