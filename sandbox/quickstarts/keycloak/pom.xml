@@ -39,7 +39,7 @@
 
     <!-- versions for use in mvn plugins as we cannot inherit them from a BOM -->
     <fabric8.version>2.2.148</fabric8.version>
-    <docker.maven.plugin.version>0.15.11</docker.maven.plugin.version>
+    <docker.maven.plugin.version>0.15.16</docker.maven.plugin.version>
 
     <spring-boot-plugin.version>1.2.7.RELEASE</spring-boot-plugin.version>
     <spring-boot.version>1.2.7.RELEASE</spring-boot.version>
