@@ -22,7 +22,11 @@ import io.fabric8.utils.Files;
 import io.fabric8.utils.IOHelpers;
 import io.fabric8.utils.Strings;
 import io.fabric8.utils.XmlUtils;
-import org.apache.maven.cli.MavenCli;
+import org.apache.maven.shared.invoker.DefaultInvocationRequest;
+import org.apache.maven.shared.invoker.DefaultInvoker;
+import org.apache.maven.shared.invoker.InvocationRequest;
+import org.apache.maven.shared.invoker.InvocationResult;
+import org.codehaus.plexus.util.cli.CommandLineException;
 import org.junit.AfterClass;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -322,7 +326,7 @@ public class ArchetypeTest {
         }
         return false;
     }
-    
+
     protected static boolean ensureMavenDependency(Document doc, String groupId, String artifactId, String scope) {
         Element dependences = DomHelper.firstChild(doc.getDocumentElement(), "dependencies");
         if (dependences == null) {
@@ -465,7 +469,6 @@ public class ArchetypeTest {
                 public void run() {
                     LOG.info("Invoking projects in " + outDir);
                     System.setProperty("maven.multiModuleProjectDirectory", "$M2_HOME");
-                    MavenCli maven = new MavenCli();
                     // Dmaven.multiModuleProjectDirectory
                     String[] args = {"clean", "package"};
                     boolean useArq = Objects.equals(arqTesting, "true");
@@ -480,14 +483,13 @@ public class ArchetypeTest {
                     args = Arrays.copyOf(args, args.length + 2);
                     args[args.length - 2] = "-s";
                     args[args.length - 1] = new File(basedir, "target/test-classes/settings.xml").getAbsolutePath();
-                    resultPointer[0] = maven.doMain(args, outDir, System.out, System.out);
+                    resultPointer[0] = invokeMaven(args, outDir);
                     LOG.info("result: " + resultPointer[0]);
 
                     if (useArq && resultPointer[0] == 0) {
-                        maven = new MavenCli();
                         args = new String[]{"failsafe:integration-test", "failsafe:verify", "-fae"};
                         LOG.info("Now trying to run the integration tests via: mvn " + Strings.join(" ", args));
-                        resultPointer[0] = maven.doMain(args, outDir, System.out, System.out);
+                        resultPointer[0] = invokeMaven(args, outDir);
                         LOG.info("result: " + resultPointer[0]);
                     }
                 }
@@ -511,5 +513,27 @@ public class ArchetypeTest {
             LOG.error("Failed project: " + failedProject);
         }
         assertThat(failedProjects).describedAs("Projects failed: " + failedProjects).isEmpty();
+    }
+
+    protected static int invokeMaven(String[] args, String outDir) {
+        InvocationRequest request = new DefaultInvocationRequest();
+        DefaultInvoker invoker = new DefaultInvoker();
+        InvocationResult result = null;
+        request.setPomFile(new File(new File(outDir), "pom.xml"));
+
+        List<String> goals = Arrays.asList(args);
+        request.setGoals(goals);
+
+        String commandLine = Strings.join(goals, " ");
+        try {
+            result = invoker.execute(request);
+            CommandLineException executionException = result.getExecutionException();
+            if (executionException != null) {
+                LOG.error("Failed to invoke maven with: mvn " + commandLine + ". " + executionException, executionException);
+            }
+        } catch (Exception e) {
+            LOG.error("Failed to invoke maven with: mvn " + commandLine + ". " + e, e);
+        }
+        return result.getExitCode();
     }
 }
