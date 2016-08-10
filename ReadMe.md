@@ -1,5 +1,7 @@
 ## Fabric8 Quickstarts
 
+[![Join the chat at https://gitter.im/fabric8io/ipaas-quickstarts](https://badges.gitter.im/fabric8io/ipaas-quickstarts.svg)](https://gitter.im/fabric8io/ipaas-quickstarts?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 This project contains the following [fabric8](http://fabric8.io/) parts: 
 
 * [Archetypes](archetypes) for creating new Java project using Maven Archetypes which are based on the [Quickstarts](quickstart)
