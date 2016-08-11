@@ -817,7 +817,7 @@ public class ArchetypeBuilder {
         Document doc = archetypeUtils.parseXml(new InputSource(new FileReader(pom)));
         Element root = doc.getDocumentElement();
 
-        String groupId = archetypeUtils.firstElementText(root, "artifactId", "io.fabric8.archetypes");
+        String groupId = archetypeUtils.firstElementText(root, "groupId", "io.fabric8.archetypes");
         String artifactId = archetypeUtils.firstElementText(root, "artifactId", outputName);
         String description = archetypeUtils.firstElementText(root, "description", "");
         String version = "";
