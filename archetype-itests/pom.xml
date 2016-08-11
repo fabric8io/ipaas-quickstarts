@@ -176,7 +176,7 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <configuration>
               <excludes>
-                <exclude>**/ArchetypeTest.*</exclude>
+                <exclude>*ArchetypeTest</exclude>
               </excludes>
             </configuration>
           </plugin>
