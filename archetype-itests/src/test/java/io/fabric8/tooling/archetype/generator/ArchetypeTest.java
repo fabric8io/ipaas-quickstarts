@@ -491,7 +491,7 @@ public class ArchetypeTest {
                     LOG.info("result: " + resultPointer[0]);
 
                     if (useArq && resultPointer[0] == 0) {
-                        args = new String[]{"failsafe:integration-test", "failsafe:verify", "-fae"};
+                        args = new String[]{"failsafe:integration-test", "failsafe:verify"};
                         LOG.info("Now trying to run the integration tests via: mvn " + Strings.join(" ", args));
                         resultPointer[0] = invokeMaven(args, outDir, logFile);
                         LOG.info("result: " + resultPointer[0]);
@@ -525,19 +525,21 @@ public class ArchetypeTest {
 
         InvocationResult result = null;
         try {
+            File dir = new File(outDir);
+
             InvocationRequest request = new DefaultInvocationRequest();
             request.setGoals(goals);
 
             InvocationOutputHandler outputHandler = new SystemOutAndFileHandler(logFile);
             outputHandler.consumeLine("");
             outputHandler.consumeLine("");
-            outputHandler.consumeLine("starting: mvn " + commandLine);
+            outputHandler.consumeLine(dir.getName() + " : starting: mvn " + commandLine);
             outputHandler.consumeLine("");
             request.setOutputHandler(outputHandler);
             request.setErrorHandler(outputHandler);
 
             DefaultInvoker invoker = new DefaultInvoker();
-            request.setPomFile(new File(new File(outDir), "pom.xml"));
+            request.setPomFile(new File(dir, "pom.xml"));
             result = invoker.execute(request);
             CommandLineException executionException = result.getExecutionException();
             if (executionException != null) {
