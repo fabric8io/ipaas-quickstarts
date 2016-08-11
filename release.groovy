@@ -52,6 +52,7 @@ def updateDownstreamDependencies(stagedProject) {
   pushPomPropertyChangePR {
     propertyName = 'fabric8.archetypes.release.version'
     projects = [
+            'fabric8io/fabric8-maven-dependencies',
             'fabric8io/fabric8-forge'
     ]
     version = stagedProject[1]
