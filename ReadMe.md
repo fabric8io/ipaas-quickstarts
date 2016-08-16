@@ -12,9 +12,9 @@ This project contains the following [fabric8](http://fabric8.io/) parts:
 The base quickstarts upon which these archetypes are derived now live in a new github.com repo: [github.com/fabric8-quickstarts](https://github.com/fabric8-quickstarts). Browse around there to see which quickstarts are interesting. Then you can create a quickstart with the archetypes like this:
 
 
-> mvn archetype:generate -DarchetypeGroupId=io.fabric8.archetypes -DarchetypeArtifactId=<archetype> -DarchetypeVersion=<latest>
+> mvn archetype:generate -DarchetypeGroupId=io.fabric8.archetypes -DarchetypeArtifactId=%archetype% -DarchetypeVersion=%latest%
 
-Where <archetype> is `jvm`-`implementation`-archetype.
+Where %archetype% is `jvm-implementation-archetype`.
 
 For example, `spring-boot-camel-archetype` is the name of a Camel quickstart that uses Spring Boot. `karaf-camel-log-archetype` is a Karaf JVM with camel running in it with a timer that logs to developer logs, etc. See the [fabric8 documentation](http://fabric8.io/guide/quickstarts/archetypes.html) for more information.
 
