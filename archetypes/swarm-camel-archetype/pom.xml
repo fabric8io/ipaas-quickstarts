@@ -26,6 +26,7 @@
     </parent>
 
     <artifactId>swarm-camel-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: Swarm :: Camel REST endpoint with Undertow</name>
     <packaging>maven-archetype</packaging>
 
