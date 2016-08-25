@@ -22,10 +22,11 @@
     <parent>
         <groupId>io.fabric8.archetypes</groupId>
         <artifactId>archetypes</artifactId>
-        <version>2.2-SNAPSHOT</version>
+        <version>1.0.0.redhat-000020</version>
     </parent>
 
     <artifactId>dotnet-example-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: dotnet-example</name>
     <packaging>maven-archetype</packaging>
 
