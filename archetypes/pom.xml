@@ -199,6 +199,11 @@
        <modules><module>spring-boot-camel-drools-archetype</module></modules>
     </profile>
     <profile>
+      <id>enable-spring-boot-camel-rest-sql-archetype</id>
+      <activation><file><exists>${basedir}/spring-boot-camel-rest-sql-archetype/src</exists></file></activation>
+      <modules><module>spring-boot-camel-rest-sql-archetype</module></modules>
+    </profile>
+    <profile>
        <id>enable-spring-boot-camel-teiid-archetype</id>
        <activation><file><exists>${basedir}/spring-boot-camel-teiid-archetype/src</exists></file></activation>
        <modules><module>spring-boot-camel-teiid-archetype</module></modules>
