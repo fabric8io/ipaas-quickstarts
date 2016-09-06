@@ -139,11 +139,15 @@
       <activation><file><exists>${basedir}/jboss-fuse-camel-rest-sql-archetype/src</exists></file></activation>
       <modules><module>jboss-fuse-camel-rest-sql-archetype</module></modules>
     </profile>
+<!--
+    TODO: this archetype is broken - needs fixing: https://github.com/fabric8-quickstarts/jboss-fuse-cxf-rest/issues/25
+
     <profile>
       <id>enable-jboss-fuse-cxf-rest-archetype</id>
       <activation><file><exists>${basedir}/jboss-fuse-cxf-rest-archetype/src</exists></file></activation>
       <modules><module>jboss-fuse-cxf-rest-archetype</module></modules>
     </profile>
+-->
     <profile>
        <id>enable-karaf-camel-amq-archetype</id>
        <activation><file><exists>${basedir}/karaf-camel-amq-archetype/src</exists></file></activation>
