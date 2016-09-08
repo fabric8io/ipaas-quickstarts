@@ -109,7 +109,7 @@ public class ArchetypeHelper {
     }
 
     /**
-     * Main method which extracts given Maven Archetype in destination directory
+     * GenerateArchetypes method which extracts given Maven Archetype in destination directory
      */
     public int execute() throws IOException {
         outputDir.mkdirs();

@@ -53,7 +53,7 @@
           </execution>
         </executions>
         <configuration>
-          <mainClass>io.fabric8.tooling.archetype.builder.Main</mainClass>
+          <mainClass>io.fabric8.tooling.archetype.builder.GenerateCatalog</mainClass>
           <classpathScope>test</classpathScope>
           <includePluginDependencies>true</includePluginDependencies>
           <systemProperties>
@@ -65,18 +65,6 @@
               <key>outputdir</key>
               <value>${basedir}/../archetypes</value>
             </systemProperty>
-            <systemProperty>
-              <key>project.version</key>
-              <value>${project.version}</value>
-            </systemProperty>
-            <systemProperty>
-              <key>repos</key>
-              <value>${quickstart.git.repos}</value>
-            </systemProperty>
-            <systemProperty>
-              <key>repo.tag</key>
-              <value>${quickstart.git.version}</value>
-            </systemProperty>            
           </systemProperties>
         </configuration>
       </plugin>

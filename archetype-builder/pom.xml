@@ -126,29 +126,22 @@
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
         <version>1.4.0</version>
-        <dependencies>
-          <dependency>
-            <groupId>io.fabric8.quickstarts</groupId>
-            <artifactId>archetype-builder</artifactId>
-            <version>${project.version}</version>
-          </dependency>
-        </dependencies>
+        <executions>
+          <execution>
+            <goals>
+              <goal>java</goal>
+            </goals>
+            <phase>process-classes</phase>
+          </execution>
+        </executions>
         <configuration>
-          <mainClass>io.fabric8.tooling.archetype.builder.Main</mainClass>
-          <classpathScope>test</classpathScope>
-          <includePluginDependencies>true</includePluginDependencies>
+          <mainClass>io.fabric8.tooling.archetype.builder.GenerateArchetypes</mainClass>
+          <classpathScope>runtime</classpathScope>
+          <includePluginDependencies>false</includePluginDependencies>
           <systemProperties>
-            <systemProperty>
-              <key>basedir</key>
-              <value>${basedir}</value>
-            </systemProperty>
             <systemProperty>
               <key>outputdir</key>
               <value>${basedir}/../archetypes</value>
-            </systemProperty>
-            <systemProperty>
-              <key>sourcedir</key>
-              <value>${basedir}/../quickstart</value>
             </systemProperty>
             <systemProperty>
               <key>project.version</key>

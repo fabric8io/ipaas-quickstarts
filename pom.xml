@@ -99,8 +99,8 @@
 
   <modules>
     <module>archetype-builder</module>
-    <module>archetypes-catalog</module>
     <module>archetypes</module>
+    <module>archetypes-catalog</module>
     <module>archetype-itests</module>
   </modules>
 
