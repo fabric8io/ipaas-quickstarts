@@ -38,7 +38,8 @@ public class ArchetypeBuilderTest {
     public static Logger LOG = LoggerFactory.getLogger(ArchetypeBuilderTest.class);
 
     private String basedir = System.getProperty("basedir");
-    private ArchetypeBuilder builder;
+    private ArchetypeBuilder archetypeBuilder;
+    private CatalogBuilder catalogBuilder;
     private File catalogFile;
     private ArchetypeUtils archetypeUtils;
 
@@ -48,8 +49,12 @@ public class ArchetypeBuilderTest {
             basedir = ".";
         }
         catalogFile = new File(basedir, "target/test-archetypes/archetype-catalog.xml").getCanonicalFile();
-        builder = new ArchetypeBuilder(catalogFile);
-        builder.setIndentSize(4);
+        catalogBuilder = new CatalogBuilder(catalogFile);
+        catalogBuilder.setIndentSize(4);
+
+        archetypeBuilder = new ArchetypeBuilder();
+        archetypeBuilder.setIndentSize(4);
+
         archetypeUtils = new ArchetypeUtils();
     }
 
@@ -57,13 +62,11 @@ public class ArchetypeBuilderTest {
     public void buildAllExampleArchetypes() throws Exception {
         File srcDir = new File(basedir, "src/test/examples").getCanonicalFile();
 
-        builder.configure();
         try {
             List<String> dirs = new ArrayList<String>();
-            builder.generateArchetypes("java", srcDir, new File(basedir, "target/test-archetypes"), true, dirs);
+            archetypeBuilder.generateArchetypes("java", srcDir, new File(basedir, "target/test-archetypes"), true, dirs);
         } finally {
             LOG.info("Completed the generation. Closing!");
-            builder.close();
         }
 
         Collection<File> files = Files.recursiveList(new File("target/test-archetypes/java-hello-world-archetype"), new FilenameFilter() {
