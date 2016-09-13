@@ -26,6 +26,7 @@
     </parent>
 
     <artifactId>wildfly-camel-ejb-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: Wildfly :: Camel EJB</name>
     <packaging>maven-archetype</packaging>
 
