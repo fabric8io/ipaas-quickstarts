@@ -52,7 +52,6 @@
       <directory>src/main</directory>
       <includes>
         <include>**/*.xls</include>
-        <include>fabric8/**</include>
       </includes>
       <excludes>
         <exclude>java/**</exclude>
