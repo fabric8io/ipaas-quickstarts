@@ -41,6 +41,8 @@
         <include>**/*.properties</include>
         <include>**/*.cfg</include>
         <include>**/*.sql</include>
+        <include>**/*.yml</include>
+        <include>**/*.yaml</include>
       </includes>
       <excludes>
         <exclude>java/**</exclude>
@@ -50,7 +52,6 @@
       <directory>src/main</directory>
       <includes>
         <include>**/*.xls</include>
-        <include>fabric8/**</include>
       </includes>
       <excludes>
         <exclude>java/**</exclude>
@@ -72,6 +73,8 @@
         <include>**/*.xml</include>
         <include>**/*.properties</include>
         <include>**/*.cfg</include>
+        <include>**/*.yml</include>
+        <include>**/*.yaml</include>
       </includes>
       <excludes>
         <exclude>java/**</exclude>

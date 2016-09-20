@@ -73,7 +73,9 @@ public class ArchetypeBuilder extends AbstractBuilder{
         "ssp",
         "ts",
         "txt",
-        "xml"
+        "xml",
+        "yml",
+        "yaml"
     ));
 
     private final Map<String, String> versionProperties = new HashMap<>();
