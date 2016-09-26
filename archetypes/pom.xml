@@ -63,7 +63,10 @@
           <module>java-mainclass-archetype</module>
           <module>jboss-fuse-camel-amq-archetype</module>
           <module>jboss-fuse-camel-log-archetype</module>
+<!--
+          TODO removed until this fixed: https://github.com/fabric8io/ipaas-quickstarts/issues/1423
           <module>jboss-fuse-camel-rest-sql-archetype</module>
+-->
           <!--
           removed until this is fixed:  https://github.com/fabric8-quickstarts/jboss-fuse-cxf-rest/issues/25
           <module>jboss-fuse-cxf-rest-archetype</module>
