@@ -22,10 +22,11 @@
     <parent>
         <groupId>io.fabric8.archetypes</groupId>
         <artifactId>archetypes</artifactId>
-        <version>2.2-SNAPSHOT</version>
+        <version>2.2.0.redhat-000004</version>
     </parent>
 
     <artifactId>spring-camel-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: Java :: Camel with Spring</name>
     <packaging>maven-archetype</packaging>
 
