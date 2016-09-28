@@ -1,0 +1,12 @@
+jboss-fuse-camel-amq=https://github.com/fabric8-quickstarts/jboss-fuse-camel-amq.git|jboss-fuse-camel-amq-1.0.0.redhat-000038
+jboss-fuse-camel-log=https://github.com/fabric8-quickstarts/jboss-fuse-camel-log.git|jboss-fuse-camel-log-1.0.0.redhat-000038
+jboss-fuse-camel-rest-sql=https://github.com/fabric8-quickstarts/jboss-fuse-camel-rest-sql.git|jboss-fuse-camel-rest-sql-1.0.0.redhat-000038
+jboss-fuse-cxf-rest=https://github.com/fabric8-quickstarts/jboss-fuse-cxf-rest.git|jboss-fuse-cxf-rest-1.0.0.redhat-000038
+spring-boot-camel=https://github.com/fabric8-quickstarts/spring-boot-camel.git|spring-boot-camel-1.0.0.redhat-000037
+spring-boot-camel-amq=https://github.com/fabric8-quickstarts/spring-boot-camel-amq.git|spring-boot-camel-amq-1.0.0.redhat-000037
+spring-boot-camel-drools=https://github.com/fabric8-quickstarts/spring-boot-camel-drools.git|spring-boot-camel-drools-1.0.0.redhat-000037
+spring-boot-camel-infinispan=https://github.com/fabric8-quickstarts/spring-boot-camel-infinispan.git|spring-boot-camel-infinispan-1.0.0.redhat-000006
+spring-boot-camel-rest-sql=https://github.com/fabric8-quickstarts/spring-boot-camel-rest-sql.git|spring-boot-camel-rest-sql-1.0.0.redhat-000037
+spring-boot-camel-teiid=https://github.com/fabric8-quickstarts/spring-boot-camel-teiid.git|spring-boot-camel-teiid-1.0.0.redhat-000037
+spring-boot-camel-xml=https://github.com/fabric8-quickstarts/spring-boot-camel-xml.git|spring-boot-camel-xml-1.0.0.redhat-000037
+spring-boot-webmvc=https://github.com/fabric8-quickstarts/spring-boot-webmvc.git|spring-boot-webmvc-1.0.0.redhat-000037
