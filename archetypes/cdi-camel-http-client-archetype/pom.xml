@@ -22,10 +22,11 @@
     <parent>
         <groupId>io.fabric8.archetypes</groupId>
         <artifactId>archetypes</artifactId>
-        <version>2.2-SNAPSHOT</version>
+        <version>2.2.0.redhat-000008</version>
     </parent>
 
     <artifactId>cdi-camel-http-client-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: CDI :: Camel with HTTP as client</name>
     <packaging>maven-archetype</packaging>
 
