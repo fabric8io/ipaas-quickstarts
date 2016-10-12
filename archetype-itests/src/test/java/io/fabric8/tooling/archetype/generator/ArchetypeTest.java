@@ -471,7 +471,7 @@ public class ArchetypeTest {
                     LOG.info("Invoking projects in " + outDir);
                     System.setProperty("maven.multiModuleProjectDirectory", "$M2_HOME");
                     // Dmaven.multiModuleProjectDirectory
-                    String[] args = {"clean", "package"};
+                    String[] args = {"-U", "clean", "package"};
                     boolean useArq = Objects.equals(arqTesting, "true");
                     if (useArq) {
                         args = new String[]{"clean", "install", "-U"};
