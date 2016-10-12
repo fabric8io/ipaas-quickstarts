@@ -26,6 +26,7 @@
     </parent>
 
     <artifactId>cdi-camel-swagger-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: CDI :: Camel with Swagger Doc</name>
     <packaging>maven-archetype</packaging>
 
