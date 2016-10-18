@@ -29,7 +29,7 @@
     <name>Fabric8 :: Archetypes :: Spring Boot :: Camel and Infinispan</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new Camel route using Infinispan and Spring Boot</description>
+    <description>Spring Boot example running a Camel route using Infinispan</description>
 
     <build>
         <extensions>

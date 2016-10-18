@@ -13,7 +13,7 @@
     <name>Fabric8 :: Archetypes :: Spring-Boot :: Camel-ActiveMQ</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new Camel example with Spring Boot that connects to the fabric8 JMS broker</description>
+    <description>Spring Boot example running a Camel route connecting to ActiveMQ</description>
 
     <build>
         <extensions>
