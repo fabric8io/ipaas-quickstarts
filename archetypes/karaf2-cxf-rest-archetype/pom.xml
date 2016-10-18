@@ -25,11 +25,11 @@
         <version>2.2-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jboss-fuse-cxf-rest-archetype</artifactId>
-    <name>Fabric8 :: Archetypes :: JBoss Fuse :: CXF Rest</name>
+    <artifactId>karaf2-cxf-rest-archetype</artifactId>
+    <name>Fabric8 :: Archetypes :: Karaf 2 :: CXF REST</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new CXF Rest Example</description>
+    <description>Creates a new Karaf 2 example running a REST sevice using CXF</description>
 
     <build>
         <extensions>
