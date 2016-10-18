@@ -30,7 +30,7 @@
     <name>Fabric8 :: Archetypes :: Spring-Boot :: Camel REST SQL</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new Camel REST DSL and SQL example with Spring Boot</description>
+    <description>Spring Boot example running a Camel REST route connecting to a SQL database</description>
 
     <build>
         <extensions>
