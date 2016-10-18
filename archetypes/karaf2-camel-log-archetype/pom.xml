@@ -25,11 +25,11 @@
         <version>2.2-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jboss-fuse-camel-amq-archetype</artifactId>
-    <name>Fabric8 :: Archetypes :: JBoss Fuse :: Camel using ActiveMQ</name>
+    <artifactId>karaf2-camel-log-archetype</artifactId>
+    <name>Fabric8 :: Archetypes :: Karaf 2 :: Camel Log</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new ActiveMQ and Camel Example</description>
+    <description>Creates a new Karaf 2 example running a Camel route</description>
 
     <build>
         <extensions>

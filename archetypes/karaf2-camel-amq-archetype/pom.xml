@@ -25,11 +25,11 @@
         <version>2.2-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jboss-fuse-camel-rest-sql-archetype</artifactId>
-    <name>Fabric8 :: Archetypes :: JBoss Fuse :: Camel Rest using SQL</name>
+    <artifactId>karaf2-camel-amq-archetype</artifactId>
+    <name>Fabric8 :: Archetypes :: Karaf 2 :: Camel and ActiveMQ</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new Camel Example using Rest DSL with SQL Database</description>
+    <description>Creates a new Karaf 2 example running a Camel route connecting to ActiveMQ</description>
 
     <build>
         <extensions>
