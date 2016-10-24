@@ -26,6 +26,7 @@
     </parent>
 
     <artifactId>rails-example-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: rails-example</name>
     <packaging>maven-archetype</packaging>
 

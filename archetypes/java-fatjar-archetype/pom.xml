@@ -26,6 +26,7 @@
     </parent>
 
     <artifactId>java-fatjar-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: Java :: fat jar</name>
     <packaging>maven-archetype</packaging>
 
