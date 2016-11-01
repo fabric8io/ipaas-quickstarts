@@ -29,7 +29,7 @@
     <name>Fabric8 :: Archetypes :: Spring-Boot :: Camel-Drools</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new Camel and Drools example with Spring Boot in the Java Container</description>
+    <description>Spring Boot example running a Camel route using a rules engine</description>
 
     <build>
         <extensions>

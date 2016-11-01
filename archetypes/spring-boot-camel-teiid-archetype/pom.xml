@@ -29,7 +29,7 @@
     <name>Fabric8 :: Archetypes :: Spring-Boot :: Camel-Teiid</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new Camel and Teiid example with Spring Boot in the Java Container</description>
+    <description>Spring Boot example running a Camel route using Teiid</description>
 
     <build>
         <extensions>

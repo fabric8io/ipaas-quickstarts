@@ -25,11 +25,11 @@
         <version>2.2-SNAPSHOT</version>
     </parent>
 
-    <artifactId>spring-boot-camel-infinispan-archetype</artifactId>
-    <name>Fabric8 :: Archetypes :: Spring Boot :: Camel and Infinispan</name>
+    <artifactId>spring-boot-cxf-jaxws-archetype</artifactId>
+    <name>Fabric8 :: Archetypes :: Spring-Boot :: CXF JAXWS</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Spring Boot example running a Camel route using Infinispan</description>
+    <description>Spring Boot example running a CXF JAXWS Endpoint</description>
 
     <build>
         <extensions>

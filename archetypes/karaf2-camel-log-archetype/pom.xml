@@ -25,11 +25,11 @@
         <version>2.2-SNAPSHOT</version>
     </parent>
 
-    <artifactId>spring-boot-camel-infinispan-archetype</artifactId>
-    <name>Fabric8 :: Archetypes :: Spring Boot :: Camel and Infinispan</name>
+    <artifactId>karaf2-camel-log-archetype</artifactId>
+    <name>Fabric8 :: Archetypes :: Karaf 2 :: Camel Log</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Spring Boot example running a Camel route using Infinispan</description>
+    <description>Karaf 2 example running a Camel route</description>
 
     <build>
         <extensions>

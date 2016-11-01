@@ -75,14 +75,15 @@ public class ArchetypeTest {
 
     // the following lists the sets of archetype prefixes which are not bet capable of being system tested yet
     private static List<String> ignoreArchetypePrefixes = Arrays.asList(
+            "cdi-camel-amq"
             // TODO https://github.com/fabric8io/ipaas-quickstarts/issues/1366
-            "karaf-",
+            //"karaf-",
 
             // TODO https://github.com/fabric8io/ipaas-quickstarts/issues/1367
-            "war-",
+            //"war-",
 
             // TODO https://github.com/fabric8io/ipaas-quickstarts/issues/1368
-            "wildfly-camel-"
+            //"wildfly-camel-"
     );
 
 

@@ -1,1 +1,0 @@
-Run a local <a href="https://github.com/docker/docker-registry">Docker Registry</a> for hosting local docker images.
