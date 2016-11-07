@@ -26,6 +26,7 @@
     </parent>
 
     <artifactId>war-camel-servlet-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: War :: Camel Servlet</name>
     <packaging>maven-archetype</packaging>
 
