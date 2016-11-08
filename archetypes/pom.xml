@@ -88,7 +88,7 @@
     <module>spring-camel-archetype</module>
     <module>swarm-camel-archetype</module>
     <module>swift-example-archetype</module>
-    <module>vertx-simple-archetype</module>
+    <module>vertx-web-archetype</module>
   </modules>
 
 </project>

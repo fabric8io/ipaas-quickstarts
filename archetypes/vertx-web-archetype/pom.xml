@@ -25,7 +25,7 @@
         <version>2.2-SNAPSHOT</version>
     </parent>
 
-    <artifactId>vertx-simple-archetype</artifactId>
+    <artifactId>vertx-web-archetype</artifactId>
     <name>Fabric8 :: Archetypes :: Vert.x :: Fat Jar</name>
     <packaging>maven-archetype</packaging>
 
