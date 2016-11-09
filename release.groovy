@@ -52,7 +52,8 @@ def updateDownstreamDependencies(stagedProject) {
     propertyName = 'fabric8.archetypes.release.version'
     projects = [
             'fabric8io/fabric8-maven-dependencies',
-            'fabric8io/fabric8-forge'
+            'fabric8io/fabric8-forge',
+            'fabric8io/django'
     ]
     version = stagedProject[1]
   }
