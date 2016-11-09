@@ -26,6 +26,7 @@
     </parent>
 
     <artifactId>infinispan-server-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: Infinispan :: Server</name>
     <packaging>maven-archetype</packaging>
 
