@@ -26,6 +26,7 @@
     </parent>
 
     <artifactId>spring-boot-camel-teiid-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: Spring-Boot :: Camel-Teiid</name>
     <packaging>maven-archetype</packaging>
 

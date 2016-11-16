@@ -26,6 +26,7 @@
     </parent>
 
     <artifactId>funktion-groovy-example-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: funktion-groovy-example</name>
     <packaging>maven-archetype</packaging>
 
