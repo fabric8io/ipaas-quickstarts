@@ -94,7 +94,11 @@ public class ArchetypeTest {
             "infinispan-client-archetype",
 
             // TODO https://github.com/fabric8io/ipaas-quickstarts/issues/1364
-            "spring-boot-ribbon-archetype"
+            "spring-boot-ribbon-archetype",
+
+            // TODO https://github.com/fabric8io/ipaas-quickstarts/issues/1466
+            "vertx-web-archetype"
+
     ));
 
     private boolean verbose = true;
