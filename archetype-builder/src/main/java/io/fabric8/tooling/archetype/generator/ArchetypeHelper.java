@@ -78,7 +78,7 @@ public class ArchetypeHelper {
     private List<String> binarySuffixes = Arrays.asList(".png", ".ico", ".gif", ".jpg", ".jpeg", ".bmp");
 
     protected String webInfResources = "src/main/webapp/WEB-INF/resources";
-    protected Pattern sourcePathRegexPattern = Pattern.compile("(src/(main|test)/(java)/)(.*)");
+    protected Pattern sourcePathRegexPattern = Pattern.compile("(src/(main|test)/(java|groovy|kotlin)/)(.*)");
 
     public ArchetypeHelper(File archetypeFile, File outputDir, String groupId, String artifactId, String version, String name, String description) {
         this.archetypeFile = archetypeFile;
