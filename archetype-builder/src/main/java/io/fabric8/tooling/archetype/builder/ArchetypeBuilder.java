@@ -64,6 +64,7 @@ public class ArchetypeBuilder extends AbstractBuilder{
         "json",
         "jsp",
         "kotlin",
+        "kt",
         "ks",
         "md",
         "properties",
@@ -197,7 +198,8 @@ public class ArchetypeBuilder extends AbstractBuilder{
         File[] files = baseDir.listFiles();
         if (files != null) {
             for (File file: files) {
-                if (file.isDirectory()) {
+                // TODO: remove me
+                if (file.isDirectory() && file.getName().contains("kotlin")) {
                     File projectDir = file;
                     File projectPom = new File(projectDir, "pom.xml");
                     if (projectPom.exists() && !skipImport(projectDir)) {
@@ -512,7 +514,12 @@ public class ArchetypeBuilder extends AbstractBuilder{
         archetypeUtils.writeXmlDocument(doc, archetypePom);
 
         // lets update the archetype-metadata.xml file
-        String archetypeXmlText = defaultArchetypeXmlText();
+        String archetypeXmlText;
+        if (archetypeDir.getName().contains("kotlin")) {
+            archetypeXmlText = kotlinArchetypeXmlText();
+        } else {
+            archetypeXmlText = defaultArchetypeXmlText();
+        }
 
         Document archDoc = archetypeUtils.parseXml(new InputSource(new StringReader(archetypeXmlText)));
         Element archRoot = archDoc.getDocumentElement();
@@ -813,6 +820,17 @@ public class ArchetypeBuilder extends AbstractBuilder{
 
     private String defaultArchetypeXmlText() throws IOException {
         InputStreamReader reader = new InputStreamReader(getClass().getResourceAsStream("default-archetype-descriptor.xml"));
+        StringWriter sw = new StringWriter();
+        try {
+            IOHelpers.copy(reader, sw);
+        } finally {
+            IOHelpers.close(reader, sw);
+        }
+        return sw.toString();
+    }
+
+    private String kotlinArchetypeXmlText() throws IOException {
+        InputStreamReader reader = new InputStreamReader(getClass().getResourceAsStream("kotlin-archetype-descriptor.xml"));
         StringWriter sw = new StringWriter();
         try {
             IOHelpers.copy(reader, sw);
