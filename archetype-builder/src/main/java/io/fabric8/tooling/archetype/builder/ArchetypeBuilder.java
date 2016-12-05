@@ -126,7 +126,7 @@ public class ArchetypeBuilder extends AbstractBuilder{
         }
     }
 
-    private void generateArchetypeFromGitRepo(File outputDir, List<String> dirs, File cloneParentDir, String repoName, String repoURL, String tag) throws IOException {
+    protected void generateArchetypeFromGitRepo(File outputDir, List<String> dirs, File cloneParentDir, String repoName, String repoURL, String tag) throws IOException {
         String archetypeFolderName = repoName + "-archetype";
         File projectDir = new File(outputDir, archetypeFolderName);
         File destDir = new File(projectDir, ARCHETYPE_RESOURCES_PATH);
@@ -251,7 +251,7 @@ public class ArchetypeBuilder extends AbstractBuilder{
      * @param clean remove the archetypeDir entirely?
      * @throws IOException
      */
-    private void generateArchetype(File projectDir, File projectPom, File archetypeDir, boolean clean, List<String> dirs) throws IOException {
+    protected void generateArchetype(File projectDir, File projectPom, File archetypeDir, boolean clean, List<String> dirs) throws IOException {
         LOG.debug("Generating archetype from {} to {}", projectDir.getName(), archetypeDir.getCanonicalPath());
 
         // add to dirs
@@ -629,25 +629,6 @@ public class ArchetypeBuilder extends AbstractBuilder{
         }
     }
 
-    private String replaceNodeValue(Document doc, Element parent, String name, String newValue) {
-        NodeList children = parent.getChildNodes();
-        for (int cn = 0; cn < children.getLength(); cn++) {
-            Node child = children.item(cn);
-            if (child instanceof Element && child.getNodeName().equals(name)) {
-                Element e = (Element) children.item(cn);
-                String answer = e.getTextContent();
-                e.setTextContent(newValue);
-                return answer;
-            } else if (child instanceof Element && child.hasChildNodes()) {
-                String answer = replaceNodeValue(doc, (Element) child, name, newValue);
-                if (answer != null) {
-                    return answer;
-                }
-            }
-        }
-        return null;
-    }
-
     /**
      * Creates new element as child of <code>parent</code> and sets its text content
      */
@@ -712,7 +693,7 @@ public class ArchetypeBuilder extends AbstractBuilder{
     /**
      * Copies all java/groovy/kotlin/scala code recursively. <code>replaceFn</code> is used to modify the content of files.
      */
-    private void copyCodeFiles(File rootPackage, File outDir, Replacement replaceFn) throws IOException {
+    protected void copyCodeFiles(File rootPackage, File outDir, Replacement replaceFn) throws IOException {
         if (rootPackage.isFile()) {
             copyFile(rootPackage, outDir, replaceFn);
         } else {
@@ -730,12 +711,12 @@ public class ArchetypeBuilder extends AbstractBuilder{
      * Copies single file from <code>src</code> to <code>dest</code>.
      * If the file is source file, variable references will be escaped, so they'll survive Velocity template merging.
      */
-    private void copyFile(File src, File dest, Replacement replaceFn) throws IOException {
+    protected void copyFile(File src, File dest, Replacement replaceFn) throws IOException {
         boolean isSource = isSourceFile(src);
         copyFile(src, dest, replaceFn, isSource);
     }
 
-    private void copyFile(File src, File dest, Replacement replaceFn, boolean isSource) throws IOException {
+    protected void copyFile(File src, File dest, Replacement replaceFn, boolean isSource) throws IOException {
         if (replaceFn != null && isSource) {
             String original = IOHelpers.readFully(src);
             String escapedContent = original;
@@ -765,7 +746,7 @@ public class ArchetypeBuilder extends AbstractBuilder{
     /**
      * Copies all other source files which are not excluded
      */
-    private void copyOtherFiles(File projectDir, File srcDir, File outDir, Replacement replaceFn, Set<String> extraIgnorefiles) throws IOException {
+    protected void copyOtherFiles(File projectDir, File srcDir, File outDir, Replacement replaceFn, Set<String> extraIgnorefiles) throws IOException {
         if (archetypeUtils.isValidFileToCopy(projectDir, srcDir, extraIgnorefiles)) {
             if (srcDir.isFile()) {
                 copyFile(srcDir, outDir, replaceFn);
@@ -784,7 +765,7 @@ public class ArchetypeBuilder extends AbstractBuilder{
     /**
      * Returns true if this file is a valid source file name
      */
-    private boolean isSourceFile(File file) {
+    protected boolean isSourceFile(File file) {
         String name = file.getName();
         String extension = Files.getExtension(name).toLowerCase();
         return sourceFileExtensions.contains(extension) || sourceFileNames.contains(name);
@@ -819,7 +800,7 @@ public class ArchetypeBuilder extends AbstractBuilder{
         return null;
     }
 
-    private String defaultArchetypeXmlText() throws IOException {
+    protected String defaultArchetypeXmlText() throws IOException {
         InputStreamReader reader = new InputStreamReader(getClass().getResourceAsStream("default-archetype-descriptor.xml"));
         StringWriter sw = new StringWriter();
         try {
