@@ -24,11 +24,11 @@
   <parent>
     <groupId>io.fabric8.quickstarts</groupId>
     <artifactId>quickstart-war</artifactId>
-    <version>2.2.60-SNAPSHOT</version>
+    <version>2.2.0.redhat-085</version>
   </parent>
 
   <artifactId>quickstart-war-camel-servlet</artifactId>
-  <version>2.2.60-SNAPSHOT</version>
+  <version>2.2.0.redhat-085</version>
   <packaging>war</packaging>
   <name>Fabric8 :: Quickstarts :: War :: Camel Servlet</name>
   <description>Camel route using Servlet deployed as WAR</description>
@@ -37,8 +37,8 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <!-- the version of the BOM, defining all the dependency versions -->
-    <fuse.version>6.2.1.redhat-083</fuse.version>
-    <fabric8.version>2.2.0.redhat-070</fabric8.version>
+    <fuse.version>6.2.1.redhat-169</fuse.version>
+    <fabric8.version>2.2.0.redhat-085</fabric8.version>
     <docker.maven.plugin.version>0.13.6</docker.maven.plugin.version>
     <jetty.plugin.version>9.2.11.v20150529</jetty.plugin.version>
 
