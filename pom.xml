@@ -26,7 +26,7 @@
 
   <groupId>io.fabric8.quickstarts</groupId>
   <artifactId>ipaas-quickstarts</artifactId>
-  <version>2.2.180</version>
+  <version>2.2.180.fuse-000008</version>
   <packaging>pom</packaging>
 
   <name>Fabric8 Quickstarts</name>
@@ -77,7 +77,7 @@
     <docker.source.dir>${basedir}/src/main/docker</docker.source.dir>
 
     <arquillian.version>1.1.11.Final</arquillian.version>
-    <docker.maven.plugin.version>0.16.8</docker.maven.plugin.version>
+    <docker.maven.plugin.version>0.16.9.fuse-000003</docker.maven.plugin.version>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <!--
             <docker.registry>registry.hub.docker.com</docker.registry>
@@ -86,7 +86,7 @@
     <maven.surefire.plugin.version>2.19.1</maven.surefire.plugin.version>
     <maven-resources-plugin.version>2.6</maven-resources-plugin.version>
     <junit.version>4.12</junit.version>
-    <fabric8.version>2.2.170</fabric8.version>
+    <fabric8.version>2.2.170.fuse-000009</fabric8.version>
     <fabric8.release.version>${fabric8.version}</fabric8.release.version>
     <maven.enforcer.plugin.version>1.4.1</maven.enforcer.plugin.version>
 
@@ -266,7 +266,7 @@
     <profile>
       <id>fabric8-snapshot</id>
       <properties>
-        <fabric8.version>2.2-SNAPSHOT</fabric8.version>
+        <fabric8.version>2.2.170.fuse-000009</fabric8.version>
       </properties>
     </profile>
     <profile>
