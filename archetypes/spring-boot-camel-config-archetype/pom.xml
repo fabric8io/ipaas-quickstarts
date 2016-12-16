@@ -22,10 +22,11 @@
     <parent>
         <groupId>io.fabric8.archetypes</groupId>
         <artifactId>archetypes</artifactId>
-        <version>2.2-SNAPSHOT</version>
+        <version>2.2.0.fuse-000007</version>
     </parent>
 
     <artifactId>spring-boot-camel-config-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: Spring Boot :: Camel Config</name>
     <packaging>maven-archetype</packaging>
 

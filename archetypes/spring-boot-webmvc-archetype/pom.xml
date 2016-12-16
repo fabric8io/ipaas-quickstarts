@@ -26,6 +26,7 @@
     </parent>
 
     <artifactId>spring-boot-webmvc-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: Spring-Boot :: WebMVC</name>
     <packaging>maven-archetype</packaging>
 
