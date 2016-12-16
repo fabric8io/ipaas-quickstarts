@@ -26,6 +26,7 @@
     </parent>
 
     <artifactId>war-cxf-cdi-servlet-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: War :: CXF JAX-RS with CDI Servlet</name>
     <packaging>maven-archetype</packaging>
 
