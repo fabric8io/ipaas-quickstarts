@@ -21,7 +21,7 @@ import io.fabric8.utils.Files;
 import io.fabric8.utils.IOHelpers;
 import io.fabric8.utils.Objects;
 import io.fabric8.utils.Strings;
-import org.apache.commons.lang.StringEscapeUtils
+import org.apache.commons.lang.StringEscapeUtils;
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
 import org.kohsuke.github.GHOrganization;
