@@ -21,6 +21,7 @@ import io.fabric8.utils.Files;
 import io.fabric8.utils.IOHelpers;
 import io.fabric8.utils.Objects;
 import io.fabric8.utils.Strings;
+import org.apache.commons.lang.StringEscapeUtils
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
 import org.kohsuke.github.GHOrganization;
@@ -178,7 +179,7 @@ public class CatalogBuilder extends AbstractBuilder {
             indent + indent + indent + "<artifactId>%s</artifactId>\n" +
             indent + indent + indent + "<version>%s</version>\n" +
             indent + indent + indent + "<description>%s</description>\n" +
-            indent + indent + "</archetype>", groupId, artifactId, version, description));
+            indent + indent + "</archetype>", groupId, artifactId, version, StringEscapeUtils.escapeXml(description)));
     }
 
     public void setArchetypesPomFile(File archetypesPomFile) {
