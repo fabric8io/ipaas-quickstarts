@@ -43,6 +43,7 @@
         <include>**/*.sql</include>
         <include>**/*.yml</include>
         <include>**/*.yaml</include>
+        <include>**/*.json</include>
       </includes>
       <excludes>
         <exclude>java/**</exclude>
@@ -75,6 +76,7 @@
         <include>**/*.cfg</include>
         <include>**/*.yml</include>
         <include>**/*.yaml</include>
+        <include>**/*.json</include>
       </includes>
       <excludes>
         <exclude>java/**</exclude>
