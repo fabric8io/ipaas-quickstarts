@@ -23,7 +23,7 @@ For example, `spring-boot-camel-archetype` is the name of a Camel quickstart tha
 The build requires Maven version 3.2.5 or later.
 
     mvn clean install
-    
+
 ### Running the system tests
 
 To run the system tests for all the quickstarts check out the [docs on how to run them](archetype-itests)
