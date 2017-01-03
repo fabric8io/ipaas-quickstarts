@@ -1,16 +1,4 @@
 #!/usr/bin/groovy
-def updateDependencies(source){
-
-  def properties = []
-  properties << ['<fabric8.version>','io/fabric8/kubernetes-api']
-
-  updatePropertyVersion{
-    updates = properties
-    repository = source
-    project = 'fabric8io/ipaas-quickstarts'
-  }
-}
-
 def stage(){
   return stageProject{
     project = 'fabric8io/ipaas-quickstarts'
