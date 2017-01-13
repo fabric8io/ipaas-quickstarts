@@ -26,6 +26,7 @@
     </parent>
 
     <artifactId>cdi-camel-jetty-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: CDI :: Camel with Jetty as HTTP server</name>
     <packaging>maven-archetype</packaging>
 
