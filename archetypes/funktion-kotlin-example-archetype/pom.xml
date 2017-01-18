@@ -26,10 +26,11 @@
     </parent>
 
     <artifactId>funktion-kotlin-example-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: funktion-kotlin-example</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new funktion kotlin example</description>
+    <description>funktion kotlin example</description>
 
     <build>
         <extensions>

@@ -26,10 +26,11 @@
     </parent>
 
     <artifactId>karaf-camel-amq-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: Karaf :: Camel using ActiveMQ</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new ActiveMQ and Camel Example</description>
+    <description>ActiveMQ and Camel Example</description>
 
     <build>
         <extensions>
