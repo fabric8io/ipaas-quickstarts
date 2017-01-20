@@ -26,10 +26,11 @@
     </parent>
 
     <artifactId>infinispan-client-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: Infinispan :: Client</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new Camel route using Spring XML and Infinispan in a standalone Java container</description>
+    <description>Camel route using Spring XML and Infinispan in a standalone Java container</description>
 
     <build>
         <extensions>
