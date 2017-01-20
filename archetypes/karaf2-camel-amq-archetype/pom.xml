@@ -22,10 +22,11 @@
     <parent>
         <groupId>io.fabric8.archetypes</groupId>
         <artifactId>archetypes</artifactId>
-        <version>2.2.195</version>
+        <version>2.2.195.redhat-000002</version>
     </parent>
 
     <artifactId>karaf2-camel-amq-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: Karaf 2 :: Camel and ActiveMQ</name>
     <packaging>maven-archetype</packaging>
 
