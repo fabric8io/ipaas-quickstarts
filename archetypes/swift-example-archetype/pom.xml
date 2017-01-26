@@ -26,10 +26,11 @@
     </parent>
 
     <artifactId>swift-example-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: swift-example</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new swift example</description>
+    <description>swift example</description>
 
     <build>
         <extensions>
