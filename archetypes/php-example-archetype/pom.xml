@@ -26,10 +26,11 @@
     </parent>
 
     <artifactId>php-example-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: php-example</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new php example</description>
+    <description>php example</description>
 
     <build>
         <extensions>
