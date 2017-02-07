@@ -26,10 +26,11 @@
     </parent>
 
     <artifactId>golang-example-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: golang-example</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new golang example</description>
+    <description>golang example</description>
 
     <build>
         <extensions>
