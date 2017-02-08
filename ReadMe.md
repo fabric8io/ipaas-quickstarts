@@ -4,7 +4,7 @@
 
 This project contains the following [fabric8](http://fabric8.io/) parts: 
 
-* [Archetypes](archetypes) for creating new Java project using Maven Archetypes which are based on the [Quickstarts](quickstart)
+* [Archetypes](archetypes) for creating new Java project using Maven Archetypes which are based on the [github.com/fabric8-quickstarts](https://github.com/fabric8-quickstarts)
 * [System Tests](archetype-itests) the [Fabric8 Arquillian](https://github.com/fabric8io/fabric8/tree/master/components/fabric8-arquillian) based system tests for the Archetypes in the [Archetype Catalog](archetypes-catalog) 
 
 ### Quickstarts
