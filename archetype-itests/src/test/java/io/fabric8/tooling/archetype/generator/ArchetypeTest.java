@@ -199,7 +199,8 @@ public class ArchetypeTest {
 
     protected void assertArchetypeCreated(String artifactId) throws Exception {
         String homeDir = System.getProperty("user.home", "~");
-        File mvnRepoDir = new File(homeDir, ".m2/repository");
+        String m2repo = System.getProperty("m2.repo", ".m2/repository");
+        File mvnRepoDir = new File(homeDir, m2repo);
 
         File archetypeJar = new File(mvnRepoDir, groupId.replace('.', '/') + "/" + artifactId + "/" + projectVersion + "/"
                 + artifactId + "-" + projectVersion + ".jar");
