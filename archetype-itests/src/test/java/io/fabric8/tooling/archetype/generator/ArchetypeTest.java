@@ -484,10 +484,6 @@ public class ArchetypeTest {
                             args = new String[]{"clean", "install", "-U", "-Dfabric8.mode=" + fabric8Mode};
                         }
                     }
-                    // using an itest settings.xml here similar to jboss-fuse archetypes configuration/settings.xml
-                    args = Arrays.copyOf(args, args.length + 2);
-                    args[args.length - 2] = "-s";
-                    args[args.length - 1] = new File(basedir, "target/test-classes/settings.xml").getAbsolutePath();
                     File logFile = new File(new File(outDir), "output.log");
                     logFile.delete();
                     resultPointer[0] = invokeMaven(args, outDir, logFile);
