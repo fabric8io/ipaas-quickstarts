@@ -26,10 +26,11 @@
     </parent>
 
     <artifactId>node-example-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: node-example</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new node example</description>
+    <description>node example</description>
 
     <build>
         <extensions>
