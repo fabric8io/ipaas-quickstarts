@@ -29,7 +29,7 @@
     <name>Fabric8 :: Archetypes :: Vert.x :: Fat Jar</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new Simple embedded vert.x fatjar</description>
+    <description>Creates a new Simple embedded Vert.x fatjar</description>
 
     <build>
         <extensions>

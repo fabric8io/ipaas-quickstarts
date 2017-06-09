@@ -29,7 +29,7 @@
     <name>Fabric8 :: Archetypes :: Karaf :: Camel Rest using SQL</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new Camel Example using Rest DSL with SQL Database</description>
+    <description>Creates a new Karaf 4 Camel Rest DSL example with SQL Database</description>
 
     <build>
         <extensions>

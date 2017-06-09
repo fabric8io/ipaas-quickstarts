@@ -26,10 +26,10 @@
     </parent>
 
     <artifactId>spring-boot-cxf-jaxrs-archetype</artifactId>
-    <name>Fabric8 :: Archetypes :: Spring-Boot :: CXF JAXRS</name>
+    <name>Fabric8 :: Archetypes :: Spring Boot :: CXF JAXRS</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Spring Boot example running a CXF JAXRS Endpoint</description>
+    <description>Creates a new Spring Boot CXF JAXRS example</description>
 
     <build>
         <extensions>

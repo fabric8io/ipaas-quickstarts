@@ -29,7 +29,7 @@
     <name>Fabric8 :: Archetypes :: Wildfly :: Camel EJB</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new Simple EJB application deployed on Wildfly-Camel</description>
+    <description>Creates a new WildFly Camel simple EJB example</description>
 
     <build>
         <extensions>

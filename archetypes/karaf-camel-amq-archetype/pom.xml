@@ -29,7 +29,7 @@
     <name>Fabric8 :: Archetypes :: Karaf :: Camel using ActiveMQ</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new ActiveMQ and Camel Example</description>
+    <description>Creates a new Karaf 4 Blueprint ActiveMQ and Camel Example</description>
 
     <build>
         <extensions>

@@ -29,7 +29,7 @@
     <name>Fabric8 :: Archetypes :: django-example</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new django example</description>
+    <description>Creates a new Django example</description>
 
     <build>
         <extensions>

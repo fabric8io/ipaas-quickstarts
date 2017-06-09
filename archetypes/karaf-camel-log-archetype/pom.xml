@@ -29,7 +29,7 @@
     <name>Fabric8 :: Archetypes :: Karaf :: Camel Log</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new Camel Log Example</description>
+    <description>Creates a new Karaf 4 Blueprint Camel log example</description>
 
     <build>
         <extensions>

@@ -29,7 +29,7 @@
     <name>Fabric8 :: Archetypes :: dotnet-example</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new dotnet example</description>
+    <description>Creates a new .Net example</description>
 
     <build>
         <extensions>

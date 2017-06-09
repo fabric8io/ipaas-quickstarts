@@ -26,10 +26,10 @@
     </parent>
 
     <artifactId>spring-boot-ribbon-archetype</artifactId>
-    <name>Fabric8 :: Archetypes :: Spring-Boot :: Ribbon</name>
+    <name>Fabric8 :: Archetypes :: Spring Boot :: Ribbon</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new Fabric8 :: Quickstarts :: Spring-Boot :: Ribbon</description>
+    <description>Creates a new Spring Boot Ribbon example</description>
 
     <build>
         <extensions>

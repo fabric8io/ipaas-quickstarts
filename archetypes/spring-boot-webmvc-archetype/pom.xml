@@ -26,7 +26,7 @@
     </parent>
 
     <artifactId>spring-boot-webmvc-archetype</artifactId>
-    <name>Fabric8 :: Archetypes :: Spring-Boot :: WebMVC</name>
+    <name>Fabric8 :: Archetypes :: Spring Boot :: WebMVC</name>
     <packaging>maven-archetype</packaging>
 
     <description>Creates a new Spring Boot WebMVC example</description>
