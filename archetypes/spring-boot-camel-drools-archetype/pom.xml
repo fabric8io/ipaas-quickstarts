@@ -26,6 +26,7 @@
     </parent>
 
     <artifactId>spring-boot-camel-drools-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: Spring-Boot :: Camel-Drools</name>
     <packaging>maven-archetype</packaging>
 
