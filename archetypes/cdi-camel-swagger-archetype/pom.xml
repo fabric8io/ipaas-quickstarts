@@ -26,10 +26,11 @@
     </parent>
 
     <artifactId>cdi-camel-swagger-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: CDI :: Camel with Swagger Doc</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new An example using REST DSL and Swagger Java with CDI</description>
+    <description>An example using REST DSL and Swagger Java with CDI</description>
 
     <build>
         <extensions>
