@@ -26,10 +26,10 @@
     </parent>
 
     <artifactId>funktion-nodejs-example-archetype</artifactId>
-    <name>Fabric8 :: Archetypes :: Funktion Example NodeJS</name>
+    <name>Fabric8 :: Archetypes :: Funktion NodeJS Example</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new Funktion :: Examples :: NodeJS</description>
+    <description>Creates a new Funktion NodeJS example</description>
 
     <build>
         <extensions>

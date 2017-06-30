@@ -29,7 +29,7 @@
     <name>Fabric8 :: Archetypes :: Karaf 2 :: Camel Rest using SQL</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Karaf 2 example running a Camel route connecting to a SQL database</description>
+    <description>Creates a new Karaf 2 Blueprint Camel route connecting to a SQL database</description>
 
     <build>
         <extensions>

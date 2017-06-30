@@ -29,7 +29,7 @@
     <name>Fabric8 :: Archetypes :: CDI :: Camel</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new Camel route using CDI in a standalone Java Container</description>
+    <description>Creates a new CDI example Camel route in a standalone Java Container</description>
 
     <build>
         <extensions>

@@ -26,10 +26,10 @@
     </parent>
 
     <artifactId>spring-boot-camel-archetype</artifactId>
-    <name>Fabric8 :: Archetypes :: Spring-Boot :: Camel</name>
+    <name>Fabric8 :: Archetypes :: Spring Boot :: Camel</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Spring Boot example running a Camel route</description>
+    <description>Creates a new Spring Boot Camel example Java DSL route</description>
 
     <build>
         <extensions>

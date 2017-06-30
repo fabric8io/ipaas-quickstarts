@@ -29,7 +29,7 @@
     <name>Fabric8 :: Archetypes :: Java :: Camel with Spring</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new Camel route using Spring XML in a standalone Java container</description>
+    <description>Creates a new Spring XML Camel example</description>
 
     <build>
         <extensions>

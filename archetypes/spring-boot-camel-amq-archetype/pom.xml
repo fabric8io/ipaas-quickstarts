@@ -10,10 +10,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>spring-boot-camel-amq-archetype</artifactId>
-    <name>Fabric8 :: Archetypes :: Spring-Boot :: Camel-ActiveMQ</name>
+    <name>Fabric8 :: Archetypes :: Spring Boot :: Camel-ActiveMQ</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Spring Boot example running a Camel route connecting to ActiveMQ</description>
+    <description>Creates a new Spring Boot Camel route connecting to ActiveMQ</description>
 
     <build>
         <extensions>

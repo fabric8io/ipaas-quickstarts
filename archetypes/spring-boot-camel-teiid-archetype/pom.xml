@@ -26,10 +26,10 @@
     </parent>
 
     <artifactId>spring-boot-camel-teiid-archetype</artifactId>
-    <name>Fabric8 :: Archetypes :: Spring-Boot :: Camel-Teiid</name>
+    <name>Fabric8 :: Archetypes :: Spring Boot :: Camel-Teiid</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Spring Boot example running a Camel route using Teiid</description>
+    <description>Creates a new Spring Boot Camel route using Teiid</description>
 
     <build>
         <extensions>

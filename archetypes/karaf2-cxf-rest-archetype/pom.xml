@@ -29,7 +29,7 @@
     <name>Fabric8 :: Archetypes :: Karaf 2 :: CXF REST</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Karaf 2 example running a REST sevice using CXF</description>
+    <description>Creates a new Karaf 2 Blueprint CXF example REST service</description>
 
     <build>
         <extensions>
