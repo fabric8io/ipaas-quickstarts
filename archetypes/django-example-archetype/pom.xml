@@ -26,10 +26,11 @@
     </parent>
 
     <artifactId>django-example-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: django-example</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new Django example</description>
+    <description>Django example</description>
 
     <build>
         <extensions>
