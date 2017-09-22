@@ -26,10 +26,11 @@
     </parent>
 
     <artifactId>spring-boot-camel-drools-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: Spring Boot :: Camel-Drools</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new Spring Boot Camel route using a rules engine</description>
+    <description>Spring Boot Camel route using a rules engine</description>
 
     <build>
         <extensions>
