@@ -26,10 +26,11 @@
     </parent>
 
     <artifactId>cdi-camel-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: CDI :: Camel</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new CDI example Camel route in a standalone Java Container</description>
+    <description>CDI example Camel route in a standalone Java Container</description>
 
     <build>
         <extensions>
