@@ -1,0 +1,8 @@
+spring-boot-camel=https://github.com/fabric8-quickstarts/spring-boot-camel.git|spring-boot-camel-1.0.0.fuse-000084
+spring-boot-camel-amq=https://github.com/fabric8-quickstarts/spring-boot-camel-amq.git|spring-boot-camel-amq-1.0.0.fuse-000081
+spring-boot-camel-config=https://github.com/fabric8-quickstarts/spring-boot-camel-config.git|spring-boot-camel-config-1.0.0.fuse-000066
+spring-boot-camel-infinispan=https://github.com/fabric8-quickstarts/spring-boot-camel-infinispan.git|spring-boot-camel-infinispan-1.0.0.fuse-000080
+spring-boot-camel-rest-sql=https://github.com/fabric8-quickstarts/spring-boot-camel-rest-sql.git|spring-boot-camel-rest-sql-1.0.0.fuse-000080
+spring-boot-camel-xml=https://github.com/fabric8-quickstarts/spring-boot-camel-xml.git|spring-boot-camel-xml-1.0.0.fuse-000079
+spring-boot-cxf-jaxrs=https://github.com/fabric8-quickstarts/spring-boot-cxf-jaxrs.git|spring-boot-cxf-jaxrs-1.0.0.fuse-000066
+spring-boot-cxf-jaxws=https://github.com/fabric8-quickstarts/spring-boot-cxf-jaxws.git|spring-boot-cxf-jaxws-1.0.0.fuse-000065
