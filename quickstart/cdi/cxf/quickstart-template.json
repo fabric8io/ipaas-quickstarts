@@ -43,7 +43,7 @@
     },
     {
       "name": "APP_VERSION",
-      "value": "2.2.60-SNAPSHOT",
+      "value": "2.2.0.redhat-086",
       "description": "Application version"
     },
     {
