@@ -67,6 +67,7 @@
     <module>karaf-camel-amq-archetype</module>
     <module>karaf-camel-log-archetype</module>
     <module>karaf-camel-rest-sql-archetype</module>
+    <module>karaf-cxf-rest-archetype</module>
     <module>node-example-archetype</module>
     <module>php-example-archetype</module>
     <module>rails-example-archetype</module>
