@@ -5,15 +5,16 @@
     <parent>
         <artifactId>archetypes</artifactId>
         <groupId>io.fabric8.archetypes</groupId>
-        <version>2.2-SNAPSHOT</version>
+        <version>2.2.0.fuse-000069</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>spring-boot-camel-amq-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: Spring Boot :: Camel-ActiveMQ</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new Spring Boot Camel route connecting to ActiveMQ</description>
+    <description>Spring Boot Camel route connecting to ActiveMQ</description>
 
     <build>
         <extensions>
