@@ -26,10 +26,11 @@
     </parent>
 
     <artifactId>funktion-java-example-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: funktion-java-example</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new Funktion Java example</description>
+    <description>Funktion Java example</description>
 
     <build>
         <extensions>

@@ -26,10 +26,11 @@
     </parent>
 
     <artifactId>spring-boot-hystrix-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: Spring Boot :: Hystrix</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new Spring Boot Hystrix example</description>
+    <description>Spring Boot Hystrix example</description>
 
     <build>
         <extensions>
