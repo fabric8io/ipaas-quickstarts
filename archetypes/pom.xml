@@ -24,7 +24,7 @@
   <parent>
     <groupId>io.fabric8.quickstarts</groupId>
     <artifactId>ipaas-quickstarts</artifactId>
-    <version>2.2-SNAPSHOT</version>
+    <version>2.2.0.fuse-000083</version>
   </parent>
 
   <groupId>io.fabric8.archetypes</groupId>
@@ -34,63 +34,20 @@
 
 
   <modules>
-    <!--
-    <module>cassandra-client-archetype</module>
-    -->
-    <module>cdi-camel-amq-archetype</module>
-    <module>cdi-camel-archetype</module>
-    <module>cdi-camel-http-client-archetype</module>
-    <module>cdi-camel-jetty-archetype</module>
-    <module>cdi-camel-swagger-archetype</module>
-    <module>cdi-cxf-archetype</module>
-    <module>django-example-archetype</module>
-    <module>dotnet-example-archetype</module>
-    <module>funktion-groovy-example-archetype</module>
-    <module>funktion-java-example-archetype</module>
-    <module>funktion-kotlin-example-archetype</module>
-    <module>funktion-nodejs-example-archetype</module>
-    <module>golang-example-archetype</module>
-    <module>infinispan-client-archetype</module>
-    <module>infinispan-server-archetype</module>
-    <module>java-fatjar-archetype</module>
-    <module>java-mainclass-archetype</module>
-    <module>karaf2-camel-amq-archetype</module>
-    <module>karaf2-camel-log-archetype</module>
-    <!--
-    TODO removed until this fixed: https://github.com/fabric8io/ipaas-quickstarts/issues/1423
-    <module>karaf2-camel-rest-sql-archetype</module>
-    -->
-    <!--
-    removed until this is fixed:  https://github.com/fabric8-quickstarts/karaf2-cxf-rest/issues/25
-    <module>karaf2-cxf-rest-archetype</module>
-    -->
     <module>karaf-camel-amq-archetype</module>
     <module>karaf-camel-log-archetype</module>
     <module>karaf-camel-rest-sql-archetype</module>
     <module>karaf-cxf-rest-archetype</module>
-    <module>node-example-archetype</module>
-    <module>php-example-archetype</module>
-    <module>rails-example-archetype</module>
-    <module>spring-boot-camel-amq-archetype</module>
     <module>spring-boot-camel-archetype</module>
+    <module>spring-boot-camel-amq-archetype</module>
     <module>spring-boot-camel-config-archetype</module>
     <module>spring-boot-camel-drools-archetype</module>
     <module>spring-boot-camel-infinispan-archetype</module>
     <module>spring-boot-camel-rest-sql-archetype</module>
-    <!--
-    removed until this is fixed: https://github.com/fabric8io/ipaas-quickstarts/issues/1425
     <module>spring-boot-camel-teiid-archetype</module>
-    -->
     <module>spring-boot-camel-xml-archetype</module>
     <module>spring-boot-cxf-jaxrs-archetype</module>
     <module>spring-boot-cxf-jaxws-archetype</module>
-    <module>spring-boot-hystrix-archetype</module>
-    <module>spring-boot-ribbon-archetype</module>
-    <module>spring-boot-webmvc-archetype</module>
-    <module>spring-camel-archetype</module>
-    <module>swarm-camel-archetype</module>
-    <module>swift-example-archetype</module>
-    <module>vertx-web-archetype</module>
   </modules>
 
 </project>
