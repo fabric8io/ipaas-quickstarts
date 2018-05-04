@@ -26,10 +26,11 @@
     </parent>
 
     <artifactId>java-fatjar-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: Java :: fat jar</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new Simple standalone Java Container (fat jar)</description>
+    <description>Simple standalone Java Container (fat jar)</description>
 
     <build>
         <extensions>

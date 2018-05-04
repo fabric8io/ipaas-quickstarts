@@ -1,0 +1,13 @@
+karaf-camel-amq=https://github.com/fabric8-quickstarts/karaf-camel-amq.git|karaf-camel-amq-1.0.0.fuse-000029
+karaf-camel-log=https://github.com/fabric8-quickstarts/karaf-camel-log.git|karaf-camel-log-1.0.0.fuse-000051
+karaf-camel-rest-sql=https://github.com/fabric8-quickstarts/karaf-camel-rest-sql.git|karaf-camel-rest-sql-1.0.0.fuse-000047
+karaf-cxf-rest=https://github.com/fabric8-quickstarts/karaf-cxf-rest.git|karaf-cxf-rest-1.0.0.fuse-000043
+spring-boot-camel=https://github.com/fabric8-quickstarts/spring-boot-camel.git|spring-boot-camel-1.0.0.fuse-000151
+spring-boot-camel-amq=https://github.com/fabric8-quickstarts/spring-boot-camel-amq.git|spring-boot-camel-amq-1.0.0.fuse-000143
+spring-boot-camel-config=https://github.com/fabric8-quickstarts/spring-boot-camel-config.git|spring-boot-camel-config-1.0.0.fuse-000127
+spring-boot-camel-drools=https://github.com/fabric8-quickstarts/spring-boot-camel-drools.git|spring-boot-camel-drools-1.0.0.fuse-000081
+spring-boot-camel-infinispan=https://github.com/fabric8-quickstarts/spring-boot-camel-infinispan.git|spring-boot-camel-infinispan-1.0.0.fuse-000139
+spring-boot-camel-teiid=https://github.com/fabric8-quickstarts/spring-boot-camel-teiid.git|spring-boot-camel-teiid-1.0.0.fuse-000073
+spring-boot-camel-xml=https://github.com/fabric8-quickstarts/spring-boot-camel-xml.git|spring-boot-camel-xml-1.0.0.fuse-000126
+spring-boot-cxf-jaxrs=https://github.com/fabric8-quickstarts/spring-boot-cxf-jaxrs.git|spring-boot-cxf-jaxrs-1.0.0.fuse-000113
+spring-boot-cxf-jaxws=https://github.com/fabric8-quickstarts/spring-boot-cxf-jaxws.git|spring-boot-cxf-jaxws-1.0.0.fuse-000112
