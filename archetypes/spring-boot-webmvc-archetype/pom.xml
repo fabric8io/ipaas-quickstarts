@@ -26,10 +26,11 @@
     </parent>
 
     <artifactId>spring-boot-webmvc-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: Spring Boot :: WebMVC</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new Spring Boot WebMVC example</description>
+    <description>Spring Boot WebMVC example</description>
 
     <build>
         <extensions>

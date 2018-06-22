@@ -26,10 +26,11 @@
     </parent>
 
     <artifactId>vertx-web-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: Vert.x :: Fat Jar</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new Simple embedded Vert.x fatjar</description>
+    <description>Simple embedded Vert.x fatjar</description>
 
     <build>
         <extensions>
