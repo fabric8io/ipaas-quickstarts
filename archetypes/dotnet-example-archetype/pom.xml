@@ -26,10 +26,11 @@
     </parent>
 
     <artifactId>dotnet-example-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: dotnet-example</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new .Net example</description>
+    <description>.Net example</description>
 
     <build>
         <extensions>
