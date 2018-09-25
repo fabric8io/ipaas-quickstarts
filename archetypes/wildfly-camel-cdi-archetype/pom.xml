@@ -26,10 +26,11 @@
     </parent>
 
     <artifactId>wildfly-camel-cdi-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: Wildfly :: Camel CDI</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new WildFly Camel CDI example</description>
+    <description>WildFly Camel CDI example</description>
 
     <build>
         <extensions>
