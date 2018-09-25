@@ -26,10 +26,11 @@
     </parent>
 
     <artifactId>karaf2-camel-log-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: Karaf 2 :: Camel Log</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new Karaf 2 Blueprint Camel log example</description>
+    <description>Karaf 2 Blueprint Camel log example</description>
 
     <build>
         <extensions>
