@@ -26,10 +26,11 @@
     </parent>
 
     <artifactId>rails-example-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: rails-example</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new Rails example</description>
+    <description>Rails example</description>
 
     <build>
         <extensions>
