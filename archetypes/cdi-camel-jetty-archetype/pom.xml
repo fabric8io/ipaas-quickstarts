@@ -26,10 +26,11 @@
     </parent>
 
     <artifactId>cdi-camel-jetty-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: CDI :: Camel with Jetty as HTTP server</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new CDI example Camel route using Jetty as HTTP server</description>
+    <description>CDI example Camel route using Jetty as HTTP server</description>
 
     <build>
         <extensions>
