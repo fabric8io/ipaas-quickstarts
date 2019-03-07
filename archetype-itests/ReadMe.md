@@ -3,6 +3,13 @@
 This module generates every archetype in the generated [archetype-catalog](../archetypes-catalog) as a project in `target/createdProjects` and then creates an uber pom in `target/createdProjects/pom.xml` and then checks that all the projects build and pass their system tests via  [Fabric8 Arquillian](https://github.com/fabric8io/fabric8/tree/master/components/fabric8-arquillian) 
 .
 
+### Prerequisites
+
+In order for the tests to run, the Maven home directory must be known. Usually this is done by 
+exporting the Maven home directory via the M2_HOME variable. Before running the tests, please 
+ensure that the directory is exported via that variable or passed through using the maven.home
+property. 
+
 ### Testing all the archetypes build OK
 
 Run the following
