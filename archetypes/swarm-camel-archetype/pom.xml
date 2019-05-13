@@ -26,10 +26,11 @@
     </parent>
 
     <artifactId>swarm-camel-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: Swarm :: Camel REST endpoint with Undertow</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new WildFly Swarm Camel REST Service</description>
+    <description>WildFly Swarm Camel REST Service</description>
 
     <build>
         <extensions>
