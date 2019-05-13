@@ -26,10 +26,11 @@
     </parent>
 
     <artifactId>war-camel-servlet-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: War :: Camel Servlet</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new Camel route using Servlet deployed as WAR</description>
+    <description>Camel route using Servlet deployed as WAR</description>
 
     <build>
         <extensions>
