@@ -26,10 +26,11 @@
     </parent>
 
     <artifactId>karaf-cxf-rest-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: Karaf :: CXF REST</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new Karaf 4 Blueprint CXF example REST service</description>
+    <description>Karaf 4 Blueprint CXF example REST service</description>
 
     <build>
         <extensions>
