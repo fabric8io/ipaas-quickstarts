@@ -27,10 +27,11 @@
     </parent>
 
     <artifactId>spring-boot-camel-rest-sql-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: Spring Boot :: Camel REST SQL</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new Spring Boot Camel REST route connecting to a SQL database</description>
+    <description>Spring Boot Camel REST route connecting to a SQL database</description>
 
     <build>
         <extensions>
