@@ -130,7 +130,7 @@
   <repositories>
     <repository>
       <id>jenkins-ci</id>
-      <url>http://repo.jenkins-ci.org/public</url>
+      <url>https://repo.jenkins-ci.org/public</url>
       <layout>default</layout>
       <releases>
         <enabled>true</enabled>
