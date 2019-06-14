@@ -22,14 +22,15 @@
     <parent>
         <groupId>io.fabric8.archetypes</groupId>
         <artifactId>archetypes</artifactId>
-        <version>2.2-SNAPSHOT</version>
+        <version>2.2.0.fuse-740010</version>
     </parent>
 
     <artifactId>spring-boot-cxf-jaxrs-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: Spring Boot :: CXF JAXRS</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new Spring Boot CXF JAXRS example</description>
+    <description>Spring Boot CXF JAXRS example</description>
 
     <build>
         <extensions>
