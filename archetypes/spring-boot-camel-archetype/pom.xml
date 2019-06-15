@@ -22,14 +22,15 @@
     <parent>
         <groupId>io.fabric8.archetypes</groupId>
         <artifactId>archetypes</artifactId>
-        <version>2.2-SNAPSHOT</version>
+        <version>2.2.fuse-sb2-740003</version>
     </parent>
 
     <artifactId>spring-boot-camel-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: Spring Boot :: Camel</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new Spring Boot Camel example Java DSL route</description>
+    <description>Spring Boot Camel example Java DSL route</description>
 
     <build>
         <extensions>
