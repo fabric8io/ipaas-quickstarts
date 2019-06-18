@@ -26,10 +26,11 @@
     </parent>
 
     <artifactId>cdi-camel-http-client-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: CDI :: Camel with HTTP as client</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new CDI example Camel route using HTTP client calling remote camel-jetty quickstart</description>
+    <description>CDI example Camel route using HTTP client calling remote camel-jetty quickstart</description>
 
     <build>
         <extensions>
