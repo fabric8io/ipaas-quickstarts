@@ -22,7 +22,7 @@
     <parent>
         <groupId>io.fabric8.archetypes</groupId>
         <artifactId>archetypes</artifactId>
-        <version>2.2.0.fuse-740012</version>
+        <version>2.2.0.fuse-740012-redhat-00001</version>
     </parent>
 
     <artifactId>spring-boot-camel-xml-archetype</artifactId>
