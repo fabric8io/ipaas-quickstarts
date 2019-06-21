@@ -26,10 +26,11 @@
     </parent>
 
     <artifactId>cdi-cxf-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: CDI :: CXF JAX-RS</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new CDI example CXF JAX-RS endpoint in a standalone Java Container</description>
+    <description>CDI example CXF JAX-RS endpoint in a standalone Java Container</description>
 
     <build>
         <extensions>
