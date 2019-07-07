@@ -98,7 +98,7 @@ public class ArchetypeBuilder extends AbstractBuilder{
         for (Map.Entry<String, GHRepository> entry : entries) {
             String repoName = entry.getKey();
             GHRepository repo = entry.getValue();
-            String url = repo.getGitTransportUrl();
+            String url = repo.gitHttpTransportUrl();
 
             generateArchetypeFromGitRepo(outputDir, dirs, cloneParentDir, repoName, url, null);
         }
