@@ -26,10 +26,11 @@
     </parent>
 
     <artifactId>wildfly-camel-jaxws-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: Wildfly :: Camel JAXWS</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new WildFly Camel JAXWS example</description>
+    <description>WildFly Camel JAXWS example</description>
 
     <build>
         <extensions>
