@@ -33,7 +33,7 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>io.fabric8</groupId>
+        <groupId>org.jboss.redhat-fuse</groupId>
         <artifactId>fabric8-project-bom-with-platform-deps</artifactId>
         <version>${fabric8.version}</version>
         <type>pom</type>
