@@ -34,8 +34,8 @@
     <dependencies>
       <dependency>
         <groupId>org.jboss.redhat-fuse</groupId>
-        <artifactId>fabric8-project-bom-with-platform-deps</artifactId>
-        <version>${fabric8.version}</version>
+        <artifactId>fabric8-project-bom-camel-spring-boot</artifactId>
+        <version>${fuse.bom.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
