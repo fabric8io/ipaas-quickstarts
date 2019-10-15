@@ -26,10 +26,11 @@
     </parent>
 
     <artifactId>war-wildfly-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: War :: Wildfly</name>
     <packaging>maven-archetype</packaging>
 
-    <description>Creates a new Simple Wildfly Application deployed as war</description>
+    <description>Simple Wildfly Application deployed as war</description>
 
     <build>
         <extensions>
