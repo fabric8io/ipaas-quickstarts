@@ -73,6 +73,7 @@
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <maven.javadoc.plugin.version>2.10.3</maven.javadoc.plugin.version>
+    <maven.resources.plugin.version>3.1.0</maven.resources.plugin.version>
 
     <docker.source.dir>${basedir}/src/main/docker</docker.source.dir>
 
@@ -88,6 +89,23 @@
     <fuse.bom.version>7.5.0.fuse-sb2-750020</fuse.bom.version>
     <fabric8.version>3.0.11.fuse-sb2-750003</fabric8.version>
     <fabric8.release.version>${fabric8.version}</fabric8.release.version>
+
+    <quickstarts.url.base>https://github.com/fabric8-quickstarts</quickstarts.url.base>
+    <karaf-camel-amq.version>karaf-camel-amq-1.0.0.fuse-750023</karaf-camel-amq.version>
+    <karaf-camel-log.version>karaf-camel-log-1.0.0.fuse-750023</karaf-camel-log.version>
+    <karaf-camel-rest-sql.version>karaf-camel-rest-sql-1.0.0.fuse-750023</karaf-camel-rest-sql.version>
+    <karaf-cxf-rest.version>karaf-cxf-rest-1.0.0.fuse-750023</karaf-cxf-rest.version>
+    <spring-boot-camel.version>spring-boot-camel-1.0.0.fuse-750023</spring-boot-camel.version>
+    <spring-boot-camel-amq.version>spring-boot-camel-amq-1.0.0.fuse-750022</spring-boot-camel-amq.version>
+    <spring-boot-camel-config.version>spring-boot-camel-config-1.0.0.fuse-750022</spring-boot-camel-config.version>
+    <spring-boot-camel-drools.version>spring-boot-camel-drools-1.0.0.fuse-750019</spring-boot-camel-drools.version>
+    <spring-boot-camel-infinispan.version>spring-boot-camel-infinispan-1.0.0.fuse-750020</spring-boot-camel-infinispan.version>
+    <spring-boot-camel-rest-sql.version>spring-boot-camel-rest-sql-1.0.0.fuse-750019</spring-boot-camel-rest-sql.version>
+    <spring-boot-camel-rest-3scale.version>spring-boot-camel-rest-3scale-1.0.0.fuse-750019</spring-boot-camel-rest-3scale.version>
+    <spring-boot-camel-xml.version>spring-boot-camel-xml-1.0.0.fuse-750019</spring-boot-camel-xml.version>
+    <spring-boot-cxf-jaxrs.version>spring-boot-cxf-jaxrs-1.0.0.fuse-750019</spring-boot-cxf-jaxrs.version>
+    <spring-boot-cxf-jaxws.version>spring-boot-cxf-jaxws-1.0.0.fuse-750019</spring-boot-cxf-jaxws.version>
+
     <maven.enforcer.plugin.version>1.4.1</maven.enforcer.plugin.version>
 
     <!-- build with -Dquickstart.git.repos=path/to/repos.properties to configure a list of repos
@@ -163,6 +181,28 @@
       </plugins>
     </pluginManagement>
     <plugins>
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>${maven.resources.plugin.version}</version>
+        <executions>
+          <execution>
+            <id>copy-resources</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${basedir}/target/extra-resources/</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>src/main/resources</directory>
+                  <filtering>true</filtering>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
