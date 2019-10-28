@@ -299,6 +299,113 @@
         <version>${junit.version}</version>
         <scope>test</scope>
       </dependency>
+
+      <!-- Dependencies for quickstarts so that we get the correct versions from PNC -->
+      <dependency>
+        <groupId>io.fabric8.quickstarts</groupId>
+        <artifactId>karaf-camel-amq</artifactId>
+        <version>${karaf-camel-amq.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>io.fabric8.quickstarts</groupId>
+        <artifactId>karaf-camel-log</artifactId>
+        <version>${karaf-camel-log.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>io.fabric8.quickstarts</groupId>
+        <artifactId>karaf-camel-log</artifactId>
+        <version>${karaf-camel-log.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>io.fabric8.quickstarts</groupId>
+        <artifactId>karaf-camel-rest-sql</artifactId>
+        <version>${karaf-camel-rest-sql.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>io.fabric8.quickstarts</groupId>
+        <artifactId>karaf-cxf-rest</artifactId>
+        <version>${karaf-cxf-rest.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+     <dependency>
+        <groupId>io.fabric8.quickstarts</groupId>
+        <artifactId>spring-boot-camel</artifactId>
+        <version>${spring-boot-camel.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+     <dependency>
+        <groupId>io.fabric8.quickstarts</groupId>
+        <artifactId>spring-boot-camel-amq</artifactId>
+        <version>${spring-boot-camel-amq.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+     <dependency>
+        <groupId>io.fabric8.quickstarts</groupId>
+        <artifactId>spring-boot-camel-config</artifactId>
+        <version>${spring-boot-camel-config.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+     <dependency>
+        <groupId>io.fabric8.quickstarts</groupId>
+        <artifactId>spring-boot-camel-drools</artifactId>
+        <version>${spring-boot-camel-drools.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+     <dependency>
+        <groupId>io.fabric8.quickstarts</groupId>
+        <artifactId>spring-boot-camel-infinispan</artifactId>
+        <version>${spring-boot-camel-infinispan.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+     <dependency>
+        <groupId>io.fabric8.quickstarts</groupId>
+        <artifactId>spring-boot-camel-rest-sql</artifactId>
+        <version>${spring-boot-camel-rest-sql.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+     <dependency>
+        <groupId>io.fabric8.quickstarts</groupId>
+        <artifactId>spring-boot-camel-rest-3scale</artifactId>
+        <version>${spring-boot-camel-rest-3scale.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+     <dependency>
+        <groupId>io.fabric8.quickstarts</groupId>
+        <artifactId>spring-boot-camel-xml</artifactId>
+        <version>${spring-boot-camel-xml.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+     <dependency>
+        <groupId>io.fabric8.quickstarts.cxf.jaxrs</groupId>
+        <artifactId>spring-boot-cxf-jaxrs</artifactId>
+        <version>${spring-boot-cxf-jaxrs.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+     <dependency>
+        <groupId>io.fabric8.quickstarts.cxf.jaxws</groupId>
+        <artifactId>spring-boot-cxf-jaxws</artifactId>
+        <version>${spring-boot-cxf-jaxws.version}</version>
+        <scope>test</scope>
+      </dependency>
+
     </dependencies>
   </dependencyManagement>
 
