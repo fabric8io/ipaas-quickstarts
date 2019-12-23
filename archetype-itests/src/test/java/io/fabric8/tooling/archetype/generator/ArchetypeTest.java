@@ -104,7 +104,7 @@ public class ArchetypeTest {
 
     // lets get the versions from the pom.xml via a system property
     private String groupId = "io.fabric8.archetypes";
-    private String fuseBomVersion = System.getProperty("fuse.bom.version", "7.5.0.fuse-sb2-750020");
+    private String fuseBomVersion = System.getProperty("fuse.bom.version", "3.0.11.fuse-760011");
     private String fabric8Version = System.getProperty("fabric8.version", "2.2-SNAPSHOT");
     private String projectVersion = System.getProperty("project.version", "2.2-SNAPSHOT");
     private String failsafeVersion = System.getProperty("failsafe.version", "2.19");
