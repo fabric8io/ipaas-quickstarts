@@ -22,10 +22,11 @@
     <parent>
         <groupId>io.fabric8.archetypes</groupId>
         <artifactId>archetypes</artifactId>
-        <version>2.2.195.redhat-SNAPSHOT</version>
+        <version>2.2.195.fuse-000053</version>
     </parent>
 
     <artifactId>karaf2-camel-log-archetype</artifactId>
+    <groupId>org.jboss.fuse.fis.archetypes</groupId>
     <name>Fabric8 :: Archetypes :: Karaf 2 :: Camel Log</name>
     <packaging>maven-archetype</packaging>
 
