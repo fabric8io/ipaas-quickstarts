@@ -8,3 +8,5 @@ spring-boot-camel-rest-3scale=${quickstarts.url.base}/spring-boot-camel-rest-3sc
 spring-boot-camel-xml=${quickstarts.url.base}/spring-boot-camel-xml.git|${spring-boot-camel-xml.version}
 spring-boot-cxf-jaxrs=${quickstarts.url.base}/spring-boot-cxf-jaxrs.git|${spring-boot-cxf-jaxrs.version}
 spring-boot-cxf-jaxws=${quickstarts.url.base}/spring-boot-cxf-jaxws.git|${spring-boot-cxf-jaxws.version}
+spring-boot-cxf-jaxrs-xml=${quickstarts.url.base}/spring-boot-cxf-jaxrs-xml.git|${spring-boot-cxf-jaxrs-xml.version}
+spring-boot-cxf-jaxws-xml=${quickstarts.url.base}/spring-boot-cxf-jaxws-xml.git|${spring-boot-cxf-jaxws-xml.version}

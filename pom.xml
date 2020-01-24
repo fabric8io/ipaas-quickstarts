@@ -101,6 +101,8 @@
     <spring-boot-camel-xml.version>1.0.0.fuse-750019</spring-boot-camel-xml.version>
     <spring-boot-cxf-jaxrs.version>1.0.0.fuse-750019</spring-boot-cxf-jaxrs.version>
     <spring-boot-cxf-jaxws.version>1.0.0.fuse-750019</spring-boot-cxf-jaxws.version>
+    <spring-boot-cxf-jaxrs-xml.version>1.0.0.fuse-750019</spring-boot-cxf-jaxrs-xml.version>
+    <spring-boot-cxf-jaxws-xml.version>1.0.0.fuse-750019</spring-boot-cxf-jaxws-xml.version>
 
     <maven.enforcer.plugin.version>1.4.1</maven.enforcer.plugin.version>
 
@@ -401,6 +403,21 @@
         <version>${spring-boot-cxf-jaxws.version}</version>
         <scope>test</scope>
       </dependency>
+
+     <dependency>
+        <groupId>io.fabric8.quickstarts.cxf.jaxrs</groupId>
+        <artifactId>spring-boot-cxf-jaxrs-xml</artifactId>
+        <version>${spring-boot-cxf-jaxrs-xml.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+     <dependency>
+        <groupId>io.fabric8.quickstarts.cxf.jaxws</groupId>
+        <artifactId>spring-boot-cxf-jaxws-xml</artifactId>
+        <version>${spring-boot-cxf-jaxws-xml.version}</version>
+        <scope>test</scope>
+      </dependency>
+
 
     </dependencies>
   </dependencyManagement>
