@@ -6,6 +6,7 @@ spring-boot-camel-infinispan=${quickstarts.url.base}/spring-boot-camel-infinispa
 spring-boot-camel-rest-sql=${quickstarts.url.base}/spring-boot-camel-rest-sql.git|${spring-boot-camel-rest-sql.version}
 spring-boot-camel-rest-3scale=${quickstarts.url.base}/spring-boot-camel-rest-3scale.git|${spring-boot-camel-rest-3scale.version}
 spring-boot-camel-xml=${quickstarts.url.base}/spring-boot-camel-xml.git|${spring-boot-camel-xml.version}
+spring-boot-camel-soap-rest-bridge=${quickstarts.url.base}/spring-boot-camel-soap-rest-bridge.git|${spring-boot-camel-soap-rest-bridge.version}
 spring-boot-cxf-jaxrs=${quickstarts.url.base}/spring-boot-cxf-jaxrs.git|${spring-boot-cxf-jaxrs.version}
 spring-boot-cxf-jaxws=${quickstarts.url.base}/spring-boot-cxf-jaxws.git|${spring-boot-cxf-jaxws.version}
 spring-boot-cxf-jaxrs-xml=${quickstarts.url.base}/spring-boot-cxf-jaxrs-xml.git|${spring-boot-cxf-jaxrs-xml.version}
