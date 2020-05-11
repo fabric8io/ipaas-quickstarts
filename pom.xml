@@ -99,6 +99,7 @@
     <spring-boot-camel-rest-sql.version>1.0.0.fuse-750019</spring-boot-camel-rest-sql.version>
     <spring-boot-camel-rest-3scale.version>1.0.0.fuse-750019</spring-boot-camel-rest-3scale.version>
     <spring-boot-camel-xml.version>1.0.0.fuse-750019</spring-boot-camel-xml.version>
+    <spring-boot-camel-soap-rest-bridge.version>1.0.0.fuse-750019</spring-boot-camel-soap-rest-bridge.version>
     <spring-boot-cxf-jaxrs.version>1.0.0.fuse-750019</spring-boot-cxf-jaxrs.version>
     <spring-boot-cxf-jaxws.version>1.0.0.fuse-750019</spring-boot-cxf-jaxws.version>
     <spring-boot-cxf-jaxrs-xml.version>1.0.0.fuse-750019</spring-boot-cxf-jaxrs-xml.version>
@@ -387,6 +388,13 @@
         <groupId>io.fabric8.quickstarts</groupId>
         <artifactId>spring-boot-camel-xml</artifactId>
         <version>${spring-boot-camel-xml.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>io.fabric8.quickstarts</groupId>
+        <artifactId>spring-boot-camel-soap-rest-bridge</artifactId>
+        <version>${spring-boot-camel-soap-rest-bridge.version}</version>
         <scope>test</scope>
       </dependency>
 
