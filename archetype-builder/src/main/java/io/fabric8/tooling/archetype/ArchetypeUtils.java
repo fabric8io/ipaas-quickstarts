@@ -137,6 +137,48 @@ public class ArchetypeUtils {
     }
 
     /**
+     * Recursively looks for first nested directory which contains at least one source file
+     *
+     * @param directory
+     * @return
+     */
+    public File findRootTestPackage(File directory) throws IOException {
+        if (!directory.isDirectory()) {
+            throw new IllegalArgumentException("Can't find package inside file. Argument should be valid directory.");
+        }
+        File[] children = directory.listFiles(new FileFilter() {
+            @Override
+            public boolean accept(File pathname) {
+                return isValidSourceFileOrDir(pathname);
+            }
+        });
+        if (children != null) {
+            HashSet<File> results = new HashSet<File>();
+            for (File it : children) {
+                if (it.isDirectory()) {
+                    File pkg = findRootTestPackage(it);
+
+                    // We need to ignore com packages in springboot-camel-soap-rest-bridge
+                    if ((pkg != null) && (!pkg.toString().contains("test/java/com"))) {
+                         results.add(pkg);
+                    }
+                } else if (!it.isDirectory() && it.toString().endsWith("Test.java")) {
+                    // we have file - let's assume we have main project's package
+                    results.add(directory);
+                    break;
+                }
+            }
+
+            if (results.size() == 1) {
+                return results.iterator().next();
+            } else {
+                return directory;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Returns true if this file is a valid source file; so
      * excluding things like .svn directories and whatnot
      */

@@ -330,7 +330,7 @@ public class ArchetypeBuilder extends AbstractBuilder{
         }
 
         if (testSrcDir != null) {
-            File rootPackage = archetypeUtils.findRootPackage(testSrcDir);
+            File rootPackage = archetypeUtils.findRootTestPackage(testSrcDir);
 
             if (rootPackage != null) {
                 String packagePath = archetypeUtils.relativePath(testSrcDir, rootPackage);
