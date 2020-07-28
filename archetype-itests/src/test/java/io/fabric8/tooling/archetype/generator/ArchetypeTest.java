@@ -15,8 +15,6 @@
  */
 package io.fabric8.tooling.archetype.generator;
 
-import io.fabric8.kubernetes.api.KubernetesHelper;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.utils.DomHelper;
 import io.fabric8.utils.Files;
 import io.fabric8.utils.IOHelpers;
@@ -480,7 +478,7 @@ public class ArchetypeTest {
                     if (useArq) {
                         args = new String[]{"clean", "install", "-U"};
                         String fabric8Mode = System.getProperty("fabric8.mode", "");
-                        if (Strings.isNotBlank(fabric8Mode) && KubernetesHelper.isOpenShift(new DefaultKubernetesClient())) {
+                        if (Strings.isNotBlank(fabric8Mode)) {
                             // lets add a workaround for a lack of discovery OOTB with fabric8-maven-plugin
                             args = new String[]{"clean", "install", "-U", "-Dfabric8.mode=" + fabric8Mode};
                         }
