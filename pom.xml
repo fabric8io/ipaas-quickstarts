@@ -86,23 +86,22 @@
     <maven.surefire.plugin.version>2.19.1</maven.surefire.plugin.version>
     <maven-resources-plugin.version>2.6</maven-resources-plugin.version>
     <junit.version>4.12</junit.version>
-    <fuse.bom.version>7.6.0.fuse-sb2-760012</fuse.bom.version>
-    <fabric8.version>3.0.11.fuse-sb2-760013</fabric8.version>
+    <fuse.bom.version>7.8.0.fuse-sb2-780005</fuse.bom.version>
 
     <quickstarts.url.base>https://github.com/fabric8-quickstarts</quickstarts.url.base>
-    <spring-boot-camel.version>1.0.0.fuse-750023</spring-boot-camel.version>
-    <spring-boot-camel-amq.version>1.0.0.fuse-750022</spring-boot-camel-amq.version>
-    <spring-boot-camel-config.version>1.0.0.fuse-750022</spring-boot-camel-config.version>
-    <spring-boot-camel-drools.version>1.0.0.fuse-750019</spring-boot-camel-drools.version>
-    <spring-boot-camel-infinispan.version>1.0.0.fuse-750020</spring-boot-camel-infinispan.version>
-    <spring-boot-camel-rest-sql.version>1.0.0.fuse-750019</spring-boot-camel-rest-sql.version>
-    <spring-boot-camel-rest-3scale.version>1.0.0.fuse-750019</spring-boot-camel-rest-3scale.version>
-    <spring-boot-camel-xml.version>1.0.0.fuse-750019</spring-boot-camel-xml.version>
-    <spring-boot-camel-soap-rest-bridge.version>1.0.0.fuse-750019</spring-boot-camel-soap-rest-bridge.version>
-    <spring-boot-cxf-jaxrs.version>1.0.0.fuse-750019</spring-boot-cxf-jaxrs.version>
-    <spring-boot-cxf-jaxws.version>1.0.0.fuse-750019</spring-boot-cxf-jaxws.version>
-    <spring-boot-cxf-jaxrs-xml.version>1.0.0.fuse-750019</spring-boot-cxf-jaxrs-xml.version>
-    <spring-boot-cxf-jaxws-xml.version>1.0.0.fuse-750019</spring-boot-cxf-jaxws-xml.version>
+    <spring-boot-camel.version>7.8.0.fuse-sb2-780003</spring-boot-camel.version>
+    <spring-boot-camel-amq.version>7.8.0.fuse-sb2-780002</spring-boot-camel-amq.version>
+    <spring-boot-camel-config.version>7.8.0.fuse-sb2-780002</spring-boot-camel-config.version>
+    <spring-boot-camel-drools.version>7.8.0.fuse-sb2-780003</spring-boot-camel-drools.version>
+    <spring-boot-camel-infinispan.version>7.8.0.fuse-sb2-780003</spring-boot-camel-infinispan.version>
+    <spring-boot-camel-rest-sql.version>7.8.0.fuse-sb2-780003</spring-boot-camel-rest-sql.version>
+    <spring-boot-camel-rest-3scale.version>7.8.0.fuse-sb2-780003</spring-boot-camel-rest-3scale.version>
+    <spring-boot-camel-xml.version>7.8.0.fuse-sb2-780001</spring-boot-camel-xml.version>
+    <spring-boot-camel-soap-rest-bridge.version>7.8.0.fuse-sb2-780001</spring-boot-camel-soap-rest-bridge.version>
+    <spring-boot-cxf-jaxrs.version>7.8.0.fuse-sb2-780001</spring-boot-cxf-jaxrs.version>
+    <spring-boot-cxf-jaxws.version>7.8.0.fuse-sb2-780001</spring-boot-cxf-jaxws.version>
+    <spring-boot-cxf-jaxrs-xml.version>7.8.0.fuse-sb2-780001</spring-boot-cxf-jaxrs-xml.version>
+    <spring-boot-cxf-jaxws-xml.version>7.8.0.fuse-sb2-780001</spring-boot-cxf-jaxws-xml.version>
 
     <maven.enforcer.plugin.version>1.4.1</maven.enforcer.plugin.version>
 
@@ -258,36 +257,9 @@
     <dependencies>
 
       <dependency>
-        <groupId>io.fabric8</groupId>
-        <artifactId>fabric8-cdi</artifactId>
-        <version>${fabric8.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>io.fabric8</groupId>
-        <artifactId>fabric8-cdi</artifactId>
-        <version>${fabric8.version}</version>
-        <type>test-jar</type>
-      </dependency>
-
-      <dependency>
         <groupId>org.jboss.arquillian.junit</groupId>
         <artifactId>arquillian-junit-container</artifactId>
         <version>${arquillian.version}</version>
-        <scope>test</scope>
-      </dependency>
-
-      <dependency>
-        <groupId>io.fabric8</groupId>
-        <artifactId>fabric8-arquillian</artifactId>
-        <version>${fabric8.version}</version>
-        <scope>test</scope>
-      </dependency>
-
-      <dependency>
-        <groupId>io.fabric8</groupId>
-        <artifactId>kubernetes-assertions</artifactId>
-        <version>${fabric8.version}</version>
         <scope>test</scope>
       </dependency>
 
