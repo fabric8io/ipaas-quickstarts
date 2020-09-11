@@ -1,7 +1,7 @@
-karaf-camel-amq=${quickstarts.url.base}/karaf-camel-amq.git|karaf-camel-amq-${karaf-camel-amq.version}
-karaf-camel-log=${quickstarts.url.base}/karaf-camel-log.git|karaf-camel-log-${karaf-camel-log.version}
-karaf-camel-rest-sql=${quickstarts.url.base}/karaf-camel-rest-sql.git|karaf-camel-rest-sql-${karaf-camel-rest-sql.version}
-karaf-cxf-rest=${quickstarts.url.base}/karaf-cxf-rest.git|karaf-cxf-rest-${karaf-cxf-rest.version}
+karaf-camel-amq=${quickstarts.url.base}/karaf-camel-amq.git|${karaf-camel-amq.version}
+karaf-camel-log=${quickstarts.url.base}/karaf-camel-log.git|${karaf-camel-log.version}
+karaf-camel-rest-sql=${quickstarts.url.base}/karaf-camel-rest-sql.git|${karaf-camel-rest-sql.version}
+karaf-cxf-rest=${quickstarts.url.base}/karaf-cxf-rest.git|${karaf-cxf-rest.version}
 spring-boot-camel=${quickstarts.url.base}/spring-boot-camel.git|${spring-boot-camel.version}
 spring-boot-camel-amq=${quickstarts.url.base}/spring-boot-camel-amq.git|${spring-boot-camel-amq.version}
 spring-boot-camel-config=${quickstarts.url.base}/spring-boot-camel-config.git|${spring-boot-camel-config.version}
