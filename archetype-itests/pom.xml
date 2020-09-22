@@ -35,30 +35,13 @@
     <!-- pass this property in to force the fabric8 maven plugin mode such as 'kubernetes', 'openshift' or 'auto' -->
     <fabric8.mode></fabric8.mode>
 
+    <version.assertj>3.16.1</version.assertj>
+    <version.slf4j>1.7.30</version.slf4j>
     <test.archetype></test.archetype>
     <maven-failsafe-plugin.version>2.19</maven-failsafe-plugin.version>
   </properties>
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>io.fabric8</groupId>
-        <artifactId>fabric8-project</artifactId>
-        <version>${fabric8.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
 
-  <dependencies>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>fabric8-utils</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-api</artifactId>
-    </dependency>
+ <dependencies>
     <dependency>
       <groupId>io.fabric8.quickstarts</groupId>
       <artifactId>archetype-builder</artifactId>
@@ -74,6 +57,7 @@
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
+      <version>${version.assertj}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -136,6 +120,7 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
+      <version>${version.slf4j}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -156,7 +141,6 @@
           <systemPropertyVariables>
             <basedir>${basedir}</basedir>
             <project.version>${project.version}</project.version>
-            <fabric8.version>${fabric8.version}</fabric8.version>
             <failsafe.version>${maven-failsafe-plugin.version}</failsafe.version>
             <test.archetype>${test.archetype}</test.archetype>
             <fabric8.mode>${fabric8.mode}</fabric8.mode>

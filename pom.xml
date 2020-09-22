@@ -73,6 +73,7 @@
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <maven.javadoc.plugin.version>2.10.3</maven.javadoc.plugin.version>
+    <maven.resources.plugin.version>3.1.0</maven.resources.plugin.version>
 
     <docker.source.dir>${basedir}/src/main/docker</docker.source.dir>
 
@@ -85,9 +86,28 @@
     <maven.surefire.plugin.version>2.19.1</maven.surefire.plugin.version>
     <maven-resources-plugin.version>2.6</maven-resources-plugin.version>
     <junit.version>4.12</junit.version>
-    <fuse.bom.version>7.5.0.fuse-sb2-750020</fuse.bom.version>
-    <fabric8.version>3.0.11.fuse-sb2-750003</fabric8.version>
-    <fabric8.release.version>${fabric8.version}</fabric8.release.version>
+    <fuse.bom.version>7.8.0.fuse-sb2-780005</fuse.bom.version>
+
+    <quickstarts.url.base>https://github.com/fabric8-quickstarts</quickstarts.url.base>
+    <spring-boot-camel.version>7.8.0.fuse-sb2-780003</spring-boot-camel.version>
+    <spring-boot-camel-amq.version>7.8.0.fuse-sb2-780002</spring-boot-camel-amq.version>
+    <spring-boot-camel-config.version>7.8.0.fuse-sb2-780002</spring-boot-camel-config.version>
+    <spring-boot-camel-drools.version>7.8.0.fuse-sb2-780003</spring-boot-camel-drools.version>
+    <spring-boot-camel-infinispan.version>7.8.0.fuse-sb2-780003</spring-boot-camel-infinispan.version>
+    <spring-boot-camel-rest-sql.version>7.8.0.fuse-sb2-780003</spring-boot-camel-rest-sql.version>
+    <spring-boot-camel-rest-3scale.version>7.8.0.fuse-sb2-780003</spring-boot-camel-rest-3scale.version>
+    <spring-boot-camel-xml.version>7.8.0.fuse-sb2-780001</spring-boot-camel-xml.version>
+    <spring-boot-camel-soap-rest-bridge.version>7.8.0.fuse-sb2-780001</spring-boot-camel-soap-rest-bridge.version>
+    <spring-boot-cxf-jaxrs.version>7.8.0.fuse-sb2-780001</spring-boot-cxf-jaxrs.version>
+    <spring-boot-cxf-jaxws.version>7.8.0.fuse-sb2-780001</spring-boot-cxf-jaxws.version>
+    <spring-boot-cxf-jaxrs-xml.version>7.8.0.fuse-sb2-780001</spring-boot-cxf-jaxrs-xml.version>
+    <spring-boot-cxf-jaxws-xml.version>7.8.0.fuse-sb2-780001</spring-boot-cxf-jaxws-xml.version>
+
+    <karaf-camel-amq.version>7.8.0.fuse-sb2-780011-redhat-00001</karaf-camel-amq.version>
+    <karaf-camel-log.version>7.8.0.fuse-sb2-780011-redhat-00001</karaf-camel-log.version>
+    <karaf-camel-rest-sql.version>7.8.0.fuse-sb2-780011-redhat-00001</karaf-camel-rest-sql.version>
+    <karaf-cxf-rest.version>7.8.0.fuse-sb2-780011-redhat-00001</karaf-cxf-rest.version>
+
     <maven.enforcer.plugin.version>1.4.1</maven.enforcer.plugin.version>
 
     <!-- build with -Dquickstart.git.repos=path/to/repos.properties to configure a list of repos
@@ -164,6 +184,28 @@
     </pluginManagement>
     <plugins>
       <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>${maven.resources.plugin.version}</version>
+        <executions>
+          <execution>
+            <id>copy-resources</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${basedir}/target/extra-resources/</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>src/main/resources</directory>
+                  <filtering>true</filtering>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
         <version>${maven-resources-plugin.version}</version>
@@ -220,36 +262,9 @@
     <dependencies>
 
       <dependency>
-        <groupId>io.fabric8</groupId>
-        <artifactId>fabric8-cdi</artifactId>
-        <version>${fabric8.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>io.fabric8</groupId>
-        <artifactId>fabric8-cdi</artifactId>
-        <version>${fabric8.version}</version>
-        <type>test-jar</type>
-      </dependency>
-
-      <dependency>
         <groupId>org.jboss.arquillian.junit</groupId>
         <artifactId>arquillian-junit-container</artifactId>
         <version>${arquillian.version}</version>
-        <scope>test</scope>
-      </dependency>
-
-      <dependency>
-        <groupId>io.fabric8</groupId>
-        <artifactId>fabric8-arquillian</artifactId>
-        <version>${fabric8.version}</version>
-        <scope>test</scope>
-      </dependency>
-
-      <dependency>
-        <groupId>io.fabric8</groupId>
-        <artifactId>kubernetes-assertions</artifactId>
-        <version>${fabric8.version}</version>
         <scope>test</scope>
       </dependency>
 
@@ -259,84 +274,139 @@
         <version>${junit.version}</version>
         <scope>test</scope>
       </dependency>
+
+      <!-- Dependencies for quickstarts so that we get the correct versions from PNC -->
+      <dependency>
+        <groupId>io.fabric8.quickstarts</groupId>
+        <artifactId>karaf-camel-amq</artifactId>
+        <version>${karaf-camel-amq.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>io.fabric8.quickstarts</groupId>
+        <artifactId>karaf-camel-log</artifactId>
+        <version>${karaf-camel-log.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>io.fabric8.quickstarts</groupId>
+        <artifactId>karaf-camel-log</artifactId>
+        <version>${karaf-camel-log.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>io.fabric8.quickstarts</groupId>
+        <artifactId>karaf-camel-rest-sql</artifactId>
+        <version>${karaf-camel-rest-sql.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>io.fabric8.quickstarts</groupId>
+        <artifactId>karaf-cxf-rest</artifactId>
+        <version>${karaf-cxf-rest.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+     <dependency>
+        <groupId>io.fabric8.quickstarts</groupId>
+        <artifactId>spring-boot-camel</artifactId>
+        <version>${spring-boot-camel.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+     <dependency>
+        <groupId>io.fabric8.quickstarts</groupId>
+        <artifactId>spring-boot-camel-amq</artifactId>
+        <version>${spring-boot-camel-amq.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+     <dependency>
+        <groupId>io.fabric8.quickstarts</groupId>
+        <artifactId>spring-boot-camel-config</artifactId>
+        <version>${spring-boot-camel-config.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+     <dependency>
+        <groupId>io.fabric8.quickstarts</groupId>
+        <artifactId>spring-boot-camel-drools</artifactId>
+        <version>${spring-boot-camel-drools.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+     <dependency>
+        <groupId>io.fabric8.quickstarts</groupId>
+        <artifactId>spring-boot-camel-infinispan</artifactId>
+        <version>${spring-boot-camel-infinispan.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+     <dependency>
+        <groupId>io.fabric8.quickstarts</groupId>
+        <artifactId>spring-boot-camel-rest-sql</artifactId>
+        <version>${spring-boot-camel-rest-sql.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+     <dependency>
+        <groupId>io.fabric8.quickstarts</groupId>
+        <artifactId>spring-boot-camel-rest-3scale</artifactId>
+        <version>${spring-boot-camel-rest-3scale.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+     <dependency>
+        <groupId>io.fabric8.quickstarts</groupId>
+        <artifactId>spring-boot-camel-xml</artifactId>
+        <version>${spring-boot-camel-xml.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>io.fabric8.quickstarts</groupId>
+        <artifactId>spring-boot-camel-soap-rest-bridge</artifactId>
+        <version>${spring-boot-camel-soap-rest-bridge.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+     <dependency>
+        <groupId>io.fabric8.quickstarts.cxf.jaxrs</groupId>
+        <artifactId>spring-boot-cxf-jaxrs</artifactId>
+        <version>${spring-boot-cxf-jaxrs.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+     <dependency>
+        <groupId>io.fabric8.quickstarts.cxf.jaxws</groupId>
+        <artifactId>spring-boot-cxf-jaxws</artifactId>
+        <version>${spring-boot-cxf-jaxws.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+     <dependency>
+        <groupId>io.fabric8.quickstarts.cxf.jaxrs</groupId>
+        <artifactId>spring-boot-cxf-jaxrs-xml</artifactId>
+        <version>${spring-boot-cxf-jaxrs-xml.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+     <dependency>
+        <groupId>io.fabric8.quickstarts.cxf.jaxws</groupId>
+        <artifactId>spring-boot-cxf-jaxws-xml</artifactId>
+        <version>${spring-boot-cxf-jaxws-xml.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+
     </dependencies>
   </dependencyManagement>
 
   <profiles>
-    <profile>
-      <id>fabric8-snapshot</id>
-      <properties>
-        <fabric8.version>2.2-SNAPSHOT</fabric8.version>
-      </properties>
-    </profile>
-    <profile>
-      <id>release</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-gpg-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>sign-artifacts</id>
-                <goals>
-                  <goal>sign</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-enforcer-plugin</artifactId>
-            <version>${maven.enforcer.plugin.version}</version>
-            <executions>
-              <execution>
-                <id>enforce-no-snapshots</id>
-                <goals>
-                  <goal>enforce</goal>
-                </goals>
-                <configuration>
-                  <rules>
-                    <requireReleaseDeps>
-                      <message>No Snapshots Allowed!</message>
-                    </requireReleaseDeps>
-                  </rules>
-                  <fail>true</fail>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>attach-javadocs</id>
-                <goals>
-                  <goal>jar</goal>
-                </goals>
-                <configuration>
-                  <additionalparam>${javadoc.opts}</additionalparam>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-source-plugin</artifactId>
-            <version>2.4</version>
-            <executions>
-              <execution>
-                <id>attach-sources</id>
-                <goals>
-                  <goal>jar</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
     <profile>
       <id>license</id>
       <build>

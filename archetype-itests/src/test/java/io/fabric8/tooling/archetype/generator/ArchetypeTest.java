@@ -15,8 +15,6 @@
  */
 package io.fabric8.tooling.archetype.generator;
 
-import io.fabric8.kubernetes.api.KubernetesHelper;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.utils.DomHelper;
 import io.fabric8.utils.Files;
 import io.fabric8.utils.IOHelpers;
@@ -104,7 +102,7 @@ public class ArchetypeTest {
 
     // lets get the versions from the pom.xml via a system property
     private String groupId = "io.fabric8.archetypes";
-    private String fuseBomVersion = System.getProperty("fuse.bom.version", "7.5.0.fuse-sb2-750020");
+    private String fuseBomVersion = System.getProperty("fuse.bom.version", "3.0.11.fuse-760011");
     private String fabric8Version = System.getProperty("fabric8.version", "2.2-SNAPSHOT");
     private String projectVersion = System.getProperty("project.version", "2.2-SNAPSHOT");
     private String failsafeVersion = System.getProperty("failsafe.version", "2.19");
@@ -480,7 +478,7 @@ public class ArchetypeTest {
                     if (useArq) {
                         args = new String[]{"clean", "install", "-U"};
                         String fabric8Mode = System.getProperty("fabric8.mode", "");
-                        if (Strings.isNotBlank(fabric8Mode) && KubernetesHelper.isOpenShift(new DefaultKubernetesClient())) {
+                        if (Strings.isNotBlank(fabric8Mode)) {
                             // lets add a workaround for a lack of discovery OOTB with fabric8-maven-plugin
                             args = new String[]{"clean", "install", "-U", "-Dfabric8.mode=" + fabric8Mode};
                         }
