@@ -42,6 +42,7 @@ public class ArchetypeBuilder extends AbstractBuilder{
     public static Logger LOG = LoggerFactory.getLogger(ArchetypeBuilder.class);
     public static final String ARCHETYPE_RESOURCES_PATH = "src/main/resources/archetype-resources";
     public static final String ARCHETYPE_RESOURCES_XML = "src/main/resources-filtered/META-INF/maven/archetype-metadata.xml";
+    public static final String ARCHETYPE_POST_GROOVY = "src/main/resources/META-INF/";
     public static final String FUNKTION_YML = "funktion.yml";
 
     private static final String[] specialVersions = new String[]{
@@ -518,6 +519,12 @@ public class ArchetypeBuilder extends AbstractBuilder{
             archetypeXmlText = groovyArchetypeXmlText();
         } else if (archetypeDir.getName().contains("kotlin")) {
             archetypeXmlText = kotlinArchetypeXmlText();
+        } else if (archetypeDir.getName().contains("soap-rest-bridge")) {
+            archetypeXmlText = soapRestBridgeArchetypeXmlText();
+            File postGroovyFile = new File(archetypeDir, ARCHETYPE_POST_GROOVY);
+            String groovyScript = soapRestBridgePostGroovyText();
+            postGroovyFile.mkdirs();
+            ArchetypeUtils.writeFile(new File(postGroovyFile, "archetype-post-generate.groovy"), groovyScript, false);
         } else {
             archetypeXmlText = defaultArchetypeXmlText();
         }
@@ -832,6 +839,29 @@ public class ArchetypeBuilder extends AbstractBuilder{
         }
         return sw.toString();
     }
+    
+    private String soapRestBridgeArchetypeXmlText() throws IOException {
+        InputStreamReader reader = new InputStreamReader(getClass().getResourceAsStream("soap-rest-bridge-archetype-descriptor.xml"));
+        StringWriter sw = new StringWriter();
+        try {
+            IOHelpers.copy(reader, sw);
+        } finally {
+            IOHelpers.close(reader, sw);
+        }
+        return sw.toString();
+    }
+    
+    private String soapRestBridgePostGroovyText() throws IOException {
+        InputStreamReader reader = new InputStreamReader(getClass().getResourceAsStream("soap-rest-bridge-post-generate.groovy"));
+        StringWriter sw = new StringWriter();
+        try {
+            IOHelpers.copy(reader, sw);
+        } finally {
+            IOHelpers.close(reader, sw);
+        }
+        return sw.toString();
+    }
+    
 
     /**
      * Interface for (String) => (String) functions
